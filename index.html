@@ -101,7 +101,10 @@ blockquote, q {
 <a href="lijing00333@163.com">lijing00333@163.com</a></p>
 </div>
 <script>
-YUI().use('node','transition',function(Y){
+<!--
+YUI({
+	combine:true	
+}).use('node','transition',function(Y){
 
 	//随机得到色值
 	var randomColor = function(){
@@ -198,15 +201,9 @@ YUI().use('node','transition',function(Y){
 			duration: d,
 			left: x+'px',
 			top: y+'px'
-		}/*,function(){
-			return;
-			Y.log(x+' '+y);
-			this.remove();
-		}*/);
+		});
 		//TODO 这里的回调在webkit下不执行，不知为何
 	});
-
-	//alert(Y.Transition.useNative);
 
 });
 
@@ -217,7 +214,8 @@ YUI().use('node','transition',function(Y){
   - webkit中的ease-in相当于其他浏览器中的ease-out
   - webkit中的transition的callback有时不触发，貌似是transition:end事件未触发，还未找到规律
 */
+//-->
 </script>
-  </body>
+</body>
 
 </html>
