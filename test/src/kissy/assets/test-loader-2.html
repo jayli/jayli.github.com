@@ -58,13 +58,20 @@ S.add({
 	'sub':{
 		fullpath:'sub.js',
 		requires:['sub-sub']
+	},
+	'calendar-skin':{
+		fullpath:'http://cubee.github.com/src/calendar/skin/default.css'
 	}
 });
 
 
 S.insert({
 	fullpath:'insert.js',
-	requires:['yui3']
+	requires:['yui3','calendar-skin']
+});
+
+S.ready(function(S){
+	S.log(33333);
 });
 
 
