@@ -34,26 +34,26 @@
 <div id="J_default_range"></div>
 <hr size=1 />
 <h3>日历切换事件</h3>
-只要当前月份切换，就发生switch事件
+只要当前月份切换，就发生monthChange事件
 <div id="J_all_events"></div>
 <hr size=1 />
 <h3>Popup日历，默认点击触发，点击空白处关闭</h3>
 <input type="text" id="J_popup" style="margin-left:50px;" />
 <hr size=1 />
 <h3>Popup日历，单选关闭，focus事件触发时弹出日历</h3>
-<a href="javascript:void(0);" id="J_popup_closeable" style="margin-left:50px;">click here!</a>
+<a href="javascript:void(0);" id="J_popup_closable" style="margin-left:50px;">click here!</a>
 <hr size=1 />
 <h3>日历可操作范围</h3>
 
 只可以选择今日之后的十天以内的日期
-<div id="J_mindate_maxdate"></div>
+<div id="J_minDate_maxDate"></div>
 <hr size=1 />
 <h3>可选择时间</h3>
 每个面板的time选择永远保持一致，而且当选择范围的时候，起始time和结束time是一致的
 <div id="J_with_time"></div>
 <hr size=1 />
 <h3>起始星期自定义</h3>
-起始星期可以自定义，指定参数start_day:0-6,默认为0，从星期日开始
+起始星期可以自定义，指定参数startDay:0-6,默认为0，从星期日开始
 <div id="J_custom_day"></div>
 <hr size=1 />
 <h3>日期格式的自定义</h3>
@@ -106,47 +106,59 @@ var showdate = function(n,d){//计算d天的前几天或者后几天，返回dat
 
 var S = KISSY;
 S.add({
-	'date-format':{
-		fullpath:'date-format.js?t='+new Date().getTime(),
+	'date':{
+		fullpath:'../date/date.js?t='+new Date().getTime()
+	},
+	'calendar-page':{
+		fullpath:'calendar-page.js?t='+new Date().getTime(),
+		requires:['core']
+	},
+	'calendar-timer':{
+		fullpath:'calendar-timer.js?t='+new Date().getTime(),
+		requires:['core']
 	},
 	'calendar':{
 		fullpath:'calendar.js?t='+new Date().getTime(),
-		requires:['core','calendar-skin','date-format']
-	},
-	'calendar-skin':{
-		fullpath:'assets/default.css'
+		cssfullpath:'assets/default.css',
+		requires:['core','date']
 	}
 });
-S.use('calendar',function(S){
+S.use('calendar ,calendar-page,calendar-timer',function(S){
 
 	//静态日历,单击回调
 	c = new S.Calendar('J_calendar').on('select',function(e){
 		alert(e.date);
+	},{
+		popup:false
 	});
 
 	//静态双月日历,默认选中某日
 	c = new S.Calendar('J_multipage_1',{
-		multi_page:2,
-		selected:showdate(-2,new Date())
+		pages:2,
+		selected:showdate(-2,new Date()),
+		popup:false
 	});
 
 	//静态三月日历
 	new S.Calendar('J_multipage_2',{
-		multi_page:3
+		pages:3,
+		popup:false
 	});
 
 	//选择范围,并绑定范围回调
 	new S.Calendar('J_range',{
-		multi_page:2,
-		range_select:true
-	}).on('rangeselect',function(e){
+		pages:2,
+		rangeSelect:true,
+		popup:false
+	}).on('rangeSelect',function(e){
 		alert(e.start+' '+e.end);
 	});
 
 	//选择范围,指定默认范围
 	new S.Calendar('J_default_range',{
-		multi_page:2,
-		range_select:true,
+		pages:2,
+		rangeSelect:true,
+		popup:false,
 		range:{
 			start:showdate(-3,new Date()),
 			end:showdate(5,new Date())
@@ -154,54 +166,60 @@ S.use('calendar',function(S){
 	});
 
 	//月份切换事件
-	new S.Calendar('J_all_events').on('switch',function(e){
+	new S.Calendar('J_all_events',{
+		popup:false
+	}).on('monthChange',function(e){
 		alert('切换事件,月份切换到'+(e.date.getMonth()+1));
 	});
 
 	//Popup日历,默认点击触发
 	new S.Calendar('J_popup',{
 		popup:true	,
-		action:['click']
+		triggerType:['click']
 	}).on('select',function(e){
 		S.one('#J_popup').val(e.date.format('localFullDate'));
 	});
 
 	//Popup日历,单选关闭
-	new S.Calendar('J_popup_closeable',{
+	new S.Calendar('J_popup_closable',{
 		popup:true,
-		closeable:true,
-		action:['focus']
+		closable:true,
+		triggerType:['focus']
 	}).on('select',function(e){
 		alert(e.date);	
 	});
 
 	//日历可操作范围
-	c = new S.Calendar('J_mindate_maxdate',{
-		mindate:new Date(),
-		maxdate:showdate(10,new Date())
+	c = new S.Calendar('J_minDate_maxDate',{
+		minDate:new Date(),
+		maxDate:showdate(10,new Date()),
+		popup:false
 	});
 
 	//日历可选择time
 	c = new S.Calendar('J_with_time',{
-		withtime:true
-	}).on('timeselect',function(e){
+		showTime:true,
+		popup:false
+	}).on('timeSelect',function(e){
 		alert(e.date);	
 	});
 
 	//可以自定义起始日期
 	c = new S.Calendar('J_custom_day',{
-		start_day:1
+		startDay:1,
+		popup:false
 	});
 
 	//格式化时间类型
 	c = new S.Calendar('J_dateformat',{
-		withtime:true
-	}).on('timeselect',function(e){
+		showTime:true,
+		popup:false
+	}).on('timeSelect',function(e){
 		var type = S.one('#J_datetype').val();
 		if(type == 'custom'){
 			type = S.one('#J_customtype').val();
 		}
-		alert(e.date.format(type));	
+		alert(S.Date.format(e.date,type));	
 	});
 	
 });
