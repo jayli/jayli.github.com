@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html lang="zh"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="Keywords" content="简单的XHTML页面">
+	<meta name="Description" content="这是一个简单的XHTML页面">
+	<title>简单的XHTML页面</title>
+</head><body>
+<canvas id="myCanvas" width="600" height="400">
+不要用ie打开
+</canvas>
+<p>by bachi@taobao.com</p>
+<script>
+//clone
+var clone = function(o){
+	var a = [];
+	for(var i in o){
+		a[i] = o[i];
+	}
+	return a;
+};
+//清除画布
+var clear = function(C){
+	C.clearRect(0,0,600,400);
+};
+//划线，b，起始位置，e，结束为止，C，画布
+var drowLine = function(b,e,C){
+	C.beginPath();
+	C.lineTo(b[0],b[1]);
+	C.moveTo(b[0],b[1]);
+	C.lineTo(e[0],e[1]);
+	C.moveTo(e[0],e[1]);
+	//C.strokeStyle = 'rgb(' + Math.floor(Math.random()*254) + ',' + Math.floor(Math.random()*254) + ',0)';
+	C.closePath();
+	C.stroke();
+};
+
+//将向量a缩放n倍
+var zoom = function(a,n){
+	var _a = [];
+	for(var i = 0;i<a.length;i++){
+		for(var j = 0;j<a[i].length;j++){
+			if(!_a[i])_a[i] = [];
+			_a[i][j] = a[i][j] * n;
+		}
+	}
+	return _a;
+};
+
+
+//向量的转换，a：原始向量，M：转换矩阵，b：偏移量
+var matrix = function(a,M,b){
+	if(!b)b = [200,200,100];
+	var x = a[0]*M[0][0] + a[1]*M[1][0] + a[2]*M[2][0]+b[0];
+	var y = a[0]*M[0][1] + a[1]*M[1][1] + a[2]*M[2][1]+b[1];
+	var z = a[0]*M[0][2] + a[1]*M[1][2] + a[2]*M[2][2]+b[2];
+	return [x,y,z];
+};
+
+//正方形所有顶点向量的批量转换，c：正方形，M：转换矩阵
+var matrixCube = function(c,M,b){
+	var _c = [];
+	if(!b)b=false;
+	for(var i = 0;i<c.length;i++){
+		_c[i] = matrix(c[i],M,b);
+	}
+	return _c;
+};
+//绘制正方形的12条边,boo,是否清除画布
+var drowCube = function(cube,C,boo){
+	if(boo)clear(C);
+
+	drowLine(cube[0],cube[3],C);
+	drowLine(cube[1],cube[2],C);
+	drowLine(cube[6],cube[5],C);
+	drowLine(cube[7],cube[4],C);
+
+	drowLine(cube[3],cube[2],C);
+	drowLine(cube[7],cube[6],C);
+	drowLine(cube[4],cube[5],C);
+	drowLine(cube[1],cube[0],C);
+
+	drowLine(cube[3],cube[7],C);
+	drowLine(cube[2],cube[6],C);
+	drowLine(cube[1],cube[5],C);
+	drowLine(cube[0],cube[4],C);
+};
+
+
+/*================begin==================*/
+
+//变换矩阵2
+var M = [
+	[Math.sqrt(2)/2,Math.sqrt(3)/3,Math.sqrt(6)/6],
+	[-Math.sqrt(2)/2,Math.sqrt(3)/3,Math.sqrt(6)/6],
+	[0,-Math.sqrt(3)/3,Math.sqrt(6)/6]
+];
+
+//根据角度I，计算平面位置
+var rotate = function(I){
+	return [Math.cos(I),Math.sin(I)];
+};
+
+var C = document.getElementById('myCanvas').getContext('2d');
+
+var I = 0;
+var sin = Math.sin;
+var cos = Math.cos;
+var PI = Math.PI;
+
+setTimeout(function(){
+	//if(I >= PI*16)return;
+	I += 0.05;
+
+	//x，z变动，y坐标不变
+	
+	var cube1 = [
+		[cos(I+PI/2),1,sin(I+PI/2)],
+		[cos(I),1,sin(I)],
+		[cos(I+PI*3/2),1,sin(I+PI*3/2)],
+		[cos(I+PI),1,sin(I+PI)],
+
+		[cos(I+PI/2),-1,sin(I+PI/2)],
+		[cos(I),-1,sin(I)],
+		[cos(I+PI*3/2),-1,sin(I+PI*3/2)],
+		[cos(I+PI),-1,sin(I+PI)]
+	];
+
+	var cube2 = [
+		[cos(I+PI/2),2,sin(I+PI/2)],
+		[cos(I+PI/2),2,sin(I+PI/2)],
+		[cos(I+PI*3/2),2,sin(I+PI*3/2)],
+		[cos(I+PI*3/2),2,sin(I+PI*3/2)],
+
+		[cos(I+PI/2),1,sin(I+PI/2)],
+		[cos(I+PI/2),1,sin(I+PI/2)],
+		[cos(I+PI*3/2),1,sin(I+PI*3/2)],
+		[cos(I+PI*3/2),1,sin(I+PI*3/2)],
+	];
+
+
+	
+	drowCube(matrixCube(zoom(clone(cube1),25),M),C,true);
+	drowCube(matrixCube(zoom(clone(cube1),70),M),C,false);
+	drowCube(matrixCube(zoom(clone(cube2),70),M),C,false);
+	setTimeout(arguments.callee,25);
+},25);
+
+
+
+
+
+</script>
+</body></html>
