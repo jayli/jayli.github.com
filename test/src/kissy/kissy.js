@@ -577,6 +577,27 @@
 			return this;
 		},
 		/**
+		 *
+		 */
+		insert:function(){
+			var self = this;
+			var ms = arguments;
+			if(ms.length == 1){
+				var _name = 's_'+(new Date()).getTime().toString();
+				var o = {};
+				o[_name] = ms[0];
+				self.add(o);
+				self.use(_name);
+			}else{
+				for(var i = 0;i<ms.length;i++){
+					arguments.callee.call(self,ms[i]);
+				}
+			}
+			//debugger;
+			return self;
+			
+		},
+		/**
 		 * combine
 		 */
 		_combine:function(){
