@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<!--created by 拔赤-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js" charset="utf-8"></script>
+</head>
+<body>
+点击按钮进行unicode编码<br />
+<textarea id="I" value=""  style="width:500px;height:200px">
+'{"recieveAddr":"浙江省_杭州市","itemAddresses":[{"cartId":"123456","itemAddr":"浙江_杭州,浙江_金华"},{"cartId":"234567","itemAddr":"江苏_苏州,江苏_南京"},{"cartId":"234234","itemAddr":"北京_北京"}]}'
+</textarea><br />
+<button id="G">对中文unicode编码</button><button id="U">全部unicode编码</button><br />
+<textarea id="R" value="" style="width:500px;height:200px"></textarea><br />
+
+</body>
+<script>
+<!--
+/**
+ */
+
+var foo =  function(s){
+	return s.replace(/[\u4E00-\u9FA5]/ig,function(w){
+		return escape(w).toLowerCase().replace(/%/ig,'\\');
+	});
+
+};
+
+YUI().use('node',function(Y){
+	
+	Y.one('#G').on('click',function(e){
+		var v = Y.one('#I').get('innerHTML');
+		Y.one('#R').set('innerHTML',foo(v));
+	});
+
+	Y.one('#U').on('click',function(e){
+		var v = Y.one('#I').get('innerHTML');
+		Y.one('#R').set('innerHTML',escape(v).toLowerCase().replace(/%/ig,'\\'));
+	});
+
+
+
+});
+
+//-->
+</script>
+
+</html>

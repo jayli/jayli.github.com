@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<!--created by 拔赤-->
+	<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+	<script src="http://kissyteam.github.com/kissy/build/kissy.js" charset="utf-8"></script>
+</head>
+<body>
+这个html文件的编码为gbk,点击按钮进行url编码<br />
+<input id="I" value="中文" /><button id="G">utf8</button><button id="U">gbk</button>
+</body>
+<script>
+<!--
+/**
+ * 问题由来：
+ *		js引擎内码是unicode，所以通过encodeURI(str)进行URL编码的时候均属utf8编码
+ *		所以在gbk编码的html中无法用js计算出gbk格式的URL编码,
+ *		因此在ajax过程中也就无法用js来模拟gbk格式URL编码的数据提交
+ *		"中文"两字的utf8 URL编码为:%E4%B8%AD%E6%96%87
+ *		"中文"两字的gbk URL编码为:%D6%D0%CE%C4
+ *		
+ * 实现原理：
+ *		一个gbk编码的html的表单提交时字段的URL编码是和页面编码保持一致的（gbk）
+ *		所以这里用模拟表单提交的方法来获得gbk URL编码
+ *		当然，前提必须是页面编码也必须为gbk
+ * 
+ */
+KISSY.use('core',function(S){
+	
+
+	var encodeURL = function(str,foo){
+		
+		var confuse = 'D_'+new Date().getTime();
+
+		var createIframe = function(id,foo){
+			var iframe = document.createElement("iframe");
+			iframe.id = id;
+			iframe.name = id;
+			iframe.src="about:blank";
+			iframe.width = '0px';
+			iframe.frameBorder = '0';
+			iframe.border = '0';
+			iframe.height = '0px';
+			document.body.appendChild(iframe);
+			if(self.frames[id] != undefined && self.frames[id].name != id) {
+				/* hack for ie */ 
+				self.frames[id].name = id; 
+			}
+			
+			S.Node(iframe).on('load',function(){
+				foo(id);
+			});
+			
+		};
+
+		var tid = 'J_'+new Date().getTime();
+
+		var form = S.Node([
+			'<form method="GET" target="'+tid+'" src="" style="display:none;">',
+			'<input name="'+confuse+'" value="'+str+'" />',
+			'</form>'
+		].join(''));
+
+		S.one('body').append(form);
+
+		createIframe(tid,function(id){
+
+			var iframe = S.one('#'+id);
+			foo(window[iframe.attr('name')].location.toString().split(confuse+'=')[1]);
+
+		});
+		form[0].submit();
+
+	};
+
+	
+	S.one('#G').on('click',function(e){
+		var v = S.one('#I').val();
+		alert(encodeURI(v));
+	});
+
+	S.one('#U').on('click',function(e){
+		var v = S.one('#I').val();
+		encodeURL(v,function(str){
+			alert(str);
+		});
+	});
+
+
+
+});
+
+
+
+//-->
+</script>
+
+</html>
