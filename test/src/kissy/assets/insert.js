@@ -1,11 +1,17 @@
 KISSY.add('insert',function(S){
-	S.log('=========00=======');
+	S.log('11111111111111111');
+	YUI({
+		charset:'utf-8',
+		modules:{
+			'calendar':{
+				fullpath:'http://cubee.github.com/src/calendar/calendar.js',
+				requires:['node']
+			}
+		}
+	}).use('calendar',function(Y){
+		new Y.Calendar('J_calendar');
+	});
 });
 KISSY.ready(function(S){
-	S.K = {};
-	S.K.init = function(){
-		S.log('init inserted logic','orange');
-	};
-
-	S.K.init();
+	S.log(2322222222222222);
 });

@@ -171,6 +171,17 @@
 			return flag;
 
 		},
+		
+		_exec_mods_cbs:function(i){
+			var self = this;
+			self.Env._execed_mods = self.Env._execed_mods || [];
+			if(typeof self.Env.mods[i] == 'undefined')return;
+			if(typeof self.Env.mods[i].fn == 'undefined')return;
+			if(self.inArray(i,self.Env._execed_mods))return;
+			self.Env._execed_mods.push(i);
+			self.Env.mods[i].fn(self);
+			return self;
+		},
 
 		/**
 		 * exec loaded modules' callbacks
@@ -183,7 +194,9 @@
 				if(self.inArray(i,self.Env._anti_uses))continue;
 				if(typeof self.Env.mods[i].fn != 'undefined' 
 					&& !self.inArray(i,self.Env._loadQueue)){
-					self.Env.mods[i].fn(self);
+					
+					//self.Env.mods[i].fn(self);
+					self._exec_mods_cbs(i);
 					self.log('exec '+i+'\'s callback');
 				}
 			}
@@ -192,7 +205,8 @@
 				var mod = self.Env._loadQueue[i];
 				if(self.inArray(mod,self.Env._anti_uses))continue;
 				if(typeof self.Env.mods[mod].fn != 'undefined'){
-					self.Env.mods[mod].fn(self);
+					self._exec_mods_cbs(mod);
+					//self.Env._loaded_mods.push(mod);
 					self.log('exec '+mod+'\'s callback');
 				}
 			}
@@ -215,13 +229,17 @@
 			for(var i in self.Env.mods){
 				if(self.inArray(i,self.Env._loaded_mods)
 					|| typeof self.Env.mods[i].fn == 'undefined')continue;
-				self.Env.mods[i].fn(self);
+				self._exec_mods_cbs(i);
 				self.Env._loaded_mods.push(i);
-				self.Env.mods[i]._fn = self.Env.mods[i].fn;
-				delete self.Env.mods[i].fn;
+				//self.Env.mods[i]._fn = self.Env.mods[i].fn;
+				//delete self.Env.mods[i].fn;
 				//self.Env._loadQueue.push(i);
 				
 			}
+		},
+		_scripts_loaded_over:function(){
+			var self = this;
+			return self.Env._loaded_array.length == self.Env._loadQueue.length;
 		},
         /**
          * Specify a function to execute when the DOM is fully loaded.
@@ -241,8 +259,17 @@
                 // Execute the function immediately
 				// after domReady fired, loader is prohibited to load any other extra files
 				//arguments.callee(self,fn);
-				self._exec_left_mojos();
-                fn.call(win, this);
+
+				
+				if(!self._scripts_loaded_over()){
+					readyList.push(fn);
+				}else{
+					self._exec_left_mojos(); 
+					fn.call(win, this);
+				}
+				
+				
+               
             } else {
                 // Remember the function for later
                 readyList.push(fn);
@@ -333,9 +360,11 @@
 
 				//load mods first
 				this.log('domReady','green');
+				
 				this._load_mods(function(){
 					self.log('sync scripts loaded over','green');
 					self._exec_mojo_queue();
+					
 					//afterReady must be set to true before readyList's callbacks exec
 					afterReady = true;
 					self.log('begin exec readys {{ ','gray');
@@ -619,7 +648,7 @@
 				}
 			}
 			//debugger;
-			return self;
+			return self.ready(new Function);
 			
 		},
 		/**
@@ -683,7 +712,7 @@
 		_load_mods:function(fn){
 			var self = this;
 			var run_callback = function(fn){
-				if(self.Env._loaded_array.length == self.Env._loadQueue.length){
+				if(self._scripts_loaded_over()){
 					fn.call(win,self);
 					self.log('End of loader');
 				}
