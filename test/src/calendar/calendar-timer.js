@@ -1,7 +1,7 @@
 ﻿
 
 KISSY.add('calendar-timer',function(S){
-	S.namespace('S.Calendar');
+	S.Calendar = S.Calendar || new Function;
 	S.mix(S.Calendar.prototype,{
 		/**
 		 * 时间选择构造器

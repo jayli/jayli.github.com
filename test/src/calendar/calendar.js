@@ -10,10 +10,11 @@
 KISSY.add('calendar',function(S){
 
 	S.namespace('S.Calendar');
-
+	var _proto = S.Calendar.prototype;
 	S.Calendar = function(){
 		this._init.apply(this,arguments);
 	};
+	S.mix(S.Calendar.prototype,_proto);
 	S.mix(S.Calendar.prototype,{
 		_init:function(id,config){
 			var self = this;

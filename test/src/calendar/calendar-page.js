@@ -2,7 +2,7 @@
  * author - lijing00333@163.com 拔赤
  */
 KISSY.add('calendar-page',function(S){
-	S.namespace('S.Calendar');
+	S.Calendar = S.Calendar || new Function;
 	S.mix(S.Calendar.prototype,{
 		Page:function(config,fathor){
 			/**
