@@ -1,3 +1,6 @@
+KISSY.add('insert',function(S){
+	S.log('=========00=======');
+});
 KISSY.ready(function(S){
 	S.K = {};
 	S.K.init = function(){

@@ -196,8 +196,32 @@
 					self.log('exec '+mod+'\'s callback');
 				}
 			}
+			//TODO
+			//exec left mojos
+			/*
+			for(var i in self.Env.mods){
+				if(self.inArray(i,self.Env._loaded_mods)
+					|| typeof self.Env.mods[i].fn == 'undefined')continue;
+				self.Env.mods[i].fn(self);
+				
+			}
+			*/
 
 			return self;
+		},
+		
+		_exec_left_mojos:function(){
+			var self = this;
+			for(var i in self.Env.mods){
+				if(self.inArray(i,self.Env._loaded_mods)
+					|| typeof self.Env.mods[i].fn == 'undefined')continue;
+				self.Env.mods[i].fn(self);
+				self.Env._loaded_mods.push(i);
+				self.Env.mods[i]._fn = self.Env.mods[i].fn;
+				delete self.Env.mods[i].fn;
+				//self.Env._loadQueue.push(i);
+				
+			}
 		},
         /**
          * Specify a function to execute when the DOM is fully loaded.
@@ -217,6 +241,7 @@
                 // Execute the function immediately
 				// after domReady fired, loader is prohibited to load any other extra files
 				//arguments.callee(self,fn);
+				self._exec_left_mojos();
                 fn.call(win, this);
             } else {
                 // Remember the function for later
