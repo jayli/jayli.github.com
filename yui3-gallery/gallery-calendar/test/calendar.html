@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>gallery-calendar</title>
+<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+<style>
+	body { font: 14px Georgia,"Times New Roman",Times,sans-serif; color: #444; }
+	h1 { font-size: 26px; color: #00859D; font-family: Constantia,serif; }
+	h3 { font-size: 14px; color: #555; margin: 15px 0 5px; }
+	code {font-family:"Courier New"}
+</style>
+</head>
+<body  class="yui-skin-sam">
+<h1>gallery-calendar v1.0</h1>
+<hr size=1 />
+<h3>single calendar</h3>
+<div id="J_calendar"></div>
+<hr size=1 />
+<h3>calendar with tow pages, select one day by default</h3>
+<div id="J_multipage_1"></div>
+<hr size=1 />
+<h3>calendar with three pages</h3>
+you may add as many of these calendar pages as you want,only if you add the fixed width of the container in css
+<div id="J_multipage_2"></div>
+<hr size=1 />
+<h3>select a range,and fire the callback function</h3>
+<div id="J_range"></div>
+<hr size=1 />
+<h3>select a range by default</h3>
+<div id="J_default_range"></div>
+<hr size=1 />
+<h3>switch event</h3>
+fire the switch event
+<div id="J_all_events"></div>
+<hr size=1 />
+<h3>Popup calendar, click on the vacant space to close the calendar</h3>
+<button id="J_popup" style="margin-left:50px;">click here!</button>
+<hr size=1 />
+<h3>Popup calendar, select a date to close the calendar</h3>
+<a href="javascript:void(0);" id="J_popup_closeable" style="margin-left:50px;">click here!</a>
+<hr size=1 />
+<h3>range of available date</h3>
+you can only select the date in the range of the next 10 days
+<div id="J_mindate_maxdate"></div>
+<hr size=1 />
+<h3>select date with time</h3>
+the time pannel was shared by each calencar pages 
+<div id="J_with_time"></div>
+<hr size=1 />
+
+
+<p style="clear:both">
+be compatible with ie6,ie7,firefox2,firefox3.0/3.5/3.6,safari4.0,opera9.62,chrome3.0<br />
+author:lijing00333@163.com（拔赤）<br />
+msn:lijing00333@163.com<br />
+moreinfo:http://www.uedmagazine.com
+</p>
+
+<script>
+<!--
+
+var c = {};
+var showdate = function(n,d){//hack for chrome
+	var uom = new Date(d-0+n*86400000);
+	uom = uom.getFullYear() + "/" + (uom.getMonth()+1) + "/" + uom.getDate();
+	return new Date(uom);
+};
+
+YUI({
+	combine:true,
+	base:'http://cn.yimg.com/i/yui/3.0.0/build/', 
+	root:"i/yui/3.0.0/build/",  
+	comboBase:"http://cn.yimg.com/combo?", 
+	charset:'utf-8',
+	loadOptional:true,
+	modules:{
+		'calendar-skin':{//	default skin
+			fullpath:'../assets/skin.css',
+			type:'css'
+		},
+		'gallery-calendar':{
+			fullpath:'../js/gallery-calendar-min.js',
+			requires:['calendar-skin','node']
+		}
+	}
+}).use('gallery-calendar','console','dump',function(Y){
+	new Y.Console().render();
+	//alert(Y.dump(Y.UA));
+
+
+	//single calendar
+	c = new Y.Calendar('J_calendar').on('select',function(d){
+		alert(Y.dump(d));
+		Y.log(d);	
+	});
+
+	//calendar with tow pages, select one day by default
+	new Y.Calendar('J_multipage_1',{
+		multi_page:2,
+		selected:showdate(-2,new Date())
+	});
+
+	//calendar with three pages
+	new Y.Calendar('J_multipage_2',{
+		multi_page:3
+	});
+
+	//select a range,and fire the callback function
+	new Y.Calendar('J_range',{
+		multi_page:2,
+		range_select:true
+	}).on('rangeselect',function(o){
+		alert(Y.dump(o));
+	});
+
+	//select a range by default
+	new Y.Calendar('J_default_range',{
+		multi_page:2,
+		range_select:true,
+		range:{
+			start:showdate(-3,new Date()),
+			end:showdate(5,new Date())
+		}
+	});
+
+	//fire the switch event
+	new Y.Calendar('J_all_events').on('switch',function(d){
+		alert('switch event fired,month:'+Y.dump(d));
+	});
+
+	//Popup	calendar
+	new Y.Calendar('J_popup',{
+		popup:true	
+	});
+
+	//Popup calendar, click on the vacant space to close the calendar
+	new Y.Calendar('J_popup_closeable',{
+		popup:true,
+		closeable:true
+	}).on('select',function(d){
+		alert(Y.dump(d));	
+	});
+
+
+	//range of available date
+	c = new Y.Calendar('J_mindate_maxdate',{
+		mindate:new Date(),
+		maxdate:showdate(10,new Date())
+	});
+
+	//select date with time
+	c = new Y.Calendar('J_with_time',{
+		withtime:true
+	}).on('timeselect',function(d){
+		alert(Y.dump(d));	
+	});
+
+
+});
+	
+
+//-->
+</script>
+
+</body>
+</html>
