@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>栅格化布局实例</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta name="author" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link rel="stylesheet" type="text/css" href="http://taobao-wd.ns1.name/cubee/build/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="http://taobao-wd.ns1.name/cubee/build/css/grid.css">
+
+	<style type="text/css">
+	HTML{background:url('bb.png') -8px 0;*background-position:-11px 0;}
+	#doc{background-color:rgba(255,255,255,0.5);*background-color:#fff;filter:alpha(opacity=80);}
+	.tell{width:910px;margin:0 auto;padding:10px 20px;border-top:1px solid #000;background-color:rgba(152,152,152,0.8);*background-color:#000;color:#fff;font-family:tahoma;line-height:1.6;font-size:14px;filter:alpha(opacity=80);}
+	.text{background-color:#dcdcdc;padding:5px;height:60px;}
+	.text p{display:inline-block;*display:inline;zoom:1;padding:3px 10px;font-size:12px;background-color:#efefef;border:1px solid #c5c5c5;text-align:center; }
+	h2,.h2{font-weight:bold;font-size:20px;font-family:'微软雅黑';}
+	code{font-weight:bold;font-family:"Courier New",monospace;position:absolute;display:inline-block;*display:inline;zoom:1;padding:8px 10px 0;color:#fff;left:-79px;top:-6px;width:79px;height:39px;background:url(aa.png) no-repeat;text-align:left;}
+	pre{padding:10px;background-color:#fff;color:#279300;font-family:"Courier New",monospace;font-size:13px;}
+	 /*自定义宽度时*/
+	 .demo1 .g-side{width:400px;}
+	 .demo1 .g-wrap{margin-left:410px;}
+	 .demo2 .g-side{width:360px;}
+	 .demo2 .g-wrap{margin-right:370px;}
+	</style>
+</head>
+ 
+<body>
+
+</div>
+<div id="doc">
+	<!-- {{ -->
+	<div class="" style="margin-bottom:10px;font-family:arial">
+		<p style="display:block;border-color:#2fa613;background:#989898;color:#fff;padding:20px;font-size:12px"	>
+		<b class="h2">栅格化布局</b> @Author:乐渔@leyu@taobao.com
+		<br/>按照(40xN)-10公式的栅格布局，#doc的宽度为950px，#doc-w的宽度为100%，N=24 使用1280的分辨率来校准栅格</p>
+	</div>
+	<!-- }} -->
+	<div id="bd">
+	<div class="grid">
+		<!-- {{ -->
+			<div class="text"><p>单行950px<code>.grid</code></p></div>
+		<!-- }} -->
+	</div>
+	
+	<div class="grid-l2">
+		<div class="g-main">
+			<div class="g-wrap">
+			<!-- {{ -->
+				<div class="text"><p><code>.grid-l2</code> 主要内容<a href="">A Tag</a></p></div>
+			<!-- }} -->
+			</div>
+		</div>
+		<div class="g-side">
+		<!-- {{ -->
+			<div class="text"><p>边栏190px<a href="">A Tag</a></p></div>
+		<!-- }} -->
+		</div>
+	</div>
+
+	<div class="grid-r2">
+		<div class="g-main">
+			<div class="g-wrap">
+			<!-- {{ -->
+				<div class="text"><p><code>.grid-r2</code>主要内容<a href="">A Tag</a></p></div>
+			<!-- }} -->
+			</div>
+		</div>
+		<div class="g-side">
+		<!-- {{ -->
+			<div class="text"><p>边栏<a href="">A Tag</a></p></div>
+		<!-- }} -->
+		</div>
+	</div>
+
+
+
+
+	<div class="grid-r3">
+		<div class="g-aside">
+		<!-- {{ -->
+			<div class="text"><p>宽边<a href="">A Tag</a></p></div>
+		<!-- }} -->
+		</div>
+		<div class="g-main">
+			<div class="g-wrap">
+			<!-- {{ -->
+				<div class="text"><p><code>.grid-r3</code>主要内容<a href="">A Tag</a></p></div>
+			<!-- }} -->
+			</div>
+		</div>
+		<div class="g-side">
+		<!-- {{ -->
+			<div class="text"><p>窄边<a href="">A Tag</a></p></div>
+		<!-- }} -->
+		</div>
+	</div>
+
+
+
+
+	<div class="grid-l3">
+		<div class="g-aside">
+		<!-- {{ -->
+			<div class="text"><p>宽边<a href="">A Tag</a></p></div>
+		<!-- }} -->
+		</div>
+		<div class="g-main">
+			<div class="g-wrap">
+			<!-- {{ -->
+				<div class="text"><p><code>.grid-l3</code>主要内容<a href="">A Tag</a></p></div>
+			<!-- }} -->
+			</div>
+		</div>
+		<div class="g-side">
+		<!-- {{ -->
+			<div class="text"><p>窄边<a href="">A Tag</a></p></div>
+		<!-- }} -->
+		</div>
+	</div>
+
+
+
+	<div class="grid-lc demo1">
+		<div class="g-main">
+			<div class="g-wrap">
+			<!-- {{ -->
+				<div class="text"><p><code>.grid-lc</code>×主要内容与边栏间距为10px，设置其中.g-wrap的左边距为400+10px</p></div>
+			<!-- }} -->
+			</div>
+		</div>
+		<div class="g-side">
+		<!-- {{ -->
+			<div class="text"><p>×宽度为任意，此例中宽度为400px</p></div>
+		<!-- }} -->
+		</div>	
+	</div>
+
+
+
+	<div class="grid-rc demo2">
+		<div class="g-main">
+			<div class="g-wrap">
+			<!-- {{ -->
+				<div class="text"><p><code>.grid-rc</code>×主要内容与边栏间距为10px，设置其中.g-wrap的左边距为360+10px</p></div>
+			<!-- }} -->
+			</div>
+		</div>
+		<div class="g-side">
+		<!-- {{ -->
+			<div class="text"><p>×宽度为任意，此例中宽度为360px</p></div>
+		<!-- }} -->
+		</div>	
+	</div>
+
+
+
+	</div>	
+
+</div>
+<div class="tell">
+<h2>基本HTML布局</h2>
+<b>两栏布局</b>
+<pre>
+&lt;div class="grid-*2"&gt;
+	&lt;div class="g-main"&gt;
+		&lt;div class="g-wrap"&gt;内容&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="g-side"&gt;边栏&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<br/>
+<b>三栏布局</b>
+<pre>
+&lt;div class="grid-*3"&gt;
+	&lt;div class="g-aside"&gt;宽边栏&lt;/div&gt;
+	&lt;div class="g-main"&gt;
+		&lt;div class="g-wrap"&gt;内容&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="g-side"&gt;边栏&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<br/>
+<b>自定义两栏布局</b>
+<pre>
+&lt;div class="grid-c* <b style="border-bottom:1px solid red">demo1</b>"&gt;
+	&lt;div class="g-main"&gt;
+		&lt;div class="g-wrap"&gt;内容&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;div class="g-side"&gt;边栏&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+</div>
+<div class="tell">
+<h2>Grid命名标准</h2>
+<dl>
+<dt>数字产品具有的布局类型有以下几种</dt>
+</dl>
+<p></p><b>grid-*</b>中'r'和'l'分别代表最窄栏（即192px宽的栏）所处的位置，c代表（custom），将宽度放出自定义设置，其中的l与r代表边栏的位置在左或右。	</div>
+</body>
+</html>

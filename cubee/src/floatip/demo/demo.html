@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>title</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta name="author" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+
+	<link href="../../css/reset.css" rel="stylesheet" type="text/css">
+	<link href="../../css/font.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+	body{padding:20px 50px;}
+	body p { color: #444; }
+	h1 { font-size: 26px; color: #00859D; font-family: Constantia,serif; }
+	h3 { font-size: 14px; color: #555; margin: 15px 0 5px; }
+	code {font-family:"Courier New"}
+
+	.hidden {display:none;}
+	/*.float-tip的样式定义*/
+	.float-tip {
+		border:1px solid green;
+		background-color:#F0FFE5;
+		border-color:#4DBF00;
+		padding:5px 7px;
+		position:absolute;
+	}	
+	</style>
+</head>
+ 
+<body>
+<div id="doc">
+	<div id="hd"></div>
+	<div id="bd">
+	<h1>Cubee Floatip demo</h1>
+
+	<div class="grid-c" id="content">
+		<p><a href="#" rel="提示信息1" class="floatip">鼠标移过1</a></p>
+		<p><a href="#" rel="提示信息2" class="floatip">鼠标移过2</a></p>
+		<p><a href="#" rel="提示信息3" class="floatip">鼠标移过3</a></p>
+		<p><a href="#" rel="提示信息4" class="floatip">鼠标移过4</a></p>
+    </div>
+
+	
+	</div>
+	<div id="ft"></div>
+
+</div>
+<p style="clear:both">
+在ie6,ie7,firefox2,firefox3.0/3.5/3.6,safari4.0,opera9.62,chrome3.0下测试通过<br />
+author:bachi@taobao.com（拔赤）<br />
+msn:lijing00333@163.com<br />
+moreinfo:http://www.uedmagazine.com
+</p>
+</body>
+
+<script type="text/javascript">
+<!--
+YUI({
+	combine:true,
+	base:'http://cn.yimg.com/i/yui/3.0.0/build/', 
+	root:"i/yui/3.0.0/build/",  
+	comboBase:"http://cn.yimg.com/combo?", 
+	charset:'utf-8',
+	loadOptional:true,
+	modules:{
+		'floatip':{
+			fullpath:'../floatip.js',
+			requires:['node']
+		}
+	}
+}).use('floatip',function(Y) {
+	new Y.Floatip(Y.all('.floatip'),{
+		floatip_class:'float-tip'
+	});
+});
+//-->
+</script>
+</html>

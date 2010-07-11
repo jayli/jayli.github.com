@@ -1,0 +1,7 @@
+/* -------------------------------------------------
+ * @Grid.css
+ * @Author:¿÷”Ê(idd.chiang@gmail.com)
+ * @“¿¿µReset.css
+ * -------------------------------------------------
+ */
+#doc{width:950px;margin:0 auto}#doc-w,.g-main{width:100%}.g-side{width:190px}.g-aside{width:270px}.g-side,.grid-r2 .g-main,.grid-l2 .g-side,.grid-r3 .g-aside,.grid-rc .g-main,.grid-r3 .g-main{float:left}.g-main,.g-aside,.grid-r2 .g-side,.grid-r3 .g-side,.grid-rc .g-side{float:right}.grid-r2 .g-main,.grid-rc .g-main{margin-right:-100%}.grid-l2 .g-main,.grid-lc .g-main{margin-left:-100%}.grid-r2 .g-wrap{margin-right:200px}.grid-l2 .g-wrap{margin-left:200px}.grid-r3 .g-main{margin:0 -190px 0 -270px}.grid-r3 .g-wrap{margin:0 200px 0 280px}.grid-l3 .g-main{margin:0 -270px 0 -190px}.grid-l3 .g-wrap{margin:0 280px 0 200px}.grid,.grid-l2,.grid-r2,.grid-l3,.grid-r3,.grid-lc,.grid-rc{margin-bottom:10px;position:relative;*display:inline-block}.grid:after,.grid-l2:after,.grid-r2:after,.grid-l3:after,.grid-r3:after,.grid-lc:after,.grid-rc:after{clear:both;content:' ';display:block;font-size:0;line-height:0;visibility:hidden;width:0;height:0}

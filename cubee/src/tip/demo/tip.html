@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>Y.tip消息提示的Demo</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta name="author" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+	<link href="../../css/reset.css" rel="stylesheet" type="text/css">
+	<link href="../../css/font.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+	body{padding:20px 50px;}
+	</style>
+</head>
+ 
+<body>
+<div id="doc">
+	<div id="hd"></div>
+	<div id="bd">
+
+   <h4 style="font-size:20px;font-weight:bold;padding:20px 0;">以下为消息提示demo   </h4>
+  <div id="demo"></div>	
+  <div id="xxx"></div>
+  <br/>
+  
+
+
+
+  <p>消息提示历险记一：<button type="submit" id="ca">千万别点！你想愿望破灭么？</button></p>  <br/>
+  <p>消息提示神游篇二：<button type="submit" id="ba">你可以呼叫上帝给你一个红星</button></p>  <br/>
+  <p>消息提示金瓶梅三：<button type="submit" id="da">想留住美女，很简单</button></p>  <br/>
+  <p>消息提示呀咩爹四：<button type="submit" id="ea">限制级！AAA</button></p>
+
+	<br/><br/>author:leyu@taobao.com（乐渔）<hr />
+	<div class="grid-c" id="content">
+	   <h4 style="font-size:20px;font-weight:bold;padding:20px 0;">API</h4>
+<pre>
+    说明：
+        信息提示、简单易用，适用于各种状态提示。
+    使用：
+
+        Y.Tip(id,status,msg,{config});
+    参数：
+        id:{string} 消息提示的容器
+        status:{string} 此项为空时默认为tips，使用预设的类型 error、alert、attention、tips、ok、question、notice(s)、help(s)、small-help(s)、stop(s) *注意：(s)只有小提示才具有
+        msg:{string} 消息主体
+	配置：
+        bigtip:{boolean} 默认是小提示;true:24x24图标大提示
+        anim:{boolean} 默认有动画效果;
+        delay:{number} 默认是3秒
+        autohide:{boolean} 默认不隐藏；true:自动隐藏
+        noborder:{boolean} 默认有边框；true:无边框
+        onfinish:{function} 提示隐藏后的回调
+
+
+	</pre>
+   <h4 style="font-size:20px;font-weight:bold;padding:20px 0;">以下为所有消息原型</h4>
+        <h2>16x16</h2>
+
+        <div class="section-content">
+            <div class="msg"><p class="error">错误信息error，比如：请正确选择省市区</p></div>
+            <div class="msg"><p class="stop">禁止信息stop，比如：对不起，你是小二，不能出价</p></div>
+            <div class="msg"><p class="alert">警示信息alert，比如：淘宝网12月25日凌晨1:00 - 3:00将停机维护</p></div>
+            <div class="msg"><p class="attention">提醒信息attention，比如：建议您联系卖家咨询货物是否已经发出</p></div>
+            <div class="msg"><p class="tips">提示信息tips，比如：您可以在该类目下直接发宝贝哦</p></div>
+            <div class="msg"><p class="ok">成功信息ok，比如：交易成功</p></div>
+            <div class="msg"><p class="notice">公告信息notice，比如：你有3条信息未读</p></div>
+            <div class="msg"><p class="question">疑问question，比如：什么是宝贝成色</p></div>
+			<div class="msg"><p class="tips naked">可以在class中加入naked, 去除边框和背景色</p></div>
+			<div class="msg"><p class="help naked">帮助信息help，比如：<a href="#">查看帮助</a></p></div>
+			<div class="msg"><p class="small-help naked">12x12版的帮助信息help，比如：<a href="#">查看帮助</a></p></div>
+        </div>
+
+        <h2>24x24</h2>
+
+        <div class="section-content">
+            <div class="msg24"><p class="error">错误信息error，比如：请正确选择省市区</p></div>
+            <div class="msg24"><p class="attention">提醒信息attention，比如：建议您联系卖家咨询货物是否已经发出</p></div>
+            <div class="msg24"><p class="tips">提示信息tips，比如：您可以在该类目下直接发宝贝哦</p></div>
+            <div class="msg24"><p class="ok">成功信息ok，比如：交易成功</p></div>
+            <div class="msg24"><p class="question">疑问question，比如：什么是宝贝成色</p></div>
+            <div class="msg24"><p class="error">可以有多行哦（不超过三行）<br/>我就是传说中的第二行<br/>我是神话中的第三行</p></div>
+            <div class="msg24"><p class="error naked">可以在class中加入naked, 去除边框和背景色</p></div>
+            <div class="msg24"><p class="tips naked naked-tips">这个特殊，还要加入naked-tips, 才能裸掉</p></div>
+            <div class="msg24"><p class="ok naked naked-ok">这个也特殊，还要加入naked-ok, 才能裸掉</p></div>
+        </div>
+    </div>
+
+	
+	</div>
+	<div id="ft"></div>
+</div>
+</body>
+<script type="text/javascript">
+<!--
+
+//-->
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+	<!--
+	YUI({
+		modules:{
+			'tip':{
+				fullpath:'../tip.js',
+				requires:['tip-skin']
+			},
+			'tip-skin':{
+				fullpath:'../skin/tip.css',
+				type:'css'
+			}
+		}
+	}).use('node','tip','anim',function(Y) {
+		var example = Y.Tip('#demo','','潘多拉盒子正为你打开，盒子马上会消失，许愿吧',{autohide:true,bigtip:true,onfinish:function(e){
+			Y.Tip('#xxx','ok','知道了，你的愿望很淫荡。<b style="color:blue">下一位！</b>',{autohide:true});
+		}});
+		Y.on('click',function(e){Y.Tip('#demo','attention','说了不要点，点的是头猪。吼吼吼',{autohide:true})},'#ca');
+		Y.on('click',function(e){Y.Tip('#demo','alert','上帝收到，正给你分配惊喜......',{autohide:true,onfinish:function(){alert('♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥')}})},'#ba');
+		Y.on('click',function(e){Y.Tip('#demo','error','我美么？？重点在美女下身。<br/><img src="http://img07.taobaocdn.com/poster_pic/i7/T1EX8oXnFnXXaH.X6X.JPEG"/><br/><b style="color:red;font-weight:bold">为了身体健康，请将文本控制在3行内！</b>',{bigtip:true,autohide:false})},'#da');
+		Y.on('click',function(e){Y.Tip('#demo','ok','<img src="http://bbs.chinanews.com.cn/web/50/U220P44T50D573F687DT20090821105553.jpg" style="width:90px"/>不要迷恋哥，哥只是个传说',{bigtip:true,autohide:false})},'#ea');
+	});
+	//-->
+</script>
+</html>

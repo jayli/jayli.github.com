@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title> Y.DateCascade 基于YUI3的相对提示 </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta name="author" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<style type="text/css">
+
+html{color:#000;background:#fff}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:normal;font-weight:normal}li{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select,button,option{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}q:before,q:after{content:''}
+	body{font:normal 12px/1.5 'Tahoma','simsun'} a{color:#07f;text-decoration:none;}a:hover{text-decoration:underline; }
+	.clearfix:after {content:".";display:block;height:0;clear:both;visibility:hidden}.clearfix{display:inline-block}/* Hides from IE-mac \*/* html .clearfix {height:1%}.clearfix {display:block}/* End hide from IE-mac */
+
+	body{width:900px;margin:10px auto;}
+	h1{font-size:24px;font-weight:700;color:#2aae1c}
+    #hd{padding-bottom:40px}
+	.tell{display:block;padding:16px 10px;margin:5px 0 15px;background:#f4f4f4;-moz-border-radius:4px;-khtml-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;}
+	.tell strong{display:inline;border:0 none;background-color:transparent; }
+	.demo input{padding:6px;}
+	.demo{padding:20px 0;}
+	.btn{padding:6px 10px;margin-top:10px;}
+	.tell h3{font:normal 700 12px/1.6em 'tahoma','simsun';color:#545454}
+	.demo p{padding:6px 0;}
+	</style>
+</head>
+ 
+<body class="yui-skin-sam">
+<div id="doc" class="demo">
+	<div id="hd">
+		<div class="page-title">
+			<h1>Y.DateCascade 基于YUI3的日期级联组件</h1>
+author:leyu@taobao.com（乐渔） 
+		</div>
+	</div>
+	<div id="bd">
+		<b>下面看看我们能用这组件做些啥！</b>	
+		<div class="tell">
+			<h3>1.初始化 文本输入框</h3>
+			<div class="demo">
+				<input type="text" name="" class="J_demo1" value="2010/5/21"/>  填入时间格式如：2010/5/21 或 2010-5-21
+				<br/><button type="submit" id="btn1" class="btn">生成级联日历控件</button>
+			</div>
+		</div>
+		<div class="tell">
+			<h3>2.设置级联日期范围</h3>
+			<div class="demo"><p>首先初始化一个空的文本框：<b>默认日期范围 1930-1-1 ～ 今天</b>	</p>
+			<p>	<input type="text" name="" id="" class="J_demo2"/></p>
+			<p>设置日期上限：格式如 <input type="text" name="" id="start" value="1990/10/10"/> <button type="submit" id="btn2" class="btn">设置上限</button></p>
+			<p>设置日期下限：格式如 <input type="text" name="" id="end" value="2008/08/08"/> <button type="submit" id="btn3" class="btn">设置下限</button></p>
+			</div>
+			<div class="">方法：render(o);  o = {dateStart:'1990/10/10',dateEnd:'2008/08/08'}</div>
+		</div>
+		
+		
+		<div class="tell">
+			<h3>3.中途修改控件显示特定值</h3>
+			<p>	<input type="text" name="" id="" class="J_demo3" value="1985/05/06"/></p>
+			<p><input type="text" name="" id="set" value="2008/07/07"/> <button type="submit" class="btn" id="btn4">设定时间</button></p>
+		</div>
+	
+	</div>
+	<div id="ft">2010/5/21 &copy; Cubee &trade TaobaoUED</div>
+</div>
+</body>
+<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+<script type="text/javascript">
+YUI({
+	//Combo JS
+	combine:true,
+	base:'http://cn.yimg.com/i/yui/3.0.0/build/', 
+	root:"i/yui/3.0.0/build/",  
+	comboBase:"http://cn.yimg.com/combo?",
+	charset:'utf-8',
+	timeout:1000,
+	loadOptional:true,
+	modules:{
+			'datecascade':{
+				fullpath:'../datecascade.js?'+Math.random(),
+				type:'js',
+				requires:['node']
+			}
+		}
+	}).use('node','datecascade',function(Y) {
+		//Demo1
+		Y.one('#btn1').on('click',function(){
+			var Demo1 = new Y.DateCascade(Y.one('.J_demo1'));	
+		});
+		//Demo2
+		var Demo2 = new Y.DateCascade(Y.one('.J_demo2'));
+		Y.one('#btn2').on('click',function(){
+			var start = Y.one('#start').get('value');
+			Demo2.render({dateStart:start});
+		});
+		Y.one('#btn3').on('click',function(){
+			var end = Y.one('#end').get('value');
+			Demo2.render({dateEnd:end});
+		});
+		//Demo3
+		var Demo3 = new Y.DateCascade(Y.one('.J_demo3'));
+		Y.one('#btn4').on('click',function(){
+			var set = Y.one('#set').get('value');
+			Demo3.render({defaultDate:set});
+		});
+	});
+</script>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=utf-8">
+<title>c rankinglist</title>
+<link href="../css/reset.css" rel="stylesheet" type="text/css">
+<link href="../css/font.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://a.tbcdn.cn/yui/2.8.0r4/build/yuiloader/yuiloader-min.js"></script>
+<style>
+body{padding:30px;}
+.c-rankinglist{border:1px solid #ddd;width:400px;float:left;margin:20px;line-height:1.8;}
+
+.c-rankinglist div,.c-rankinglist td,.c-rankinglist th{}
+.c-rankinglist .none{display:none;}
+.c-rankinglist table{width:100%;}
+.c-rankinglist .cr-hd,.c-rankinglist .cr-bd,.c-rankinglist .cr-ft{}
+.c-rankinglist .cr-hd h2{text-align:center;font-size:14px;}
+.c-rankinglist .cr-ft{text-align:right;}
+.c-rankinglist .cr-ft a{color:#000;}
+.c-rankinglist .cr-ft a:hover{color:#f60;}
+.c-rankinglist th,.c-rankinglist .cr-hd h2,.c-rankinglist tfoot td{font-weight:800;}
+
+/*demo*/
+.demo{width:190px;background:#183869;}
+.demo .cr-hd{background:#051a39;color:#31548c;height:30px;line-height:30px;font-size:14px;font-weight:800;}
+.demo .cr-hd h2{font-size:14px;font-weight:800;}
+.demo .cr-bd td{border-bottom:1px solid #183869;background:#31548c;color:#5587d4;vertical-align:text-bottom;padding:0 3px;}
+.demo .cr-bd td a:link{color:#94c9ff;text-decoration:none;}
+.demo .cr-bd td a:visited{color:#94c9ff;text-decoration:none;}
+.demo .cr-bd td a:hover{color:#f60;text-decoration:underline;}
+.demo th{color:#94C9FF;padding:0 3px;}
+.c-rank{width:18%;}
+.c-name{width:50%;}
+.c-num{width:18%;}
+.demo .cr-ft a{color:#94C9FF;}
+.demo .cr-ft a:hover{color:#94C9FF;}
+
+
+</style>
+</head>
+<body>
+<div class="c-rankinglist">
+	<div class="cr-hd">
+		<h2>排行榜标题</h2>
+	</div>
+	<div class="cr-bd">
+		<table cellspacing="2" cellpadding="0">
+			<thead>
+				<tr><th>名次</th><th>内容标题</th><th>趋势</th><th>关注度</th><th>评分</th></tr>
+			</thead>
+			<tfoot>
+				<tr><td>名次</td><td>内容标题</td><td>趋势</td><td>关注度</td><td>评分</td></tr>
+			</tfoot>
+			<tbody>
+				<tr><td>1</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>2</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>3</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>4</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>5</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>6</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>7</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>8</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>9</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+				<tr><td>10</td><td>内容标题</td><td>↑</td><td>--</td><td>9.5</td></tr>
+				<tr class="cr-detail none"><td colspan="5">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less, but most days take more Some slip through your fingers and onto the floor Some days you're quick, but most days you're speedy Some days you use more force than is necessary</td></tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="cr-ft">
+		<a href="">更多>></a>
+	</div>
+</div>
+<div class="c-rankinglist demo" id="demo">
+	<div class="cr-hd">
+		<h2>排行榜标题</h2>
+	</div>
+	<div class="cr-bd">
+		<table cellspacing="2" cellpadding="0">
+			<thead>
+				<tr><th class="c-rank">排名</th><th class="c-name">电视名称</th><th class="c-num">点播数</th></tr>
+			</thead>
+			<tfoot>
+				<tr><td class="c-rank">排名</td><td class="c-name">电视名称</td><td class="c-num">点播数</td></tr>
+			</tfoot>
+			<tbody>
+				<tr class="selected"><td>1</td><td><a href="">解放全中国</a></td><td>78652</td></tr>
+				<tr class="cr-detail"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>2</td><td><a href="">我的青春谁做主</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>3</td><td><a href="">潜伏</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>4</td><td><a href="">十三省</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>5</td><td><a href="">我的兄弟叫顺溜</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>6</td><td><a href="">北方有佳人</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>7</td><td><a href="">海豚湾恋人</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>8</td><td><a href="">豪杰春香</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>9</td><td><a href="">狙击手</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+				<tr><td>10</td><td><a href="">浪漫满屋</a></td><td>78652</td></tr>
+				<tr class="cr-detail none"><td colspan="3">Some days are dry, some days are leaky Some days come clean, other days are sneaky Some days take less</td></tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="cr-ft">
+		<a href="">更多>></a>
+	</div>
+</div>
+<script>
+(function(){
+	var loader = new YAHOO.util.YUILoader({
+		base : 'http://a.tbcdn.cn/yui/2.8.0r4/build/',
+		charset : 'gb18030'
+	});
+	loader.require(['dom','event']);
+	loader.onSuccess = function(){
+		var Y = {};
+		Y.rankingList = function(id,cfg){
+			var _d = YAHOO.util.Dom,
+				_e = YAHOO.util.Event,
+				_ = this;
+			
+			this.dom = _d.get(id);
+			this.aTrs = [];
+			var temp = this.dom.getElementsByTagName('tbody');
+			for(var i=0;i<temp.length;i++){
+				var tmp = temp[i].getElementsByTagName('tr');
+				for(var j=0;j<tmp.length;j+=2){
+					this.aTrs.push(tmp[j]);
+				}
+			}
+			
+			_e.on(this.aTrs,'mouseover',function(){
+				if(_d.hasClass('selected',this)){
+					return;
+				}else{
+					var oSelected = _d.getElementsByClassName('selected','tr',_.dom)[0];
+					var oDisplay = _d.getNextSibling(oSelected);
+					var sibling = _d.getNextSibling(this);
+					_d.removeClass(oSelected,'selected');
+					_d.addClass(oDisplay,'none');
+					_d.addClass(this,'selected');					
+					_d.removeClass(sibling,'none');					
+				}
+			});			
+		};
+		
+		var a = new Y.rankingList('demo');
+	};
+	loader.insert();
+})();
+</script>
+</body>
+</html>

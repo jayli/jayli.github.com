@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title> Y.Postip 基于YUI3的相对提示 </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta name="author" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<style type="text/css">
+
+html{color:#000;background:#fff}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0}table{border-collapse:collapse;border-spacing:0}fieldset,img{border:0}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:normal;font-weight:normal}li{list-style:none}caption,th{text-align:left}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal}abbr,acronym{border:0;font-variant:normal}sup{vertical-align:text-top}sub{vertical-align:text-bottom}input,textarea,select,button,option{font-family:inherit;font-size:inherit;font-weight:inherit}input,textarea,select{*font-size:100%}legend{color:#000}q:before,q:after{content:''}
+	body{font:normal 12px/1.5 'Tahoma','simsun'} a{color:#07f;text-decoration:none;}a:hover{text-decoration:underline; }
+	.clearfix:after {content:".";display:block;height:0;clear:both;visibility:hidden}.clearfix{display:inline-block}/* Hides from IE-mac \*/* html .clearfix {height:1%}.clearfix {display:block}/* End hide from IE-mac */
+
+	body{width:900px;margin:10px auto;}
+	h1{font-size:24px;font-weight:700}
+    #hd{padding-bottom:40px}
+	.tell{display:block;padding:16px 10px;margin:5px 0 15px;background:#f4f4f4;-moz-border-radius:4px;-khtml-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;}
+	.tell strong{display:inline;border:0 none;background-color:transparent; }
+	#demo1{border:5px solid green;background-color:#AFE685;width:200px;height:80px;}
+	.postip{width:100px;height:50px;border:3px solid #333;background-color:#d4d4d4;}
+	.state{padding:10px;border:3px dashed #d5d5d5; }
+	.checkarea li{float:left;margin-right:10px;font:700 14px/1.6em 'Times','simsun' ;}
+	.checkarea li input{margin-left:5px;}
+	/*演示*/
+	.yin{margin-right:14px;vertical-align:middle;}
+	.tip1{padding:0 15px 0 0;margin-left:6px;background:url('img/question-small-white.png') no-repeat 100% 0;border-bottom:1px dashed #2173AF;cursor:help;}
+	.tool-tip{width:276px;height:100px;background:url('img/tip_bg.gif') no-repeat;}
+	.tool-tip .content{width:228px;margin:0 auto;padding:12px 0;position:relative;}
+	.tool-tip .content span{width:13px;height:13px;display:block;cursor:pointer;position:absolute;right:-1px;top:-13px;}
+	.tip2popup{width:222px;height:103px;background:url('img/tip2bg.png') no-repeat;}
+	.tip2popup p{padding:20px;}
+
+	.tip3 {padding:30px;}
+	.tip3 li{float:left;}
+	.tip3 li img{width:150px;height:200px;margin-right:30px;z-index:10001;position:relative; }
+
+	.img-tip{border:1px solid #69BD09;color:#24870B;background:#C1FF7A;width:150px;_width:146px;padding:5px;padding-top:210px;text-align:center;-moz-border-radius:4px;-khtml-border-radius: 4px;-webkit-border-radius:4px;border-radius:4px;}
+
+	.menu-hd .sbutton,.menu-hd .more,.menu-bd,.menu-bd a{background:url('img/tip4.png') no-repeat;}
+	.menu-hd{width:145px;height:26px;overflow:hidden;}
+	.menu-hd .sbutton{width:126px;height:26px;background-position:0 0;line-height: 100em;overflow:hidden;display:block;float:left;}
+	.menu-hd a.sbutton:hover{background-position:0 -30px;}
+	.menu-hd .more{width:19px;height:26px;background-position:100% 0;line-height: 100em;overflow:hidden;display:block;float:left;font-size:0;}
+	.menu-hd a.more:hover,.menu-hd .selected{background-position:100% -30px;}
+    .menu-bd{width:145px;height:222px;overflow:hidden;background-position:0 -56px;position:absolute;visibility:hidden;}
+	.menu-bd ul{padding:5px;}
+	.menu-bd a{display:block;background-position:-5px -314px;width:134px;height:21px;padding-bottom:6px;line-height: 20px;position:relative;zoom:1;}
+	.menu-bd a:hover{background-position:-5px -286px;text-decoration:none; }
+
+	.product-list s{background:url(http://img06.taobaocdn.com/tps/i6/T1aopwXfFoXXXXXXXX-167-535.png) no-repeat -999em 0;}
+	.product-list li{position:relative;}
+	.product-list li a{padding-left:6px;color:#464646}
+	.product-list li s{position:absolute;z-index:2;width:16px;height:16px;overflow:hidden;margin-top:3px;margin-left:4px;}
+	.product-list .t-digi s{background-position:-119px -185px;}.product-list .t-caipiao s{background-position:-135px -185px;}
+	.product-list .t-jipiao s{background-position:-118px -153px;}
+	.product-list .t-shiyi s{background-position:-151px -153px;}
+	.product-list li strong{padding-left:26px;}
+	</style>
+</head>
+ 
+<body class="yui-skin-sam">
+<div id="doc" class="demo">
+	<div id="hd">
+		<div class="page-title">
+			<h1>Y.Postip 基于YUI3的相对提示</h1>
+author:leyu@taobao.com（乐渔） 
+		</div>
+	</div>
+	<div id="bd">
+		<h2>新建提示相对于绿框定位</h2>
+		<div id="demo1" style="margin-bottom:1px">点我</div><br/>
+		<div class="state">
+			<ul class="checkarea clearfix">
+				<li>水平方向(hAlign)选择(pos:{h:'*'}):</li>
+				<li><label for="oleft">oleft</label><input type="radio" name="hAlign" id="oleft"/></li>
+				<li><label for="left">left</label><input type="radio" name="hAlign" id="left" checked/></li>
+				<li><label for="center">center</label><input type="radio" name="hAlign" id="center"/></li>
+				<li><label for="right">right</label><input type="radio" name="hAlign" id="right"/></li>
+				<li><label for="oright">oright</label><input type="radio" name="hAlign" id="oright"/></li>
+			</ul>
+			<ul class="checkarea clearfix" id="check2">
+				<li>垂直方向(vAlign)选择(pos:{v:'*'}):</li>
+				<li><label for="otop">otop</label><input type="radio" name="vAlign" id="otop"/></li>
+				<li><label for="top">top</label><input type="radio" name="vAlign" id="top"/></li>
+				<li><label for="middle">middle</label><input type="radio" name="vAlign" id="middle"/></li>
+				<li><label for="bottom">bottom</label><input type="radio" name="vAlign" id="bottom"/></li>
+				<li><label for="obottom">obottom</label><input type="radio" name="vAlign" id="obottom" checked/></li>
+			</ul>
+			<ul class="checkarea clearfix" id="check3">
+				<li>复杂了被干掉 T_T</li>
+				<li><label for="no">无动画:no</label><input type="radio" name="anim" id="no" checked/></li>
+				<li><label for="fade">渐显:fade</label><input type="radio" name="anim" id="fade" disabled/></li>
+				<li><label for="expand">扩展:expand</label><input type="radio" name="anim" id="expand" disabled/></li>
+			</ul>
+		</div>
+		<p>&nbsp;</p>
+		<h2>下面看看我们能用这组件做些啥！</h2>	
+		<div class="tell">
+			<h3>1.文字帮助提示 Tooltip</h3>
+			<div class="pos clearfix">
+				<!--img src="img/aligntemp.png" alt="" class="fl"/-->
+				<p><img src="img/arrow-curve-000-left.png" alt="" class="yin"/>春分这一天阳光直射<a href="#" class="tip1" id="tip1" rel="<div class='content'>赤道是地球表面的点随地球自转产生的轨迹中周长最长的圆周线，赤道半径 6378.140Km ；两极半径 6357.752Km。</div>">赤道</a>，昼夜几乎相等，其后阳光直射位置逐渐北移，开始<a href="#" class="tip1" rel="<div class='content'>昼长夜短这种变化，纬度越高的地区越明显。</div>">昼长夜短</a>。</p>
+			</div>
+		</div>
+		<div class="tell">
+			<h3>2.简易提示 Popup</h3>
+			<div class="pos clearfix">
+				<button type="submit" class="btn" id="tip2">点击提交</button>
+			</div>
+			<div class="">a
+			</div>
+			<p>a</p>
+			<p><select name="">
+				<option value="" selected="true">遮住我</option>
+			</select></p>
+		</div>
+		
+		
+		<div class="tell">
+			<h3>3.图片说明 imgtip</h3>
+			<ul class="clearfix tip3">
+				<li><a href="" title=""><img src="img/t1.jpg" alt="" rel="瑜伽美女1"/></a></li>
+				<li><a href="" title=""><img src="img/t2.jpg" alt="" rel="瑜伽美女2"/></a></li>
+				<li><a href="" title=""><img src="img/t3.jpg" alt="" rel="瑜伽美女走光"/></a></li>
+				<li><a href="" title=""><img src="img/t4.jpg" alt="" rel="美女素颜"/></a></li>
+			</ul>
+		</div>
+		<div class="tell clearfix">
+			<h3>4.简易鼠标菜单 </h3>
+			<div class="menu">
+				<div class="menu-hd clearfix">
+					<a href="http://www.taobao.com/go/chn/more/" class="sbutton">淘宝快捷服务</a><a href="" class="more">更多</a>
+				</div>
+				<div class="menu-bd">
+					<ul class="product-list">
+						<li><a href="http://3c.taobao.com">淘宝电器城</a></li>
+						<li><a href="http://a.taobao.com/">消费者门户</a></li>
+						<li><a href="http://ju.atpanel.com/?url=http://www.koubei.com/?ad_id=&am_id=&cm_id=&pm_id=1500221263d8e9003ba9">口碑淘生活</a></li>
+						<li><a href="http://hitao.taobao.com/">HiTao 嗨淘</a></li>
+						<li class="t-digi"><a href="http://madou.taobao.com/"><s></s><strong>淘女郎</strong></a></li>				
+						<li class="t-caipiao"><a href="http://caipiao.taobao.com/"><s></s><strong>彩票</strong></a></li>
+						<li class="t-jipiao"><a href="http://jianghu.taobao.com/home.htm"><s></s><strong>淘机票</strong></a></li>
+						<li class="t-shiyi"><a href="http://shiyi.taobao.com/"><s></s><strong>试衣间</strong></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="">a
+			</div>
+			<p>a</p>
+			<p><select name="">
+				<option value="" selected="true">遮住我</option>
+			</select></p>
+			<object width="200" height="110" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+			<param name="movie" value="http://cn.yimg.com/a/yushiliu/668474_yahoo_homepage_r_336x190_080610c.swf">
+			<param name="wmode" value="opaque">
+			<param name="loop" value="true">
+			<param name="quality" value="high">
+			<param name="allowScriptAccess" value="always">
+			<param name="flashvars" value="clickTAG=http%3A%2F%2Fcn.rd.yahoo.com%2FSIG%3D14t3eiuhd%2FM%3D668474.12732661.13051778.10503457%2FD%3Dcnhome%2FS%3D2022275484%3AR%2FY%3DCN%2FEXP%3D1213160256%2FL%3D9GIrvcqlZs0KU.SlSBQeeABlyqVrZEhPPyAACme2%2FB%3DeyVIlMvR6B4-%2FJ%3D1213153056690867%2FA%3D5388068%2FR%3D0%2Fid%3Dflash_click%2FSIG%3D13kk7omfh%2F*http%3A%2F%2Fad.bitauto.com%3A80%2Fadsunion%2Flnk%2F%3Bik%3D4843651b2be8a%3Bpl%3Dpl-583-cvn%3B%2F%3Fhttp%3A%2F%2Fmarket.dyk.com.cn%2Feuro%2Ffestivaloil%2F">
+			<embed width="200" height="110" src="http://cn.yimg.com/a/yushiliu/668474_yahoo_homepage_r_336x190_080610c.swf" loop="true" wmode="opaque" quality="high" flashvars="clickTAG=http%3A%2F%2Fcn.rd.yahoo.com%2FSIG%3D14t3eiuhd%2FM%3D668474.12732661.13051778.10503457%2FD%3Dcnhome%2FS%3D2022275484%3AR%2FY%3DCN%2FEXP%3D1213160256%2FL%3D9GIrvcqlZs0KU.SlSBQeeABlyqVrZEhPPyAACme2%2FB%3DeyVIlMvR6B4-%2FJ%3D1213153056690867%2FA%3D5388068%2FR%3D0%2Fid%3Dflash_click%2FSIG%3D13kk7omfh%2F*http%3A%2F%2Fad.bitauto.com%3A80%2Fadsunion%2Flnk%2F%3Bik%3D4843651b2be8a%3Bpl%3Dpl-583-cvn%3B%2F%3Fhttp%3A%2F%2Fmarket.dyk.com.cn%2Feuro%2Ffestivaloil%2F" type="application/x-shockwave-flash" allowscriptaccess="always">
+			</object>
+		</div>
+	
+	</div>
+	<div id="ft">bbbbbb</div>
+</div>
+</body>
+<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+<script type="text/javascript">
+YUI({
+	//Combo JS
+	combine:true,
+	base:'http://cn.yimg.com/i/yui/3.0.0/build/', 
+	root:"i/yui/3.0.0/build/",  
+	comboBase:"http://cn.yimg.com/combo?", 
+	charset:'utf-8',
+	timeout:1000,
+	loadOptional:true,
+	/*filter: { 
+	        'searchExp': "&i",  
+	        'replaceStr': ",i" 
+	    },*/
+	modules:{
+			'Postip':{
+				fullpath:'../postip.js?'+Math.random(),
+				type:'js',
+				requires:['node']
+			}
+		}
+	}).use('node','Postip',function(Y) {
+		//开启控制台
+		//var ft = Y.one('#ft');
+
+		
+		var radios = Y.one('.checkarea').queryAll('input');
+		var radios1 = Y.one('#check2').queryAll('input');
+		var radios2 = Y.one('#check3').queryAll('input');
+		var len = radios.size(),pos_h,pos_v,_anim,lens=radios2.size();
+		//
+		
+		var Demo = new Y.Postip('demo1',{pos:{h:'30',v:'-30'},content:'<div class="sb"><p>Tips<a href="#">Close</a></p></div>',eventype:'click'});
+
+		
+		//console.log(Y.Lang.isValue(Demo));
+		Y.one('.state').queryAll('input').on('click',function(e){
+			//
+		
+			for (var i=0;i<len;i++) {
+				(function(n){
+					if (radios.item(n)._node.checked){
+						pos_h = radios.item(n).getAttribute('id');
+						return pos_h;	
+					}
+				})(i);
+			}
+			
+			for (var j=0;j<len;j++) {
+				(function(n){
+					if (radios1.item(n)._node.checked){
+						pos_v = radios1.item(n).getAttribute('id');
+						return pos_v;
+					}
+				})(j);
+			}
+			for (var k=0;k<lens;k++) {
+				(function(n){
+					if (radios2.item(n)._node.checked){
+						_anim = radios2.item(n).getAttribute('id');
+						return _anim;
+					}
+				})(k);
+			}
+
+			//Demo = Y.Postip('demo1',{pos:{h:pos_h,v:pos_v}})
+			//debugger;
+			//e.halt();
+			Demo.render({pos:{h:pos_h,v:pos_v},anim:_anim});
+			
+		});
+			
+		Y.one('.sb a').on('click',function(e){e.halt();Demo.hide()});
+		//传入参数
+		
+
+		 
+		//例子开始////////////////////////////////////////////////////////////
+		//例子1
+		var tip1 = new Y.Postip(Y.all('.tip1'),{pos:{v:'otop',h:'15'},classname:'tool-tip'});
+		
+		//例子2
+		var tip2 = new Y.Postip(Y.one('#tip2'),{pos:{v:'obottom',h:'center'},eventype:'click',mouseout:'false',content:'<div><p><img src="img/exclamation-white.png" class="fl"/> 请选择同意服务条款方可提交！<br/><button class="tip2close">关闭弹出层</button></p></div>',classname:'tip2popup'});
+		
+		Y.one('#tip2').on('click',function(e){
+			e.halt();
+			tip2.show();
+		});
+		Y.one('.tip2close').on('click',function(e){
+			e.halt();
+			tip2.hide();
+		});
+
+		//例子3
+		var tip3 = new Y.Postip(Y.all('.tip3 img'),{pos:{v:'-6',h:'-6'},classname:'img-tip'});
+			
+		
+		//例子4
+		var tip4 = new Y.Postip(Y.one('.menu-hd .more'),{pos:{v:'obottom',h:'right'},otip:Y.one('.menu-bd')})
+		//下拉被选中
+		Y.one('.menu-bd').on('mouseover',function(){
+			Y.one('.menu-hd .more').addClass('selected');
+		});
+		Y.one('.menu-bd').on('mouseout',function(){
+			Y.one('.menu-hd .more').removeClass('selected');
+		});
+
+		
+		
+	});
+</script>
+
+</html>

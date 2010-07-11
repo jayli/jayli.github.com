@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><title>
+check all
+</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+	body p { font: 14px Georgia,"Times New Roman",Times,sans-serif; color: #444; }
+	h1 { font-size: 26px; color: #00859D; font-family: Constantia,serif; }
+	h3 { font-size: 14px; color: #555; margin: 15px 0 5px; }
+	ul {list-style:none;}
+	.red {background:red !important}
+	code {font-family:"Courier New"}
+.hidden {display:none;}
+a.on {font-weight:bold;}
+a {margin-right:5px;}
+</style>
+<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+</head>
+<body  class="yui-skin-sam">
+<div>
+<ul>
+<li>
+<button id="J_inverse_1">反选</button>
+</li>
+<li>
+<input type=checkbox id="J_checkall_1" /> 全选
+</li>
+<li>
+<input type=checkbox class="checklist" /> item
+</li>
+<li>
+<input type=checkbox class="checklist" /> item
+</li>
+<li>
+<input type=checkbox class="checklist" /> item
+</li>
+<li>
+<input type=checkbox class="checklist" /> item
+</li>
+<li>
+<input type=checkbox class="checklist" /> item
+</li>
+<li>
+<input type=checkbox id="J_checkall_2" /> 全选
+</li>
+<li>
+<button id="J_inverse_2">反选</button>
+</li>
+</ul>
+
+<script>
+YUI({
+	combine:true,
+	base:'http://cn.yimg.com/i/yui/3.0.0/build/', 
+	root:"i/yui/3.0.0/build/",  
+	comboBase:"http://cn.yimg.com/combo?", 
+	charset:'utf-8',
+	loadOptional:true,
+	modules:{
+		'checkall':{
+			fullpath:'../checkall.js',
+			requires:['node']
+		}
+	}
+}).use('checkall','dump','console',function(Y){
+	new Y.Console().render();
+
+	new Y.Checkall({
+		node:[Y.one('#J_checkall_1'),Y.one('#J_checkall_2')],
+		/*node:Y.one('#J_check_all_1')*/
+		nodelist:Y.all('.checklist'),
+		inverse:[Y.one('#J_inverse_1'),Y.one('#J_inverse_2')]
+		/*inverse:Y.one('#J_check_all_1')*/
+	}).on('check',function(o){
+		for(var i = 0;i<o.checked.length;i++){
+			o.checked[i].ancestor('li').addClass('red');
+		}
+		for(var i = 0;i<o.unchecked.length;i++){
+			o.unchecked[i].ancestor('li').removeClass('red');
+		}
+	});
+
+	
+});
+
+</script>
+</div>
+<p style="clear:both">
+在ie6,ie7,firefox2,firefox3.0/3.5/3.6,safari4.0,opera9.62,chrome3.0下测试通过<br />
+author:bachi@taobao.com（拔赤）<br />
+msn:lijing00333@163.com<br />
+moreinfo:http://www.uedmagazine.com
+</p>
+</body>
+</html>
+

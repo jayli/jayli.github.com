@@ -1,0 +1,29 @@
+Cubee - TAOBAO Beijing UED UI Library
+ 
+ * Created by 拔赤(lijing00333@163.com)
+ * License: http://www.opensource.org/licenses/mit-license.php
+
+理念：
+ - 简单实用、健壮耐用
+ - 组件可组装
+ - 设计至上、开发辅助
+
+文件编码统一使用utf-8
+
+目录说明:
+
+ - build:    根据 src 内容，生成可以直接引用的js/css/img文件
+ - docs:     根据 src 内容，生成的API文档
+ - examples: 由开发者撰写的实例说明和使用教程等文档
+ - src:      源码、测试、build 脚本和开发文档等一切开发资料
+ - sandbox:  开发目录,定期将成型的内容整理到src和build中，并完成doc
+
+必须测试过的浏览器： IE 6+, Firefox 3+, Safari 4+, Chrome 2+, Opera 9+
+
+Thanks for your reading!
+
+全局约定：（原则：在尽量避免冲突的基础上，尽量精简短小）
+
+      全局变量： g_ks_comp_xxx   比如： g_ks_monitor_st
+ class/id 命名： ks-comp-xxx     比如： ks-editor-toolbar-item
+ data 属性命名： data-comp-xxx   比如： data-lazyload-src

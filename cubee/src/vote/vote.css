@@ -1,0 +1,29 @@
+/*----------------------
+ *投票模块 vote module
+ *Auther: 道觉 w3cparty@gmail.com
+ *Date: 2009/12/30
+ *-----------------------
+ */
+.mod{font-size:14px;width:210px;margin:10px;padding:10px;border:1px solid #666;}
+.vote-title{font-size:14px;font-weight:bold;margin:0 0 5px;padding:4px 0 8px 24px;background:url(http://img02.taobaocdn.com/tps/i2/T1CfhpXeVpXXXXXXXX-300-480.png) no-repeat 0 -412px;}
+.vote-list{}
+.vote-list li{margin-bottom:6px;}
+.vote-list .vote-check{vertical-align:middle;}
+.vote-item{margin-left:5px;*margin-left:0;}
+.vote-result,.vote-result .inner{display:block;float:left;overflow:hidden;}
+.vote-result{width:72%;height:10px;margin:3px 10px 0 0;background-color:#efefef;}
+.vote-result .inner{height:8px;margin-right:10px;border-width:1px;border-style:solid;}
+.vote-show b{font-weight:normal;float:left;}
+.vote-result .item01{border-color:#478f45;background-color:#bde877;}
+.vote-result .item02{border-color:#9987c3;background-color:#cebdf6;}
+.vote-result .item03{border-color:#f3a659;background-color:#febb7a;}
+.vote-result .item04{border-color:#78b3f5;background-color:#8cc2fe;}
+.result .vote-title{padding-left:0;background:none;}
+.result .vote-item{margin-left:0;}
+.btn-box{}
+.vote-btn{color:#fff;font-size:12px;line-height:1.2;margin:4px 4px 4px 0;padding:4px 10px;background:#464646;display:inline-block;text-decoration:none;}
+a.vote-btn:link,a.vote-btn:visited,a.vote-btn:hover,a.vote-btn:active{_color:#fff;}
+/*fn style*/
+.fixfloat{zoom:1;}
+.fixfloat:after{content:".";height:0;clear:both;visibility:hidden;display:block;}
+.fixfloat:after{zoom:1;}

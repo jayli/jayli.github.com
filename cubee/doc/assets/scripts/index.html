@@ -1,0 +1,183 @@
+<!-- Syntax highlighting demo -->
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" media="all" />
+    <script src="highlight.js"></script>
+    <script src="lang-js.js"></script>
+    <script src="lang-xml.js"></script>
+    <script src="lang-html.js"></script>
+    <script src="lang-css.js"></script>
+    <script src="helpers.js"></script>
+    <script>
+      // this code should be highlighted as JavaScript
+      // if you're using the HTML highlighter.
+      function test() {
+        var code = document.getElementById("foo").value;
+        var hl = new DlHighlight({ lang        : document.getElementById("lang").value,
+                                   lineNumbers : document.getElementById("lineNo").checked });
+        var formatted = hl.doItNow(code);
+        var pre = document.getElementById("output");
+        pre.className = "DlHighlight";
+        // need to insert it in a <pre> because otherwise IE compresses whitespace
+        pre.innerHTML = "<pre>" + formatted + "</pre>";
+      }
+      function loadCode(val) {
+        if (!val)
+          return;
+        var req;
+        if (window.ActiveXObject)
+          req = new ActiveXObject("Microsoft.XMLHTTP");
+        else if (window.XMLHttpRequest)
+          req = new XMLHttpRequest();
+        else
+          throw "Browser does not support XMLHttpRequest";
+        var a = val.split(/:/);
+        var url = a[0];
+        var lang = a[1];
+        document.getElementById("lang").value = lang;
+        req.open("GET", url, false);
+        req.send();
+        document.getElementById("foo").value = req.responseText;
+        document.getElementById("output").innerHTML = "";
+      }
+  </script>
+  </head>
+  <body onload="DlHighlight.HELPERS.highlightByName('fooname', 'pre');">
+    <h1>A JavaScript-based syntax highlighting engine</h1>
+      <pre name="fooname" class="js">/**************\
+ *                                                                ____   _____
+ * DlHighlight -- a JavaScript-based syntax highlighting engine.  \  /_  /   /
+ *                                                                 \  / /   /
+ *        Author: Mihai Bazon, http://mihai.bazon.net/blog          \/ /_  /
+ *     Copyright: (c) Dynarch.com 2007.  All rights reserved.        \  / /
+ *                http://www.dynarch.com/                              / /
+ *                                                                     \/
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+\******************************************************************************/</pre>
+    <h2>Try it out</h2>
+    <p>
+      <select onchange="loadCode(this.value)">
+        <option value="">Load sample code</option>
+        <option value="highlight.js:js">highlight.js</option>
+        <option value="lang-js.js:js">lang-js.js</option>
+        <option value="lang-css.js:js">lang-css.js</option>
+        <option value="lang-xml.js:js">lang-xml.js</option>
+        <option value="lang-html.js:js">lang-html.js</option>
+        <option value="index.html:html">index.html</option>
+        <option value="foo.html:html">foo.html</option>
+        <option value="style.css:css">style.css</option>
+      </select>
+      — or paste the code below and select the appropriate language — and click <b>Do It Now</b>
+    </p>
+    <p>
+    <button style="float: right" onclick="document.getElementById('foo').value = ''">Clear code</button>
+    <label><input type="checkbox" id="lineNo" /> Line numbers</label>
+    |
+    <select id="lang">
+      <option value="js">JavaScript</option>
+      <option value="css">CSS</option>
+      <option value="xml">XML</option>
+      <option value="html">HTML (combines XML + JS for inline scripts)</option>
+    </select>
+    <button onclick="test()">Do It Now</button>
+    </p>
+    <textarea id="foo" rows="10" style="width:100%">// single line comment
+
+/*************
+ **
+ *  multi-line
+ *  comment containing
+ *  an url: http://www.dynarch.com/
+ **
+ *************/
+
+// ** Some code
+
+// whitespace in strings can be displayed (check "Show whitespace
+// in strings")
+var str = "This string has some whitespace:    foo   bar  baz";
+
+// function names are bolded (gets "defun" class)
+function Foo(name, age) {
+	this.name = name;
+	this.age = age;
+};
+
+// works also in this case:
+Foo.prototype.getName = function() {
+	return this.name;
+};
+
+var f = new Foo("John", 20);
+
+// ** Literal regexps
+
+// regexp quotes (/) and modifiers (mg) are highlighted with a different style
+test(/(^foo|bar)/mg, "foo");
+
+// supports ", ', \ and / inside the regexp -- even Emacs messes this out ;)
+if (/'foo\/bar"baz/.test("foo")) {
+	alert("match");
+}
+
+// ** Hashes
+
+/**
+ * Hash keys are colored with a &lt;span class="hashkey"&gt;different style&lt;/span&gt;.
+ * They also can get additional styles depending on the context--for example,
+ * when the value is a function, the key name is bolded (gets "defun" class).
+ **/
+var hash = {
+	foo	    : "bar",
+	five	    : 5,
+	word_regexp : /\b(\$?[a-z][a-z0-9]*)\b/ig,
+	doSomething : function () {
+		alert("blah");
+	}
+};</textarea>
+    <pre id="output"></pre>
+    <h2>"Documentation"</h2>
+    <p>
+      The easiest way to call it:
+    </p>
+    <pre name="fooname" class="js">DlHighlight.HELPERS.highlightByName("fooname", "pre");</pre>
+    <p>
+      And you can write code like this:
+    </p>
+    <pre name="fooname" class="html">
+&lt;pre name="fooname" class="js"&gt;
+  function foo(bar) {
+    // displays bar if it matches "baz":
+    if (/baz/.test(bar)) {
+      alert(bar);
+    }
+  };
+&lt;/pre&gt;
+    </pre>
+    And the result would look like this:
+    <pre name="fooname" class="js">function foo(bar) {
+  // displays bar if it matches "baz":
+  if (/baz/.test(bar)) {
+    alert(bar);
+  }
+};</pre>
+
+  <p>
+    For more advanced stuff, use the source Luke!
+  </p>
+  </body>
+</html>

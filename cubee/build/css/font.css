@@ -1,0 +1,50 @@
+/* -------------------------------------------------
+ * @Font.css
+ * @Author:乐渔(idd.chiang@gmail.com)
+ * @设计来源：http://taobao-wd.ns1.name/wiki/doku.php?id=文字
+ * @依赖Reset.css 建议数字产品Reset使用时将font与reset合并使用
+ * -------------------------------------------------
+ */
+body{
+	font:normal 12px/1.5 'Tahoma','simsun';
+}
+
+/* 淘宝建议链接色 */
+a{
+	color:#0041d9;
+	text-decoration:none
+}
+a:visited{
+	color:#2b5fd9;
+}
+a:hover{
+	color:#f60;
+	text-decoration:underline;
+}
+
+/* 字号 */
+.thin{
+	font-weight:400;
+}
+.bold{
+	font-weight:700;
+}
+.f14{
+	font-size:14px;
+}
+.f16{
+	font-size:16px;
+}
+
+/* 字体颜色 */
+.pop,.orange,a.orange,.orange a,.orange a:hover{
+	color:#f60;	/*橙色*/
+}
+.url,.blue,a.blue,.blue a,.blue a:hover{
+	color:#0041d9;	/*链接蓝色*/
+}
+.gray,a.gray,.gray a,.gray a:hover{
+	color:#666;	/*摘要灰色*/
+}
+
+/* 其他快捷字号以及字体颜色期待加入 */
