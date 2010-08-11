@@ -1,0 +1,361 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Node Test</title>
+</head>
+<body>
+<script src="../test/test.js"></script>
+<script>
+    KISSY.Test.Config.times = 1;
+</script>
+
+<h2>Test Data</h2>
+
+<script src="../../build/kissy/kissy-pkg.js"></script>
+<script src="../../build/dom/dom-pkg.js"></script>
+<script src="../../build/event/event-pkg.js"></script>
+
+<script src="node.js"></script>
+<script src="nodelist.js"></script>
+<script src="node-attach.js"></script>
+
+<script src="../../third-party/jquery/jquery-1.4.2.js"></script>
+
+<!-- Test Cases -->
+<script>
+    var S = KISSY;
+
+    function test_constructor(test) {
+        var div, bd = document.body, el;
+
+        div = S.Node('<div>')[0];
+        div.id = 'test-create';
+        bd.appendChild(div);
+        if(!S.get('#test-create')) test.fail();
+
+        div = new S.Node('<div id="test-create2">create2</div>')[0];
+        bd.appendChild(div);
+        el = S.get('#test-create2');
+        if(!el) test.fail();
+        if(S.DOM.text(el) !== 'create2') test.fail();
+
+        // 对于不存在的 selector, S.one 返回 null
+        if(S.one('#zzzzzzzz') !== null) test.fail();
+        if(S.one('zzzzzzzz') !== null) test.fail();
+
+        // Node(''), Node(null), or Node(undefined), Node 的 length 需要为 0
+        if(S.Node('').length !== 0) test.fail();
+        if(S.Node(null).length !== 0) test.fail();
+        if(S.Node(undefined).length !== 0) test.fail();
+    }
+
+    function test_query_class_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_hasClass(test) {
+        var a = S.one('#foo a');
+
+        if (a.hasClass('link') !== true) test.fail();
+        if (a.hasClass('link2') !== false) test.fail();
+    }
+
+    function test_addClass(test) {
+        if (S.one('#foo a')
+                .addClass('link-added')
+                .hasClass('link-added') !== true) test.fail();
+
+        // clean up
+        S.one('#foo a').removeClass('link-added');
+    }
+
+    function test_removeClass(test) {
+        var a = S.one('#foo a');
+
+        if (a.removeClass('link').hasClass(a, 'link') !== false) test.fail();
+
+        a[0].className = 'link link2 link link linkrr';
+        a.removeClass('link linkrr');
+        if (S.trim(a[0].className) !== 'link2') test.fail();
+
+        // restore
+        a[0].className = 'link';
+    }
+
+    function test_replaceClass(test) {
+        var a = S.one('#foo a');
+
+        // oldCls 有的话替换
+        a.replaceClass('link', 'link2');
+        if (S.trim(a[0].className) !== 'link2') test.fail();
+
+        // oldCls 没有的话，仅添加
+        a.replaceClass('link3', 'link');
+        if (S.trim(a[0].className) !== 'link2 link') test.fail();
+
+        // restore
+        a[0].className = 'link';
+    }
+
+    function test_toggleClass(test) {
+        var a = S.one('#foo a');
+
+        if (a.toggleClass('link2').hasClass('link2') !== true) test.fail();
+        if (a.toggleClass('link2').hasClass('link2') !== false) test.fail();
+    }
+
+    function test_query_attr_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_attr(test) {
+        var node = S.one('#foo a');
+
+        // set attr
+        if (node.attr('title') !== 'test') test.fail();
+
+        // get attr
+        node.attr('data-set', 'test-xx');
+        if (node.attr('data-set') !== 'test-xx') test.fail();
+    }
+
+    function test_removeAttr(test) {
+        var node = S.one('#foo label');
+
+        node.attr('test-remove', 'xx');
+        if (node.attr('test-remove') !== 'xx') test.fail();
+        
+        node.removeAttr('test-remove');
+        if (node.attr('test-remove') !== undefined) test.fail();
+    }
+
+    function test_val(test) {
+        // normal
+        if (S.one('#foo input').val() !== 'hello') test.fail();
+
+        // area
+        if (S.one('#foo textarea').val().length !== 25) test.fail();
+
+        // set value
+        var a = S.one('#foo a');
+        if(a.val('test').val() !== 'test') test.fail();
+        a.removeAttr('value');
+    }
+
+    function test_text(test) {
+        var div = S.one('#test-div');
+        if(div.text('hello, are you ok?').text() !== 'hello, are you ok?') test.fail();
+    }
+
+    function test_query_css_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_css(test) {
+        var node = S.one('#test-div');
+
+        // getter
+        if(node.css('float') !== 'left') test.fail();
+        if(node.css('position') !== 'static') test.fail();
+        if(node.css('backgroundColor') !== 'transparent') test.fail();
+        if(node.css('backgroundPosition') !== '0% 0%') test.fail();
+        if(node.css('fontSize') !== '12px') test.fail();
+        if(!S.UA.ie) if(node.css('border-right-width') !== '5px') test.fail();
+        if(S.UA.ie) if(node.css('border-right-width') !== 'medium') test.fail();
+
+        if(node.css('paddingLeft') !== '2pt') test.fail();
+        if(node.css('padding-left') !== '2pt') test.fail();
+        if(node.css('padding-right') !== '0px') test.fail();
+
+        if(node.css('opacity') !== '1') test.fail();
+
+        // setter
+        try {
+            node.css('height', '-20px');
+        } catch(ex) {
+            test.fail();
+        }
+
+        node.css('float', 'right');
+        if(node.css('float') !== 'right') test.fail();
+
+        node.css('opacity', '0.2');
+        if(node.css('opacity') !== '0.2') test.fail();
+
+        node.css('border', '2px dashed red');
+        if(node.css('borderWidth') !== '2px') test.fail();
+
+        node.css({
+            marginLeft: '20px',
+            opacity: '0.8',
+            border: '2px solid #ccc'
+        });
+        if(node.css('opacity') !== '0.8') test.fail();
+    }
+
+    function test_width(test) {
+        if(S.one('#test2').width() !== $('#test2').width()) test.fail();
+    }
+
+    function test_height(test) {
+        if(S.one('#test2').height() !== $('#test2').height()) test.fail();
+    }
+
+    function test_query_offset_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_offset(test) {
+        // getter
+        var ret = 15;
+        var t = S.one('#konsole').offset().left;
+        if (t !== ret) test.fail(t);
+
+        // setter
+        //S.one('#inner').offset({ top: 600, left: 200 });
+    }
+
+    function test_query_traversal_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_parent(test) {
+        if (S.one('#foo input').parent()[0].id !== 'foo') test.fail();
+    }
+
+    function test_next(test) {
+        if (S.one('#foo a').next().prev()[0].nodeName !== 'A') test.fail();
+    }
+
+    function test_prev(test) {
+        if (S.one('#foo input').prev().next()[0].nodeName !== 'INPUT') test.fail();
+    }
+
+    function test_siblings(test) {
+        if (S.one('#foo a').siblings().length !== 6) test.fail();
+    }
+
+    function test_children(test) {
+        if (S.one('#foo').children().length !== 7) test.fail();
+        if (S.one('#foo').children()[0] !== S.get('#foo a')) test.fail();
+        if(S.one('#test-children').children().length !== 0) test.fail();
+    }
+
+    function test_contains(test) {
+        if(S.one('#test-data').contains('#test-div') !== true) test.fail();
+    }
+
+    function test_query_create_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_html(test) {
+        var div = S.one('#test-div');
+        if(div.html('<p>hello, are you ok?</p>').text() !== 'hello, are you ok?') test.fail();
+
+        div.html('<script>window.g_testSetScriptHTML = 1;<\/script>', true);
+        S.later(function() {
+            if(window['g_testSetScriptHTML'] !== 1) test.fail('' + window['g_testSetScriptHTML']);
+        }, 500);
+    }
+
+    function test_remove(test) {
+        S.all('.test').remove();
+        if(S.all('.test').length !== 0) test.fail();
+    }
+
+    function test_query_insertion_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_insertBefore(test) {
+        S.Node('<p id="test-insert">inserted node</p>').insertBefore('#test-div');
+        if(S.one('#test-insert').next().attr('id') !== 'test-div') test.fail();
+    }
+
+    function test_insertAfter(test) {
+        S.Node('<p id="test-insert2">inserted node2</p>').insertAfter('#test-div');
+        if(S.one('#test-insert2').prev().attr('id') !== 'test-div') test.fail();
+    }
+
+    function test_append(test) {
+        if(S.one('#test-div').append('<p id="test-append">append node</p>').attr('id') !== 'test-div') test.fail();
+    }
+
+    function test_appendTo(test) {
+        if(S.Node('<p id="test-append2">append2 node</p>').appendTo('#test-div').attr('id') !== 'test-append2') test.fail();
+    }
+
+    function test_query_selector_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_one(test) {
+        if(S.one('#foo').one('input').attr('id') !== 'test-input') test.fail();
+    }
+
+    function test_all(test) {
+        if(S.one('#foo').all('input').length !== 3) test.fail();
+    }
+
+    function test_query_event_sep(test) {
+        test.status = 'sep';
+    }
+
+    function test_on(test) {
+        S.one('#foo a').on('click', function(ev) {
+            ev.preventDefault();
+            test.echo('I am a node. this instanceof Node = ' + (this instanceof S.Node));
+        });
+        test.extraMsg = '{click test link to invoke event}';
+    }
+    
+</script>
+
+<div id="test-data">
+    <div id="test-div" style="padding-left: 2pt; background: transparent; float: left; border: 5px solid rgba(0,0,0,.201);"></div>
+    <style>
+        #test2 {
+            border: 1px solid #ccc;
+            width: 80%;
+            height: 20px;
+        }
+    </style>
+    <div id="test2"></div>
+    <div id="test-children"></div>
+    <p id="foo">
+        <a href="./" style="color:red" class="link" title="test" data-test="test">test link</a>
+        <input type="text" id="test-input" readonly maxlength="20" value="hello"/>
+        <input type="radio" id="test-radio" />
+        <input type="radio" id="test-radio2" checked />
+        <label class="test" for="test-input">label</label>
+        <button type="button" tabindex="3">Submit</button>
+        <textarea rows="2" cols="2">
+            test
+        </textarea>
+    </p>
+    <table id="test-table" cellspacing="10">
+        <tbody>
+        <tr>
+            <td rowspan="2" colspan="3">td</td>
+        </tr>
+        </tbody>
+    </table>
+    <select id="test-select">
+        <option id="test-opt" value="1">0</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+    <select id="test-select2">
+        <option>2</option>
+    </select>
+    <select id="test-select3" multiple autocomplete="off">
+        <option selected>1</option>
+        <option selected>2</option>
+        <option>3</option>
+    </select>
+</div>
+
+</body>
+</html>

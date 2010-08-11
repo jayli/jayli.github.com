@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Ajax Test</title>
+</head>
+<body>
+<script src="../test/test.js"></script>
+<script>
+    KISSY.Test.Config.times = 1;
+</script>
+
+<h2>Test Data</h2>
+
+<script src="../../build/kissy/kissy-pkg.js"></script>
+<script src="../../build/dom/dom-pkg.js"></script>
+<script src="../../build/event/event-pkg.js"></script>
+
+<script src="ajax.js"></script>
+
+<script src="../../third-party/jquery/jquery-1.4.2.js"></script>
+
+<!-- Test Cases -->
+<script>
+    var S = KISSY;
+
+    function test_getScript(test) {
+        S.getScript('../cookie/cookie.js', function() {
+            test.echo('cookie.js is loaded.');
+        });
+    }
+
+</script>
+
+</body>
+</html>

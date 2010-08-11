@@ -1,0 +1,33 @@
+<project name="switchable.build" default="build" basedir=".">
+    <description>Component Build File</description>
+
+    <import file="../../tools/build.xml"/>
+
+    <property file="build.properties"/>
+    <property name="src.dir" location="."/>
+
+    <target name="concat">
+        <concat destfile="switchable-pkg.js" encoding="${charset}" outputencoding="${charset}">
+            <path path="switchable.js"/>
+
+            <path path="plugin-autoplay.js"/>
+            <path path="plugin-effect.js"/>
+            <path path="plugin-circular.js"/>
+            <path path="plugin-lazyload.js"/>
+            <!--<path path="plugin-countdown.js"/>-->
+            <path path="plugin-autorender.js"/>
+
+            <path path="widget-tabs.js"/>
+            <path path="widget-slide.js"/>
+            <path path="widget-carousel.js"/>
+            <path path="widget-accordion.js"/>
+        </concat>
+    </target>
+
+    <target name="clean">
+        <delete file="switchable-pkg.js"/>
+    </target>
+
+    <target name="build" depends="concat,common.build,clean">
+    </target>
+</project>
