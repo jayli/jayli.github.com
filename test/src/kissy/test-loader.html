@@ -25,7 +25,7 @@ var S = KISSY,
 		S.log('loadTime = ' + loadTime);
 	};
 </script>
-<img src="http://kissyteam.github.com/kissy/docs/assets/logo.png" alt="test image" />
+<img src="../../docs/assets/logo.png" alt="test image" />
 <div id="test-available">test available</div>
 <iframe id="test-iframe" src="test-iframe.html"></iframe>
 <script>
@@ -58,7 +58,8 @@ S.add({
 		fullpath:'lang.js'
 	},
 	'ua-extra':{
-		fullpath:'ua-extra.js'
+		fullpath:'ua-extra.js',
+		requires:['ua']
 	}
 });
 
@@ -78,7 +79,7 @@ S.ready(function(S){
 });
 
 //sync load kissy build-in modules and exec callback after all modules are ready
-S.use('ua','lang','ua-extra').ready(function(S){
+S.use('lang','ua-extra').ready(function(S){
 	var win = window;
 	win['test_preserve'] = function(test) {
 		if (!KISSY.Test) test.fail();
