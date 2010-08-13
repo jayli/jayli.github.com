@@ -88,8 +88,10 @@ S.add({
 //and its sub-modules will be sync loaded after "domready" && before this callback execs' moment
 S.add('inline-test',function(S){
 	S.inline = 'ok';
+	if(typeof YAHOO != 'undefined'){
+		S.log('yui is ok');
+	}
 },{requires:['sub']}).ready(function(S){
-	S.log('via single http request each');
 	S.log('S.sub '+S.sub);
 	S.log('S.inline '+S.inline);
 });
