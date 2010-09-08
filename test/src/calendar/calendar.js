@@ -213,7 +213,8 @@ KISSY.add('calendar',function(S){
 			//var _x = that.trigger.getXY()[0];
 			var _x = that.trigger.offset().left;
 			//var _y = that.trigger.getXY()[1]+that.trigger.get('region').height;
-			var _y = that.trigger.offset().top+that.trigger.height();
+			var height = that.trigger[0].offsetHeight || that.trigger.height();
+			var _y = that.trigger.offset().top+height;
 			that.con.css('left',_x.toString()+'px');
 			that.con.css('top',_y.toString()+'px');
 			return this;
@@ -236,6 +237,7 @@ KISSY.add('calendar',function(S){
 			}
 			that.date = (typeof o.date == 'undefined' || o.date == null)?new Date():o.date;
 			that.selected = (typeof o.selected == 'undefined' || o.selected == null)?that.date:o.selected;
+			that.start_day = (typeof o.start_day == 'undefined' || o.start_day == null)?(7-7):(7-o.start_day)%7;//1,2,3,4,5,6,7
 			that.multi_page = (typeof o.multi_page == 'undefined' || o.multi_page == null)?1:o.multi_page;
 			that.closeable = (typeof o.closeable == 'undefined' || o.closeable == null)?false:o.closeable;
 			that.range_select = (typeof o.range_select == 'undefined' || o.range_select == null)?false:o.range_select;
@@ -373,6 +375,30 @@ KISSY.add('calendar',function(S){
 		},
 		//得到当前选中
 		getSelect:function(){
+
+		},
+		//处理日期的偏移量
+		handleOffset:function(){
+			var that = this;
+				data= ['日','一','二','三','四','五','六'],
+				temp = '<span>{$day}</span>',
+				offset = that.start_day,
+				day_html = '',
+				a = [];
+			for(var i = 0;i<7;i++){
+				a[i] = {
+					day:data[(i-offset+7)%7]
+				};
+			}
+			day_html = that.templetShow(temp,a);
+
+
+			return {
+				
+				day_html:day_html
+
+			};
+
 
 		},
 		//处理起始日期,d:Date类型
@@ -656,6 +682,7 @@ KISSY.add('calendar',function(S){
 					'</div>',
 					'<div class="c-bd">',
 						'<div class="whd">',
+						/*
 							'<span>日</span>',
 							'<span>一</span>',
 							'<span>二</span>',
@@ -663,6 +690,8 @@ KISSY.add('calendar',function(S){
 							'<span>四</span>',
 							'<span>五</span>',
 							'<span>六</span>',
+						*/
+							fathor.handleOffset().day_html,
 						'</div>',
 						'<div class="dbd clearfix">',
 							'{$ds}',
@@ -928,7 +957,7 @@ KISSY.add('calendar',function(S){
 				var cc = this;
 
 				var s = '';
-				var startweekday = new Date(cc.year+'/'+(cc.month+1)+'/01').getDay();//当月第一天是星期几
+				var startweekday = (new Date(cc.year+'/'+(cc.month+1)+'/01').getDay() + cc.fathor.start_day + 7)%7;//当月第一天是星期几
 				var k = cc.fathor.getNumOfDays(cc.year,cc.month + 1) + startweekday;
 				
 				for(var i = 0;i< k;i++){

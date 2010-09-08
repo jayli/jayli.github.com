@@ -52,6 +52,10 @@
 每个面板的time选择永远保持一致，而且当选择范围的时候，起始time和结束time是一致的
 <div id="J_with_time"></div>
 <hr size=1 />
+<h3>起始星期自定义</h3>
+起始星期可以自定义，指定参数start_day:0-6,默认为0，从星期日开始
+<div id="J_custom_day"></div>
+<hr size=1 />
 
 
 <p style="clear:both">
@@ -84,14 +88,6 @@ S.add({
 });
 S.use('calendar',function(S){
 
-	/*
-	con = S.Node('<div><i>点击这里</i></div>');
-	S.one('body').append(con);
-	con.on('click',function(e){
-		alert('ii');
-	});
-	return;
-	*/
 	//静态日历,单击回调
 	c = new S.Calendar('J_calendar').on('select',function(e){
 		alert(e.date);
@@ -161,8 +157,11 @@ S.use('calendar',function(S){
 	}).on('timeselect',function(e){
 		alert(e.date);	
 	});
-	/*
-	*/
+
+	//可以自定义起始日期
+	c = new S.Calendar('J_custom_day',{
+		start_day:1
+	});
 	
 });
 
