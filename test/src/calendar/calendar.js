@@ -1,10 +1,9 @@
 
 
-/*
-	yyyy-mm-dd
-	YY-mm-dd
-	YY年mm月dd日
-*/
+/**
+ * author - lijing00333@163.com 拔赤
+ */
+
 
 KISSY.add('calendar',function(S){
 
@@ -18,7 +17,7 @@ KISSY.add('calendar',function(S){
 			var that = this;
 			that.id = that.C_Id = id;
 			that.buildParam(config);
-			//形成con
+			//形成container
 			/*
 				that.con，日历的容器
 				that.id   传进来的id
@@ -30,7 +29,6 @@ KISSY.add('calendar',function(S){
 				var trigger = S.one('#'+id);
 				that.trigger = trigger;
 				that.C_Id = 'C_'+Math.random().toString().replace(/.\./i,'');
-				//that.con = Y.Node.create('<div id="'+that.C_Id+'"></div>');
 				that.con = S.Node('<div id="'+that.C_Id+'"></div>');
 				S.one('body').append(that.con);
 				that.con.css({
@@ -52,6 +50,7 @@ KISSY.add('calendar',function(S){
 			var that = this;
 			var EventFactory = function(){
 				/*
+				修改为基于KISSY后不用发布事件
 				this.publish("select");
 				this.publish("switch");
 				this.publish("rangeselect");
@@ -63,12 +62,12 @@ KISSY.add('calendar',function(S){
 			};
 			S.augment(EventFactory, S.EventTarget);
 
-			//Y.augment(EventFactory, Y.Event.Target);
 			that.EventCenter = new EventFactory();
 			return this;
 		},
 		/**
 		 * 绑定函数 
+		 * 绑定函数的回调和yui有不同
 		 */
 		on:function(type,foo){
 			var that = this;
@@ -131,9 +130,9 @@ KISSY.add('calendar',function(S){
 					that.EV[i].detach();
 				}
 			}
-			//TODO 为什么S.one('document')得不到document？
+			//TODO 我更期望通过S.one('document')来得到对整个文档的监听
 			that.EV[0] = S.one('body').on('click',function(e){
-				//TODO 为什么e.target是裸的DOM节点?
+				//TODO e.target是裸的节点，这句不得不加，虽然在逻辑上并无特殊语义
 				e.target = S.Node(e.target);
 				//点击到日历上
 				if(e.target.attr('id') == that.C_Id)return;
@@ -141,10 +140,7 @@ KISSY.add('calendar',function(S){
 					&& e.target[0].tagName == 'A')	return;
 				//点击在trigger上
 				if(e.target.attr('id') == that.id)return;
-				//TODO node如何向上查找节点
-				//var f = e.target.parent('#'+that.C_Id);
 				if(!S.DOM.contains(S.one('#'+that.C_Id),e.target)){
-				//if(typeof f == 'undefined' || f == null){
 					that.hide();
 				}
 			});
@@ -155,9 +151,6 @@ KISSY.add('calendar',function(S){
 			for(var i = 0;i<that.action.length;i++){
 				
 				that.EV[1] = S.one('#'+that.id).on(that.action[i],function(e){
-					//e.halt();
-					//TODO event
-					//e.stopPropagation();
 					e.target = S.Node(e.target);
 					e.preventDefault();
 					//如果focus和click同时存在的hack
@@ -210,9 +203,8 @@ KISSY.add('calendar',function(S){
 		show:function(){
 			var that = this;
 			that.con.css('visibility','');
-			//var _x = that.trigger.getXY()[0];
 			var _x = that.trigger.offset().left;
-			//var _y = that.trigger.getXY()[1]+that.trigger.get('region').height;
+			//KISSY得到DOM的width是innerWidth，这里期望得到outterWidth
 			var height = that.trigger[0].offsetHeight || that.trigger.height();
 			var _y = that.trigger.offset().top+height;
 			that.con.css('left',_x.toString()+'px');
@@ -392,14 +384,9 @@ KISSY.add('calendar',function(S){
 			}
 			day_html = that.templetShow(temp,a);
 
-
 			return {
-				
 				day_html:day_html
-
 			};
-
-
 		},
 		//处理起始日期,d:Date类型
 		handleRange : function(d){
@@ -602,14 +589,11 @@ KISSY.add('calendar',function(S){
 					}
 				});
 				//ctime上的键盘事件，上下键，左右键的监听
-				//改成基于KISSY后没反应
-				//TODO 考虑是否去掉,
+				//TODO 考虑是否去掉
 				that.ctime.on('keyup',function(e){
-					S.log(e.keyCode);
 					if(e.keyCode == 38 || e.keyCode == 37){//up or left
-						//e.halt();
-						e.preventDefault();
 						//e.stopPropagation();
+						e.preventDefault();
 						that.add();
 					}
 					if(e.keyCode == 40 || e.keyCode == 39){//down or right
@@ -748,28 +732,24 @@ KISSY.add('calendar',function(S){
 			this.Verify = function(){
 
 				var isDay = function(n){
-					if(typeof n != 'number'){
-						return false;
-					}
+					if(!/\d+/i.test(n))return false;
+					n = Number(n);
 					if(n < 1 || n > 31){
 						return false;
 					}
 					return true;
-
 				};
 				var isYear = function(n){
-					if(typeof n != 'number'){
-						return false;
-					}
+					if(!/\d+/i.test(n))return false;
+					n = Number(n);
 					if(n < 100 || n > 10000){
 						return false;
 					}
 					return true;
 				};
 				var isMonth = function(n){
-					if(typeof n != 'number'){
-						return false;
-					}
+					if(!/\d+/i.test(n))return false;
+					n = Number(n);
 					if(n < 1 || n > 12){
 						return false;
 					}
@@ -811,10 +791,7 @@ KISSY.add('calendar',function(S){
 				_o.title = cc.fathor.getHeadStr(cc.year,cc.month);
 				cc.createDS();
 				_o.ds = cc.ds;
-				//TODO append之后可以得到cc.fathor.con.html()，但在UI上并没有渲染
 				cc.fathor.con.append(cc.fathor.templetShow(cc.html,_o));
-				//document.getElementById(cc.fathor.C_Id).innerHTML += cc.fathor.templetShow(cc.html,_o);
-				//在popup的时候，这里的cc.node没有得到
 				cc.node = S.one('#'+cc.id);
 				if(cc.fathor.withtime){
 					var ft = cc.node.one('.c-ft');
@@ -895,14 +872,13 @@ KISSY.add('calendar',function(S){
 						con.one('input').on('keydown',function(e){
 							e.target = S.Node(e.target);
 							if(e.keyCode == 38){//up
-								//e.target.set('value',Number(e.target.get('value'))+1);
 								e.target.val(Number(e.target.val())+1);
-								//TODO e.target.select如何调用
-								e.target[0].select();//TODO 是不是存在select
+								//TODO 我期望直接调用e.target.select
+								e.target[0].select();
 							}
 							if(e.keyCode == 40){//down
 								e.target.val(Number(e.target.val())-1);
-								e.target[0].select();//TODO 是不是存在select
+								e.target[0].select();
 							}
 							if(e.keyCode == 13){//enter
 								var _month = con.one('.setime').one('select').val();
@@ -926,7 +902,6 @@ KISSY.add('calendar',function(S){
 							var _month = con.one('.setime').one('select').val();
 							var _year  = con.one('.setime').one('input').val();
 							con.one('.setime').addClass('hidden');
-							//TODO
 							if(!cc.Verify().isYear(_year))return;
 							if(!cc.Verify().isMonth(_month))return;
 							cc.fathor.render({
@@ -1031,7 +1006,16 @@ KISSY.add('calendar',function(S){
 	});//prototype over
 
 	
-	
-	
 });
+
+/**
+ * 2010-09-09 by lijing00333@163.com - 拔赤
+ *	 - 将基于YUI2/3的Calendar改为基于KISSY
+ *	 - 增加起始日期（星期x）的自定义
+ * 	 - 常见浮层的bugfix
+ *
+ * TODO:
+ *   - 日历日期的输出格式的定制
+ *   - 多选日期的场景的交互设计
+ */
 

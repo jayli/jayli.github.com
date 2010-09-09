@@ -56,6 +56,34 @@
 起始星期可以自定义，指定参数start_day:0-6,默认为0，从星期日开始
 <div id="J_custom_day"></div>
 <hr size=1 />
+<h3>日期格式的自定义</h3>
+日期格式的自定义是在一个单独的模块中date-format，和Calendar无关,这里只是一个示例
+<br />
+请选择要输出的日期格式
+<select id="J_datetype">
+	<option value="custom" selected>custom</option>
+	<option value="default">default</option>
+	<option value="shortDate">shortDate</option>
+	<option value="mediumDate">mediumDate</option>
+	<option value="longDate">longDate</option>
+	<option value="fullDate">fullDate</option>
+	<option value="shortTime">shortTime</option>
+	<option value="mediumTime">mediumTime</option>
+	<option value="longTime">longTime</option>
+	<option value="isoDate">isoDate</option>
+	<option value="isoTime">isoTime</option>
+	<option value="isoDateTime">isoDateTime</option>
+	<option value="isoUtcDateTime">isoUtcDateTime</option>
+	<option value="localShortDate">localShortDate</option>
+	<option value="localShortDateTime">localShortDateTime</option>
+	<option value="localLongDate">localLongDate</option>
+	<option value="localLangDateTime">localLangDateTime</option>
+	<option value="localFullDate">localFullDate</option>
+	<option value="localFullDateTime">localFullDateTime</option>
+</select>
+ custom自定义格式 <input type=text value="yyyy/mm/dd HH:MM:ss" id="J_customtype"/>
+<div id="J_dateformat"></div>
+<hr size=1 />
 
 
 <p style="clear:both">
@@ -78,9 +106,12 @@ var showdate = function(n,d){//计算d天的前几天或者后几天，返回dat
 
 var S = KISSY;
 S.add({
+	'date-format':{
+		fullpath:'date-format.js?t='+new Date().getTime(),
+	},
 	'calendar':{
 		fullpath:'calendar.js?t='+new Date().getTime(),
-		requires:['core','calendar-skin']
+		requires:['core','calendar-skin','date-format']
 	},
 	'calendar-skin':{
 		fullpath:'assets/default.css'
@@ -132,8 +163,7 @@ S.use('calendar',function(S){
 		popup:true	,
 		action:['click']
 	}).on('select',function(e){
-		S.one('#J_popup').val(e.date.getMonth());
-		
+		S.one('#J_popup').val(e.date.format('localFullDate'));
 	});
 
 	//Popup日历,单选关闭
@@ -161,6 +191,17 @@ S.use('calendar',function(S){
 	//可以自定义起始日期
 	c = new S.Calendar('J_custom_day',{
 		start_day:1
+	});
+
+	//格式化时间类型
+	c = new S.Calendar('J_dateformat',{
+		withtime:true
+	}).on('timeselect',function(e){
+		var type = S.one('#J_datetype').val();
+		if(type == 'custom'){
+			type = S.one('#J_customtype').val();
+		}
+		alert(e.date.format(type));	
 	});
 	
 });
