@@ -59,6 +59,30 @@ blockquote, q {
 	  .com {color:orange;}
 	  .pro {color:red}
 	  span {_overflow:hidden;}
+
+      .row > :nth-child(6n+1) a:hover {
+        color: #FFFF00;
+      }
+
+      .row > :nth-child(6n+2) a:hover {
+        color: #FF0000;
+      }
+
+      .row > :nth-child(6n+3) a:hover {
+        color: #00FF00;
+      }
+
+      .row > :nth-child(6n+4) a:hover {
+        color: #FF00FF;
+      }
+
+      .row > :nth-child(6n+5) a:hover {
+        color: #0000FF;
+      }
+
+      .row > :nth-child(6n+6) a:hover {
+        color: #FF8000;
+      }
     </style>
 	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
   </head>
@@ -68,13 +92,14 @@ blockquote, q {
     <h1>Jayli</h1>
 
 
-
+<div class="row">
 <p>FE of <a href="http://ued.taobao.com" class="com">TAOBAO.COM</a>.</p>
 <p><a href="http://www.uedmagazine.com">http://www.uedmagazine.com</a></p>
 <p><a href="http://www.flickr.com/lijing00333">http://www.flickr.com/lijing00333</a></p>
 <p><a href="http://github.com/jayli">http://github.com/jayli</a></p>
 <p><a href="/projects.html" class="pro">projects</a> |
 <a href="lijing00333@163.com">lijing00333@163.com</a></p>
+</div>
 <script>
 YUI().use('node','transition',function(Y){
 
@@ -180,6 +205,8 @@ YUI().use('node','transition',function(Y){
 		}*/);
 		//TODO 这里的回调在webkit下不执行，不知为何
 	});
+
+	//alert(Y.Transition.useNative);
 
 });
 
