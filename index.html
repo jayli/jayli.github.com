@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Jayli: the official website</title>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8 "/>
     <style>
 		/* reset */
 html, body, div, span, applet, object, iframe,
@@ -76,12 +76,12 @@ blockquote, q {
 <p><a href="/projects.html" class="pro">projects</a> |
 <a href="lijing00333@163.com">lijing00333@163.com</a></p>
 <script>
-YUI().use('node','anim',function(Y){
-	
-	//����õ�ɫֵ
+YUI().use('node','transition',function(Y){
+
+	//随机得到色值
 	var randomColor = function(){
 		var ToHex = function(n){
-			var hexch = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
+			var hexch = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
 			var h, l;
 			n = Math.round(n);
 			l = n % 16;
@@ -94,8 +94,7 @@ YUI().use('node','anim',function(Y){
 		return '#'+ToHex(r)+ToHex(g)+ToHex(b);
 	}
 	
-
-	//��
+	//火花
 	var Spark = function(opt){
 		//Y.log(opt);
 		var o = opt || {},
@@ -104,33 +103,29 @@ YUI().use('node','anim',function(Y){
 			dx = o.dx,
 			dy = o.dy,
 			duration = o.duration || 1,
-			ease = o.ease || Y.Easing.easeOut,
+			ease = o.ease || (Y.UA.webkit > 0 ?'ease-out':'ease-in'),
 			color = randomColor(),
 			w = opt.w || 5,
 			w = Math.floor(Math.random()*w + 1);
 			el = Y.Node.create('<span style="background:'+color+';height:'+w+'px;width:'+w+'px;position:absolute;top:'+oy+'px;left:'+ox+'px"></span>');
 		Y.one('body').append(el);
-		var anim = new Y.Anim({
-			node:el,
-			to:{
-				top:dy,
-				left:dx,
-				opacity:0
-			},
-			easing:ease,
-			duration:duration
+		
+		el.transition({
+			duration: duration, 
+			easing: ease,
+			left: Math.floor(dx)+'px',
+			top: Math.floor(dy)+'px',
+			opacity: 0
+		},function(){
+			this.remove();
 		});
-		anim.on('end',function(){
-			//debugger;
-			this._node.remove();
-		});
-		anim.run();
+		
 	};
 	
-	//�������Բ�е�һ����
+	//随机生成圆中的一个点
 	var RandomPoint = function(x,y,r){
-		var r = Math.random() * r,//����뾶
-			e = Math.random() * (Math.PI * 2),//����Ƕ�
+		var r = Math.random() * r,//随机半径
+			e = Math.random() * (Math.PI * 2),//随机角度
 			a = r * Math.cos(e),
 			b = r * Math.sin(e);
 		x += a;
@@ -141,8 +136,8 @@ YUI().use('node','anim',function(Y){
 		};
 	};
 	
-	//��ը
-	//x,y,n:�𻨸�����r ����ը�뾶��w�������ߴ�
+	//爆炸
+	//x,y,n:火花个数，r ：爆炸半径，w：火花最大尺寸
 	var explode = function(x,y,n,r,w){
 		for(var i = 0;i<n;i++){
 			var d = RandomPoint(x,y,r);
@@ -166,31 +161,36 @@ YUI().use('node','anim',function(Y){
 			y = e.pageY,
 			H = Y.one('body').get('viewportRegion').height + Y.one('body').get('viewportRegion').top - 5,
 			h = H - y,
-			v = 500,//�ٶ�
+			v = 500,//速度
 			d = h / v;
 		var arrow = Y.Node.create('<span style="width:2px;height:5px;background:'+randomColor()+';position:absolute;top:'+H+'px;left:'+x+'px;"></span>');
 		Y.one('body').append(arrow);
-		var a = new Y.Anim({
-			node:arrow,
-			to:{
-				left:x,
-				top:y
-			},
-			duration:d
-		});
-		a.on('end',function(){
-			this._node.remove();
+		arrow.on('transition:propertyEnd',function(e){
 			explode(x,y,20,300,10);
+			arrow.remove();
 		});
-		a.run();
-		
-		
+		arrow.transition({
+			duration: d,
+			left: x+'px',
+			top: y+'px',
+		}/*,function(){
+			return;
+			Y.log(x+' '+y);
+			this.remove();
+		}*/);
+		//TODO 这里的回调在webkit下不执行，不知为何
 	});
 
-
 });
+
+/**
+ LOG
+  - transition中的尺寸值必须为'10px'形式，不能为数字
+  - duration的值和Y.Anim的duration不太一致，动画速度明显要慢很多
+  - webkit中的ease-in相当于其他浏览器中的ease-out
+  - webkit中的transition的callback有时不触发，貌似是transition:end事件未触发，还未找到规律
+*/
 </script>
   </body>
 
 </html>
-
