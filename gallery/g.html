@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<!--created by 拔赤-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+</body>
+<script>
+YUI({
+	modules:{
+		raphael:{
+			fullpath:'http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js'
+		}
+	}
+}).use('raphael','console','dump',function(Y){
+	new Y.Console().render();
+
+	
+	var r = Raphael(0, 0, 1000, 900);
+
+	//背景
+	var x = r.rect(0,0,1000,900);
+	x.attr('fill','black');
+
+	var plen1 = r.rect(10,10,10,10).attr('fill','red');
+	var plen2 = r.rect(100,10,90,90).attr('fill','green');
+
+	var count = 0;
+	x.click(function(e){
+		if(count++%2 == 0){
+			plen1.animate({
+				cx:50,
+				cy:50,
+				x:e.pageX,
+				y:e.pageY
+			},2000,"bounce");
+
+		}else{
+			plen2.animate({
+				cx:50,
+				cy:50,
+				x:e.pageX,
+				y:e.pageY
+			},2000,"bounce");
+		}
+	});
+	/*
+	var c = 0;
+	setTimeout(function(){
+		if(c++ > 10)return;
+		debugger;
+
+		
+		
+	},100);
+	*/
+
+
+	//inRegion
+	/*
+		region:[1,2,3,4]
+	*/
+	var inRegion = function(p,r){
+		if(r[0]>r[2]){//x坐标
+			r[0] = r[0] + r[2];
+			r[2] = r[0] - r[2];
+			r[0] = r[0] - r[2]; 
+		}
+		if(r[1]>r[3]){//y坐标
+			r[1] = r[1] + r[3];
+			r[3] = r[1] - r[3];
+			r[1] = r[1] - r[3]; 
+		}
+		if(p[0] > r[0] && p[0] < r[2] && p[1] > r[1] && p[1] < r[3]){
+			return true;
+		}else{
+			return false;
+		}
+
+	};
+
+	//判断两个矩形是否重合
+	var coincide = function(a,b){
+		a = [
+			a.attrs.x,
+			a.attrs.y,
+			a.attrs.x+a.attrs.width,
+			a.attrs.y+a.attrs.height
+		];
+		b = [
+			b.attrs.x,
+			b.attrs.y,
+			b.attrs.x+b.attrs.width,
+			b.attrs.y+b.attrs.height
+		];
+
+		if(inRegion([a[0],a[1]],b))return true;
+		if(inRegion([a[0],a[3]],b))return true;
+		if(inRegion([a[2],a[1]],b))return true;
+		if(inRegion([a[2],a[3]],b))return true;
+	};
+
+	//矩形碰撞检查
+	var hitListener = function(a,b,callback){
+		(function(){
+			if(coincide(a,b)){
+				callback(a,b);
+			}else{
+				setTimeout(arguments.callee,25);
+			}
+		})();
+	};
+
+	hitListener(plen1,plen2,function(a,b){
+		Y.log(Y.dump(a));
+
+	});
+
+	
+	
+});
+
+</script>
+</html>
