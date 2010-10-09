@@ -103,7 +103,14 @@ blockquote, q {
 <script>
 <!--
 YUI({
-	combine:true	
+	combine:true,
+	comboBase:'http://a.tbcdn.cn/??',
+	base:'http://a.tbcdn.cn/s/yui/3.2.0/build/',
+	root:'s/yui/3.2.0/build/',
+	filter:{
+		'searchExp': "&", 
+		'replaceStr': ","
+	}
 }).use('node','transition',function(Y){
 
 	//随机得到色值
