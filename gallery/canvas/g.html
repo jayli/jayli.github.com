@@ -64,6 +64,7 @@ YUI({
 			var str = '方块:'+S.cubes + ',子弹:'+S.bullets+',命中:'+S.hit+',逃脱:'+S.escape+',命中率:'+S.rate+',杀伤率:'+S.score;
 			Y.one('.score').set('innerHTML',str);
 			if(S.cubes == 100){
+				S.cubes ++ ;
 				alert('您的成绩:'+str);
 			}
 		}
