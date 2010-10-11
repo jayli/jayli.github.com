@@ -9,9 +9,6 @@
 	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
-<button onclick="_=clone(cube);drowCube(matrixCube(zoom(_,30),M1),C,true);">立方体1</button>
-<button onclick="_=clone(cube);drowCube(matrixCube(zoom(_,90),M2),C,true);">立方体2</button>
-<button onclick="_=clone(cube);drowCube(matrixCube(zoom(_,50),M3),C,true);">立方体3</button>
 </body>
 <script>
 YUI({
@@ -114,11 +111,15 @@ YUI({
 		});
 	});
 
+
+	var X = [450,250,450],//位移量
+		Z = 120;//放大
+
 	
 	//var c = R.path("M10 10L90 90").attr({stroke: "red"});
 	//S.hide();
 	S.drag(function(dx,dy){
-		drowCube(matrixCube(zoom(clone(getCube(dx/100)),90),M,[450,150,150]),true);
+		drowCube(matrixCube(zoom(clone(getCube(dx/100)),Z),M,X),true);
 	});
 	
 	
@@ -171,7 +172,7 @@ YUI({
 
 
 	//drowCube(zoom(cube,100),false);
-	drowCube(matrixCube(zoom(clone(getCube(0)),90),M,[450,150,150]),false);
+	drowCube(matrixCube(zoom(clone(getCube(0)),Z),M,X),false);
 
 });
 
