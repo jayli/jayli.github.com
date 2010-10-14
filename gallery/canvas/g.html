@@ -61,7 +61,7 @@ YUI({
 			}
 			S.rate = S.rate.toString().replace(/\..+%/,'%');
 			S.score = S.score.toString().replace(/\..+%/,'%');
-			var str = '方块:'+S.cubes + ',子弹:'+S.bullets+',命中:'+S.hit+',逃脱:'+S.escape+',命中率:'+S.rate+',杀伤率:'+S.score;
+			var str = '打方块！点击鼠标发射炮弹!  方块:'+S.cubes + ',子弹:'+S.bullets+',命中:'+S.hit+',命中率:'+S.rate+',杀伤率:'+S.score;
 			Y.one('.score').set('innerHTML',str);
 			if(S.cubes == 100){
 				S.cubes ++ ;
