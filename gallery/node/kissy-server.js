@@ -5,6 +5,11 @@ var sys = require('sys'),
 
 var YUI = require("yui3").YUI;
 
+var jsdom  = require("jsdom"),
+    window = jsdom.jsdom().createWindow();
+
+
+
 
 
 require("assert").equal( global.YUI, undefined, "global yui created");
@@ -13,28 +18,25 @@ require("assert").equal( global.YUI, undefined, "global yui created");
 YUI({
     filter: 'debug',
     debug: true,
-}).use('nodejs-dom', function(Y) {
+	modules:{
+		'ks-core':{
+			fullpath:'http://kissyteam.github.com/kissy/src/kissy/kissy.js',
+			requires:['skin','node']
+		},
+		slide:{
+			fullpath:'http://kissyteam.github.com/kissy/src/switchable/switchable.js',
+			requires:['ks-core','skin']
+		},
+		skin:{
+			fullpath:'http://kissyteam.github.com/kissy/build/cssbase/base-min.css',
+			type:'css'
+		}
+	}
+}).use('nodejs-dom','ks-core', function(Y) {
     document = Y.Browser.document;
 	window = Y.Browser.window;
 	location = Y.Browser.location;
-	YUI({
-		modules:{
-			'ks-core':{
-				fullpath:'http://kissyteam.github.com/kissy/build/packages/kissy.js',
-				requires:['skin','node']
-			},
-			slide:{
-				fullpath:'http://kissyteam.github.com/kissy/src/switchable/switchable.js',
-				requires:['ks-core','skin']
-			},
-			skin:{
-				fullpath:'http://kissyteam.github.com/kissy/build/cssbase/base-min.css',
-				type:'css'
-			}
-		}
-	}).use('slide',function(Y){
-		Y.log('================');	
-	});
+	console.log(KISSY);
 	return;
 	Y.config.doc.body.innerHTML = ['<style>',
 		'#demo1 { position: relative; width: 750px; padding-top: 29px; }',
