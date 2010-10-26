@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<!--created by 拔赤-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	.score {position:absolute;color:white;z-index:100;}
+	.info{position:absolute;color:#333;text-align:right;bottom:0;right:0;z-index:100;}
+	</style>
+	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+<p class="score"></p>
+<p class="info">created by:拔赤|http://jayli.github.com</p>
+</body>
+<script>
+YUI({
+	combine:true,
+	comboBase:'http://a.tbcdn.cn/??',
+	base:'http://a.tbcdn.cn/s/yui/3.2.0/build/',
+	root:'s/yui/3.2.0/build/',
+	filter:{
+		'searchExp': "&", 
+		'replaceStr': ","
+	},
+	modules:{
+		raphael:{
+			fullpath:'raphael-min.js'
+		}
+	}
+}).use('raphael','console','dump','node',function(Y){
+	new Y.Console().render();
+
+	//全局变量
+	var W = 400,
+		H = 600,
+		R = Raphael(0,0,1,1),//画布
+		V = 500,//毫秒间隔落一格
+		AS = 200,//快速落格
+		CW = W / 10,//cell宽度
+		COLOR = ['black','red','blue','orange','green','white'];
+
+
+
+	//画布矩阵
+	var M = (function(x,y){
+		var m = [];
+		for(var i = 0;i<y;i++){
+			m[i] = [];
+			for(var j = 0;j<x;j++){
+				m[i][j] = [0,0];//[a,b] a:0，1，是否有cell，b:0,1,2,3,4, 0，无意义，1234代表颜色值
+			}
+		}
+		return M;
+	})(10,15);
+
+	//方块阵列
+	var B = [
+		//0
+		[
+
+
+		]
+
+
+	];
+
+
+	var block = function(){
+
+
+
+	};
+
+
+
+
+
+	
+
+
+	//runtime 
+
+	//创建场景
+	var S = function(w,h){
+		R.setSize(W,H);
+
+		//背景
+		return R.rect(0,0,w,h).attr('fill','black');
+	}(W,H);
+
+	
+});
+
+</script>
+</html>
