@@ -3,6 +3,7 @@
 // @namespace      Flickr img proxy
 // @description    http://www.uedmagazine.com
 // @include        http://www.flickr.com/
+// @include        http://www.flickr.com/*
 // @require http://a.tbcdn.cn/s/yui/3.2.0/build/simpleyui/simpleyui-min.js
 // ==/UserScript==
 
