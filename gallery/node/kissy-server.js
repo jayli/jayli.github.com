@@ -43,9 +43,50 @@ S.add('a', {
 });
 */
 
+/*
+//it work
 S.use('ks-core', function(S) {
-    S.log(S);
+    //S.log(S);
 });
+*/
+
+S.add('calendar', {
+    fullpath: 'http://github.com/kissyteam/kissy/raw/master/src/calendar/calendar.js',
+	require:['ks-core']
+}).use('calendar',function(S) {
+    S.log(S.a);
+});
+
+
+
+/*
+S.use('calendar',function(S){
+	document.body.innerHTML = '<div id="J_calendar"></div>';
+	var docType = '<!DOCTYPE html>';
+
+	new S.Calendar('J_calendar');
+
+	S.log(docType + S.one('doc').get('outerHTML'));
+	return;
+
+	http.createServer(function (req, res) {
+
+
+		res.writeHead(200, {
+			'Content-Type': 'text/html',
+			'Accept-Charset':'utf-8'}
+		);
+		var out = docType + S.one('doc').get('outerHTML');
+		res.write(out);
+		res.close();
+
+
+
+	}).listen(81);
+
+});
+*/
+
 
 //require("assert").equal( global.YUI, undefined, "global yui created");
 

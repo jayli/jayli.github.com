@@ -116,7 +116,7 @@ build time: Oct 15 14:07
                 base = currentScript.src.replace(/^(.*)(seed|kissy).*$/i, '$1');
 			*/
 			//console.log(__dirname);
-			var base = __dirname;
+			var base = __dirname + '/';
             
             // 配置信息
             this.Config = {
@@ -1336,7 +1336,7 @@ KISSY.include = function(file, cb) {
 					head = document.getElementsByTagName('head')[0];
                 l.setAttribute('rel', 'stylesheet');
                 l.setAttribute('type', 'text/css');
-                l.setAttribute('href', link);
+                l.setAttribute('href', url);
                 head.appendChild(l);
 				cb.success.call(cb);
 				return;
