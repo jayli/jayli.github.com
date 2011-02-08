@@ -58,6 +58,8 @@ img.notsowide {
 			<p class="LinksNewP"><span class="LinksNew">
 				<span><a href="http://lijing00333.wordpress.com/">@blog</a></span>
 				<span><a href="http://hi.baidu.com/lijing00333">@Hi</a></span>
+				<span><a href="http://www.slideshare.net/lijing00333">@SlideShare</a></span>
+				<span><a href="http://t.sina.com.cn/jayli">@jayli</a></span>
 				<span><a href="http://www.flickr.com/photos/lijing00333/">@flickr</a></span>
 				<span><a href="http://github.com/jayli">@github</a></span>
 				<a href="http://jayli.github.com/about.html">@about</a>
@@ -90,6 +92,36 @@ YUI().use('yql','node',function(Y){
 });
 </script>	
 
+
+
+
+				
+<div style="clear:both;">
+<a href="http://www.slideshare.net/lijing00333" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://www.slideshare.net/lijing00333">@ SlideShare</a></strong></span>
+</div>
+
+
+<div id="J_ss">
+	<img src="http://cubee.github.com/doc/assets/images/loading.gif" style="margin-top:3px"/>
+</div>
+<script>
+YUI().use('yql','node',function(Y){
+	Y.YQL('select * from xml where url="http://www.slideshare.net/api/1/get_slideshow_by_user?limit=2&username_for=lijing00333&api_key=uI44nUbb&hash=f5c744817d7df5365809f38e70d867b252282318&ts=1297178685940"',function(r){
+		Y.log(r);
+		var s = '';
+		for(var i = 0;i<1;i++){
+			var item = r.query.results.User.Slideshow[i];
+
+			s += item.EmbedCode;	
+		}
+		s += '&nbsp;<a href="http://www.slideshare.net/lijing00333">更多...</a>';
+		Y.one('#J_ss').set('innerHTML',s);
+	});
+
+});
+</script>					
+
+
 <!---->
 
 <!--微博-->
@@ -112,7 +144,12 @@ YUI().use('yql','node',function(Y){
 </div>
 
 				
+				
+				
 
+				
+				
+				
 
 <div style="clear:both;">
 <a href="http://hi.baidu.com/lijing00333/rss" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://hi.baidu.com/lijing00333">@ Baidu Hi</a></strong></span>
