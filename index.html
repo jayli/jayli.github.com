@@ -112,11 +112,44 @@ YUI().use('yql','node',function(Y){
 		<iframe frameBorder="0" border=0 sclloing="no" src="http://v.t.sina.com.cn/widget/widget_blog.php?height=500&skin=wd_01&showpic=0&uid=1700082927"></iframe>
 	</div>
 </div>
+
+				
+
+
+<div style="clear:both;">
+<a href="http://hi.baidu.com/lijing00333/rss" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://hi.baidu.com/lijing00333">@ Baidu Hi</a></strong></span>
+</div>
+
+
+<div id="J_baidu">
+	<img src="http://cubee.github.com/doc/assets/images/loading.gif" style="margin-top:3px"/>
+</div>
+<script>
+YUI().use('yql','node',function(Y){
+	Y.YQL('select * from rss where url="http://hi.baidu.com/lijing00333/rss"',function(r){
+		//Y.log(r);
+		var s = '<table width=800><tbody>';
+		for(var i = 0;i<r.query.results.item.length;i++){
+			var item = r.query.results.item[i];
+			item.description = item.description.replace(/<\s?a[^>]*>/gi,'').replace('</a>','').replace(/<br\/><b>类别*.+$/,'').replace(/<br><br>/g,'<br>').replace(/<br>\s+<br>/g,'<br>');
+			item.description = item.description.replace(/<\s?img[^>]*>/gi,'').replace(/<p>/g,'').replace(/<\/p>/g,'');
+			s += '<tr><td><a href="'+item.link+'">'+item.title+'</a> <span style="font-size:9px;color:gray">'+item.pubDate+'</span></td></tr>';
+			s += '<tr><td>'+item.description+'</td></tr>';		
+		}
+		s += '</tbody></table>';
+		Y.one('#J_baidu').set('innerHTML',s);
+	});
+
+});
+</script>	
+
 <!---->
 <style>
 			.StreamView {width:109px;}
 		</style>
+		<div style="clear:both;">
 		<a href="http://api.flickr.com/services/feeds/photos_public.gne?id=22932844@N00&lang=en-us&format=rss_200" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://www.flickr.com/photos/lijing00333/">@ flickr</a></strong></span>
+		</div>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script>
 //By ImMmMm.com
@@ -151,35 +184,6 @@ $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id="+id+"&form
 		<div id="J_flickr">
 			<img src="http://cubee.github.com/doc/assets/images/loading.gif" style="margin-top:3px"/>
 		</div>
-				
-
-
-<div style="clear:both;">
-<a href="http://hi.baidu.com/lijing00333/rss" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://hi.baidu.com/lijing00333">@ Baidu Hi</a></strong></span>
-</div>
-
-
-<div id="J_baidu">
-	<img src="http://cubee.github.com/doc/assets/images/loading.gif" style="margin-top:3px"/>
-</div>
-<script>
-YUI().use('yql','node',function(Y){
-	Y.YQL('select * from rss where url="http://hi.baidu.com/lijing00333/rss"',function(r){
-		//Y.log(r);
-		var s = '<table width=800><tbody>';
-		for(var i = 0;i<r.query.results.item.length;i++){
-			var item = r.query.results.item[i];
-			item.description = item.description.replace(/<\s?a[^>]*>/gi,'').replace('</a>','').replace(/<br\/><b>类别*.+$/,'').replace(/<br><br>/g,'<br>').replace(/<br>\s+<br>/g,'<br>');
-			item.description = item.description.replace(/<\s?img[^>]*>/gi,'').replace(/<p>/g,'').replace(/<\/p>/g,'');
-			s += '<tr><td><a href="'+item.link+'">'+item.title+'</a> <span style="font-size:9px;color:gray">'+item.pubDate+'</span></td></tr>';
-			s += '<tr><td>'+item.description+'</td></tr>';		
-		}
-		s += '</tbody></table>';
-		Y.one('#J_baidu').set('innerHTML',s);
-	});
-
-});
-</script>	
 
 </div><!--end Main-->
 
