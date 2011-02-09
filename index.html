@@ -19,27 +19,8 @@ strong.title a{
 }
 h1 a {font-size:30px;}
 </style>
-<!--[if LT IE 7]>
-<style type="text/css">
-.trans_png {
-	behavior: url('/javascript/pngbehavior2.htc');
-	border:0;
-}
-</style>
-<![endif]-->
-
-<!--[if IE]>
-<style type="text/css">
-
-img.notsowide {
- behavior:expression(fixMaxWidth(this));
-}
-
-</style>
-<![endif]-->
 
 </head><body>
-
 
 <a name="top"></a>
 
@@ -125,19 +106,29 @@ YUI().use('yql','node',function(Y){
 <!---->
 
 <!--微博-->
-<div  style="clear:both;">
-	<a href="http://t.sina.com.cn/jayli" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://t.sina.com.cn/jayli">@ jayli</a></strong></span>
-	<style>
+<style>
+	#Main {
+		position:relative;
+	}
+	#J_wb_wrap {
+		position:absolute;
+		top:100px;
+		right:0px;
+		width:250px;
+	}
 	#J_wb {
 		width:100%;
-		height:500px;
+		height:550px;
 		overflow:hidden;
+		border:1px solid #ccc;
+		background-color:white;
 	}
 	#J_wb iframe {
-		border:0;height:120%;width:70%;overflow:hidden;
+		border:0;height:100%;width:100%;overflow:hidden;
 	}
-
-	</style>
+</style>
+<div  style="clear:both;" id="J_wb_wrap">
+	<a href="http://t.sina.com.cn/jayli" target=_blank><img height="16" width="16" class="absmiddle" src="http://l.yimg.com/g/images/feed-icon-16x16.png"/></a> <span><strong class="title"><a href="http://t.sina.com.cn/jayli">@ jayli</a></strong></span>
 	<div id="J_wb">
 		<iframe frameBorder="0" border=0 sclloing="no" src="http://v.t.sina.com.cn/widget/widget_blog.php?height=500&skin=wd_01&showpic=0&uid=1700082927"></iframe>
 	</div>
