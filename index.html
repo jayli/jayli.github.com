@@ -190,7 +190,7 @@ $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id="+id+"&form
 		var src = m.replace(/_m/,'_t');
 		var href = m.replace(/_m/,'_z');
 		m = m.replace(/_m/,'_s');
-		m = 'http://anonymouse.org/cgi-bin/anon-www.cgi/'+m;
+		//m = 'http://anonymouse.org/cgi-bin/anon-www.cgi/'+m;
 		$('#J_flickr').append("<div class='item'><div class='thumb'><a href='" + href + "'><img src='" + m + "'/></a></div></div>");
 		if ( i == num-1 ) return false;
     });
