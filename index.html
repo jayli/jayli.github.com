@@ -165,6 +165,26 @@ YUI().use('yql','node',function(Y){
 		}
 		s += '</tbody></table>';
 		Y.one('#J_baidu').set('innerHTML',s);
+		//百度的数据请求完成后再请求flickr
+		//By ImMmMm.com
+		(function($){
+		var id = "22932844@N00"; //修改成你的
+		var num = "20"; //大于等于1小于等于20的整数
+		$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id="+id+"&format=json&jsoncallback=?",function(data){
+			$('#J_flickr').html('');
+			$.each(data.items, function(i,item){
+				var m = item.media.m;
+
+				var src = m.replace(/_m/,'_t');
+				var href = m.replace(/_m/,'_z');
+				m = m.replace(/_m/,'_s');
+				//m = 'http://anonymouse.org/cgi-bin/anon-www.cgi/'+m;
+				$('#J_flickr').append("<div class='item'><div class='thumb'><a href='" + href + "'><img src='" + m + "'/></a></div></div>");
+				if ( i == num-1 ) return false;
+			});
+			//$(".item a:has(img)").slimbox();
+		});
+		})(jQuery);
 	});
 
 });
@@ -179,25 +199,7 @@ YUI().use('yql','node',function(Y){
 		</div>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script>
-//By ImMmMm.com
-(function($){
-var id = "22932844@N00"; //修改成你的
-var num = "20"; //大于等于1小于等于20的整数
-$.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id="+id+"&format=json&jsoncallback=?",function(data){
-    $('#J_flickr').html('');
-	$.each(data.items, function(i,item){
-		var m = item.media.m;
-
-		var src = m.replace(/_m/,'_t');
-		var href = m.replace(/_m/,'_z');
-		m = m.replace(/_m/,'_s');
-		//m = 'http://anonymouse.org/cgi-bin/anon-www.cgi/'+m;
-		$('#J_flickr').append("<div class='item'><div class='thumb'><a href='" + href + "'><img src='" + m + "'/></a></div></div>");
-		if ( i == num-1 ) return false;
-    });
-	//$(".item a:has(img)").slimbox();
-});
-})(jQuery);
+////////////////////在百度数据请求结束后请求flickr
 </script>
 <style>
 #J_flickr .item {
