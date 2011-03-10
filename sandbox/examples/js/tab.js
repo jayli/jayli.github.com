@@ -1,4 +1,9 @@
 
+/*
+Sandbox.add(function(S){
+	//this worked
+});
+*/
 Sandbox.add('tab',function(S){
 	S.namespace('S.Demo');
 	S.Demo.init = function(){

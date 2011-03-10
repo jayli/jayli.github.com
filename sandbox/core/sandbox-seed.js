@@ -7,7 +7,7 @@
  * @module Sandbox
  * @author 拔赤 lijing00333@163.com
  *
- *		- http://www.uedmagazine.com
+ *		- http://jayli.github.com
  *
  *
  */
@@ -52,7 +52,7 @@ Sandbox = {
 	 * 使用add添加模块的代码
 	 * @method add
 	 * @interface 
-	 * @param mojoname 模块名称
+	 * @param mojoname 模块名称, 可以为空
 	 * @param callback 回调
 	 * @param config 配置，包含requires:[]，成员为外部脚本的fullpath
 	 * @static
@@ -60,6 +60,11 @@ Sandbox = {
 	add:function(mojoname,callback,config){
 		var that = this;
 		var o = {};
+		if(typeof mojoname == 'function'){
+			var config = callback,
+				callback = mojoname,
+				mojoname = 'K_'+new Date().getTime();
+		}
 		o.mojoname = mojoname;
 		o.callback = callback;
 		o.fullpath = that._RuntimeScript;
@@ -305,6 +310,10 @@ Sandbox = {
 			var requires = [];
 		}
 		that.DoQueue.push({callback:callback,requires:requires});
+		if(that.domReady){
+			that.run(requires,callback);
+			return;
+		}
 	},
 
 	use : function(){
@@ -572,6 +581,8 @@ Sandbox = {
 		return o;
 	}(),
 
+	domReady:false,
+
 	/**
 	 * onDomReady
 	 * @param onReady 回调
@@ -589,6 +600,7 @@ Sandbox = {
 		function doReady(){  
 		    if( isReady ) return;  
 		    isReady = true;  
+			that.domReady = isReady;
 		    onready();  
 		}  
 		/*IE*/  
