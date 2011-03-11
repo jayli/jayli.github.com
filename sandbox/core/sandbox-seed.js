@@ -4,7 +4,7 @@
  *		- 模块依赖关系对父模块不可见
  *		- modules之间的进一步解耦
  *
- * @module Sandbox
+ * @Class Sandbox
  * @author 拔赤 lijing00333@163.com
  *
  *		- http://jayli.github.com
@@ -35,6 +35,7 @@ Sandbox = {
 	 *		fullpath:
 	 *		callback:
 	 *		requires:
+	 *		attached: 	执行过后就设置为true
 	 *	}
 	 * @method _addMojo
 	 * @param o 要增加的object
@@ -45,6 +46,7 @@ Sandbox = {
 		that._Mojos[o.mojoname] = {};
 		that._Mojos[o.mojoname].fullpath = o.fullpath;
 		that._Mojos[o.mojoname].auto = o.auto;
+		that._Mojos[o.mojoname].attached = false;
 		that._Mojos[o.mojoname].callback = o.callback;
 		that._Mojos[o.mojoname].requires = o.requires;
 	},
@@ -58,8 +60,8 @@ Sandbox = {
 	 * @static
 	 */
 	add:function(mojoname,callback,config){
-		var that = this;
-		var o = {};
+		var that = this,
+			o = {};
 		if(typeof mojoname == 'function'){
 			var config = callback,
 				callback = mojoname,
@@ -68,9 +70,9 @@ Sandbox = {
 		o.mojoname = mojoname;
 		o.callback = callback;
 		o.fullpath = that._RuntimeScript;
-		var config = config||{};
-		var requires = config.requires?config.requires:[];
-		var auto = (typeof config.auto != 'undefined')?config.auto:true;//默认都是自动加载
+		var config = config||{},
+			requires = config.requires?config.requires:[],
+			auto = (typeof config.auto != 'undefined')?config.auto:true;//默认都是自动加载
 		o.requires = requires;
 		o.auto = auto;
 		that._addMojo(o);
@@ -94,11 +96,11 @@ Sandbox = {
 			var _win = this; 
 			//默认根
 			if(/^(S|Sandbox|SB)$/.test(d[0])){
-				var j = 1;
-				var _win = this;
+				var j = 1,
+					_win = this;
 			}else{
-				var j = 0;
-				var _win = window;
+				var j = 0,
+					_win = window;
 
 			}
 			for(;j<d.length;j++){
@@ -115,8 +117,8 @@ Sandbox = {
 	 * @private
 	 */
 	_loadUnloaded:function(callback){
-		var that = this;
-		var _a = [];
+		var that = this,
+			_a = [];
 		for(var i in that._Mojos){
 			var _req = that._Mojos[i].requires;
 			for(var j = 0;j<_req.length;j++){
@@ -178,8 +180,8 @@ Sandbox = {
 	 * @private
 	 */
 	_buildExeQueue:function(){
-		var that = this;
-		var _a = [];
+		var that = this,
+			_a = [];
 		for(var i in that._Mojos){
 			_a.push(that._Mojos[i].fullpath);
 			var _req = that._Mojos[i].requires;
@@ -218,9 +220,9 @@ Sandbox = {
 	_reorder : function(){
 		var that = this;
 		for(var i = 0;i<that._LoadQueue.length;i++){
-			var _a = [];//[2,4,7]
-			var _ta = [];//['m1','m2','m3']
-			var fullpath = that._LoadQueue[i];
+			var _a = [],//[2,4,7]
+				_ta = [],//['m1','m2','m3']
+				fullpath = that._LoadQueue[i];
 			for(var j = 0;j<that._ExeQueue.length;j++){
 				var mojoname = that._ExeQueue[j];
 				if(that._Mojos[mojoname].fullpath == fullpath){
@@ -234,8 +236,8 @@ Sandbox = {
 			}else{
 				_a.reverse();
 				for(var k = 0;k<_a.length;k++){
-					var index = _a[k];
-					var mname = _ta[k];
+					var index = _a[k],
+						mname = _ta[k];
 					that._ExeQueue[index] = mname;
 				}
 			}
@@ -272,7 +274,11 @@ Sandbox = {
 		that._buildExeQueue();
 		var _a = that._ExeQueue.reverse();
 		for(var i = 0;i<_a.length;i++){
+			if(that._Mojos[_a[i]].attached){
+				continue;
+			}
 			that._Mojos[_a[i]].callback(that);
+			that._Mojos[_a[i]].attached = true;
 		}
 	},
 	/**
@@ -299,21 +305,27 @@ Sandbox = {
 	 * @method ready
 	 * @interface 
 	 * @param callback 回调
-	 * @param config 配置，包含requires:[]，成员为外部脚本的fullpath
+	 * @param config 配置，包含requires:[]，成员为外部脚本的fullpath,可以为空
+	 * @param status 是否立即发起请求，不等domready,true:立即执行,不等domready,默认为false，
 	 * @static
 	 */
-	ready:function(callback,config){
+	ready:function(callback,config,status){
 		var that = this;
+		if(typeof config == 'boolean'){
+			arguments.callee.apply(this,[callback,{requires:[]},config]);
+			return;
+		}
+		var status = typeof status=='undefined'?false:true;
 		if(typeof config != 'undefined'){
 			var requires = config.requires;
 		}else{
 			var requires = [];
 		}
-		that.DoQueue.push({callback:callback,requires:requires});
-		if(that.domReady){
+		if(that.domReady || status){
 			that.run(requires,callback);
 			return;
 		}
+		that.DoQueue.push({callback:callback,requires:requires});
 	},
 
 	use : function(){
@@ -334,7 +346,7 @@ Sandbox = {
 	 */
 	run:function(a,callback){
 		var that = this;
-		var requires = that.clone(that.distinct(a?a:[])).reverse();
+		var requires = that.distinct(a?a:[]).concat().reverse();
 		var recursion = function(){
 			if(requires.length == 0){
 				//callback(that);
@@ -455,29 +467,6 @@ Sandbox = {
 		}
 		return o;
 	},
-	/**
-	* 深拷贝
-	* @param { object } o : 要拷贝的对象
-	* @param { object } a : 返回对象
-	*/
-	clone : function(o){
-		var fd = this;
-		var objClone;
-		if (o.constructor == Object || o.constructor ==  Array) objClone = new o.constructor(); 
-		else objClone = new o.constructor(o.valueOf()); 
-		for (var key in o){
-			if (objClone[key] != o[key]){ 
-				if (typeof(o[key]) == 'object'){ 
-					objClone[key] = fd.clone(o[key]);
-				}else{
-					objClone[key] = o[key];
-				}
-			}
-		}
-		objClone.toString = o.toString;
-		objClone.valueOf = o.valueOf;
-		return objClone; 
-	},	
 
 	/**
 	* 浏览器判断，来自yui3
@@ -651,7 +640,6 @@ Sandbox = {
 
 
 	}//DOMContentLoaded end
-
 
 };
 
