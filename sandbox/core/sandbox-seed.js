@@ -65,7 +65,7 @@ Sandbox = {
 		if(typeof mojoname == 'function'){
 			var config = callback,
 				callback = mojoname,
-				mojoname = 'K_'+new Date().getTime();
+				mojoname = 'K_'+Math.random().toString().replace('.','');
 		}
 		o.mojoname = mojoname;
 		o.callback = callback;
@@ -277,8 +277,8 @@ Sandbox = {
 			if(that._Mojos[_a[i]].attached){
 				continue;
 			}
-			that._Mojos[_a[i]].callback(that);
 			that._Mojos[_a[i]].attached = true;
+			that._Mojos[_a[i]].callback(that);
 		}
 	},
 	/**
