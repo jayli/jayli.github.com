@@ -4,7 +4,6 @@ Sandbox.add(function(S){
 
 
 },{requires:[
-	//'js/2.js',
-	'http://jayli.github.com/sandbox/examples/js/2.js',
-	'http://jayli.github.com/sandbox/examples/js/3.js'
+	'js/2.js',
+	'js/3.js'
 ]});
