@@ -421,7 +421,7 @@ Sandbox = {
 			};   
 		} else {  //Others   
 			script.onload = function(){   
-				if(typeof log  != 'undefined')log('load script ok: '+url);
+				//if(typeof log  != 'undefined')log('load script ok: '+url);
 				that._LoadQueue.push(url);
 				callback();   
 		   };   
