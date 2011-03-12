@@ -332,8 +332,19 @@ Sandbox = {
 		var that = this;
 		var a = arguments;
 		for(var i = 0;i<a.length;i++){
-			that._Uses.push(a[i]);
+			if(that.domReady){
+				that.run(that._Mojos[a[i]].requires,that._Mojos[a[i]].callback);
+			}else{
+				that._Uses.push(a[i]);
+			}
 		}
+		/*
+		if(that.domReady){
+			that._Mojos[]
+			var SD = Sandbox.DoQueue[i];
+			Sandbox.run(SD.requires,SD.callback);
+		}
+		*/
 		return this;
 
 	},

@@ -34,6 +34,23 @@ Sandbox.ready(function(S){
 	log('主程序二启动');
 });
 
+//第三段逻辑等待domready后启动
+Sandbox.ready(function(S){
+	log('主程序三启动');
+},{
+	requires:['js/5.js']
+},true);
+
+/*
+Sandbox.ready(function(S){
+	
+	//Sandbox.use('mojo5');
+	
+});
+*/
+
+Sandbox.use('mojo5');
+
 </script>
 <script>
 log('等待3秒钟');
