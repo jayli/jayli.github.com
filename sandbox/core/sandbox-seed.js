@@ -370,6 +370,12 @@ Sandbox = {
 	},
 
 	/**
+	 * 正在下载中(包括下载完成)的脚本
+	 * @type []
+	 */
+	_loadingQueue:[],
+
+	/**
 	 * load脚本
 	 * TODO opera 10+下有bug
 	 * @method loadScript
@@ -386,6 +392,12 @@ Sandbox = {
 		}
 		//bugfix 只有在load完成后才算已经加载，因此要在回调中push到'已完成'
 		//that._LoadQueue.push(url);
+		
+		//bugfix 如果当前脚本是正在下载中的脚本，直接退出
+		if(that.inArray(url,that._loadingQueue)){
+			return;
+		}
+		that._loadingQueue.push(url);
 
 		//如果是css
 		if(/\.css$/i.test(url)){
@@ -409,7 +421,7 @@ Sandbox = {
 			};   
 		} else {  //Others   
 			script.onload = function(){   
-				//if(typeof log  != 'undefined')log('load script ok: '+url);
+				if(typeof log  != 'undefined')log('load script ok: '+url);
 				that._LoadQueue.push(url);
 				callback();   
 		   };   
