@@ -263,7 +263,7 @@ Sandbox = {
 	 * @type []
 	 */
 	_ExeQueue:[],
-
+	
 	/**
 	 * 根据模块树，按照顺序执行模块树中的回调
 	 * @method _runConstructors
@@ -384,29 +384,33 @@ Sandbox = {
 			callback();
 			return false;
 		}
-		that._LoadQueue.push(url);
+		//bugfix 只有在load完成后才算已经加载，因此要在回调中push到'已完成'
+		//that._LoadQueue.push(url);
 
 		//如果是css
 		if(/\.css$/i.test(url)){
 			that.loadCSS(url);
+			that._LoadQueue.push(url);
 			callback();
 			return false;
 		}
 
 	 	var script = document.createElement("script")   
 	   	script.type = "text/javascript";   
-	 
+
 	   	if (script.readyState){  //IE   
 			script.onreadystatechange = function(){   
 			   if(script.readyState == "loaded" ||   
 				 	  script.readyState == "complete"){   
 					script.onreadystatechange = null;   
+					that._LoadQueue.push(url);
 					callback();   
 			   }   
 			};   
 		} else {  //Others   
 			script.onload = function(){   
-				if(typeof log  != 'undefined')log('load script ok: '+url);
+				//if(typeof log  != 'undefined')log('load script ok: '+url);
+				that._LoadQueue.push(url);
 				callback();   
 		   };   
 	   }   
