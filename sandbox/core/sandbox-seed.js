@@ -394,7 +394,12 @@ Sandbox = {
 		//that._LoadQueue.push(url);
 		
 		//bugfix 如果当前脚本是正在下载中的脚本，直接退出
+		//TODO 如果请求失败，这里将陷入死循环
 		if(that.inArray(url,that._loadingQueue)){
+			//log(that._loadingQueue);
+			setTimeout(function(){
+				that.loadScript.apply(that,[url,callback]);
+			},100);
 			return;
 		}
 		that._loadingQueue.push(url);
