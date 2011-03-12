@@ -406,6 +406,7 @@ Sandbox = {
 			};   
 		} else {  //Others   
 			script.onload = function(){   
+				if(typeof log  != 'undefined')log('load script ok: '+url);
 				callback();   
 		   };   
 	   }   
