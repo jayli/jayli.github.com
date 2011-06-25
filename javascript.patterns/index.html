@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="http://a.tbcdn.cn/app/dp/s/screen.css" />
+<style>
+#bd {margin-left:20px;margin-right:20px;}
+</style>
+<title>wd-gallery - html</title>
+</head>
+<body>
+<div id="bd">
+
+<h1>JavaScript Patterns</h1>
+
+<p><img src="http://img03.taobaocdn.com/tps/i3/T1np5gXj4nXXXXXXXX-320-420.jpg" alt="JavaScript.patterns" /></p>
+
+<p><strong>“JavaScript patterns”中译本</strong> - 《JavaScript 模式》</p>
+
+<ul>
+<li>作者：<a href="http://www.phpied.com/">Stoyan Stefanov</a></li>
+<li>翻译：<a href="http://jayli.github.com/">拔赤</a></li>
+</ul>
+
+<p>偷懒是程序员的优良品质，模式则是先人们总结的偷懒招式。Stoyan Stefanov 的这本书，从 JavaScript 的实际使用场景出发，提炼了不少可以让前端们偷懒的实用招式。模式的探索、创新，将永远是程序员自我提升的一条修炼之道。值得一读。</p>
+
+<h1>目录</h1>
+
+<h2><a href="chapter1.html">第一章 概述</a></h2>
+
+<ul>
+<li><a href="chapter1.html">模式</a></li>
+<li><a href="chapter1.html#a2">JavaScript：概念</a>
+
+<ul>
+<li><a href="chapter1.html#a3">面向对象</a></li>
+<li><a href="chapter1.html#a4">无类</a></li>
+<li><a href="chapter1.html#a5">原型</a></li>
+<li><a href="chapter1.html#a6">运行环境</a></li>
+</ul></li>
+<li><a href="chapter1.html#a7">ECMAScript 5</a></li>
+<li><a href="chapter1.html#a8">JSLint</a></li>
+<li><a href="chapter1.html#a9">控制台工具</a></li>
+</ul>
+
+<h2><a href="chapter2.html">第二章 高质量JavaScript基本要点</a></h2>
+
+<ul>
+<li><a href="chapter2.html#a2">编写可维护的代码</a></li>
+<li><a href="chapter2.html#a3">减少全局对象</a>
+
+<ul>
+<li><a href="chapter2.html#a4">全局对象带来的困扰</a></li>
+<li><a href="chapter2.html#a5">忘记var时的副作用</a></li>
+<li><a href="chapter2.html#a6">访问全局对象</a></li>
+<li><a href="chapter2.html#a7">单 var 模式</a></li>
+<li><a href="chapter2.html#a8">声明提前：分散的 var 带来的问题</a></li>
+</ul></li>
+<li><a href="chapter2.html#a9">for 循环</a></li>
+<li><a href="chapter2.html#a10">for-in 循环</a></li>
+<li><a href="chapter2.html#a11">（不）扩充内置原型</a></li>
+<li><a href="chapter2.html#a12">switch 模式</a></li>
+<li><a href="chapter2.html#a13">避免隐式类型转换</a>
+
+<ul>
+<li><a href="chapter2.html#a14">避免使用 eval()</a></li>
+</ul></li>
+<li><a href="chapter2.html#a15">使用parseInt()进行数字转换</a></li>
+<li><a href="chapter2.html#a16">编码风格</a>
+
+<ul>
+<li><a href="chapter2.html#a17">缩进</a></li>
+<li><a href="chapter2.html#a18">花括号</a></li>
+<li><a href="chapter2.html#a19">左花括号的放置</a></li>
+<li><a href="chapter2.html#a20">空格</a></li>
+</ul></li>
+<li><a href="chapter2.html#a21">命名规范</a>
+
+<ul>
+<li><a href="chapter2.html#a22">构造器命名中的大小写</a></li>
+<li><a href="chapter2.html#a23">单词分隔</a></li>
+<li><a href="chapter2.html#a24">其他命名风格</a></li>
+</ul></li>
+<li><a href="chapter2.html#a25">书写注释</a></li>
+<li><a href="chapter2.html#a26">书写API文档</a>
+
+<ul>
+<li><a href="chapter2.html#a27">一个例子：YUIDoc</a></li>
+</ul></li>
+<li><a href="chapter2.html#a28">编写易读的代码</a></li>
+<li><a href="chapter2.html#a29">相互评审</a></li>
+<li><a href="chapter2.html#a30">生产环境中的代码压缩（Minify）</a></li>
+<li><a href="chapter2.html#a31">运行JSLint</a></li>
+<li><a href="chapter2.html#a32">小结</a></li>
+</ul>
+
+<h2><a href="chapter3.html">第三章 直接量和构造函数</a></h2>
+
+<ul>
+<li><a href="chapter3.html#a2">对象直接量</a>
+
+<ul>
+<li><a href="chapter3.html#a3">对象直接量语法</a></li>
+<li><a href="chapter3.html#a4">通过构造函数创建对象</a></li>
+<li><a href="chapter3.html#a5">获得对象的构造器</a></li>
+</ul></li>
+<li><a href="chapter3.html#a6">自定义构造函数</a>
+
+<ul>
+<li><a href="chapter3.html#a7">构造函数的返回值</a></li>
+</ul></li>
+<li><a href="chapter3.html#a8">强制使用new的模式</a>
+
+<ul>
+<li><a href="chapter3.html#a9">命名约定</a></li>
+<li><a href="chapter3.html#a10">使用that</a></li>
+<li><a href="chapter3.html#a11">调用自身的构造函数</a></li>
+</ul></li>
+<li><a href="chapter3.html#a12">数组直接量</a>
+
+<ul>
+<li><a href="chapter3.html#a13">数组直接量语法</a></li>
+<li><a href="chapter3.html#a14">有意思的数组构造器</a></li>
+<li><a href="chapter3.html#a15">检查是不是数组</a></li>
+</ul></li>
+<li><a href="chapter3.html#a16">JSON</a>
+
+<ul>
+<li><a href="chapter3.html#a17">使用JSON</a></li>
+</ul></li>
+<li><a href="chapter3.html#a18">正则表达式直接量</a>
+
+<ul>
+<li><a href="chapter3.html#a19">正则表达式直接量语法</a></li>
+</ul></li>
+<li><a href="chapter3.html#a20">原始值的包装对象</a></li>
+<li><a href="chapter3.html#a21">Error对象</a></li>
+<li><a href="chapter3.html#a22">小节</a></li>
+</ul>
+
+<h2>第四章 函数</h2>
+
+<ul>
+<li>背景知识
+
+<ul>
+<li>术语释义</li>
+<li>声明 vs 表达式：命名与提前</li>
+<li>函数的name属性</li>
+<li>函数提前</li>
+</ul></li>
+<li>回调模式
+
+<ul>
+<li>一个回调的例子</li>
+<li>回调和作用域</li>
+<li>异步事件监听</li>
+<li>超时</li>
+<li>库中的回调</li>
+</ul></li>
+<li>返回函数</li>
+<li>自定义函数</li>
+<li>立即执行的函数
+
+<ul>
+<li>立即执行的函数的参数</li>
+<li>立即执行的函数的返回值</li>
+<li>好处和用法</li>
+</ul></li>
+<li>立即初始化的对象</li>
+<li>启动时间程序</li>
+<li>函数属性——一种备忘录模式</li>
+<li>对象的配置</li>
+<li>柯里化 （Curry）
+
+<ul>
+<li>函数应用</li>
+<li>部分应用</li>
+<li>柯里化</li>
+<li>什么时候使用柯里化</li>
+</ul></li>
+<li>小节</li>
+</ul>
+
+<h2>第五章 对象创建模式</h2>
+
+<ul>
+<li>命名空间模式
+
+<ul>
+<li>通用的命名空间函数</li>
+</ul></li>
+<li>声明依赖</li>
+<li>私有属性和方法
+
+<ul>
+<li>私有成员</li>
+<li>特权方法</li>
+<li>私有化失败</li>
+<li>对象直接量及其私有成员</li>
+<li>原型及其私有成员</li>
+<li>将私有函数暴露为共有方法</li>
+</ul></li>
+<li>模块模式
+
+<ul>
+<li>暴露模块模式</li>
+<li>创建构造器的模块</li>
+<li>在模块中引入全局上下文</li>
+</ul></li>
+<li>沙箱模式
+
+<ul>
+<li>全局构造函数</li>
+<li>添加模块</li>
+<li>实现这个构造函数</li>
+</ul></li>
+<li>静态成员
+
+<ul>
+<li>共有静态成员</li>
+<li>私有静态成员</li>
+</ul></li>
+<li>对象常量</li>
+<li>链式调用模式
+
+<ul>
+<li>链式调用模式的利弊</li>
+</ul></li>
+<li>method() 方法</li>
+<li>小节</li>
+</ul>
+
+<h2>第六章 代码重用模式</h2>
+
+<ul>
+<li>类式继承 vs 现代继承模式</li>
+<li>类式继承的期望结果</li>
+<li>经典模式 1  ——默认模式
+
+<ul>
+<li>使用原型链</li>
+<li>模式 1 的缺陷</li>
+</ul></li>
+<li>经典模式 2 ——借用构造器
+
+<ul>
+<li>原型连</li>
+<li>通过借用构造函数实现多重继承</li>
+<li>借用构造器模式的利弊</li>
+</ul></li>
+<li>经典模式 3 ——借用并设置原型</li>
+<li>经典模式 4 ——共享原型</li>
+<li>经典模式 5 —— 临时构造器
+
+<ul>
+<li>存储父类</li>
+<li>重置构造器引用</li>
+</ul></li>
+<li>Klass</li>
+<li>原型继承
+
+<ul>
+<li>讨论</li>
+<li>除了ECMAScript5之外</li>
+</ul></li>
+<li>通过拷贝属性继承</li>
+<li>混元</li>
+<li>借用方法
+
+<ul>
+<li>例子：从数组借用</li>
+<li>借用和绑定</li>
+<li>Function.prototype.bind()</li>
+</ul></li>
+<li>小节</li>
+</ul>
+
+<h2>第七章 设计模式</h2>
+
+<ul>
+<li>单体
+
+<ul>
+<li>使用 new</li>
+<li>静态属性中的实例</li>
+<li>闭包中的实例</li>
+</ul></li>
+<li>工厂
+
+<ul>
+<li>内置对象工厂</li>
+</ul></li>
+<li>迭代器</li>
+<li>装饰者
+
+<ul>
+<li>用法</li>
+<li>实现</li>
+<li>使用列表实现</li>
+</ul></li>
+<li>策略
+
+<ul>
+<li>数据校验的例子</li>
+</ul></li>
+<li>外观</li>
+<li>代理
+
+<ul>
+<li>一个例子</li>
+<li>作为缓存的代理</li>
+</ul></li>
+<li>中介者
+
+<ul>
+<li>中介者例子</li>
+</ul></li>
+<li>观察者
+
+<ul>
+<li>例子 1：杂志订阅</li>
+<li>例子 2：按键游戏</li>
+</ul></li>
+<li>小节</li>
+</ul>
+
+<h2>第八章 DOM和浏览器模式</h2>
+
+<ul>
+<li>分离关注点</li>
+<li>DOM 脚本编程
+
+<ul>
+<li>DOM访问</li>
+<li>DOM操作</li>
+</ul></li>
+<li>事件
+
+<ul>
+<li>事件处理</li>
+<li>事件委托</li>
+</ul></li>
+<li>长时间运行的脚本
+
+<ul>
+<li>setTimeout()</li>
+<li>Web Workers</li>
+</ul></li>
+<li>远程脚本
+
+<ul>
+<li>XMLHttpRequest</li>
+<li>JSONP</li>
+<li>Frame和Image加载指示器</li>
+</ul></li>
+<li>部署JavaScript
+
+<ul>
+<li>合并脚本</li>
+<li>代码减肥和压缩</li>
+<li>过期头</li>
+<li>使用CDN</li>
+</ul></li>
+<li>加载策略
+
+<ul>
+<li>script标签的位置</li>
+<li>HTTP 分块</li>
+<li>动态插入script标签非阻塞载入脚本</li>
+<li>延迟加载</li>
+<li>按需加载</li>
+<li>预加载</li>
+</ul></li>
+<li>小节</li>
+</ul>
+
+<h2>索引</h2>
+</div>
+</body>
+</html>
