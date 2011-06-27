@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>O'Reilly: Developing JavaScript Web Applications</title>
+    <link rel="stylesheet" href="css/application.css" type="text/css" charset="utf-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/application.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>    
+    <h1>O'Reilly: Developing JavaScript Web Applications</h1>
+    <div id="west">
+      
+      <img src="http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png" />
+      
+      <p><strong>Update!</strong> The book is now <a href="http://oreilly.com/catalog/0636920018421/">live on O'Reilly's site</a>.</p>
+      
+      <p><em>Developing JavaScript Web Applications</em> is a new book by <a href="http://alexmaccaw.co.uk">Alex MacCaw</a>, published by <a href="http://oreilly.com">O'Reilly</a>, written to help you build the next generation of rich internet applications.</p>
+      
+      <p>Building rich JavaScript applications that bring the desktop experience to the Web is now possible, thanks to powerful JavaScript engines and the CSS3 and HTML5 specifications. The key is moving state from the server to the client side; but that’s no simple task. This book takes you through all the steps necessary to create state-of-the-art JavaScript applications, including structure, templating, frameworks, communicating with the server, and many other issues.</p>
+
+      <p>Through practical, tutorial-based explanations, you learn how to create JavaScript applications that offer a much more responsive and improved experience. You’ll work hands-on with an example application throughout the book to learn the concepts involved.</p>
+      
+      <ul>
+      <li>Explore <strong>MVC</strong> and how to best structure and manage dependencies inside your application</li>
+      <li>Get an introduction to templating and data binding</li>
+      <li>Learn about loading remote data, Ajax Level 2 and cross-domain requests</li>
+      <li>Use <strong>WebSockets</strong> and <strong>Node</strong> to create realtime applications </li>
+      <li>Accept dropped files and upload data with progress indicators</li>
+      <li>Learn about major frameworks and libraries, including <strong>jQuery</strong>, <strong>JavaScriptMVC</strong> and <strong>Backbone</strong></li>
+      <li>Write tests and use the console to debug your applications</li>
+      <li>Get deployment best practices, such as caching and minification </li>
+      </ul>
+
+	  <!--added by jayli-->
+
+	  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    </div>
+    
+    <div id="east">
+      
+      <form action="/signup" method="post" accept-charset="utf-8">
+        <p>Sign up to receive an email when the book is released!</p>
+        <label><input type="text" name="email" placeholder="Email address"></label>
+        <button>Signup &raquo;</button>
+      </form>
+
+      <h2>Table of Contents</h2>
+    
+      <ol id="toc">
+      <li>Introduction
+      <ol>
+      <li>Who is this book for?</li>
+      <li>Accompanying files</li>
+      <li>Code conventions
+      <ol>
+      <li>jQuery examples</li>
+      </ol></li>
+      <li>Holla</li>
+      <li>Preface</li>
+      </ol></li>
+      <li>MVC &amp; Classes
+      <ol>
+      <li>Early days</li>
+      <li>Adding structure</li>
+      <li>What is MVC?</li>
+      <li>The Model</li>
+      <li>The View</li>
+      <li>The Controller</li>
+      <li>Towards modularity, creating classes</li>
+      <li>Adding functions to classes</li>
+      <li>Adding methods to our class library</li>
+      <li>Class inheritance using prototype</li>
+      <li>Adding inheritance to our class library</li>
+      <li>Function invocation</li>
+      <li>Controlling scope in our class library</li>
+      <li>Adding private functions</li>
+      <li>Class libraries</li>
+      </ol></li>
+      <li>Events &amp; Observing
+      <ol>
+      <li>Listening to events</li>
+      <li>Event ordering</li>
+      <li>Canceling events</li>
+      <li>The event object</li>
+      <li>Event libraries</li>
+      <li>Context change</li>
+      <li>Delegating events</li>
+      <li>Custom events</li>
+      <li>Custom events &amp; jQuery plugins</li>
+      <li>Non-DOM events</li>
+      </ol></li>
+      <li>Models &amp; Data
+      <ol>
+      <li>MVC &amp; Namespacing</li>
+      <li>Building an ORM
+      <ol>
+      <li>Prototypal inheritance</li>
+      <li>Adding ORM properties</li>
+      <li>Persisting records</li>
+      </ol></li>
+      <li>GUID IDs
+      <ol>
+      <li>Adding GUIDs to the ORM</li>
+      </ol></li>
+      <li>Addressing references</li>
+      <li>Loading in data
+      <ol>
+      <li>Including data inline</li>
+      <li>Loading data with Ajax</li>
+      <li>JSONP</li>
+      <li>Security with cross domain requests</li>
+      </ol></li>
+      <li>Populating our ORM</li>
+      <li>Storing data locally</li>
+      <li>Adding local storage to our ORM</li>
+      <li>Submitting new records to the server</li>
+      </ol></li>
+      <li>Controllers &amp; State
+      <ol>
+      <li>Module pattern
+      <ol>
+      <li>Global import</li>
+      <li>Global export</li>
+      </ol></li>
+      <li>Adding a bit of context
+      <ol>
+      <li>Abstracting into a library</li>
+      <li>Loading controllers after the document</li>
+      <li>Accessing Views</li>
+      <li>Delegating events</li>
+      </ol></li>
+      <li>State machines</li>
+      <li>Routing
+      <ol>
+      <li>Using the URL&#8217;s hash</li>
+      <li>Detecting hash changes</li>
+      <li>Ajax crawling</li>
+      <li>Using the HTML5 History API</li>
+      </ol></li>
+      </ol></li>
+      <li>Views &amp; Templating
+      <ol>
+      <li>Dynamically rendering views</li>
+      <li>Templates
+      <ol>
+      <li>Template helpers</li>
+      <li>Template storage</li>
+      </ol></li>
+      <li>Binding
+      <ol>
+      <li>JLink</li>
+      <li>Binding up models</li>
+      </ol></li>
+      </ol></li>
+      <li>Dependency management
+      <ol>
+      <li>Common.js
+      <ol>
+      <li>Declaring a module</li>
+      <li>Modules and the browser</li>
+      </ol></li>
+      <li>Module loaders
+      <ol>
+      <li>Yabble</li>
+      <li>RequireJS</li>
+      </ol></li>
+      <li>Wrapping up modules</li>
+      <li>Module alternatives
+      <ol>
+      <li>LABjs</li>
+      </ol></li>
+      <li>FUBCs</li>
+      </ol></li>
+      <li>Working with Files
+      <ol>
+      <li>Browser support</li>
+      <li>Getting information about files</li>
+      <li>File inputs</li>
+      <li>Drag &amp; Drop
+      <ol>
+      <li>Dragging</li>
+      <li>Dropping</li>
+      <li>Cancel default drag/drop</li>
+      </ol></li>
+      <li>Copy &amp; Paste
+      <ol>
+      <li>Copying</li>
+      <li>Pasting</li>
+      </ol></li>
+      <li>Reading files
+      <ol>
+      <li>Blobs &amp; Slices</li>
+      </ol></li>
+      <li>Custom browse buttons</li>
+      <li>Uploading files
+      <ol>
+      <li>Ajax progress</li>
+      </ol></li>
+      <li>jQuery Drag and Drop Uploader
+      <ol>
+      <li>Creating a drop area</li>
+      <li>Uploading the file</li>
+      </ol></li>
+      </ol></li>
+      <li>The Realtime Web
+      <ol>
+      <li>Realtime&#8217;s history</li>
+      <li>WebSockets
+      <ol>
+      <li>Node.js &amp; Socket.IO</li>
+      </ol></li>
+      <li>Realtime architecture</li>
+      <li>Perceived speed</li>
+      </ol></li>
+      <li>Testing &amp; Debugging
+      <ol>
+      <li>Unit testing
+      <ol>
+      <li>Assertions</li>
+      <li>QUnit</li>
+      <li>Jasmine</li>
+      </ol></li>
+      <li>Drivers</li>
+      <li>Headless testing
+      <ol>
+      <li>Using Zombie</li>
+      <li>Using Ichabod</li>
+      </ol></li>
+      <li>Distributed testing</li>
+      <li>Providing support</li>
+      <li>Inspectors
+      <ol>
+      <li>Web Inspector</li>
+      <li>Firebug</li>
+      </ol></li>
+      <li>The console
+      <ol>
+      <li>Console helpers</li>
+      </ol></li>
+      <li>Using the debugger</li>
+      <li>Analysing network requests</li>
+      <li>Profile and timing</li>
+      </ol></li>
+      <li>Deploying
+      <ol>
+      <li>Performance</li>
+      <li>Caching</li>
+      <li>Minification</li>
+      <li>GZIP Compression</li>
+      <li>Using a CDN</li>
+      <li>Auditors</li>
+      <li>Resources</li>
+      </ol></li>
+      <li>Libraries - Spine
+      <ol>
+      <li>Setup</li>
+      <li>Classes
+      <ol>
+      <li>Instantiation</li>
+      <li>Extending classes</li>
+      <li>Context</li>
+      </ol></li>
+      <li>Events</li>
+      <li>Models
+      <ol>
+      <li>Fetching records</li>
+      <li>Model events</li>
+      <li>Validation</li>
+      <li>Persistence</li>
+      </ol></li>
+      <li>Controllers
+      <ol>
+      <li>Proxying</li>
+      <li>Elements</li>
+      <li>Delegating events</li>
+      <li>Controller events</li>
+      <li>Global events</li>
+      <li>The Render pattern</li>
+      <li>The Element pattern</li>
+      </ol></li>
+      <li>Building a contacts manager
+      <ol>
+      <li>Contact model</li>
+      <li>Sidebar controller</li>
+      <li>Contacts controller</li>
+      <li>App controller</li>
+      </ol></li>
+      </ol></li>
+      <li>Libraries - Backbone
+      <ol>
+      <li>Models
+      <ol>
+      <li>Models &amp; attributes</li>
+      </ol></li>
+      <li>Collections
+      <ol>
+      <li>Controlling a collection&#8217;s order</li>
+      </ol></li>
+      <li>Views
+      <ol>
+      <li>Rendering views</li>
+      <li>Delegating events</li>
+      <li>Binding and context</li>
+      </ol></li>
+      <li>Controllers</li>
+      <li>Syncing with the server
+      <ol>
+      <li>Populating collections</li>
+      <li>On the server side</li>
+      <li>Custom behavior</li>
+      </ol></li>
+      <li>Building a todo list</li>
+      </ol></li>
+      <li>Libraries - JavascriptMVC
+      <ol>
+      <li>Introduction
+      <ol>
+      <li>Everything is a plugin</li>
+      </ol></li>
+      <li>StealJS - Dependency Management
+      <ol>
+      <li>Loading Non JavaScript resources</li>
+      <li>Compression</li>
+      </ol></li>
+      <li>Class</li>
+      <li>Models
+      <ol>
+      <li>Service Encapsulation</li>
+      <li>Events</li>
+      <li>Getter / Setters ?</li>
+      <li>Model.Lists</li>
+      </ol></li>
+      <li>Controllers</li>
+      <li>Views</li>
+      <li>Putting it all together &#8230;</li>
+      <li>Events</li>
+      <li>Building a todo list</li>
+      </ol></li>
+      <li>Appendix - jQuery primer
+      <ol>
+      <li>DOM Traversal</li>
+      <li>DOM Manipulation</li>
+      <li>Events</li>
+      <li>Ajax</li>
+      <li>Being a good citizen</li>
+      <li>Extensions</li>
+      <li>Creating a Growl jQuery plugin</li>
+      </ol></li>
+      <li>Appendix - CSS Extensions
+      <ol>
+      <li>Variables</li>
+      <li>Mixins</li>
+      <li>Nested Rules</li>
+      <li>Including other stylesheets</li>
+      <li>Colors</li>
+      <li>How do I use Less?
+      <ol>
+      <li>Via the command line</li>
+      <li>Via Rack</li>
+      <li>Via JavaScript</li>
+      <li>Less.app</li>
+      </ol></li>
+      </ol></li>
+      <li>Appendix - CSS3 Reference
+      <ol>
+      <li>Prefixes</li>
+      <li>Colors</li>
+      <li>Rounded corners</li>
+      <li>Drop shadows</li>
+      <li>Text shadow</li>
+      <li>Gradients</li>
+      <li>Multiple backgrounds</li>
+      <li>Selectors
+      <ol>
+      <li>Nth child</li>
+      <li>Direct descendants</li>
+      <li>Selector negation</li>
+      </ol></li>
+      <li>Transitions</li>
+      <li>Border-image</li>
+      <li>Box-sizing</li>
+      <li>Transformations</li>
+      <li>Flexible box model</li>
+      <li>Fonts</li>
+      <li>Graceful degradation
+      <ol>
+      <li>Modernizr</li>
+      <li>Google Chrome Frame</li>
+      </ol></li>
+      <li>Creating a layout</li>
+      </ol></li>
+      </ol>
+      
+    </div>
+    
+  </body>
+</html>
