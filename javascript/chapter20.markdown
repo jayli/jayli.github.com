@@ -1,0 +1,846 @@
+# 第20章 客户端存储
+
+Web应用允许使用浏览器提供的API实现将数据存储到用户的电脑上。这种客户端存储相当于赋予了web浏览器记忆功能。比方说，Web应用就可以用这种方式来“记住”用户的配置信息甚至是用户所有的状态信息，以便准确地“回忆”起用户上一次访问时候的状态。客户端存储遵循“同源策略”，因此不同站点的页面是无法互相读取对方存储数据的，而同一站点的不同页面之间是可以互相共享存储数据的，它为我们提供了一种通讯机制，例如，一个页面上填写的表单数据可以显示在另外一个页面中。Web应用可以选择他们存储数据的有效期：比如采用临时存储可以让数据保存至当前窗口关闭或者浏览器退出；采用永久存储，可以将数据永久地存储到硬盘上，永不失效。
+
+客户端存储有以下几种形式：
+
+**Web存储**
+
+Web存储最初作为HTML5一部分被定义成API形式，但是后来被剥离出来作为独立的一份标准了。该标准目前还在草案阶段，但其中一部分内容已经被包括IE8在内的所有主流浏览器实现了。Web存储标准所描述的API包含了 localStorage 对象和 sessionStorage 对象，这两个对象实际上是持久化关联数组，是名值对的映射表，“名”和“值”都是字符串。Web存储易于使用、支持大容量（但非无限量）数据存储同时兼容当前所有主流浏览器，但是不兼容早期浏览器。§20.1 会对 localStorage 和 sessionStorage 这两个对象作详细介绍。
+
+**Cookies**
+
+Cookie是一种早期的客户端存储机制，起初是针对服务器端脚本设计使用的。尽管在客户端提供了非常恶心的JavaScript API来操作Cookie，但却难用之极，而且只能存储少量文本数据。不仅如此，任何以Cookie形式存储的数据，不论服务器端是否需要，每一次HTTP请求都会把这些数据传输到服务器端。Cookie目前仍然被客户端开发者大量使用的一个重要原因是：所有浏览器都支持它。但是，随着Web Storage的普及，Cookie终将会回归到最初的形态：作为一种被服务端脚本使用的客户端存储机制。§20.2会详细介绍Cookie。
+
+**IE User Data**
+
+微软在IE5及之后的IE浏览器中实现了它专属的客户端机制——”userData”。userData可以实现一定量的文本数据存储，对于IE8以前的IE浏览器中，可以将其用作是Web存储的替代方案。关于userData的API会在§20.3中作相应介绍。
+
+**离线Web应用**
+
+HTML5标准中定义了一组“离线Web应用”API，用以缓存web页面以及相关资源（脚本、CSS文件、图片等等）。它实现的是将web应用整体存储在客户端，而不仅仅是存储数据。它能够让web应用“安装”在客户端，这样一来，哪怕网络不可用的时候web应用依然是可用的。离线web应用相关的内容会在§20.4中作介绍。
+
+**Web数据库**
+
+为了能够让开发者像使用数据库那样来操作大量数据，很多主流的浏览器纷纷开始集成客户端数据库的功能。Safari、Chrome和Opera都内置了SQL数据库的客户端API。不幸的是，这类API的标准化工作以失败告终，并且Firefox和IE看样子也都不打算实现这种API。目前还有一种正在标准化的数据库API，称为“索引数据库API（Indexed Database API）”。调用该API返回的是一个不包含查询语言的简单数据库对象。这两种客户端数据库API都是异步的，都使用了事件处理机制（译注：类似DOM事件机制），这样的方式多多少少会显得有些复杂。本章中不会对他们做介绍，但是 §22.8 中会对索引数据库API作概要介绍同时会提供一些例子。
+
+**文件系统API**
+
+本书第八章中介绍过现在主流浏览器都支持一个文件对象，用以将择的文件通过XMLHttpRequest上传到服务端。与之相关的规范（草案阶段）定义了一组API，用于操作一个私有的本地文件系统。在该文件系统中可以进行对文件的读写操作。这些内容正在紧锣密鼓标准化当中，这些API将在§22.7中作介绍。随着这些API被广泛的实现和支持，web应用可以使用类似基于文件的存储机制，这对于大部分程序员来说再熟悉不过了。
+
+>**存储、安全和隐私**
+>
+>Web浏览器通常会提供“记住密码”功能，这些密码会以加密的形式安全地存储到硬盘上。然而，本章介绍的任何形式的客户端数据存储都不牵涉加密：任何存储在用户硬盘上的数据都是未加密的。这样一来，对于拥有电脑控制权的恶意用户以及恶意软件（比如：间谍软件）同样也可以获取到存储的数据。因此，客户端存储不应该用来保存密码、商业账号或者其他类似的敏感信息。记住：尽管用户访问你的网站时，愿意在表单中输入一些信息，但绝不代表用户愿意将这些信息保存到硬盘上。就拿行用卡卡号来举例好了，这是用户的隐私，用户并不愿意公开，如果你利用客户端存储永久将该信息存储起来，这无异于你将信用卡号写在一张便签纸上，随后黏在用户的键盘上，让所有人都看到。
+>还有要谨记的一点：很多web用户不信任那些使用cookie和其他客户端存储机制来做类似“跟踪‘功能的网站。所以，尽量尝试用本章讨论的存储机制来为你的网站提升用户体验；而不是用它们来收集和隐私相关的数据。如果网站滥用客户端存储，用户将会禁用该功能，这样一来不仅起不到效果，还会导致依赖客户端存储的网站完全不可用。
+
+## 20.1 localStorage 和 sessionStorage
+
+实现了”Web存储“草案标准的浏览器在window对象上定义了两个属性：localStorage和sessionStorage。这两个属性都代表了同一个Storage对象——一个持久化关联数组，数组使用字符串来索引，存储的值也都是字符串形式的。Storage对象使用上和一般的JavaScript对象没什么区别：设置对象的属性为字符串值，随后浏览器会将该值存储起来。localStorage和sessionStorage两者的区别在于存储的有效期和作用域的不同：数据可以被存储多长时间以及谁拥有数据的访问权。
+
+下面，我们会对存储的有效期和作用域作详细的解释。不过，在此之前，让我们先来看些例子。下面的代码使用的是localStorage，但是它对sessionStorage也同样适用：
+
+	var name = localStorage.username; // 查询一个存储的值。
+	name = localStorage["username"]; // 等价于数组表示法
+	if (!name) {
+		name = prompt("What is your name?"); // 询问用户一个问题。
+		localStorage.username = name; // 存储用户的答案。
+	}
+
+	// 迭代所有存储的name/value对
+	for(var name in localStorage) { // 迭代所有存储的名字
+		var value = localStorage[name]; // 查询每个名字对应的值
+	}
+
+Storage对象还定义了一些诸如存储、获取、遍历和删除的方法。这些方法会在§20.1.2中作介绍。
+
+”Web存储”草案标准指出，我们既可以存储结构化的数据（对象和数组），也可以存储原始类型数据，还可以存储诸如日期、正则表达式甚至文件对象在内的内置类型的数据。但是，截止至本书截稿时，浏览器仅仅支持存储字符串类型数据。如果想要存储和获取其他类型的数据，不得不自己手动进行编码和转码。如下例子所示：
+
+	// 当存储一个数字的时候，会被自动转换成字符串。
+	// 但是，当获取该值的时候别忘记了手动将其转换成数字类型。
+	localStorage.x = 10;
+	var x = parseInt(localStorage.x);
+
+	// 同样地，存储一个日期类型数据的时候进行编码，获取的时候进行解码
+	localStorage.lastRead = (new Date()).toUTCString();
+	var lastRead = new Date(Date.parse(localStorage.lastRead));
+
+	// 使用JSON可以使得对基本数据类型编码的工作变得很方便
+	localStorage.data = JSON.stringify(data); // 编码然后存储。
+	var data = JSON.parse(localStorage.data); // 获取数值之后再解码。
+
+### 20.1.1 存储有效期和作用域
+
+localStorage和sessionStorage的区别在于存储的有效期和作用域的不同。通过localStorage存储的数据是永久性的，除非web应用刻意删除存储的数据，或者通过设置浏览器配置（浏览器提供的配置界面）去删除，否则数据将一直保留在用户的电脑上，永不过期。
+
+localStorage的作用域是限定在文档源（document origin）级别的。正如§13.6.2所介绍的，文档源是通过协议、主机名以及端口三者来确定的，因此，下面每个URL都拥有不同的文档源：
+
+	http://www.example.com              // 协议: http; 主机名: www.example.com
+	https://www.example.com            // 不同协议
+	http://static.example.com              // 不同主机名
+	http://www.example.com:8000      // 不同端口
+
+同源的文档间共享同样的localStorage数据（不论该源的脚本是否真正地操作localStorage）。他们可以互相读取对方的数据，甚至可以覆盖对方的数据。但是，非同源的文档间互相都不能读写对方数据（即使他们运行的脚本是来自同一台第三方服务器也不行）。
+
+需要注意的是localStorage的作用域也受浏览器限制。如果你使用Firefox访问站点，那么下次用另一个浏览器比方说是Chrome再打开访问的时候，那么本次是无法获取上次存储的数据的。
+
+通过sessionStorage存储的数据和通过localStorage存储的数据的有效期也是不同的：前者有效期和存储数据的脚本所在的最顶层的窗口或者是浏览器标签页是一样的。一旦窗口或者标签页被永久关闭了，那么所有通过sessionStorage存储的数据也都被删除了。（当时要注意的是，现代浏览器已经具备了重开最近被关闭的标签页随后恢复上一次浏览的session功能，因此，这些标签页以及与之相关的sessionStorage的有效期可能会更加长些）。
+
+与localStorage一样，sessionStorage的作用域也是限定在文档源中，因此非同源文档间都是无法共享sessionStorage的。不仅如此，sessionStorage作用域还被限定在窗口中。如果同源的文档渲染在不同的浏览器标签页中，那么他们互相之间拥有的是各自的sessionStorage数据，无法共享；一个标签页中的脚本是无法读取或者覆盖由另一个标签页脚本写入的数据，哪怕这两个标签页渲染的是同一个页面，运行的是同一个脚本也不行。
+
+要注意的是：这里提到的基于窗口作用域的sessionStorage指的窗口只是顶级窗口。如果一个浏览器标签页包含两个`<iframe>`元素，他们所包含的文档是同源的，那么这两者之间是可以共享sessionStorage的。
+
+### 20.1.2 存储API
+
+localStorage和sessionStorage通常被当做普通的JavaScript对象使用：通过设置属性来存储字符串值，查询该属性来读取该值。除此之外，这两个对象还提供了更加正式的API。调用setItem()方法，将对应的名字和值传递进去，可以实现数据存储。调用getItem()方法，将名字传递进去，可以获取对应的值。调用removeItem()方法，将名字传递进去，可以删除对应的数据。（在非IE8浏览器中，还可以使用delete操作符来删除数据，就和对普通的对象使用delete操作符一样。）调用clear()方法（不需要参数），可以删除所有存储的数据。最后，使用length属性以及key()方法，传入0到length-1的数字，可以枚举所有存储数据的名字。下面是一些使用localStrage的例子。这些代码对sessionStorage也适用：
+
+	localStorage.setItem("x", 1);   // 以“x”的名字存储一个数值
+	localStorage.getItem("x");   // 获取数值
+
+	// 枚举所有存储的名字/值对
+	for(var i = 0; i < localStorage.length; i++) { // length表示了所有名字/值对的总数
+		var name = localStorage.key(i); // 获取第i对的名字
+		var value = localStorage.getItem(name); // 获取该对的值
+	}
+
+	localStorage.removeItem("x"); // 删除“x”项
+	localStorage.clear(); // 全部删除
+
+尽管通过设置和查询属性能更加方便的存储和获取数据，但是有的时候还是不得不使用上面提到的这些方法的。比方说，其中clear()方法是唯一能删除所有存储对象中名/值对的方式。同样的还有，removeItem()方法也是唯一通用的删除单个名/值对的方式，因为IE8不支持delete操作符。
+
+如果浏览器提供商完全实现了“Web存储”的标准，支持对象和数组类型的数据存储，那么就会又多了一个使用类似于setItem()和getItem()这类方法的理由了。对象和数组类型的值通常是可变的，因此存储对象要求存储他们的拷贝，以确保之后任何对这类对象的改变都不影响到存储的对象。同样的，在获取该对象的时候也要求获取的是该对象的拷贝，以确保对获取之后对象的改动不会影响到存储的对象。而这类操作如果使用基于属性的API就会令人困惑。考虑下面这段代码（假设浏览器已经支持了结构化数据的存储）：
+
+	localStorage.o = {x:1}; // 存储一个带有“x”属性的对象
+	localStorage.o.x = 2; // 试图去设置该对象的属性值
+	localStorage.o.x // => 1: x没有变
+
+上述第二行代码想要设置存储的对象的属性值，但是事实上，它获取到的只是存储的对象的拷贝，随后设置了该对象的属性值，然后就将该拷贝的对象废弃了。真正存储的对象保持不变。像这样的情况，使用getItem()就不会这么让人困惑了。
+
+	localStorage.getItem("o").x = 2; // 我们并不想存储2
+
+PI的理由就是：在还不支持“Web存储”标准的浏览器中，其他的存储机制的顶层API对其也是兼容的。下面这段代码使用cookies和IE userDate来实现存储API、如果使用基于方法的API，当localStorage可用的时候就可以使用它，而当它在其他浏览器上不可用的时候依然可以降级到其他的存储机制中（译者注：完全兼容）。代码如下所示：
+
+	// 识别出使用的是哪类存储机制
+	var memory = window.localStorage ||
+		(window.UserDataStorage && new UserDataStorage()) ||
+		new CookieStorage();
+	// 然后在对应的机制中查询数据
+	var username = memory.getItem("username");
+
+### 20.1.3 存储事件
+
+无论什么时候存储在localStorage或者sessionStorage的数据发生改变，浏览器都会对其他对该数据可见的窗口对象上触发存储事件（但是，在对数据进行改变的窗口对象上是不会触发的）。如果浏览器有两个标签页都打开了来自同源的页面，其中一个页面在localStorage上存储了数据，那么另外一个标签页就会接收到一个存储事件。要记住的是sessionStorage作用域是限制在顶层窗口的，因此对sessionStorage的改变只有当有相牵连的窗口的时候才会触发存储事件。还有要注意的是，存储事件只有当存储数据真正发生改变的时候才会被触发。像给已经存在的存储项设置一个一模一样的值，抑或是删除一个本来就不存在的项都是不会触发存储事件的。
+
+为存储事件注册处理程序可以通过addEventListener()方法（或者在IE下使用attachEvent()方法）。在绝大多数浏览器中，还可以使用给window对象设置onstorage属性的方式，不过Firefox不支持该属性。
+
+与存储事件相关的事件对象有五个非常重要的属性（不幸的是，IE8不支持）：
+
+key
+
+被设置或者移除的项的名字或者键名。如果调用的是clear()函数，那么该属性值为null。
+
+newValue
+
+该项的新的值；或者调用removeItem()时，该属性值为null。
+
+oldValue
+
+被改变或者删除前，该项原先的值；当插入一个新项的时候，该属性值为null。
+
+storageArea
+
+这个属性值就好比是目标window对象上的localStorage属性或者是sessionStorage属性
+
+url
+
+触发该存储变化脚本所在文档的URL
+
+最后要注意的是：localStorage和存储事件都是采用广播机制的，浏览器会对所有目前正在访问同样站点的窗口发送消息。举个例子，比方说一个用户要求网站停止动画效果，那么站点可能会在localStorage中存储该用户的配置，这样依赖，以后再访问该站点的时候就自动停止动画效果了。因为存储了该配置，导致了触发一个存储事件让其他展现统一站点的窗口也获得了这样的一个用户请求。再比如，一个基于web的图片编辑应用，通常允许在其他的窗口中展示工具条。当用户选择一个工具的时候，应用就可以使用localStorage来存储当前的状态，然后通知其他窗口用户选择了新的工具。
+
+## 20.2 Cookies
+
+cookie是指少量的被浏览器存储的数据，同时它是与具体的web页面或者站点相关的。Cookie最早是设计为被服务端所用的，从最底层来看，它被实现为是HTTP协议的一种扩展。cookie数据会被自动在web浏览器和web服务器之间传输的，因此服务端脚本就可以读写存储在客户端的cookie的值。本节内容将介绍客户端的脚本通过使用Document对象上的cookie属性也能实现对cookie的操作。
+
+>为什么叫“Cookie？”
+>
+>“cookie”这个名字没有太多的含义，但是在计算机历史上其实很早就有用到它了。“cookie”和“magic cookie”被用作是代表少量数据，特别是指类似密码这种用于识别身份或者许可访问的保密数据。在JavaScript中，cookie被用于保存状态以及能够为web浏览器提供一种身份识别机制。但是，JavaScript中使用cookie不会采用任何加密机制，因此他们是不安全的。（但是，通过https来传输cookie数据是安全的，不过这和cookie本身无关，是和https协议相关。）
+
+操作cookie的API很早就已经定义和实现了，因此该API的兼容性很好。但是，不幸的是，该API几乎形同虚设。根本没有提供诸如查询、设置、删除cookie的方法，所有这些操作都要通过以特殊格式的字符串形式读写Document对象上的cookie属性来完成。每个cookie的有效期和作用域都可以通过cookie属性来指定。这些属性也是通过在同一个cookie属性上以特殊格式的字符串来设定的。
+
+本节剩余部分会解释如何通过cookie属性来指定cookie的有效期和作用域，以及如何通过JavaScript来设置和查询cookie的值。最后，将以一个“实现基于cookie的存储API”例子来结束本节的介绍。
+
+>检测cookie是否被启用
+>
+>由于滥用第三方cookie（译注：第三方cookie指的是来自于当前访问站点以为的站点设置的cookie）（如：cookie是和网页上的图片相关而非网页本身相关）的缘故，导致cookie在大多数web用户心目中都留下了很不好的印象。比如，广告公司可以利用第三方cookie来实现跟踪用户的访问行为和习惯，而用户为了禁止这种”窥探“用户隐私的行为会在他们的浏览器中禁用cookie。因此，在使用cookie前，首先要确保cookie是被启用的。在绝大多数浏览器中，可以通过检测navigator.cookieEnabled这一属性。若该值为true，则当前cookie是被启用的，反之则是被禁用的（但是，只具备”当前浏览会话生命周期“的非持久化cookie仍然是被启用的）。但是，该属性不是一个标准的属性（不是所有浏览器都支持的）。因此在不支持该属性的浏览器上，必须通过使用下面将要介绍的技术尝试着读、写和删除测试cookie数据来测试是否支持cookie。
+
+### 20.2.1 Cookie属性：有效期和作用域
+
+除了名（name）和值（value），cookie还有一些可选的属性来控制cookie的有效期和作用域。cookie默认的有效期很短暂；它只能持续在web浏览器的会话内，一旦用户关闭浏览器cookie，保存的数据就丢失了。要注意的是：这与sessionStorage的有效期还是有区别的：coookie的作用域并不是局限在单个的浏览器窗口中，它的有效期和整个浏览器进程而不是单个浏览器窗口的有效期一致。如果想要延长cookie的有效期，可以通过设置max-age属性，但是必须要明确告诉浏览器cookie的有效期是多长（单位是秒）。一旦设置了有效期，浏览器就会将cookie数据存储在一个文件中，并且直到过了指定的有效期才会删除该文件。
+
+和localStorage以及sesstionStorage类似，cookie的作用域是通过文档源和文档路径来确定的。该作用域通过cookie的path和domain属性也是可配置的。默认情况下，cookie和创建它的页面有关，并对该页面以及和该页面同目录或者子目录的其他页面可见。比如，web页面http://www.example.com/catalog/index.html页面创建了一个cookie，那么该cookie对http://www.example.com/catalog/order .html页面和http://www.example.com/catalog/widgets/index.html页面都是可见的，当对http://www.example.com/about.html页面不可见。
+
+默认的cookie的可见性行为满足了最常见的需求。不过，有的时候，你可能希望让整个网站都能够使用cookie的值，而不管是哪个页面创建它的。比方说，当用户在一个页面表单中输入了他的邮件地址，你想将它保存下来，为了下次该用户回到这个页面填写表单，或者网站其他页面任何地方要求输入帐单地址的时候，将其作为默认的邮件地址。要满足这样的需求，可以通过设置cookie的路径（设置cookie的path属性）。
+
+这样一来，来自同一服务器的web页面，只要其URL是以指定的路径开始的，都可以共享cookie。举例来说，如果http://www.example.com/catalog/widgets/index.html 页面创建了一个cookie，并且将该路径设置成“/catalog”，那么该cookie对于http://www.example.com/catalog/order.html 页面也是可见的。或者路径设置成“/”，那么该cookie对任何http://www.example.com 这台web服务器上的页面都是可见的。
+
+将cookie的路径设置成“/”等于是让cookie和localStorage拥有同样的作用域，同时请求该站点上任何一个页面的时候，浏览器都必须将cookie的名字和值传递给服务器。但是，要注意的是，cookie的path属性不能被用作访问控制机制。如果一个web页面想要读取同一站点其他页面的cookie，只要简单的将其他页面以隐藏`<iframe>`的形式嵌入进来，随后读取对应文档的cookie就可以了。同源策略（§13.6.2）限制了跨站的cookie窥探，但是对于同一站点的文档是完全合法的。
+
+cookie的作用域默认是被文档源限制。但是，有的大型网站想要子域之间能够互相共享cookie。比方说，order.example.com域下的页面想要读取catalog.example.com域下设置的cookie。这个时候就需要通过设置cookie的domain属性来达到目的了。如果一个catalog.example.com域下的页面创建了一个cookie，并将其path属性设置成“/”，其domain属性设置成“.example.com”，那该cookie就对所有catalog.example.com、orders.example.com以及任何其他example.com域下的页面可见了。domain属性的默认值是当前web服务器的主机名。要注意的是，cookie的域只能设置为当前服务器的域。
+
+最后要介绍的cookie的属性是secure，它是一个布尔类型的属性，用来表明cookie的值以何种形式通过网络传递。cookie默认是以不安全的形式（通过普通的，不安全的HTTP连接）被传递的。而一旦cookie被标识为“安全的”，那就只能当浏览器和服务器通过HTTPS或者其他的安全协议连接的时候才能被传递。
+
+### 20.2.2 保存cookies
+
+要给当前文档设置默认有效期的cookie值，非常简单，只需将cookie属性设置为一个字符串形式的值：
+
+	name=value
+
+如下所示：
+
+	document.cookie = "version=" + encodeURIComponent(document.lastModified);
+
+下次读取cookie属性的时候，之前存储的名/值对的数据就在文档的cookie列表中。由于cookie的名/值中的值是不允许包含分号，逗号和空白符，因此，在存储前一般可以采用JavaScript核心的全局函数encodeURIComponent()对值进行编码。相应的，读取cookie值的时候需要采用decodeURIComponent解码。
+
+以简单的名/值对形式存储的cookie数据有效期只在当前web浏览器的会话内，一旦用户关闭浏览器，cookie数据就丢失了。如果想要延长cookie的有效期，就需要设置max-age属性来指定cookie的有效期。按照如下的字符串形式即可：
+
+		name=value; max-age=seconds
+		下面的函数用来设置一个cookie的值，同时提供可选的max-age属性：
+		// 以名/值的形式存储cookie
+		// 同时采用encodeURIComponent()函数进行编码，来避免分号、逗号和空白符
+		// 如果daysToLive是一个数字, 设置max-age属性为该数值表示cookie直到制定的天数到
+		//了才会过期。如果daysToLive是0就表示删除cookie。
+		function setCookie(name, value, daysToLive) {
+			var cookie = name + "=" + encodeURIComponent(value); 
+			if (typeof daysToLive === "number")
+				cookie += "; max-age=" + (daysToLive*60*60*24); 
+				document.cookie = cookie;
+		}
+
+同样的，如果要设置cookie的path，domain和secure属性，只需在cookie值被存储前，以如下字符串形式追加在cookie的值后面：
+
+	; path=path 
+	; domain=domain 
+	; secure
+
+要想改变cookie的值，需要以相同的名字、路径和域，但是新的值重新设置cookie。同样的，设置新max-age属性就可以改变原来的cookie的有效期。
+
+要想删除一个cookie，需要以相同的名字、路径和域，然后指定一个任意（非空）的值，以及将max-age指定为0，重新设置一次cookie。
+
+### 20.2.3 读取cookies
+
+使用JavaScript来读取cookie属性的时候，其返回的值是一个字符串，该字符串都是由一系列名值对组成，不同名值对之间通过“分号和空格”分开，其内容包含了所有作用在当前文档的cookie。但是，它并不包含其他设置的cookie属性。通过document.cookie属性可以获取cookie的值，但是为了更好的查看cookie的值，一般会采用split()方法，将cookie值中的名值对都分离出来。
+
+把cookie的值分离出来之后，必须要采用相应的解码方式（取决于之前存储cookie值时采用的编码方式），把值还原出来。比方说，先采用decodeURIComponent()方法解码出来，之后再利用JSON.parse()方法转化成json对象。
+
+例20-1，定义了一个getCookie()函数，该函数作用是将document.cookie属性的值解析出来，将对应的名值对，存储到一个对象中，函数最后返回该对象。
+
+例 20-1. 解析document.cookies属性值
+
+	// 将document.cookie的值以一个名值对形式组成的对象返回
+	// 假设cookie的值存储的时候是采用encodeURIComponent()函数编码的
+	function getCookies() {
+		var cookies = {};                     // 初始化最后要返回的对象
+		var all = document.cookie;     // 获取所有的cookie值
+		if (all === "") 		            // 如果该cookie属性值为空
+			return cookies;                     // 返回一个空对象
+		var list = all.split("; ");             // 分离出名值对
+		for(var i = 0; i < list.length; i++) {                   // 循环每对数据
+			var cookie = list[i];
+			var p = cookie.indexOf("=");                     // 查找第一个“=”符号
+			var name = cookie.substring(0,p);           // 获取名字
+			var value = cookie.substring(p+1);          // 获取对应的值
+			value = decodeURIComponent(value);   // 对其值进行解码
+			cookies[name] = value;                            // 将名值对存储到对象中
+		}
+		return cookies;
+	}
+
+### 20.2.4 Cookie的局限性
+
+Cookie的设计初衷是给服务端脚本用来存储少量数据的，该数据会在每次请求中传递。 RFC 2965 鼓励浏览器对cookie的数目和大小不做限制。可是，要知道，该标准不允许浏览器保存超过300个cookie，为每个Web服务器保存的cookie数不能超过20个（是对整个服务器而言，而不仅仅指服务器上的页面和站点），而且，每个cookie保存的数据不能超过4KB（即名字和值的总量不能超过4KB的限制）。实际上，现代浏览器允许cookie总数超过300个，但是部分浏览器对单个cookie大小仍然后4KB的限制。
+
+### 20.2.5 Cookie相关的存储
+
+例20-2，展示了如何实现基于cookie的一系列存储API方法。该例定义了一个CookieStorage函数（被实例化的时候具有构造器特性），通过将max-age和path属性传递给该构造器，就会返回一个对象，然后就可以像使用localStorage和sessionStorage一样来使用这个对象了。但是要注意的是，该例中病没有实现存储事件，因此，当你设置和查询CookieStorage对象的属性的时候，不会实现自动保存和获取对应的值。
+
+例20-2. 实现基于cookie的存储API
+
+	/*
+	* CookieStorage.js
+	* 本类实现像localStorage和sessionStorage一样的存储API，不同的是，基于HTTP Cookies.
+	*/
+	function CookieStorage(maxage, path) { // 两个参数分别代表了存储有效期和作用域
+		// 获取一个存储全部cookie信息的对象
+		var cookies = (function() { // 类似之前介绍的getCookies()方法
+			var cookies = {}; // 该对象最终会返回
+			var all = document.cookie; // 以大字符串的形式获取所有cookie信息
+			if (all === "") // 如果该属性为空
+			return cookies; //返回一个空对象
+			var list = all.split("; "); // 分离出名值对
+			for (var i = 0; i < list.length; i++) { // 循环每对数据
+				var cookie = list[i];
+				var p = cookie.indexOf("="); // 查找第一个“=”符号
+				var name = cookie.substring(0, p); // 获取名字
+				var value = cookie.substring(p + 1); // 获取对应的值
+				value = decodeURIComponent(value); // 对其值进行解码
+				cookies[name] = value; // 将名值对存储到对象中
+			}
+			return cookies;
+		} ());
+
+		// 将所有cookie的名字存储到一个数据中
+		var keys = [];
+		for (var key in cookies) keys.push(key);
+
+		// 现在定义存储API公共的属性和方法
+		// 存储的cookie的个数
+		this.length = keys.length;
+
+		// 返回第n个cookie的名字, 如果n越界则返回null
+		this.key = function(n) {
+			if (n < 0 || n >= keys.length) return null;
+			return keys[n];
+		};
+
+		// 返回指定名字的cookie值, 如果不存在则返回null.
+		this.getItem = function(name) {
+			return cookies[name] || null;
+		};
+
+		// 存储cookie值
+		this.setItem = function(key, value) {
+			if (! (key in cookies)) { // 如果要存储的cookie还不存在
+				keys.push(key); // 将指定的名字加入到存储所有cookie名的数组中
+				this.length++; // cookie个数加一
+			}
+			// 将该名/值对数据存储到cookie对象中
+			cookies[key] = value;
+			// 开始正式设置cookie
+			// 首先将要存储的cookie的值进行编码，同时创建一个“名字=编码后的值”形式的字符串
+			var cookie = key + "=" + encodeURIComponent(value);
+			//将cookie的属性也加入到该字符串中
+			if (maxage) cookie += "; max-age=" + maxage;
+			if (path) cookie += "; path=" + path;
+			// 通过document.cookie属性来设置cookie
+			document.cookie = cookie;
+		};
+
+		// 删除指定的cookie
+		this.removeItem = function(key) {
+			if (! (key in cookies)) return; // 如果不存在，则什么也不做
+			// 从内部维护的cookie删除指定的cookie
+			delete cookies[key];
+
+			// 同时将cookie中的名字也在内部的数组中删除
+			// 如果使用ES5定义的数组 indexOf()方法会更加简单
+			for (var i = 0; i < keys.length; i++) { // 循环所有的名字
+				if (keys[i] === key) { //当我们找到了要找的那个
+					keys.splice(i, 1); // 将它从数组中删除
+					break;
+				}
+			}
+			this.length--; // cookie个数减一
+			// 最终通过将该cookie值设置为空字符串以及将有效期设置为0来删除指定的cookie.
+			document.cookie = key + "=; max-age=0";
+		};
+
+		// 删除所有的cookie
+		this.clear = function() {
+			// 循环所有的cookie的名字，并将cookie删除
+			for (var i = 0; i < keys.length; i++)
+			document.cookie = keys[i] + "=; max-age=0";
+			// 重置所有的内部状态
+			cookies = {};
+			keys = [];
+			this.length = 0;
+		};
+	}
+
+## 20.3 利用IE userData来持久化数据
+
+IE5以及IE5以上版本浏览器是通过在document元素上附加了一个专属的“DHTML行为”来实现客户端存储的。如下代码所示：
+
+	var memory = document.createElement("div"); // 创建一个元素
+	memory.id = "_memory"; // 设定一个id名
+	memory.style.display = "none"; // 将其隐藏
+	memory.style.behavior = "url('#default#userData')"; // 赋加userData行为
+	document.body.appendChild(memory); // 将其添加到document元素中
+
+一旦给元素赋予了“userData”行为，那该元素就拥有了load()和save()方法。load()方法用于载入存储的数据。使用它的时候必须传递一个字符串作为参数——类似于一个文件名，该参数用来指定要载入的存储数据。当数据载入后，就可以通过该元素的属性来访问这些名/值对形式的数据，可以使用getAttribute()来查询这些数据。通过setAttribute()方法设置属性，然后调用sava()方法可以实现存储新的数据；而要删除数据，通过使用removeAttribute()方法然后调用save()方法即可。如下所示（该例中使用了此前例子中的那个memory元素）：
+
+	memory.load("myStoredData"); // 根据指定名，载入对应的数据
+	var name = memory.getAttribute("username"); //获取其中的数据片段
+	if (!name) { // 如果没有指定的数据片段
+		name = prompt("What is your name?); // 获取用户输入
+	memory.setAtttribute("
+		username ", name); // 将其设置成memory元素的一个属性
+	memory.save("
+		myStoredData "); // 保存
+	}
+erData存储的数据,除非手动去删除它，否则永不失效。但是，你也可以通过设置expires属性来指定它的过期时间。就拿上面的例子来说，你可以给存储的数据设置时长100天的有效期，如下所示：
+	
+	var now = (new Date()).getTime(); // 获取当前时间，以毫秒为单位
+	var expires = now + 100 * 24 * 60 * 60 * 1000; // 距离当前时间100天，换算成毫秒的单位
+	expires = new Date(expires).toUTCString(); // 将其转换成字符串
+	memory.expires = expires; // 设置userData的过期时间
+
+IE userData的作用域限制在和当前文档同目录的文档中。它的作用域没有cookie宽泛，cookie对其所在目录下的子目录也有效。userData的机制并没有提供像cookie那样，可以设置path和domain属性来控制或者改变其作用域的方式。
+
+userData允许存储的数据量要比cookie大，但是却比localStorage以及sessionStorage允许存储的数据量要小。
+
+例20-3，基于IE的userData实现了存储API提供的getItem()、setItem()以及removeItem()方法。（但是没有实现key()或者clear()方法，原因是userData并没有定义遍历所有存储项的方法）
+
+例20-3. 基于IE的userData实现部分存储API
+
+	function UserDataStorage(maxage) {
+		// 创建一个元素并附加userData行为
+		// 该元素获得save()和load()方法
+		var memory = document.createElement("div"); // 创建一个元素
+		memory.style.display = "none"; // 将其隐藏
+		memory.style.behavior = "url('#default#userData')"; // 附加userData行为
+		document.body.appendChild(memory); // 将该元素添加到document元素中
+		// 如果传递了maxage参数（单位为秒），则将其设置为userData的有效期，以毫秒为单位
+		if (maxage) {
+			var now = new Date().getTime(); // 当前时间
+			var expires = now + maxage * 1000; // 当前时间加上有效期就等于过期时间
+			memory.expires = new Date(expires).toUTCString();
+		}
+		// 通过载入存储的数据来初始化memory元素
+		// 参数是任意的，只要是在保存的时候存在的就可以了
+		memory.load("UserDataStorage"); // 载入存储的数据
+		this.getItem = function(key) { // 通过属性来获取保存的值
+			return memory.getAttribute(key) || null;
+		};
+		this.setItem = function(key, value) {
+			memory.setAttribute(key, value); // 以设置属性的形式来保存数据
+			memory.save("UserDataStorage"); //保存数据改变后的状态
+		};
+		this.removeItem = function(key) {
+			memory.removeAttribute(key); // 删除存储的数据
+			memory.save("UserDataStorage"); // 再次保存状态
+		};
+	}
+
+由于上述代码只在IE浏览器下有效，最好使用IE条件注释来避免其他浏览器载入上述代码。
+
+	<!--[if IE]>
+	<script src="UserDataStorage.js"></script>
+	<![endif]-->
+
+## 20.4 应用程序存储和离线web应用
+
+HTML5中新增了“应用程序缓存”，允许web应用将应用自身本地保存到用户的浏览器中。不像localStorage和sessionStorage只是保存应用程序相关的数据，它是将应用自身保存起来——应用程序所需的所有文件（HTML，CSS，JavaScript，图片等等）。“应用程序缓存”和一般的浏览器缓存不同：它不会随着用户清除浏览器缓存而被清除。同时，缓存起来的应用程序也不会像一般固定大小的缓存那样，老数据会被最近一次访问的新数据代替掉。它其实不是临时存储在缓存中：应用程序更像是被“安装”在那里，除非被用户“卸载”或者“删除”，否则他们就会一直“驻扎”在那里。所以，总的来说，“应用程序”真正意义上不是“缓存”，更好的说法应该称之为“应用程序存储”。
+
+让web应用能够实现“本地安装”的目的是要保证他们能够在离线状态（比如当在飞机上或者手机没信号的时候）下依然可访问。将自己“安装”到应用程序缓存中的web应用，在离线状态下使用localStorage来保存应用相关的数据，同时还具备一套同步机制，能够在再次回到在线状态的时候，能够将存储的数据传输给服务器。在§20.4.3我们会看到一个离线web应用的例子。不过，在这之前，先来介绍下应用程序是如何将自己“安装”到应用程序缓存中的。
+
+### 20.4.1 应用程序缓存清单
+
+想要将应用“安装”到应用程序缓存中，首先要创建一个清单：包含了所有应用程序依赖的文件列表。然后，通过在应用主页面的`<html>`标签中设置manifest属性，指向到该清单文件就可以了：
+
+	<!DOCTYPE HTML>
+	<html manifest="myapp.appcache">
+	<head>...</head>
+	<body>...</body>
+	</html>
+
+清单文件中的内容首行必须是“CACHE MANIFEST”。其余就是要缓存的文件URL列表，一行一个URL。相对路径的URL都是相对于清单文件的。内容中的空行会被忽略，以“#”开始的会被作为注释而忽略。并且同一行注释前面是不允许非空字符的。如下所示是一个简单的列表文件：
+
+	CACHE MANIFEST
+	# 上一行指定了此文件是一个清单文件。本行是注释。
+	# 下面的内容都是应用程序依赖的资源文件的URL
+	myapp.html
+	myapp.js
+	myapp.css
+	images/background.png
+
+>**缓存清单的MIME类型**
+>
+>应用程序缓存清单文件约定以.appcache作为文件后缀名。但是，这也仅仅只是约定而已，web服务器真正识别清单文件的方式是通过“text/cache-manifest”这个MIME类型。如果服务器将清单文件的content-type的头信息设置成其他MIME类型，那应用程序就不会被缓存了。因此，可能需要对服务器做一定的配置来使用这个MIME类型，比方说，在web应用目录下创建一个Apache服务器的.htaccess文件。
+
+清单文件包含要缓存的应用的标识。如果一个web应用有很多web页面（用户可以访问多个HTML页面），那每个HTML页面就需要设置`<html manifest=>`来指向清单文件。事实上，将这些不同的页面都指向同一个清单文件，可以很清楚的表达出他们都是需要缓存起来、同时又是来自于同一个web应用的。如果一个应用只有少量的HTML页面，那一般会把这些页面都显示的列在清单中。但这不是强制的：任何连接到清单文件的文件都会被认为是web应用的一部分，并会随着应用一起缓存起来。
+
+像之前提到的，一个简单的清单必须列出所有web应用依赖的资源。一旦一个web应用首次下载下来并缓存，之后任何的请求都将从缓存中去获取。一个应用从缓存中去载入资源的时候，就要求请求的资源务必要在清单中。不在清单中的就不会被载入。这种政策有点离线的味道。如果一个简单的缓存起来的应用能够从缓存中载入并运行，那它也可以在离线状态下运行。通常情况下，很多复杂的web应用无法将所有他们一来的资源都缓存起来。但是，如果他们同时也有一个复杂的清单的话，他们仍然可以使用应用程序缓存。
+
+#### 20.4.1.1 复杂的清单
+
+一个应用从应用程序缓存中载入的时候，只有清单中列举出来的资源文件会被载入。前面例子中的清单文件中一次列举一个URL。事实上，清单文件还有比这更多复杂的语法，列举资源的方式也还有另外两种。在清单文件中可以使用特殊的区域头（译者注：类似于HTTP头）来标识该头信息之后清单项的类型。像该例中列举的请单项事实上都属于“CACHE:”区域，这也是默认的区域。另外两种区域是以“Network:”和”FALLBACK:” 头信息开始的（一个清单文件可以有任意数量的区域，而且可以相邻两个区域之间可以根据需要相互切换）。
+
+“NETWORK:”区域标识了该区域中的资源从不缓存，总要通过网络获取。通常，会将一些服务端的脚本资源放在”NETWORK:”区域中，而一般该区域中的资源的URL都只是URL前缀，用来表示以此URL前缀开头的资源都应该要通过网络获取。当然了，如果浏览器处于离线状态，那这些资源都将获取失败。”NETWORK:”区域中的URL还支持”*”通配符。该通配符表示对任何不在清单中的资源，浏览器都将通过网络去获取。这实际上违背了，缓存应用程序必须要在清单中列举所有应用相关的资源，这样一条规则！
+
+“FALLBACK:”区域中的清单项每行都包含两个URL。第二个URL是指需要缓存起来的资源，第一个URL是一个前缀。任何能够匹配到该前缀的资源都不会缓存起来，但是可能的话，他们会从网络中载入。如果从网络中载入失败的话，会使用第二个URL指定的资源来代替，从缓存中获取。想象一个应用包含了一定数量的视频教程。这些视频都很大，显然把他们缓存到本地是不合适的。因此，在离线状态下，通过清单文件中的fallback区域，就可以使用一些文本类的帮助文档来代替了。
+
+下面是一个更加复杂的缓存清单：
+
+	CACHE MANIFEST
+
+	CACHE: 
+	myapp.html 
+	myapp.css 
+	myapp.js
+
+	FALLBACK: 
+	videos/ offline_help.html
+
+	NETWORK: 
+	cgi/
+
+### 20.4.2 缓存的更新
+
+当一个web应用从缓存中载入的时候，所有与之相关的文件也是直接从缓存中获取。在线状态下，浏览器会异步检查是否清单文件有更新。如果有更新，新的清单文件以及所有清单中列举的文件都会下载下来重新保存到应用程序缓存中。但是，要注意的是，浏览器只是检查清单文件，而不会去检查缓存的文件是否有更新。比方说，你修改了一个缓存的JavaScript文件，要想让该文件生效，就必须去更新下清单文件。由于应用程序依赖的文件列表其实并没有变化，因此最简单的方式就是更新版本号：
+
+	CACHE MANIFEST 
+	# MyApp version 1 (更改这个数字以便让浏览器重新下载这个文件) 		
+	MyApp.html 
+	MyApp.js
+
+同样的，如果想要让web应用从缓存中“卸载”，要在服务器端删除清单文件，使得请求该文件的时候返回HTTP 404 无法找到 的错误，同时，修改HTML文件与该清单列表“断开链接”。
+
+要注意的是，浏览器检查清单文件以及更新缓存的操作是异步的，可能是在从缓存中载入应用之前，也有可能同时进行。因此，对于简单的web应用而言，在你更新清单文件之后，用户必须载入应用两次才能保证最新的版本生效：第一次是从缓存中载入老版本随后更新缓存，第二次才从缓存中载入最新的版本。
+
+浏览器在更新缓存过程中会触发一系列事件，你可以通过注册处理程序来跟踪这个过程同时提供反馈给用户。 如下所示：
+
+	applicationCache.onupdateready = function() {
+		var reload = confirm("A new version of this application is available\n" + 
+								"and will be used the next time you reload.\n" + 
+								"Do you want to reload now?");
+		if (reload) location.reload();
+	}
+
+要注意的是，该事件处理程序是注册在ApplicationCache对象上的，该对象是window的applicationCache的属性值。支持应用程序缓存的浏览器会定义该属性。此外，除了上面例子中的updateready时间之外，还有其他七种应用程序缓存事件。例20-4展示了一个简单的处理程序通过打印出对应的消息来通知用户缓存更新的过程，以及当前缓存的状态。
+
+例 20-4. 处理应用缓存相关事件
+
+	// 下面所有的事件处理程序都使用此函数来显示状态消息
+	// 由于都是通过调用status函数来显示状态，因此所有处理程序都返回false来阻止浏览器显示其默认状态消息
+	function status(msg) {
+		// 将消息输出到id为“statusline”的文档元素中
+		document.getElementById("statusline").innerHTML = msg;
+		console.log(msg); // 同时在终端输出此消息，便于debug
+	}
+
+	// 每当应用程序载入的时候，都会检查该清单文件
+	// “checking”事件也总会首先被触发
+	window.applicationCache.onchecking = function() {
+		status("Checking for a new version.");
+		return false;
+	};
+
+	// 如果清单文件没有改动，同时应用程序也已经缓存了
+	// "noupdate"事件会被触发，整个过程结束
+	window.applicationCache.onnoupdate = function() {
+		status("This version is up-to-date.")
+		return false;
+	};
+
+	// 如果应用程序还未被缓存，或者清单文件有改动
+	// 浏览器会去下载并混存所有清单中的资源
+	// "downloading"事件被触发，同时意味着下载过程开始
+	window.applicationCache.ondownloading = function() {
+		status("Downloading new version");
+		window.progresscount = 0; // 在下面的"progress"事件处理程序会用到
+		return false;
+	};
+
+	// "progress"事件会在下载过程中被间断性的被触发
+	//  通常是在文件下载完毕的时候
+	window.applicationCache.onprogress = function(e) {
+		// 事件对象应当是"process"事件（就像哪些被XHR2使用的）的，
+		// 通过该对象可以计算出下载完成比例，但是，如果它不是个“process”事件，
+		// 我们计算调用的次数
+		var progress = "";
+		if (e && e.lengthComputable) // "process"事件: 计算下载完成比例
+		progress = " " + Math.round(100 * e.loaded / e.total) + "%"
+		else // 否则，输出调用次数
+		progress = " (" + ++progresscount + ")"
+		status("Downloading new version" + progress);
+		return false;
+	};
+	// 当下载完成，首次将应用程序下载到缓存中时，浏览器
+	// 会触发"cached"事件
+	window.applicationCache.oncached = function() {
+		status("This application is now cached locally");
+		return false;
+	};
+
+	// 当下载完成，并将缓存中的应用程序更新后，浏览器会触发“updateready”事件
+	// 要注意的是：触发此事件的时候，用户任然可以看到老版本的应用程序.
+	window.applicationCache.onupdateready = function() {
+		status("A new version has been downloaded. Reload to run it");
+		return false;
+	};
+
+	// 如果浏览器处于离线状态，检查清单列表失败，则会触发“error”事件
+	// 当一个未缓存的应用程序引用了一个不存在的清单文件，也会触发此事件
+	window.applicationCache.onerror = function() {
+		status("Couldn't load manifest or cache application");
+		return false;
+	};
+
+	// 如果一个缓存了的应用程序引用了一个不存在的清单文件
+	// 会触发"obsolete"事件，同时会将应用从缓存中移除
+	// 之后都不会从缓存而是通过网络来获取资源
+	window.applicationCache.onobsolete = function() {
+		status("This application is no longer cached. " + "Reload to get the latest version from the network.");
+		return false;
+	};
+
+每次载入一个设置了manifest属性的HTML文件，浏览器都会触发"checking"事件，并通过网络载入该清单文件。不过之后，会随着不同的情况触发不同的事件。
+
+**没有可用的更新**
+
+如果应用程序已经缓存了并且清单文件没有改动，则浏览器会触发“noupdate”事件。
+
+**有可用的更新**
+
+如果应用程序已经缓存了并且清单文件发生了改动，则浏览器会触发“downloading”事件，并开始下载和缓存所有清单文件中列举的资源。随着下载过程的进行，浏览器还会触发"progress"事件，在下载完成后，会触发"updateready"事件。
+
+**首次载入新的应用**
+
+如果应用程序还未被缓存，如上所述，“downloading”事件和"progress"事件都会触发。但是，当下载完成后，会触发"cached"事件而不是"updateready"事件。
+
+**浏览器处于离线状态**
+
+如果浏览器处于离线状态，它无法检查清单文件，同时会触发"error"事件。如果一个未被缓存的应用引用了一个不存在的清单文件，也会触发该事件。
+
+**清单文件不存在**
+
+如果浏览器处于在线状态，应用程序也已经缓存起来了，但是清单文件不存在（返回404无法找到错误），浏览器会触发"obsolete"事件，并将该应用从缓存中移除。
+
+除了使用事件处理程序之外，还可以使用applicationCache.status属性来查看当前缓存状态。该属性有6个可能的属性值：
+
+**ApplicationCache.UNCACHED (0)**
+
+应用程序没有设置manifest属性：未被缓存
+
+**ApplicationCache.IDLE (1)**
+
+清单文件已经检查完毕，并且已经缓存了最新应用程序
+
+**ApplicationCache.CHECKING (2)**
+
+浏览器正在检查清单文件
+
+**ApplicationCache.DOWNLOADING (3)**
+
+浏览器正在下载并缓存清单中列举的所有资源
+
+**ApplicationCache.UPDATEREADY (4)**
+
+已经下载和缓存了最新版的应用程序
+
+**ApplicationCache.OBSOLETE (5)**
+
+清单文件不存在，缓存将被清除
+
+ApplicationCache对象还定义了两个方法：update()方法调用了更新缓存算法去检测是否有最新版本的应用程序。这和应用程序第一次载入时，浏览器去检测清单文件（触发响应的事件）的效果是一样的。
+
+还有一个方法是：swapCache()，该方法更加巧妙。还记得当浏览器下载并缓存更新版本的应用时，用户仍然在运行老版本的应用吧。只有当用户再次载入应用时，才会访问到最新版本。因此必须要保证老版本的应用也要工作正常。同时要注意的是，老版本的应用相关资源可能是从缓存中获取的：比方说，应用程序可能使用XMLHttpRequest去获取文件，而这些请求也务必要保证能够从缓存中获取到。因此，浏览器在用户再次载入应用前必须在缓存中保留老版本的应用。
+
+swapCache()方法告诉浏览器可以弃用老的缓存，所有的请求都从新缓存中获取。要注意的是，这并不会重新载入应用程序：所有已经载入的HTML文件、图片、脚本等等资源都不会改变。但是，之后的请求都将从最新的缓存中获取。这会导致“版本错乱”的问题，因此，一般不推荐使用，除非你的应用设计的很好，确保这样的方式没有问题。想象下，比方说，有这么个应用程序，它什么也不做，就只是在浏览器检查清单文件整个过程中，显示过渡画面（译者注：类似loading图）。触发"noupdate"事件时，它继续“前进”并载入应用程序首页。触发“downloading”事件，并且更新缓存后，它显示合适的反馈给用户。触发“updateready”事件时，它调用swapCache()方法，然后从最新的缓存中载入更新过的首页。
+
+要注意的是，只有当状态属性是ApplicationCache.UPDATEREADY 或者ApplicationCache.OBSOLETE时，才能调用swapCache()方法（当状态是OBSOLETE时，调用swapCache()方法可以立即弃用废弃的缓存，让之后所有的请求都通过网络获取）。如果在状态属性是其他数值的时候调用swapCache()方法会抛出异常。
+
+### 20.4.3 离线Web应用
+
+离线web应用指的是将自己“安装”在应用程序缓存中的程序，使得哪怕在浏览器处于离线状态时候依然可访问。举个最简单的例子——类似时间和万花筒生成器这样的应用——这是web应用要离线可用需要做的事情。但是，大多数web用也需要向服务器上传数据：哪怕是简单的游戏应用都有可能需要上传用户的最高得分到服务器。这类应用也可以成为离线应用。他们可以使用localStorage来存储应用数据，然后当在线的时候再将数据上传到服务器。在本地存储和服务器端同步数据是将应用转变为离线应用最巧妙的环节，特别是当用户需要从多台设备获取数据的时候。
+
+为了在离线状态可用，web应用需要可以告知别人自己是离线还是在线，同时当网络连接发生改变时候也能“感知”到。通过navigator.onLine属性，可以检测浏览器是否在线，同时，在Window对象上注册在线和离线事件处理程序，可以检测网络连接状态的改变。
+
+本章将以一个简单的离线web应用结束，该应用使用了这些技术。该应用名叫“PermaNote”——一个简单的记事本程序，它将用户的文本保存到locaStorage中，并且在网络可用的时候，将其上传到服务器。PermaNote只允许用户编辑单个笔记，而且不考虑任何授权和身份识别的问题——假设服务端有处理区分用户方式，但是不包括任何登录画面。PermaNote应用包含三个文件。例20-5，是一个缓存清单文件，它列出了另外两个文件，同时指定“note”这个URL不需要缓存：我们使用此URL来实现在服务端读写笔记数据。
+
+例 20-5. permanote.appcache
+
+	CACHE MANIFEST
+	# PermaNote v8
+	permanote.html
+	permanote.js
+	NETWORK:
+	note
+
+例20-6是第二个PermaNote应用的文件：一个HTML文件，定义了简单的编辑器的UI：中间是一个`<textarea>`元素，上面是一排的按钮，下面是状态条。要注意的是，`<html>`标签设置了manifest属性。
+
+例 20-6. permanote.html
+
+	<!DOCTYPE HTML>
+	<html manifest="permanote.appcache">
+	  <head>
+		<title>PermaNote Editor</title>
+		<script src="permanote.js"></script>
+		<style>
+		#editor { width: 100%; height: 250px; }
+		#statusline { width: 100%; }
+	   </style>
+	  </head>
+	  <body>
+		<div id="toolbar">
+		  <button id="savebutton" onclick="save()">Save</button>
+		  <button onclick="sync()">Sync Note</button>
+		 <button onclick="applicationCache.update()">Update Application</button>
+		</div>
+		<textarea id="editor"></textarea>
+		<div id="statusline"></div>
+	  </body>
+	</html>
+
+最后，例20-7展示的是PermaNode应用的JavaScript代码。它定义了一个status()在状态条上展示消息，一个save()方法来保存当前版本的笔记到服务器，以及一个sync()方法来确保本地和服务器端的笔记数据的同步。其中，save()和sync()使用了第18章中介绍的脚本化的HTTP技术。（有趣的是，save()函数使用了HTTP的”PUT“方法而不是常见的”POST“方法。）
+
+除了这三个基本的方法外，例20-7还定义了一些事件处理程序。为了保持本地和服务器端的笔记数据同步，应用程序需要一些事件处理程序：
+
+**onload**
+
+尝试和服务器同步，一旦有新版本的笔记并且完成同步后，启用编辑器窗口
+saven()和sync()方法发出HTTP请求，并在XMLHttpRequest对象上注册onload事件处理程序来获取上传或者下载完成的提醒
+
+**onbeforeunload**
+
+在未上传前，保存当前版本的笔记数据到服务器。
+
+**oninput**
+
+每当`<textarea>`元素内容发生变化时，都将其内容保存到localStorage中，并启动一个计时器。当用户停止编辑超过5秒，就自动保存笔记数据到服务器。
+
+**onoffline**
+
+当浏览器进入离线状态时，在状态栏中显示离线状态
+
+**ononline**
+
+当浏览器回到在线状态时，同步服务器检查是否有新版本的数据，并且保存当前版本数据。
+
+**onupdateready**
+
+如果新版本的应用（已缓存）准备就绪了，就在状态条中展示消息来告知用户。
+
+**onnoupdate**
+
+如果应用程序缓存没有发生变化，则通知用户他/她仍在运行当前版本。
+
+例20-7展示了PermaNote应用的事件驱动逻辑的概览：
+
+例 20-7. permanote.js
+
+	// 一些贯穿始终的变量
+	var editor, statusline, savebutton, idletimer;
+	// 首次载入应用
+	window.onload = function() {
+		// 第一次载入时，初始化本地存储
+		if (localStorage.note == null) localStorage.note = "";
+		if (localStorage.lastModified == null) localStorage.lastModified = 0;
+		if (localStorage.lastSaved == null) localStorage.lastSaved = 0;
+
+		// 查找UI元素，并初始化全局变量
+		editor = document.getElementById("editor");
+		statusline = document.getElementById("statusline");
+		savebutton = document.getElementById("savebutton");
+
+		editor.value = localStorage.note; // 初始化编辑器，将保存的笔记数据填充为其内容
+		editor.disabled = true; // 同步前禁止编辑
+		// 一旦文本区有内容输入
+		editor.addEventListener("input", function(e) {
+			// 将新的值保存到locaStorage中
+			localStorage.note = editor.value;
+			localStorage.lastModified = Date.now();
+			// 重置闲置计时器
+			if (idletimer) clearTimeout(idletimer);
+			idletimer = setTimeout(save, 5000);
+			// 启用保存按钮
+			savebutton.disabled = false;
+		},
+		false);
+
+		// 每次载入应用程序时，尝试同步服务器
+		sync();
+	};
+
+	// 离开页面前保存数据到服务器
+	window.onbeforeunload = function() {
+		if (localStorage.lastModified > localStorage.lastSaved) save();
+	};
+
+	// 离线时，通知用户
+	window.onoffline = function() {
+		status("Offline");
+	}
+
+	// 再次返回在线状态时，进行同步
+	window.ononline = function() {
+		sync();
+	};
+
+	// 当有新版本应用的时候，提醒用户
+	// 这里我们也可以采用location.reload()方法来强制重新载入应用
+	window.applicationCache.onupdateready = function() {
+		status("A new version of this application is available. Reload to run it");
+	};
+
+	// 当没有新版本的时候也通知用户
+	window.applicationCache.onnoupdate = function() {
+		status("You are running the latest version of the application.");
+	};
+
+	// 一个用于在状态条中显示消息的函数
+	function status(msg) {
+		statusline.innerHTML = msg;
+	}
+
+	// 每当笔记内容更新后，如果用户停止编辑超过5分钟，
+	// 就会自动将笔记数据上传到服务器（在线状态下）
+	function save() {
+		if (idletimer) clearTimeout(idletimer);
+		idletimer = null;
+		if (navigator.onLine) {
+			var xhr = new XMLHttpRequest();
+			xhr.open("PUT", "/note");
+			xhr.send(editor.value);
+			xhr.onload = function() {
+				localStorage.lastSaved = Date.now();
+				savebutton.disabled = true;
+			};
+		}
+	}
+
+	// 检查服务端是否有新版本的笔记，
+	// 如果没有，则将当前版本保存到服务器端
+	function sync() {
+		if (navigator.onLine) {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "/note");
+			xhr.send();
+			xhr.onload = function() {
+				var remoteModTime = 0;
+				if (xhr.status == 200) {
+					var remoteModTime = xhr.getResponseHeader("Last-Modified");
+					remoteModTime = new Date(remoteModTime).getTime();
+				}
+				if (remoteModTime > localStorage.lastModified) {
+					status("Newer note found on server.");
+					var useit = confirm("There is a newer version of the note\n" + 
+							"on the server. Click Ok to use that version\n" + 
+							"or click Cancel to continue editing this\n" + 
+							"version and overwrite the server");
+					var now = Date.now();
+					if (useit) {
+						editor.value = localStorage.note = xhr.responseText;
+						localStorage.lastSaved = now;
+						status("Newest version downloaded.");
+					}
+					else status("Ignoring newer version of the note.");
+					localStorage.lastModified = now;
+				}
+				else status("You are editing the current version of the note.");
+				if (localStorage.lastModified > localStorage.lastSaved) {
+					save();
+				}
+
+				editor.disabled = false; // 再次启用编辑器
+				editor.focus(); // 将光标定位到编辑器中
+			}
+		}
+		else { // 离线状态下，不能同步
+			status("Can't sync while offline");
+			editor.disabled = false;
+			editor.focus();
+		}
+	}
+
+
+
