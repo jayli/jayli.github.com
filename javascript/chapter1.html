@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="http://a.tbcdn.cn/app/dp/s/screen.css" />
+<style>
+#bd {margin-left:20px;margin-right:20px;}
+</style>
+<title>权威指南 第1章 样章</title>
+<style>
+p img {
+	float:left;
+}
+</style>
+</head>
+<body>
+<div id="bd">
+
+<h1>第 1 章 JavaScript 概述</h1>
+
+<p>JavaScript是面向Web的编程语言。绝大多数现代网站都使用了JavaScript，并且所有的现代web浏览器——基于桌面系统、游戏机、平板电脑和智能手机——均包含了JavaScript解释器。这使得JavaScript能够称之为史上使用最广泛的编程语言。JavaScript也是前端开发工程师必须掌握的三种技能之一：描述内容的HTML、描述样式的CSS、以及描述行为的JavaScript。本书能帮助你掌握JavaScript这门语言。</p>
+
+<p>如果你有其他语言的编程经历，这会帮助你了解JavaScript是一门高端的、动态的、弱类型的编程语言，非常适合面向对象和函数式的编程风格。JavaScript的语法源自Java，它的一等函数（first-class functions）来自于Scheme、它的基于原型（prototype-based）的继承来自于Self。但使用本书学习JavaScript不必去了解那些（Java/Scheme/Self）语言或熟悉那些术语。</p>
+
+<p>“JavaScript”这个名字经常被误解。除了语法看起来和Java类似之外，JavaScript和Java是完全不同的两种编程语言。JavaScript早已超出了其“脚本语言”(scripting-language)本身的范畴，而成为了一种集健壮性、高效性和通用性为一身的编程语言。最新的语言版本为严谨的大型软件开发 定义了诸多新的特性。</p>
+
+<blockquote>
+  <p><strong>名字和版本</strong></p>
+  
+  <p>JavaScript是由Web发展初期的网景（Netscape）公司创建，“JavaScript”是Sun Microsystem 公司（现在的Oracle）的注册商标，用来特指网景（现在的Mozilla）对这门语言的实现。网景将这个语言作为标准提交给了ECMA——欧洲计算机制造协会——由于商标上的冲突，这门语言的标准版本改了一个丑陋的名字“ECMAScript”。同样由于商标的冲突，微软（Microsoft）对这门语言的实现版本取了一个广为人知的名字“JScript”。实际上，几乎所有人都将这门语言叫做“JavaScript”。本书也仅仅使用“ECMAScript”来指代语言标准。</p>
+  
+  <p>在最近10年间，所有的web浏览器都实现了第三版ECMAScript标准，我们也已经不必要再去考虑版本号了：语言标准已经很稳定了，并且被几乎所有浏览器完整的实现了。最近，ECMAScript第五版定义了新的语言标准，在撰写本书时，浏览器已经开始实现它了。除了ECMAScript3的特性，本书还涵盖了所有ECMAScript5的新特性。正如我们经常将JavaScript简写成JS一样，这门ECMAScript3和ECMAScript5有时也会简写成ES3和ES5。</p>
+  
+  <p>当我们提到这门语言本身时，通常所指的语言版本是ECMAScript3和ECMAScript5（ECMAScript 4 已经开发了数年，但由于太过庞大，从未发布过正式版本）。有时会看到JavaScript的版本比如JavaScript1.5或JavaScript1.8。这些是Mozilla的版本号：版本1.5基本上就是ECMAScript3，后续版本包含了非标准的语言扩展（参照第11章）。最后，JavaScript解释器或者“引擎（engines）”也有版本号，比如，Google将它的JavaScript解释器是作V8，在撰写本书时V8最新版本是3.0。</p>
+</blockquote>
+
+<p>通常每一种编程语言都有各自的开发平台、标准库或API，用来提供诸如基本输入输出的功能。JavaScript语言核心针对文本、数组、日期和正则表达式的操作提供了很少的API，这些API不包括输入输出功能。输入和输出功能（类似网络、存储和图形相关的复杂特性）是和JavaScript所属的“宿主环境”（host enviroment）提供的。这里所说的宿主环境通常是web浏览器（在第12章会介绍两个不基于web浏览器的JavaScript宿主环境），本书的第一部分涵盖了语言本身的特性以及少量的内置API。第二部分讲解了JavaScript如何在web浏览器中工作，并涵盖基于浏览器的API——这部分也被称作“客户端JavaScript”。</p>
+
+<p>vaScript语言核心的参考手册。比如在这部分，你可以查找“Array”以获得JavaScript数组操作API的详细信息。第四部分是客户端JavaScript参考手册，比如，你可以在这部分查找“canvas”来获得HTML5<code>&lt;canvas&gt;</code>元素定义的图形编程API。</p>
+
+<p>本书首先讲解初级的基础部分，然后讲解高级的更抽象的内容。本书的章节也是如此安排以便你能循序阅读。但学习一门新的编程语言绝非易事，当然要描述完整这门语言就没办法苛求知识点的循次渐进，每一种语言特性都和其它特性相互关联，本书的知识点也是前后参照的，有时参照的知识点在后续章节，有时在已经阅读的章节。本章快速介绍了语言核心部分和客户端API及其关键特性，以便你能更方便更深入的阅读理解后续章节。</p>
+
+<blockquote>
+  <p><strong>JavaScript 初探</strong></p>
+  
+  <p>当学习一门新的编程语言的时候，应当对照书中的示例边学边动手做，反复演练以加深自己的理解。如此说来，你需要一个JavaScript解释器。幸运的是，每一个web浏览器都包含一个JavaScript解释器，当你阅读本书时，你可能已经在电脑上安装了不止一个web浏览器了。</p>
+  
+  <p>你可以通过在HTML文件里写一个<scirpt>标签来嵌入JavaScript代码，当浏览器加载HTML文件的时候会自动执行这段代码，随后会有提到。幸运的是，如果运行的是一小段JavaScript代码，则不必每次都这样做。我们可以利用Firefox的一个强大的革命性的插件Firebug（图1-1，可以从http://getfirebug.com/ 下载firebug）来运行这些小段代码，而且如今的web浏览器带有很多开发工具，可以用来调式、试验和学习。通常在浏览器的工具菜单(Tools Menu)中可以看到类似“开发者工具”（“Developer Tools”）或者“Web控制台”（“Web Console”）（Firefox4内置了“Web控制台”，不过更推荐使用Firebug）。你可以通过按F12键或者Ctrl-Shift-J来唤醒控制台【译注：F12用来唤醒/关闭Firebug操作面板，Ctrl-Shift-J用来唤醒错误控制台（Error Console）】。控制台窗口通常会在浏览器窗口的顶部或底部，有时候也可以单独打开一个窗口（图1-1），这样会更加方便。</p>
+  
+  <p>通常“开发者工具面板”窗口包含了很多Tab，可以查看HTML文档结构、CSS样式、网络请求等等。其中第一个Tab是“JavaScript控制台”，可以直接敲入JavaScript代码并运行出结果。用这种方式来调试JavaScript既简单又实用，这里强烈推荐读者使用这种方式来辅助你阅读本书。</p>
+  
+  <p>一些现代浏览器有可能实现了一个简单的控制台API。可以通过使用函数console.log()来向控制台输出消息，使用console.log()来作简单的输出演示，通过这种方式可以非常方便的调试本书的实例代码。同样，也可以通过给alert()函数传入一段文本来弹出一个对话框，但这种输出调试信息的方法更具侵入性。</p>
+</blockquote>
+
+<p>图1-1. Firebug控制台</p>
+
+<p><img src="http://img01.taobaocdn.com/tps/i1/T1PSXvXbtyXXXXXXXX-888-538.png" alt="pic" /></p>
+
+<h2>1.1 JavaScript 语言核心</h2>
+
+<p>本小节是JavaScript语言的一个快速概览，也是本书第一部分的快速概览，在本章的介绍之后，我们将着重关注JavaScript的基础知识：第二章“词法结构”讲解了JavaScript注释、分号和Unicode字符集，第三章“类型、值和变量”会更加有意思，这章主要讲解了JavaScript变量和赋值。这里有一些示例代码来说明这两章的重点内容：</p>
+
+<pre><code>//所有在双斜线之后的内容都属于注释.
+//仔细阅读这里的注释：他们对JavaScript代码做了解释.
+
+// 变量是表示值的一个符号名字.
+// 变量是通过var关键字声明的
+var x; // 声明一个变量x
+
+// 值可以通过=等号赋值给变量
+x = 0; // 现在变量x的值为0
+x // =&gt; 0:通过变量获取其值.
+
+// JavaScript支持多种数据类型
+x = 1; //数字.
+x = 0.01; //整数和实数共用一个数字类型.
+x = "hello world"; // 由双引号内的文本构成的字符串.
+x = 'JavaScript'; // 单引号内的文本同样构成字符串
+x = true; //布尔值.
+x = false; //另一个布尔值.
+x = null; // null是一个特殊的值，意思是“空”
+x = undefined; // undefined和null非常类似.
+</code></pre>
+
+<p>JavaScript程序中两个非常重要的数据类型是对象和数组。本书第六章主讲对象，第七章讲数组，对象和数组在JavaScript是如此之重要，以至于你在本书中处处都能看到它们的身影。</p>
+
+<pre><code>//JavaScript中的最重要的类型就是对象.
+//对象是名值对的集合，或字符串到值映射的集合.
+var book = { //对象是由花括号括起来的
+    topic: "JavaScript",
+    // 属性‘topic“的值是“JavaScript”.
+    fat: true // 属性“fat”的值是true.
+}; //右花括号标记了对象的结束.
+
+// 通过.或[]来访问对象属性
+book.topic // =&gt; "JavaScript"
+book["fat"] // =&gt; true:另外一种获取属性的方式.
+book.author = "Flanagan"; //通过赋值创建一个新属性.
+book.contents = {}; // {} 是一个空对象，它没有属性
+
+// JavaScript同样支持数组（以数字为索引的列表）
+var primes = [2, 3, 5, 7]; // 拥有4个值的数组，由[和]划定边界.
+primes[0] // =&gt; 2: 数组中的第一个元素（索引为0）
+primes.length // =&gt; 4: 数组中的元素个数.
+primes[primes.length - 1] // =&gt; 7:数组的最后一个元素.
+primes[4] = 9; // 通过赋值来添加一个新元素.
+primes[4] = 11; //或通过赋值来改变一个已有的元素.
+var empty = []; // [] 是一个空数组，它具有0个元素.
+empty.length // =&gt; 0
+
+// 数组和对象中都可以包含另一个数组或对象:
+var points = [ // 一个具有两个元素的数组.
+{
+    x: 0,
+    y: 0
+},
+// 每个元素都是一个对象.
+{
+    x: 1,
+    y: 1
+}];
+var data = { // 一个包含两个属性的对象
+    trial1: [
+        [1, 2],
+        [3, 4]],
+    //每一个属性都是数组.
+    trial2: [
+        [2, 3],
+        [4, 5]] // 数组的元素也是数组.
+};
+</code></pre>
+
+<p>上段代码所示的通过方括号定义数组和通过花括号定义对象的语法称之为初始化表达式（initializer expression），在第四章 “表达式和运算符” 中有专门的小节讲述。表达式是一个JavaScript中的短语（phrase），这个短语可以通过运算得出一个值。通过<code>.</code>和<code>[]</code>来获取对象成员或数组元素的引用便构成个表达式。比如，请看一下上述代码中独占一行的表达式，其后的注释里箭头（=>）后的值就是表达式的运算结果。这种写法是本书中的一种约定表述方式。</p>
+
+<p>JavaScript中最常见的表达式写法是像下面代码这样使用运算符（operators）：</p>
+
+<pre><code>// 运算符作用于操作数，生成一个新的值.
+// 最常见的是算术运算符
+3 + 2 // =&gt; 5: 加法
+3 - 2 // =&gt; 1: 减法
+3 * 2 // =&gt; 6: 乘法
+3 / 2 // =&gt; 1.5: 除法
+points[1].x - points[0].x // =&gt; 1: 更复杂的操作数也能照常工作
+"3" + "2" // =&gt; "32": + 可以完成加法运算也可以作字符串连接
+
+// JavaScript定义了一些算术运算的简写形式
+var count = 0; // 定义一个变量
+count++; // 自增1
+count--; // 自减1
+count += 2; // 自增2，和count = count + 2;写法一样
+count *= 3; // 自乘3 : 和count = count * 3;写法一样
+count // =&gt; 6: 变量名本身也是一个表达式
+
+// 相等关系运算符用来判断两值是否相等
+// 不等、大于、小于运算符的运算结果是true或false.
+var x = 2, y = 3; // 这里的 = 等号是赋值的意思，不是比较相等
+x == y // =&gt; false: 相等
+x != y // =&gt; true: 不等
+x &lt; y // =&gt; true: 小于
+x &lt;= y // =&gt; true: 小于等于
+x &gt; y // =&gt; false: 大于等于
+x &gt;= y // =&gt; false: 大于等于
+"two" == "three" // =&gt; false: 两个字符串不相等
+"two" &gt; "three" // =&gt; true: “tw”在字母表中的索引大于“th”
+false == (x &gt; y) // =&gt; true: false和false相等
+
+// 逻辑运算符是对布尔值的合并和求反
+(x == 2) &amp;&amp; (y == 3) // =&gt; true: 两个比较都是true，&amp;&amp;表示“与”
+(x &gt; 3) || (y &lt; 3) // =&gt; false: 两个比较不都是true，||表示“或”
+!(x == y) // =&gt; true: ! 求反
+</code></pre>
+
+<p>如果JavaScript中的短语（phrases）是表达式的话，那么整个句子便称作语句（statement），在第五章语句中会详细讲解。上述代码中，以分号结束的行均是一个语句（下面的代码中，会看到省略分号的多行语句）。实际上，语句和表达式之间有很多共同之处，粗略的讲，表达式仅仅计算出一个值但并不作任何操作，它并不改变程序的运行状态。而语句并不包含一个值（或者说它包含的值我们并不关心），但他们改变程序的运行状态。上文中已经看过变量声明语句和赋值语句。另一类语句是“控制结构”（control structures），比如条件判断和循环。下面对函数的介绍后是相关的示例代码。</p>
+
+<p>函数是带有名称（named）（译注：这里“名称”含义是指函数具有固定标识，并不是指函数变量名称）和参数的JavaScript代码段，可以一次定义多次运行。在第八章会正式详细的讲解函数。与对象和数组一样，在本书的很多地方都有对函数的描述。这里是一些简单代示例码：</p>
+
+<pre><code>// 函数是一段带有参数的JavaScript代码端，可以多次调用
+function plus1(x) { // 定义了名为plus1的函数，带有参数x
+    return x+1; // 返回一个比传入的参数大的值
+} //函数的代码块是由花括号包裹起来的部分
+plus1(y) // =&gt; 4: y为3，调用函数的结果为 3+1
+
+var square = function(x) { // 函数是一种值，可以赋值给变量
+    return x*x; // 计算函数的值
+}; // 分号标识了赋值语句的结束.
+
+square(plus1(y)) // =&gt; 16: 在一个表达式中调用两个函数
+</code></pre>
+
+<p>当将函数和对象合写在一起时，函数就变成了“方法”（method）：</p>
+
+<pre><code>// 当函数赋值给对象的属性，我们称之为
+// “方法”，所有的JavaScript对象都含有方法:
+var a = []; // 创建一个空数组
+a.push(1, 2, 3); // push()方法向数组中添加元素
+a.reverse(); // 另一个方法：将数组元素的次序反转
+// 我们也可以定义自己的方法，“this”关键字是对定义方法
+// 的对象的引用：这里的例子是上文中提到的包含两个点位置信息的数组
+points.dist = function() { // 定义一个方法用来计算两点之间的距离
+    var p1 = this[0]; // 通过this获得对当前数组的引用
+    var p2 = this[1]; // 并取得调用的数组前两个元素
+    var a = p2.x - p1.x; // X坐标轴上的距离
+    var b = p2.y - p1.y; // Y坐标轴上的距离
+    return Math.sqrt(a * a + // 勾股定理
+    我们称之为b * b); // 用Math.sqrt()来计算平方根
+};
+points.dist() // =&gt; 1.414: 求得两个点之间的距离
+</code></pre>
+
+<p>现在，给出一些控制语句的例子，这里示例的函数体内包含了最常见的JavaScript控制语句：</p>
+
+<pre><code>// 这些JavaScript语句中包含了条件判断和循环
+// 使用了类似C，C++，Java和其他语言的语法
+function abs(x) { // 求绝对值的函数
+    if (x &gt;= 0) { // if语句...
+        JavaScriptreturn x; //如果比较结果为true则执行这里的代码.
+    } //子句的结束.
+    else { // 当if条件不满足时执行else子句
+        JavaScriptreturn - x;
+    } // 如果分支中只有一个语句，花括号是可以省略的.
+} //注意if/else中的return语句.
+function factorial(n) { // 计算阶乘的函数
+    var product = 1; // 给product赋值为1
+    while (n &gt; 1) { // 当()内的表达式为true时循环执行{}内的代码
+        JavaScriptproduct *= n; // product = product * n;的简写形式
+        JavaScriptn--; //  n = n - 1;的简写形式
+    } // 循环结束
+    return product; // 返回product
+}
+factorial(4) // =&gt; 24: 1*4*3*2
+function factorial2(n) { // 实现循环的另一种写法
+    var i, product = 1; // 给product赋值为1
+    for (i = 2; i &lt;= n; i++) // 将i从2自增至n
+    JavaScriptproduct *= i; // 循环体，当循环体中只有一句代码，可以省略{}
+    return product; // 返回计算好的阶乘
+}
+factorial2(5) // =&gt; 120: 1*2*3*4*5
+</code></pre>
+
+<p>JavaScript是一种面向对象的编程语言，但和传统的面向对象又有很大区别。第九章“类和模块”将详细讲解JavaScript中的面向对象编程，这一章有着大量的实例代码，是本书中最长的一个章节。这里有一个简单的示例，这段代码展示了如何在JavaScript中定义一个表示2D平面几何中的点的类。这个类实例化出的对象拥有一个名为r()的方法，用来计算该点到原点的距离：</p>
+
+<pre><code>// 定义一个构造器方法用来初始化一个新的Point对象
+function Point(x, y) { // 按照惯例，构造器均以大写字母开始
+    this.x = x; // 关键字this指代了被初始化出的实例
+    this.y = y; // 将函数参数存储为对象的属性
+} // 不需要return
+// 使用new关键字来创建一个实例
+var p = new Point(1, 1); // 平面几何中的点 (1,1)
+// 通过给构造器方法的prototye赋值
+// 来给Point对象定义方法
+Point.prototype.r = function() {
+    return Math.sqrt( // 返回 x² + y² 的平方根
+    this.x * this.x + // this指代调用这个方法的对象
+    this.y * this.y);
+};
+
+// Point的实例对象p（以及所有的Point实例对象）继承了方法 r() 
+p.r() // =&gt; 1.414...
+</code></pre>
+
+<p>第九章是第一部分的精华所在，后续的章节做了一些零星的延伸，将我们对JavaScript语言核心的探索带向尾声。第十章“模式匹配和正则表达式”，主要讲解了正则表达式的语法，并演示了如何使用这些“正则表达式”进行文本的模式匹配。第十一章“JavaScript子集和扩展”，介绍了JavaScript语言核心的子集和超集。最后，在进入客户端JavaScript的内容之前，我们用第十二章“服务器端的JavaScript”介绍两种在web浏览器之外的JavaScirpt运行环境。</p>
+
+<h2>1.2 客户端JavaScript</h2>
+
+<p>JavaScript语言核心部分的内容中的知识点交叉引用比较多、且知识点的层次感并不分明。而在客户端JavaScript部分的内容编排方式有了较大改变。依照本书给定的知识点顺序进行学习，完全可以学会如何在web浏览器中使用JavaScript。但如果你想通过阅读本书来学习客户端JavaScript的话，不能只将眼光落在第二部分，所以在本小节我们会对于客户端编程技术做一个快速概览，随后会给出一些有深度的示例。</p>
+
+<p>第十三章“Web浏览器中的JavaScript”是第二部分的第一章，这章介绍了如何让JavaScript在浏览器中运行起来。这章你学到的最重要的内容是，JavaScript代码可以通过<scirpt>标签来嵌入到HTML文件中：</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;script src="library.js"&gt;&lt;/script&gt; &lt;!-- 引入一个JavaScript库--&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;这时HTML中的一个段落&lt;/p&gt;
+&lt;script&gt;
+// 在这里写JavaScirpt代码
+&lt;/script&gt;
+&lt;p&gt;更多HTML内容.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>第十四章“Window对象”讲解了浏览器端脚本技术，并涵盖客户端JavaScript中的一些重要全局函数，例如：</p>
+
+<pre><code>&lt;script&gt;
+function moveon() {
+    // 通过弹出一个对话框来问用户一个问题
+    var answer = confirm("准备好了吗?");
+    // 点击“确定”按钮，浏览器会加载一个新页面
+    if (answer) window.location = "http://taobao.com";
+}
+// 在1分钟（60000毫秒）后执行这个函数
+setTimeout(moveon, 60000);
+&lt;/script&gt;
+</code></pre>
+
+<p>我们注意到本节展示的示例代码要比之前小节的示例代码要长很多。这里的示例代码并不是用来在Firebug（或者其他调试工具）控制台中直接输入的，而是作为一个单独的HTML文件，并在浏览器中直接打开运行的。比如上述代码段就是一个完整的HTML文件内容。</p>
+
+<p>第十五章“脚本化文档”的内容更加务实——通过脚本来操纵HTML文档内容。它将展示如何选取特定的HTML节点、如何给HTML节点设置属性、如何修改节点内容、以及如何给document添加新节点。这里的示例函数展示了如何查找和修改节点元素的内容：</p>
+
+<pre><code>// 在document中的一个指定的区域输出调试信息.
+// 如果document不存在这样一个区域，则创建之.
+function debug(msg) {
+    // 通过查找HTML元素id来获输出调试信息的节点
+    var log = document.getElementById("debuglog");
+
+    // 如果这个节点不存在，则创建一个.
+    if (!log) {
+        log = document.createElement("div"); // 创建一个&lt;div&gt;节点
+        log.id = "debuglog"; // 给这个节点id赋值
+        log.innerHTML = "&lt;h1&gt;Debug Log&lt;/h1&gt;"; // 定义初始内容
+        document.body.appendChild(log); // 将其添加到document的末尾
+    }
+
+    // 将消息包装在&lt;pre&gt;中，并添加至log
+    var pre = document.createElement("pre"); // 创建了 &lt;pre&gt; 标签
+    var text = document.createTextNode(msg); // 将msg包装在一个文本节点中
+    pre.appendChild(text); // 将文本添加至 &lt;pre&gt;
+    log.appendChild(pre); // 将 &lt;pre&gt; 添加至 log
+}
+</code></pre>
+
+<p>第十五章讲述了JavaScript如何操纵HTML中的节点。第十六章“脚本化CSS”，讲述了如何使用JavaScript来进行CSS样式操作。通常会使用到HTML节点的style和class属性：</p>
+
+<pre><code>function hide(e, reflow) { // 通过JavaScript操纵样式来隐藏节点e
+    if (reflow) { // 如果第二个参数是true
+        e.style.display = "none" // 隐藏这个节点，其所占的空间也随之消失
+    }
+    else { // 否则
+        e.style.visibility = "hidden"; // 将e隐藏，但是保留其所占的空间 
+    }
+}
+function highlight(e) { // 通过设置CSS class来高亮显示e
+    // 简单的定义了class属性或追加一个class属性.
+    // 这里假设CSS样式中已经有.hilite的定义
+    if (!e.className) e.className = "hilite";
+    else e.className += " hilite";
+}
+</code></pre>
+
+<p>我们可以通过JavaScript来操控HTML内容和CSS样式，同样，我们也可以通过事件处理程序（event handlers）来定义网页的行为。事件处理程序是一个在浏览器中注册的JavaScript函数，当特定类型的事件发生时便触发这个函数。通常我们关心的事件类型是鼠标点击事件和键盘按键事件（在智能手机中则是各种触碰事件）。或者说，当浏览器完成了document的加载、改变窗口大小、或通过form元素输入数据时便会触发一个事件。第十七章“事件处理”详细描述了如何定义、注册事件句柄，以及在事件发生时浏览器是如何调用他们的。</p>
+
+<p>最简单的定义事件句柄的方法是通过给HTML的以“on”为前缀的属性绑定一个回调。当写一些简单的测试代码时，最实用的方法就是给“onclick”绑定回调。假定你已经将上文中的debug()和hide()两个函数保存至了名为debug.js和hide.js的文件中。那么就可以写一段简单的测试代码，来给<code>&lt;button&gt;</code>元素的onclick属性指定一个事件处理程序：</p>
+
+<pre><code>&lt;script src="debug.js"&gt;&lt;/script&gt;
+&lt;script src="hide.js"&gt;&lt;/script&gt;
+Hello
+&lt;button onclick="hide(this,true); debug('hide button 1');"&gt;Hide1&lt;/button&gt;
+&lt;button onclick="hide(this); debug('hide button 2');"&gt;Hide2&lt;/button&gt;
+World
+</code></pre>
+
+<p>下面这些JavaScript用到了事件，它给一个很重要的事件——“load”事件注册了一个事件回调。同时，也展示了更多精巧的注册“click”事件回调函数的方法：</p>
+
+<pre><code>// “load”事件只有在文档加载完成后才会触发
+//通常我们代码需要等待load事件发生后才开始执行.
+window.onload = function() { // 当文档加载完成时执行这里的代码
+    // 找到文档中所有的&lt;img&gt;标签
+    var images = document.getElementsByTagName("img");
+
+    // 遍历 images，给每个节点的“click”事件添加事件处理程序
+    // 在点击图片的时候将图片隐藏
+    for(var i = 0; i &lt; images.length; i++) {
+        var image = images[i];
+        if (image.addEventListener) // 注册事件处理程序的另一种方法
+            image.addEventListener("click", hide, false);
+            else // 兼容IE8及以前的版本
+                image.attachEvent("onclick", hide);
+    }
+
+    // 这便是上面提到的事件处理函数
+    function hide(event) { event.target.style.visibility = "hidden"; }
+};
+</code></pre>
+
+<p>第十五、十六、十七章讲述了如何使用JavaScript来操控网页的内容（HTML）、样式（CSS）以及行为（Event handling）。这些章节中讨论的API多少有些复杂、且具有糟糕的兼容性。也正是由于这个原因，很多客户端JavaScript程序员选择使用“库”或“框架”来简化他们的编码工作。最流行的库非jQuery莫属。第十九章将会详细介绍jQuery库。jQuery定义了一套灵巧易用的API，用来完成操控文档内容、样式和行为的工作。jQuery经过了完整的测试，在所有现代浏览器，甚至在IE6这种早期浏览器中都可以照常运行。</p>
+
+<p>jQuery代码非常易于编写，因为它充分利用了一个名为$()的函数。这里我们用jQuery重写了上文中提到的debug()函数：</p>
+
+<pre><code>function debug(msg) {
+    var log = $("#debuglog"); // 找到要显示msg的节点元素.
+    if (log.length == 0) { // 如果不存在则创建之
+        log = $("&lt;div id='debuglog'&gt;&lt;h1&gt;Debug Log&lt;/h1&gt;&lt;/div&gt;");
+        log.appendTo(document.body); // 并将其追加到body里.
+    }
+    log.append($("&lt;pre/&gt;").text(msg)); // 将msg包装在&lt;pre&gt; 中，再追加到log里.
+}
+</code></pre>
+
+<p>目前我们所提到的第二部分的四个章节都是围绕网页（web pages）展开讨论的。后续的四个章节将着眼点转向web应用（web applications）。这几章的内容并不是讨论如何通过编写操控内容、样式和行为的脚本来渲染文档。而是讲解如何将web浏览器当作应用平台，并描述了用以支持更复杂精细的客户端web应用的现代浏览器API。第十八章“脚本化HTTP”讲解了如何使用JavaScript来发起HTTP请求。第十二章“客户端存储”描述了数据存储的机制、以及客户端应用中的会话状态的保持。第二十一章“多媒体和图形编程”涵盖了基于HTML的<vanvas>标签的API，用来进行任意形状图形的绘制。最后，第二十二章“HTML5 APIs”，讲解了HTML5所提供的新一代web应用API。网络、存储、图形：这些都是web浏览器提供的操作系统级的服务，它们定义了全新的跨平台的应用环境。如果你正在进行基于那些支持这些新API的浏览器的开发，这将是你作为JavaScript程序员最激动人心的时刻。在最后四个章节并没有太多示例代码，但下面的例子使用了这些新的API。</p>
+
+<p><img src="http://img03.taobaocdn.com/tps/i3/T166BwXXtsXXXXXXXX-785-493.png" alt="pic" /></p>
+
+<h3>1.2.1 示例：一个JavaScript贷款计算器</h3>
+
+<p>本章的最后，我们来展示一个例子，这个例子中集中使用了诸多技术，展示了真实环境下的客户端JavaScript（包括HTML和CSS）编程。例1-1列出了一个简单的贷款计算器应用的代码，如图1-2所示。</p>
+
+<p>图1-2. 一个贷款计算器应用</p>
+
+<p>在看代码（例1-1）之前应当先仔细阅读本段文字。你不需要理解所有内容，代码中有着完整的注释，至少你应该能正确运行这段代码得到如上图所示的界面。这里的例子展示了诸多JavaScript语言核心特性，同样展示了重要的客户端JavaScript技术：</p>
+
+<ul>
+<li>如何在文档中选取节点</li>
+<li>如何通过表单input元素来获取输入数据</li>
+<li>如何通过文档节点来设置HTML内容</li>
+<li>如何将数据存储在浏览器端</li>
+<li>如何使用脚本发起HTTP请求</li>
+<li>如何利用<code>&lt;canvas&gt;</code>绘图</li>
+</ul>
+
+<p>例1-1，基于JavaScript实现的贷款计算器</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;
+    JavaScript Loan Calculator
+&lt;/title&gt;
+&lt;style&gt;
+    /* 这里是样式表: 定义了程序输出的样式 */  
+    .output    { font-weight: bold; } /* 计算结果定义为粗体 */  
+    #payment { text-decoration:
+    underline; } /* 定义 id="payment" 的元素样式 */  
+    #graph { border: solid
+    black 1px; } /* 表格有一个1像素的边框 */  
+    th, td { vertical-align: top;} /* 表格单元格对其方式为顶端对齐 */
+&lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;!--  
+这里是一个HTML表格，其中包含&lt;input&gt;元素可以用来输入数据。
+程序将在&lt;span&gt;元素中显示计算结果，这些元素都具有类似“interset”和“years”的id。
+这些id将在表格下面的JavaScript代码中用到。我们注意到，有一些
+input元素定义了“onchange”或“onclick”的事件处理程序，一遍用户在输入数据或者
+点击inputs时执行指定的代码段。
+--&gt;
+&lt;table&gt;
+    &lt;tr&gt;
+     &lt;th&gt;
+         Enter Loan Data:
+     &lt;/th&gt;
+     &lt;td&gt;
+     &lt;/td&gt;
+     &lt;th&gt;
+         Loan Balance, Cumulative Equity, and Interest Payments
+     &lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td&gt;
+         Amount of the loan ($):
+     &lt;/td&gt;
+     &lt;td&gt;
+         &lt;input id="amount" onchange="calculate();"&gt;
+     &lt;/td&gt;
+     &lt;td rowspan=8&gt;
+         &lt;canvas id="graph" width="400" height="250"&gt;
+         &lt;/canvas&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td&gt;
+         Annual interest (%):
+     &lt;/td&gt;
+     &lt;td&gt;
+         &lt;input id="apr" onchange="calculate();"&gt;
+     &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+     &lt;td&gt;
+         Repayment period (years):
+     &lt;/td&gt;
+     &lt;td&gt;
+         &lt;input id="years" onchange="calculate();"&gt;
+     &lt;/td&gt;
+     &lt;tr&gt;
+         &lt;td&gt;
+             Zipcode (to find lenders):
+         &lt;/td&gt;
+         &lt;td&gt;
+             &lt;input id="zipcode" onchange="calculate();"&gt;
+         &lt;/td&gt;
+         &lt;tr&gt;
+             &lt;th&gt;
+                 Approximate Payments:
+             &lt;/th&gt;
+             &lt;td&gt;
+                 &lt;button onclick="calculate();"&gt;
+                     Calculate
+                 &lt;/button&gt;
+             &lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+             &lt;td&gt;
+                 Monthly payment:
+             &lt;/td&gt;
+             &lt;td&gt;
+                 $
+                 &lt;span class="output" id="payment"&gt;
+                 &lt;/span&gt;
+             &lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+             &lt;td&gt;
+                 Total payment:
+             &lt;/td&gt;
+             &lt;td&gt;
+                 $
+                 &lt;span class="output" id="total"&gt;
+                 &lt;/span&gt;
+             &lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+             &lt;td&gt;
+                 Total interest:
+             &lt;/td&gt;
+             &lt;td&gt;
+                 $
+                 &lt;span class="output" id="totalinterest"&gt;
+                 &lt;/span&gt;
+             &lt;/td&gt;
+         &lt;/tr&gt;
+         &lt;tr&gt;
+             &lt;th&gt;
+                 Sponsors:
+             &lt;/th&gt;
+             &lt;td colspan=2&gt;
+                 Apply for your loan with one of these fine lenders:
+                 &lt;div id="lenders"&gt;
+                 &lt;/div&gt;
+             &lt;/td&gt;
+         &lt;/tr&gt;
+&lt;/table&gt;
+&lt;!-- 随后是JavaScirpt代码，这些代码内嵌在了一个&lt;script&gt;标签里 --&gt;
+&lt;!-- 通常情况下，这些脚本代码应当放在&lt;head&gt;标签中 --&gt;
+&lt;!-- 将JavaScript代码放在HTML代码之后仅仅是为了便于理解--&gt;
+&lt;script&gt;
+"use strict"; // 如果浏览器支持的话，则开启ECMAScript5的严格模式
+/*
+    这里的脚本定义了caculate()函数，在HTML代码中绑定事件回调时会用到它
+    这个方法从&lt;input&gt;中读取数据，计算贷款赔率信息，并将结果显示在&lt;span&gt;标签中
+    同样，这里还保存了用户数据、展示了放贷人链接并绘制出了图表。
+*/
+function calculate() {
+    //查找文档中用于输入输出的节点元素
+    var amount = document.getElementById("amount");
+    var apr = document.getElementById("apr");
+    var years = document.getElementById("years");
+    var zipcode = document.getElementById("zipcode");
+    var payment = document.getElementById("payment");
+    var total = document.getElementById("total");
+    var totalinterest = document.getElementById("totalinterest");
+    // 假设所有的输入都是合法的，将从input元素中获取输入数据
+    //将百分比格式转换为小数格式，并从年利率转换为月利率
+    //将年度赔付转换为月度赔付
+    var principal = parseFloat(amount.value);
+    var interest = parseFloat(apr.value) / 100 / 12;
+    var payments = parseFloat(years.value) * 12;
+    // 现在计算月度赔付的数据
+    var x = Math.pow(1 + interest, payments); // Math.pow() 进行幂次运算
+    var monthly = (principal * x * interest) / (x - 1);
+    // 如果结果没有超过JavaScript能表示的数字范围，且用户的输入也正确
+    // 这是所展示的结果就是合法的
+    if (isFinite(monthly)) {
+        // 将数据填充至输出字段的位置，四舍五入到小数点后两位数字
+        payment.innerHTML = monthly.toFixed(2);
+        total.innerHTML = (monthly * payments).toFixed(2);
+        totalinterest.innerHTML = ((monthly * payments) - principal).toFixed(2);
+        // 将用户的输入数据保存下来，这样在下次访问时也能取到数据
+        save(amount.value, apr.value, years.value, zipcode.value);
+        // 找到并展示本地放贷人，但忽略网络错误
+        try { // 获取这段代码抛出的所有异常
+            getLenders(amount.value, apr.value, years.value, zipcode.value);
+        } catch(e) {
+            /* 忽略这些异常 */
+        }
+        // 最后，用图标展示贷款余额、利息和资产收益
+        chart(principal, interest, monthly, payments);
+    } else {
+        // 计算结果不是数字或者是无穷大，意味着输入数据是非法或不完整的
+        // 清空之前的输出数据
+        payment.innerHTML = ""; // 清空元素的文本内容
+        total.innerHTML = ""
+        totalinterest.innerHTML = "";
+        chart(); // 不传参数的话就是清除图表
+    }
+}
+// 将用户的输入保存至localStorage对象的属性中
+// 这些属性在再次访问时还会继续保持
+// 如果你直接在浏览器打开本地文件按的方式运行 file://URL,
+// 则无法在某些浏览器中正确运行（比如FireFox）
+// 而通过HTTP打开文件是可以正常运行的。
+function save(amount, apr, years, zipcode) {
+    if (window.localStorage) { // 只有在浏览器支持的时候才运行这里的代码
+        localStorage.loan_amount = amount;
+        localStorage.loan_apr = apr;
+        localStorage.loan_years = years;
+        localStorage.loan_zipcode = zipcode;
+    }
+}
+// 在页面首次打开时，页面将会尝试读取输入字段
+window.onload = function() {
+    // 如果浏览器支持本地存储并且上次保存的值是存在的
+    if (window.localStorage &amp;&amp; localStorage.loan_amount) {
+        document.getElementById("amount").value = localStorage.loan_amount;
+        document.getElementById("apr").value = localStorage.loan_apr;
+        document.getElementById("years").value = localStorage.loan_years;
+        document.getElementById("zipcode").value = localStorage.loan_zipcode;
+    }
+};
+// 将用户的输入发送至服务器端，服务器（理论上）将
+// 返回一个本地放贷人的链接列表，在这个例子中并没有实现这种查找放贷人的逻辑
+// 但如果服务器端ok的话，这里的逻辑是会正确运行的
+function getLenders(amount, apr, years, zipcode) {
+    // 如果浏览器不支持XMLHttpRequest对象，则退出
+    if (!window.XMLHttpRequest) return;
+    // 找到要显示放贷人列表的元素节点
+    var ad = document.getElementById("lenders");
+    if (!ad) return; // 如果返回为空，则退出
+    // 将用户的输入数据进行URL编码，并作为参数附加在URL里
+    var url = "getLenders.php" + // 处理数据的UTL地址
+    "?amt=" + encodeURIComponent(amount) + // 在查询串中的数据
+    "&amp;apr=" + encodeURIComponent(apr) + "&amp;yrs=" + encodeURIComponent(years) + "&amp;zip=" + encodeURIComponent(zipcode);
+    // 通过XMLHttpRequest对象来获取返回数据
+    var req = new XMLHttpRequest(); // 发起一个新的请求
+    req.open("GET", url); // 通过URL发起一个HTTP GET请求
+    req.send(null); // 发送这个请求
+    // 在返回数据之前，注册了一个事件回调函数，这个回调函数
+    // 将会在服务器的响应返回至客户端的时候触发
+    // 这种异步编程模型在客户端JavaScript中是非常常见的
+    req.onreadystatechange = function() {
+        if (req.readyState == 4 &amp;&amp; req.status == 200) {
+            // 如果代码运行到这里，说明我们得到了一个合法且完整的HTTP响应
+            var response = req.responseText; // HTTP响应是以字符串的形式呈现的
+            var lenders = JSON.parse(response); // 将其解析为数组
+            // 将数组中的放贷人对象转换为HTML字符串形式
+            var list = "";
+            for (var i = 0; i &lt; lenders.length; i++) {
+                list += "&lt;li&gt;&lt;a href='" + lenders[i].url + "'&gt;" + lenders[i].name + "&lt;/a&gt;";
+            }
+            // 将数据在HTML元素中呈现出来
+            ad.innerHTML = "&lt;ul&gt;" + list + "&lt;/ul&gt;";
+        }
+    }
+}
+// 在HTML&lt;canvas&gt;元素中用图表展示月度贷款余额、利息和资产收益
+// 如果不传入参数的话，则清空之前的图表数据
+function chart(principal, interest, monthly, payments) {
+    var graph = document.getElementById("graph"); // 得到 &lt;canvas&gt; 标签
+    graph.width = graph.width; // 用一种巧妙的手法清除并重置画布
+    // 如果不传入参数，或者浏览器不支持画布，则直接返回
+    if (arguments.length == 0 || !graph.getContext) return;
+    // 获得画布元素的“context”对象，这个对象定义了一组绘画API
+    var g = graph.getContext("2d"); // 所有的绘画操作都将基于这个对象
+    var width = graph.width,
+    height = graph.height; // 获得画布大小
+    // 这里的函数作用是将付款数字和美元数据转换为小数
+    function paymentToX(n) {
+        return n * width / payments;
+    }
+    function amountToY(a) {
+        return height - (a * height / (monthly * payments * 1.05));
+    }
+    // 付款数据是一条从(0,0)到(payments, monthly*payments) 的直线
+    g.moveTo(paymentToX(0), amountToY(0)); // 从左下方开始
+    g.lineTo(paymentToX(payments), // 绘至右上方
+    amountToY(monthly * payments));
+    g.lineTo(paymentToX(payments), amountToY(0)); // 再至右下方
+    g.closePath(); // 将结尾连接至开头
+    g.fillStyle = "#f88"; // 亮红色
+    g.fill(); // 填充矩形
+    g.font = "bold 12px sans-serif"; // 定义一个字体
+    g.fillText("Total Interest Payments", 20, 20); // 将文字绘制到图例中
+    // 很多资产数据并不是线性的，将其反映至图表中
+    var equity = 0;
+    g.beginPath(); // 开始绘制新图形
+    g.moveTo(paymentToX(0), amountToY(0)); // 从左下方开始
+    for (var p = 1; p &lt;= payments; p++) {
+        // 计算出每一笔赔付的利息
+        var thisMonthsInterest = (principal - equity) * interest;
+        equity += (monthly - thisMonthsInterest); // 得到资产额
+        g.lineTo(paymentToX(p), amountToY(equity)); // 将数据绘制到画布上
+    }
+    g.lineTo(paymentToX(payments), amountToY(0)); // 将数据线绘制至x轴
+    g.closePath(); // 将线条结尾连接至线条开头
+    g.fillStyle = "green"; // 使用绿色绘制图形
+    g.fill(); // 曲线之下的部分均填充
+    g.fillText("Total Equity", 20, 35); // 文本颜色设置为绿色
+    // 再次循环，余额数据显示为黑色线条
+    var bal = principal;
+    g.beginPath();
+    g.moveTo(paymentToX(0), amountToY(bal));
+    for (var p = 1; p &lt;= payments; p++) {
+        var thisMonthsInterest = bal * interest;
+        bal -= (monthly - thisMonthsInterest); // 得到资产额
+        g.lineTo(paymentToX(p), amountToY(bal)); // 将直线连接至某点
+    }
+    g.lineWidth = 3; // 将直线宽度加粗
+    g.stroke(); // 绘制余额的曲线
+    g.fillStyle = "black"; // 使用黑色字体
+    g.fillText("Loan Balance", 20, 50); // 图例文字
+    // 将年度数据在X轴做标记
+    g.textAlign = "center"; // 文字居中对齐
+    var y = amountToY(0); // Y坐标设为0
+    for (var year = 1; year * 12 &lt;= payments; year++) { // 遍历每年
+        var x = paymentToX(year * 12); // 计算标记位置
+        g.fillRect(x - 0.5, y - 3, 1, 3); // 开始绘制
+        if (year == 1) g.fillText("Year", x, y - 5); // 在坐标轴做标记
+        if (year % 5 == 0 &amp;&amp; year * 12 !== payments) // 每5年的数据
+        g.fillText(String(year), x, y - 5);
+    }
+
+    // 将赔付数额标记在右边界
+    g.textAlign = "right"; // 文字右对齐
+    g.textBaseline = "middle"; // 文字垂直居中
+    var ticks = [monthly * payments, principal]; // 我们将要用到的两个点
+    var rightEdge = paymentToX(payments); // 设置X坐标
+    for (var i = 0; i &lt; ticks.length; i++) { // 对每两个点做循环
+        var y = amountToY(ticks[i]); // 计算每个标记的Y坐标
+        g.fillRect(rightEdge - 3, y - 0.5, 3, 1); // 绘制标记
+        g.fillText(String(ticks[i].toFixed(0)), // 绘制文本.
+        rightEdge - 5, y);
+    }
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div>
+</body>
+</html>
