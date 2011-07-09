@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>title</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<style>
+#log p {
+	border-bottom:0px solid #333;
+}
+
+</style>
+<script type="text/javascript" src="../../core/sandbox-seed.js"></script>
+<script>
+var log = function(msg) {
+	document.getElementById('log').innerHTML += '<p>'+msg+'</p>';
+	window.scroll(0,10000000);
+};
+</script>
+</head>
+<body>
+<div id="log">
+render start
+</div>
+
+<script>
+
+function __autoload() {
+	return {
+		'MyClass1':'MyClass1.js',	
+		'A.B.C.D':'MyClass1.js',	
+		'MyClass2':'MyClass2.js',
+		'X.Y.Z':'MyClass2.js'
+	};
+}
+
+Sandbox.ready(function(S){
+
+	MyClass1.init();
+	MyClass2.init();
+	A.B.C.D.init();
+
+},{requires:['mod1.js']},true);
+
+
+</script>
+<!--?php
+ob_flush();
+flush();
+sleep(5);
+?-->
+
+</body>
+<script>
+log('domready');
+</script>
+<!--new codes-->
+</html>
+
+

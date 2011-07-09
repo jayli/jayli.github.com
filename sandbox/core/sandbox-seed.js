@@ -4,16 +4,66 @@
  *		- 模块依赖关系对父模块不可见
  *		- modules之间的进一步解耦
  *
- * @Class Sandbox
- * @author 拔赤 lijing00333@163.com
+ * Copyright 2011, 拔赤 - lijing00333@163.com
+ * Released under the MIT licenses.
  *
- *		- http://jayli.github.com
- *
+ *		- https://github.com/jayli/sandbox
  *
  */
 
 //Sandbox全局对象
 Sandbox = {
+
+
+	_autoload : function(){
+		if(typeof window.__autoload == 'undefined'){
+			return false;
+		}else {
+			return true;
+		}
+	},
+
+	/**
+	 * php autoload机制的模拟
+	 * function __autoload($class_name){
+	 * 		include $class_name.'.php';
+	 * }
+	 */
+	_parseAutoload : function(code){
+
+		var that = this;
+		if(!that._autoload()) return [];
+		
+		var map = __autoload();
+		
+		var removeComments = function(code) {
+			return code
+				.replace(/(?:^|\n|\r)\s*\/\*[\s\S]*?\*\/\s*(?:\r|\n|$)/g, '\n')
+				.replace(/(?:^|\n|\r)\s*\/\/.*(?:\r|\n|$)/g, '\n');
+		};
+		var trim = function(s){
+			return s.replace(/(^\s*)|(\s*$)/g, "");
+		};
+
+		code = removeComments(code);
+
+		var pattern,i;
+		var ret = [],match;
+
+		for(i in map){
+			var str = i.replace('.','\\.');
+			pattern = new RegExp('[^.]\\b'+str+'\\s*','g');
+
+			while ((match = pattern.exec(code))) {
+			  if (match[0] && map[trim(match[0])]) {
+				ret.push(map[trim(match[0])]);
+			  }
+			}
+		}
+
+		return ret;
+	},
+
 	/**
 	 * 全局模块树，动态构建
 	 * 格式：
@@ -278,7 +328,18 @@ Sandbox = {
 				continue;
 			}
 			that._Mojos[_a[i]].attached = true;
-			that._Mojos[_a[i]].callback(that);
+			//that._Mojos[_a[i]].callback(that);
+
+			var callback = that._Mojos[_a[i]].callback;
+
+			//autoload 的逻辑
+			var ret = that._parseAutoload(callback.toString());
+			if(ret.length == 0){
+				callback(that);
+			}else{
+				that.loadScript(ret,callback);
+			}
+
 		}
 	},
 	/**
@@ -364,7 +425,13 @@ Sandbox = {
 				//从这里继续
 				if(that._checkAllLoaded() == true){
 					that._runConstructors();
-					callback(that);
+					//autoload的逻辑
+					var ret = that._parseAutoload(callback.toString());
+					if(ret.length == 0){
+						callback(that);
+					}else{
+						that.loadScript(ret,callback);
+					}
 				}else{
 					that._loadUnloaded(recursion);
 				}
@@ -401,6 +468,27 @@ Sandbox = {
 			callback();
 			return false;
 		}
+
+
+		if(url instanceof Array){
+
+			if(url.length == 1){
+				that.loadScript.apply(that,[url[0],callback]);
+				return false;
+			}
+
+			var _url = url.reverse().pop();
+			url = url.reverse();
+
+			that.loadScript(_url,function(){
+				that.loadScript.apply(that,[url,callback]);
+			});
+
+			return false;
+
+		}
+
+
 		//bugfix 只有在load完成后才算已经加载，因此要在回调中push到'已完成'
 		//that._LoadQueue.push(url);
 		
@@ -530,15 +618,11 @@ Sandbox = {
 		},
 
 		ua = nav && nav.userAgent, 
-
 		loc = window.location,
-
 		href = loc && loc.href,
-		
 		m;
 
 		o.secure = href && (href.toLowerCase().indexOf("https") === 0);
-
 		if (ua) {
 
 			if ((/windows|win32/i).test(ua)) {
