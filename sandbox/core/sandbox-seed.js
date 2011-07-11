@@ -55,8 +55,10 @@ Sandbox = {
 			pattern = new RegExp('[^.]\\b'+str+'\\s*','g');
 
 			while ((match = pattern.exec(code))) {
-			  if (match[0] && map[trim(match[0])]) {
-				ret.push(map[trim(match[0])]);
+				var f = trim(match[0]);
+			  if (f && map[f]) {
+					if(that._checkLoaded(map[f]))continue;
+					ret.push(map[f]);
 			  }
 			}
 		}
@@ -161,7 +163,7 @@ Sandbox = {
 		return _win;
 	},
 	/**
-	 * 遍历_Mojos，计算当前未加载的脚本，并加载之，对排序无要求
+	 * 遍历_Mojos，计算当前未加载的脚本，并加载之，JS文件是从前到后依次串行加载
 	 * @method _loadUnloaded 
 	 * @param callback 加载完成的回调 
 	 * @private
@@ -179,12 +181,15 @@ Sandbox = {
 		}
 		_a = that.distinct(_a);
 
+		
 		var recursion = function(){
 			if(_a.length == 0){
 				callback(that);
 				return false;
 			};
-			that.loadScript(_a.pop(),recursion);
+			var _item  = _a.reverse().pop();
+			_a = _a.reverse();
+			that.loadScript(_item,recursion);
 		};
 		recursion();
 	},
@@ -333,12 +338,29 @@ Sandbox = {
 			var callback = that._Mojos[_a[i]].callback;
 
 			//autoload 的逻辑
+			/*
 			var ret = that._parseAutoload(callback.toString());
 			if(ret.length == 0){
 				callback(that);
 			}else{
 				that.loadScript(ret,callback);
 			}
+			*/
+
+
+
+
+
+
+			var ret = that._parseAutoload(callback.toString());
+			if(ret.length == 0 || callback.done){
+				callback(that);
+			}else{
+				that.ready(callback,{
+					requires:ret	
+				});
+			}
+			callback.done = true;
 
 		}
 	},
@@ -427,11 +449,15 @@ Sandbox = {
 					that._runConstructors();
 					//autoload的逻辑
 					var ret = that._parseAutoload(callback.toString());
-					if(ret.length == 0){
+					if(ret.length == 0 || callback.done){
 						callback(that);
 					}else{
-						that.loadScript(ret,callback);
+						that.ready(callback,{
+							requires:ret	
+						});
+						//that.loadScript(ret,callback);
 					}
+					callback.done = true;
 				}else{
 					that._loadUnloaded(recursion);
 				}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>title</title>
+<script type="text/javascript" src="../../../core/sandbox-seed.js"></script>
+<script type="text/javascript" src="autoload.js"></script>
+<style>
+	body { font: 14px Georgia,"Times New Roman",Times,sans-serif; color: #444; }
+	h1 { font-size: 26px; color: #00859D; font-family: Constantia,serif; }
+	h3 { font-size: 14px; color: #555; margin: 20px 0 0; }
+	code {font-family:"Courier New"}
+</style>
+</head>
+<body>
+<h1>JavaScript Autoload</h1>
+<hr size=1 />
+<div id="wrap">
+	<div class="trigger-bar">
+		<a href="javascript:void(0);" title="下翻" id="next1" class="next"></a>
+		<a href="javascript:void(0);" title="上翻" id="prev1" class="prev"></a>
+		<div id="trigger1" class="scrollable-trigger"></div>
+	</div>
+	<div id="panel1" class="scrollable-panel">
+		<div class="clearfix">
+			<!-- 1~3 -->
+			<img src="http://img04.taobaocdn.com/tps/i4/T1uRBrXe0XXXXXXXXX-120-60.gif" />
+			<img src="http://img02.taobaocdn.com/tps/i2/T1bQVrXaVpXXXXXXXX-120-60.gif" />
+			<img src="http://img01.taobaocdn.com/tps/i1/T1l7FrXgNvXXXXXXXX-120-60.gif" />
+
+			<!-- 4~6 -->
+			<img src="http://img04.taobaocdn.com/tps/i4/T1ikRrXglqXXXXXXXX-120-60.gif" />
+			<img src="http://img01.taobaocdn.com/tps/i1/T1XYRsXipXXXXXXXXX-120-60.gif" />
+			<img src="http://img06.taobaocdn.com/tps/i6/T1MQ8rXe8kXXXXXXXX-120-60.gif" />
+			<!-- 7~9 -->
+			<img src="http://img05.taobaocdn.com/tps/i5/T1mOJsXXdEXXXXXXXX-120-60.gif" />
+			<img src="http://img06.taobaocdn.com/tps/i6/T1bkNrXb8sXXXXXXXX-120-60.gif" />
+			<img src="http://img07.taobaocdn.com/tps/i7/T1Ck8rXiXkXXXXXXXX-120-60.gif" />
+		</div>
+
+	</div>
+	<div class="ctrl" style="width:437px;">
+		<button class="play" onClick="api.play();" title="Play"></button>
+		<button class="pause" onClick="api.pause();" title="Pause"></button>
+		<button class="stop" onClick="api.stop();" title="Stop"></button>
+	</div>
+
+</div>
+
+<script>
+
+Sandbox.ready(function(S){
+
+
+	// 旋转木马模块
+	S.Carousel.init();
+
+
+	//选择颜色模块
+	S.ColorPicker([
+        '<input type="text" class="color" value="#FFFF00">'
+	].join(''));
+
+
+
+	//编辑器
+	S.Editor('淘宝UED');
+
+
+});
+
+
+</script>
+</body>
+</html>
+
+
