@@ -1,7 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="http://a.tbcdn.cn/s/kissy/1.1.7/cssreset/reset-min.css" />
+
     <title>IE6 Update Demo</title>
   </head>
   <body>
@@ -9,31 +11,32 @@
 <style>
 #update-your-ie6 {
 	display:block;margin:0px;
-	height:16px;position:absolute;z-index:999;top:0;left:0;cursor:default;padding:4px;
-	font-size:9px;background:#FFFFE1;color:black;width:100%;border-bottom:1px solid #666;
+	height:16px;z-index:999;top:0;left:0;cursor:default;
+	font-size:9px;background:#FFFFE1;color:black;border-bottom:1px solid #666;
 
 	background:red;
 }
-
+#update-your-ie6 .icon {
+	float: left; width: 16px; height: 16px; margin: 4pt 4px 0pt 4pt; padding: 0pt;display:inline;
+}
+#update-your-ie6 .icon .normal {
+	display: inline;
+}
+#update-your-ie6 .close {
+	float: right; margin: 0pt 5px 0pt 5pt; width: 16px; height: 16px;display:inline;
+}
+#update-your-ie6 .close .normal {
+	display: inline;
+}
+#update-your-ie6 .content{
+	margin: 0px 8px; padding-top: 1px; font-family: Bitstream Vera Sans,verdana,sans-serif; font-size: 11px;
+}
 </style>
 
 
+<div>sdfsdf</div>
 
-<div id="update-your-ie6">
-	<div class="icon" style="float: left; width: 16px; height: 16px; margin: 0pt 4px 0pt 0pt; padding: 0pt;">
-		<img class="normal" src="ie6update/images/icon.png" style="display: inline;">
-		<img class="hover" src="ie6update/images/icon-over.png" style="display: none;">
-	</div>
-	<div class="close" style="float: right; margin: 0pt 5px 0pt 0pt; width: 16px; height: 16px;">
-		<img class="normal" src="ie6update/images/close.png" style="display: inline;">
-		<img class="hover" src="ie6update/images/close-over.png" style="display: none;">
-	</div>
-	<div class="content" style="margin: 0px 8px; padding-top: 1px; font-family: Bitstream Vera Sans,verdana,sans-serif; font-size: 11px;">
-		<div>
-			Internet Explorer is missing updates required to view this site. Click here to update... 
-		</div>
-	</div>
-</div>
+<script type='text/javascript' src='update-your-ie6.js'></script>
 
 
 

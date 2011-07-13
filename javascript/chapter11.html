@@ -15,9 +15,9 @@
 
 <p>到目前为止，本书参照ECMAScript 3和ECMAScript 5中的标准规范完整的讨论了JavaScript这门语言。从现在起，本章将开始讨论JavaScript的子集和超集。其中子集的内容大部分都是出于安全考虑，只有使用这门语言的一个安全的子集编写脚本，才能让代码执行的更安全、更稳定，比如如何更安全的执行一段由不可信第三方提供的广告代码。§11.1会对这个子集作简要介绍。</p>
 
-<p>ECMAScript 3标准是1999年颁布的，十年后，也就是2009年才更新到了ECMAScript 5。JavaScript的作者Brendan Eich在这十年间不断地改进这门语言（ECMAScript 标准规范是允许对其作任何扩充的），同时，伴随着Mozilla项目的推进，在Firefox 1.0、1.5、2、3和3.5版本中分别发布了JavaScript 1.5、1.6、1.7、1.8和1.8.1版本。这些JavaScript的扩展版本中的很多新特性已经融入到了ECMAScript5中，还有很多特性依然是非标准的，但这些特性将有很大一部分会融入到ECMAScript的将来版本中。</p>
+<p>ECMAScript 3标准是1999年颁布的，十年后，也就是2009年才更新到了ECMAScript 5。JavaScript的作者Brendan Eich在这十年间不断地改进这门语言（ECMAScript 标准规范是允许对其作任何扩充的），同时，伴随着Mozilla项目的推进，在Firefox 1.0、1.5、2、3和3.5版本中分别发布了JavaScript 1.5、1.6、1.7、1.8和1.8.1版本。这些JavaScript的扩展版本中的很多新特性已经融入到了ECMAScript 5中，还有很多特性依然是非标准的，但这些特性将有很大一部分会融入到ECMAScript的将来版本中。</p>
 
-<p>由于Firefox是基于一个名叫Spidermonkey的JavaScript引擎（译注：Firefox的JavaScript引擎有很多种，多是我们熟悉的“猴”系列，文中所提到的Spidermonkey（用于Firefox1.0-3.0）便是其中一种，此外还包括TraceMonkey（用于Firefox3.5~3.6）、JaegerMonkey（用于Firefox4.0）以及最新开发的IonMonkey。有关Spidermonkey的更多信息可参照：http://en.wikipedia.org/wiki/SpiderMonkey ），因此Firefox浏览器也可以支持这些扩展特性。由Mozilla开发的另一个基于Java的JavaScript引擎Rhino（§12.1）也支持大部分扩展特性。但由于这些语言特性是非标准的，本章的内容对于那些需要调试浏览器兼容性的开发者来说可能帮助不大。我们在本章对它们作必要的讲述是基于几点考虑：</p>
+<p>由于Firefox是基于一个名叫Spidermonkey的JavaScript引擎（译注：Firefox的JavaScript引擎有很多种，多是我们熟悉的“猴”系列，文中所提到的Spidermonkey（用于Firefox 1.0~3.0）便是其中一种，此外还包括TraceMonkey（用于Firefox 3.5~3.6）、JaegerMonkey（用于Firefox4.0）以及最新开发的IonMonkey。有关Spidermonkey的更多信息可参照：http://en.wikipedia.org/wiki/SpiderMonkey ），因此Firefox浏览器也可以支持这些扩展特性。由Mozilla开发的另一个基于Java的JavaScript引擎Rhino（§12.1）也支持大部分扩展特性。但由于这些语言特性是非标准的，本章的内容对于那些需要调试浏览器兼容性的开发者来说可能帮助不大。我们在本章对它们作必要的讲述是基于几点考虑：</p>
 
 <ul>
 <li>它们的确很强大</li>
@@ -48,7 +48,7 @@
 
 <p>Crockford写过一个在线代码质量检测工具JSLint，可以通过http://jslint.com 访问到这个它。这个工具中提供了很多选项用来增强代码的一致性检查。除了能确保代码使用了子集推荐的特性之外，JSLint工具还对编码风格做了一些强制约定，比如合理的缩进等。 </p>
 
-<p>Crockford的那本《JavaScript语言精粹》出版时，ECMAScript5的严格模式还没有出来，然而Crockford所提取出的JavaScript“鸡肋部分”中有很大一部分在严格模式中同样做了限制。随着ECMAScript5标准的广泛采用，JSLint工具要求在选中“The Good Parts”选项时程序中必须包含“use strict”指令。</p>
+<p>Crockford的那本《JavaScript语言精粹》出版时，ECMAScript5的严格模式还没有出来，然而Crockford所提取出的JavaScript“鸡肋部分”中有很大一部分在严格模式中同样做了限制。随着ECMAScript 5标准的广泛采用，JSLint工具要求在选中“The Good Parts”选项时程序中必须包含“use strict”指令。</p>
 
 <h3>子集的安全性</h3>
 
@@ -79,7 +79,7 @@
 
 <p><strong>Caja</strong></p>
 
-<p>Caja（注：Caja是西班牙语，意思是“沙盒”，Caja的详情请参照：http://code.google.com/p/google-caja/ ）是Google发布的开源安全子集。Caja定义了两个语言子集。Cajita（“小沙盒”）是一个与ADsafe和dojox.secure类似的严格子集。Valija（“手提箱”或“行李箱”）则是一个范围更广的语言子集，更接近于ECMAScript5的严格模式（不包含eval()）。Caja本身也是一个编译器的名字，这个编译器可以将一段网页内容（HTML、CSS和JavaScript代码）转换为一个安全的模块，这个模块可以放心的引用至页面中而不会对其他模块产生影响。</p>
+<p>Caja（注：Caja是西班牙语，意思是“沙盒”，Caja的详情请参照：http://code.google.com/p/google-caja/ ）是Google发布的开源安全子集。Caja定义了两个语言子集。Cajita（“小沙盒”）是一个与ADsafe和dojox.secure类似的严格子集。Valija（“手提箱”或“行李箱”）则是一个范围更广的语言子集，更接近于ECMAScript 5的严格模式（不包含eval()）。Caja本身也是一个编译器的名字，这个编译器可以将一段网页内容（HTML、CSS和JavaScript代码）转换为一个安全的模块，这个模块可以放心的引用至页面中而不会对其他模块产生影响。</p>
 
 <p>Caja是开OpenSocial API的一部分（注：关于OpenSocial API的更多内容请参照：http://code.google.com/apis/opensocial/ ），而且已经被Yahoo率先采用。比如，在门户页面http://my.yahoo.com中就可以看到，所有的模块都遵照了Caja规范。</p>
 
@@ -93,7 +93,7 @@
 
 <h2>11.2 常量和局部变量</h2>
 
-<p>对语言子集的讨论暂告一段落，下面开始讨论语言的扩展。在JavaScript1.5及后续版本中可以使用const关键字来定义常量。常量可以看成不可重复赋值的变量（对常量重新赋值会失败但不报错），对常量的重复声明会报错。</p>
+<p>对语言子集的讨论暂告一段落，下面开始讨论语言的扩展。在JavaScript 1.5及后续版本中可以使用const关键字来定义常量。常量可以看成不可重复赋值的变量（对常量重新赋值会失败但不报错），对常量的重复声明会报错。</p>
 
 <pre><code>const pi = 3.14;// 定义一个常量并赋值
 pi = 4;//任何对这个常量的重新赋值都被忽略
@@ -268,7 +268,7 @@ let ({name:feature, impl: [{engine:impl1, version:v1},{engine:impl2}]} = data) {
 
 <h3>11.4.1 for/each 循环</h3>
 
-<p>for/each循环是由E4X规范（ECMAScript for XML）定义的一种新的循环语句。E4X是语言的扩展，它允许JavaScript程序中直接出现XML标签，并定义了操作XML数据的语法和API。浏览器大都没有实现E4X，但是Mozilla JavaScript1.6（随着Firefox1.5发布）是支持E4X的。本节我们只对for/each作讲解，并不会涉及到XML对象。关于E4X的剩余内容请参照§11.7。</p>
+<p>for/each循环是由E4X规范（ECMAScript for XML）定义的一种新的循环语句。E4X是语言的扩展，它允许JavaScript程序中直接出现XML标签，并定义了操作XML数据的语法和API。浏览器大都没有实现E4X，但是Mozilla JavaScript 1.6（随着Firefox 1.5发布）是支持E4X的。本节我们只对for/each作讲解，并不会涉及到XML对象。关于E4X的剩余内容请参照§11.7。</p>
 
 <p>for each循环和for/in循环非常类似。但for each并不是遍历对象的属性，而是对属性的值作遍历：</p>
 
@@ -277,11 +277,11 @@ for(let p in o) console.log(p); // for/in: 输出 'one', 'two', 'three'
 for each (let v in o) console.log(v);
 </code></pre>
 
-<p>注意，for/each循环并不仅仅针对数组本身的元素作遍历，它也会遍历数组中所有可枚举属性，包括继承来的可枚举的方法。因此，通常并不推荐for/each循环和数组一起使用。在ECMAScript5 之前的 JavaScript 版本中是可以这样用的，因为自定义属性和方法不可能设置为可枚举的（对for/in循环的讨论在 §7.6中）。</p>
+<p>注意，for/each循环并不仅仅针对数组本身的元素作遍历，它也会遍历数组中所有可枚举属性，包括继承来的可枚举的方法。因此，通常并不推荐for/each循环和数组一起使用。在ECMAScript 5 之前的 JavaScript 版本中是可以这样用的，因为自定义属性和方法不可能设置为可枚举的（对for/in循环的讨论在 §7.6中）。</p>
 
 <h3>11.4.2 迭代器</h3>
 
-<p>JavaScript1.7为for/in循环增加了更多通用的功能。JavaScript1.7中的循环和Python的for/in循环非常类似，它可以对任何可迭代的（iterable）对象作遍历。为了便于理解，我们首先给出一些定义。</p>
+<p>JavaScript 1.7为for/in循环增加了更多通用的功能。JavaScript 1.7中的循环和Python的for/in循环非常类似，它可以对任何可迭代的（iterable）对象作遍历。为了便于理解，我们首先给出一些定义。</p>
 
 <p>迭代器是一个对象，这个对象允许对它的值的集合作遍历，并保持任何必要的状态以便能够跟踪到当前遍历的“位置”。</p>
 
@@ -296,7 +296,7 @@ let sn1 = serialNumberGenerator.next();     // 1000
 let sn2 = serialNumberGenerator.next();     // 1001
 </code></pre>
 
-<p>迭代器用于有限的集合时，当所有的值都遍历完成没有多余的值可迭代时，再调用next()方法会抛出StopIteration。StopIteration是JavaScript1.7中的全局对象的属性。它是一个普通的对象（它自身没有属性），只是为了终结迭代的目的而保留的一个对象。注意，实际上，StopIteration并不是像TypeError()和RangeError()这样的构造函数。比如，这里实现了一个rangeIter()方法，这个方法返回了一个可以对某个范围的整数进行迭代的迭代器：</p>
+<p>迭代器用于有限的集合时，当所有的值都遍历完成没有多余的值可迭代时，再调用next()方法会抛出StopIteration。StopIteration是JavaScript 1.7中的全局对象的属性。它是一个普通的对象（它自身没有属性），只是为了终结迭代的目的而保留的一个对象。注意，实际上，StopIteration并不是像TypeError()和RangeError()这样的构造函数。比如，这里实现了一个rangeIter()方法，这个方法返回了一个可以对某个范围的整数进行迭代的迭代器：</p>
 
 <pre><code>// 这个函数返回了一个迭代器，它可以对某个区间内的整数作迭代
 function rangeIter(first, last) {
@@ -371,7 +371,7 @@ for(p in Iterator(o, true)) console.log(p);//只输出 “x” 和 “y”
 
 <h3>11.4.3 生成器</h3>
 
-<p>生成器是JavaScript1.7中的特性（是从Python中借用过来的概念），这里用到了一个新的关键字yield，使用这个关键字时代码必须手动指定JavaScript的版本，就像在§11.2中提到的。关键字yield在函数内使用，用法和return类似。yield和return的区别在于，使用yield的函数“产生”一个可保持函数内部状态的值，这个值是可以恢复的。这种可恢复性使得yield成为编写迭代器的有力工具。生成器是一种强大的语言特性，但初次理解起来可能有些困难，下面我们给出一些定义。</p>
+<p>生成器是JavaScript 1.7中的特性（是从Python中借用过来的概念），这里用到了一个新的关键字yield，使用这个关键字时代码必须手动指定JavaScript的版本，就像在§11.2中提到的。关键字yield在函数内使用，用法和return类似。yield和return的区别在于，使用yield的函数“产生”一个可保持函数内部状态的值，这个值是可以恢复的。这种可恢复性使得yield成为编写迭代器的有力工具。生成器是一种强大的语言特性，但初次理解起来可能有些困难，下面我们给出一些定义。</p>
 
 <p>任何使用关键字yield的函数（哪怕yield在代码逻辑中是不可达的）都称为“生成器函数”（generator function）。生成器函数通过yield返回值。这些函数中可以使用return来终止函数的执行而不带回任何返回值，但不能使用return来返回一个值。除了使用yield，对return的使用限制也使生成器函数更明显的区别于普通函数。然而和普通的函数一样，生成器函数也是通过关键字function声明，typeof运算返回“function”，并可以从Function.prototype继承属性和方法。但对生成器函数的调用却和普通函数完全不一样，不是执行生成器函数的函数体，而是返回一个生成器对象。</p>
 
@@ -489,7 +489,7 @@ console.log(c.throw("reset"));      // 输出10
 
 <h3>11.4.4 数组推导</h3>
 
-<p>JavaScript1.7中的数组推导（array comprehension）也是从Python中借用过来的一个概念。它是一种利用另外一个数组或可迭代对象来初始化数组元素的技术。数组推导的语法是基于定义元素集合的数学模型的，也就是说，表达式和从句的写法和开发者期望的不一致。但不必担心，因为花不了太多时间就可以掌握这种新式语法，一旦掌握它则威力无穷。</p>
+<p>JavaScript 1.7中的数组推导（array comprehension）也是从Python中借用过来的一个概念。它是一种利用另外一个数组或可迭代对象来初始化数组元素的技术。数组推导的语法是基于定义元素集合的数学模型的，也就是说，表达式和从句的写法和开发者期望的不一致。但不必担心，因为花不了太多时间就可以掌握这种新式语法，一旦掌握它则威力无穷。</p>
 
 <p>下面这段代码展示了数组推导的写法，这里用到了上文定义的range()函数，这段代码用以初始化一个数组，数组成员是0~100之间的偶平方数：</p>
 
@@ -534,7 +534,7 @@ let notfuncs = [k for ([k,v] in Iterator(o)) if (typeof v !== "function")]
 
 <h3>11.4.5 生成器表达式</h3>
 
-<p>在JavaScript1.8（注：本书撰稿时，Rhino还未开始支持生成器表达式）中，将数组推导中的方括号替换成圆括号，它就成了生成器表达式。生成器表达式（generator expression）和数组推导非常类似（两者在括号内的语法几乎完全一样），只是它的返回值是一个生成器对象，而不是一个数组。和数组推导相比，使用生成器表达式的好处是可以惰性求值（lazy evaluation），只有在需要的时候求值而不是每次都计算求值，这种特性可以应用于潜在的无穷序列。生成器表达式也有不足之处，生成器只支持对值的顺序存取而不是随机存取。和数组不同，生成器并没有索引，为了得到第n个值，必须遍历它之前的n-1个值。</p>
+<p>在JavaScript 1.8（注：本书撰稿时，Rhino还未开始支持生成器表达式）中，将数组推导中的方括号替换成圆括号，它就成了生成器表达式。生成器表达式（generator expression）和数组推导非常类似（两者在括号内的语法几乎完全一样），只是它的返回值是一个生成器对象，而不是一个数组。和数组推导相比，使用生成器表达式的好处是可以惰性求值（lazy evaluation），只有在需要的时候求值而不是每次都计算求值，这种特性可以应用于潜在的无穷序列。生成器表达式也有不足之处，生成器只支持对值的顺序存取而不是随机存取。和数组不同，生成器并没有索引，为了得到第n个值，必须遍历它之前的n-1个值。</p>
 
 <p>本章前面的小节中我们写过这样一个map()函数：</p>
 
@@ -557,7 +557,7 @@ let nonblank = (l for (l in trimmed) if (l.length &gt; 0 &amp;&amp; l[0]!='#'));
 
 <h2>11.5 函数简写</h2>
 
-<p>对于简单的函数，JavaScript1.8（注：本书撰稿时，Rhino还未开始支持生成器表达式）引入了一种简写形式：“表达式闭包”。如果函数只包含一个表达式并返回它的值，关键字return和花括号都可以省略，并将待计算的表达式放在参数列表之后，这里有一些例子：</p>
+<p>对于简单的函数，JavaScript 1.8（注：本书撰稿时，Rhino还未开始支持生成器表达式）引入了一种简写形式：“表达式闭包”。如果函数只包含一个表达式并返回它的值，关键字return和花括号都可以省略，并将待计算的表达式放在参数列表之后，这里有一些例子：</p>
 
 <p>这只是一种简单的快捷写法，用这种形式定义的函数其实和带花括号和关键字return的函数完全一样，这种快捷写法更适用于当给函数传入另一个函数的场景，比如：</p>
 
@@ -597,7 +597,7 @@ finally {
 
 <h2>11.7 E4X: ECMAScript for XML</h2>
 
-<p>“ECMAScript for XML”简称E4X，是JavaScript的一个标准扩展（注：E4X是由ECMA-357规范定义的。可以从这里查看官方文档：http://www.ecma-international.org/publications/standards/Ecma-357.htm），它为处理XML文档定义了一系列强大的特性。Spidermonkey1.5和Rhino1.6已经支持E4X。由于多数浏览器厂商还未支持E4X，因此E4X被认为是一种基于Spidermonkey或Rhino引擎的服务器端技术。</p>
+<p>“ECMAScript for XML”简称E4X，是JavaScript的一个标准扩展（注：E4X是由ECMA-357规范定义的。可以从这里查看官方文档：http://www.ecma-international.org/publications/standards/Ecma-357.htm），它为处理XML文档定义了一系列强大的特性。Spidermonkey 1.5和Rhino 1.6已经支持E4X。由于多数浏览器厂商还未支持E4X，因此E4X被认为是一种基于Spidermonkey或Rhino引擎的服务器端技术。</p>
 
 <p>E4X将XML文档（元素节点或属性）视为一个XML对象，将XML片段视为一个紧密相关的XML列表对象。本节会介绍创建和使用XML对象的一些方法。XML对象是一类全新的对象，E4X中定义了专门的语法来描述它（接下来会看到）。我们知道，除了函数之外所有标准的JavaScript对象的typeof运算结果都是“object”。正如函数和原始的JavaScript对象有所区别一样，XML对象也和原始JavaScript对象不同，对它们进行typeof运算的结果是“xml”。在客户端JavaScript中（参照第15章），XML对象和DOM（文档对象模型）对象没有任何关系，理解这一点非常重要。E4X标准也针对XML文档元素和DOM元素之间的转换作了规定，这个规定是可选的，Firefox并没有实现它们之间的转换。这也是E4X更适用于服务器端编程的原因。</p>
 
