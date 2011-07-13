@@ -1,6 +1,6 @@
 # 第 1 章 JavaScript 概述
 
-JavaScript是面向Web的编程语言。绝大多数现代网站都使用了JavaScript，并且所有的现代web浏览器——基于桌面系统、游戏机、平板电脑和智能手机——均包含了JavaScript解释器。这使得JavaScript能够称之为史上使用最广泛的编程语言。JavaScript也是前端开发工程师必须掌握的三种技能之一：描述内容的HTML、描述样式的CSS、以及描述行为的JavaScript。本书能帮助你掌握JavaScript这门语言。
+JavaScript是面向Web的编程语言。绝大多数现代网站都使用了JavaScript，并且所有的现代Web浏览器——基于桌面系统、游戏机、平板电脑和智能手机——均包含了JavaScript解释器。这使得JavaScript能够称之为史上使用最广泛的编程语言。JavaScript也是前端开发工程师必须掌握的三种技能之一：描述内容的HTML、描述样式的CSS、以及描述行为的JavaScript。本书能帮助你掌握JavaScript这门语言。
 
 如果你有其他语言的编程经历，这会帮助你了解JavaScript是一门高端的、动态的、弱类型的编程语言，非常适合面向对象和函数式的编程风格。JavaScript的语法源自Java，它的一等函数（first-class functions）来自于Scheme、它的基于原型（prototype-based）的继承来自于Self。但使用本书学习JavaScript不必去了解那些（Java/Scheme/Self）语言或熟悉那些术语。
 
