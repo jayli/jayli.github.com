@@ -6,7 +6,7 @@
 
 学习Node不是一件轻松事儿，但你所收到的回报是对得起你的付出的。因为当下Web应用开发中的诸多难题唯有JavaScript才能解决。
 
-作者：Brett McLaughlin ，译者：[拔赤](http://jayli.github.com)
+作者：Brett McLaughlin ，翻译：[拔赤](http://jayli.github.com)
 
 ### 目录
 
@@ -37,7 +37,7 @@
 
 ### 跳过 hello world
 
-最经典的例子当然是“Hello World“，在Node官网（http://nodejs.org/docs/latest）上有源码。几乎每个人都是从Hello World开始接触Node的。现在让我们跳过这个最简单的例子，来看一些更有趣的例子：实现一个可以从服务器发送文件到客户端的程序（而不仅仅是发送一段文本到客户端）。
+最经典的例子当然是“Hello World“，在Node官网（http://nodejs.org/docs/latest ）上有源码。几乎每个人都是从Hello World开始接触Node的。现在让我们跳过这个最简单的例子，来看一些更有趣的例子：实现一个可以从服务器发送文件到客户端的程序（而不仅仅是发送一段文本到客户端）。
 
 	var sys = require("sys"),
 	http = require("http"),
@@ -82,6 +82,34 @@
 
 ![png](http://img04.taobaocdn.com/tps/i4/T1rtxUXjNzXXXXXXXX-500-335.png)
 
-大多数人会以为，JavaScript是一门糟糕的语言，更不用说用它来实现服务器端的功能了，其实你只对了一半。不错，对于操作系统级别的Socket和网络编程来说，JavaScript可能并不能胜任。但Node并不是JavaScript实现的。它是基于C实现的，C语言是可以完美的胜任任意量级的网络编程的。而JavaScript则完全有能力将指令传递给C程序，然后由C程序来操控操作系统“地下城”。实际上，和C语言相比，JavaScript更容易被开发者们接触到，这是值得引起注意的地方，如果你想用Node进行一些严肃的编程的话，这个原因会被一再提及。
+大多数人会以为，JavaScript是一门糟糕的语言，更不用说用它来实现服务器端的功能了，其实你只对了一半。不错，对于操作系统级别的Socket和网络编程来说，JavaScript可能并不能胜任。但Node并不是JavaScript实现的，它是基于C实现的。C语言是可以完美的胜任任意量级的网络编程的。而JavaScript则完全有能力将指令传递给C程序，然后由C程序来操控操作系统“地下城”。实际上，和C语言相比，JavaScript更容易被开发者们接触到，这是值得引起注意的地方，如果你想用Node进行一些严肃的编程的话，这个原因会被一再提及。
 
+Node的基本用法进一步反映出了Node是如何和JavaScript一起工作的，Node不是JavaScript。你可以通过命令行来运行它：
+
+	— (bdm0509@Bretts-MacBook-Pro Sun, 29 May 11)
+	— — — — — — — — — — (/Users/bdm0509/tmp/Node/src) —
+	— (09:09 $)-> export PATH=$HOME/local/Node/bin:$PATH
+	— (bdm0509@Bretts-MacBook-Pro Sun, 29 May 11)
+	— — — — — — — — — — (/Users/bdm0509/tmp/Node/src) —
+	— (09:09 $)-> cd ~/examples
+	— (bdm0509@Bretts-MacBook-Pro Sun, 29 May 11)
+	— — — — — — — — — — — — (/Users/bdm0509/examples) —
+	— (09:09 $)-> Node NodeFileServer.js
+	Server running at http://127.0.0.1:1337/
+
+现在你肯定对Node有个大概的了解了吧。对于这段命令行，的确还有很多知识点需要进一步解释说明，比如在端口1337到底发生了什么？但这里你只需知道，Node只是一个可以让你运行JavaScript的程序。读者不必纠结于Node如何和JavaScript协同工作，这里也不会对此做过多介绍，只要知道Node可以运行JavaScript，这就足够了。而且你只需学习JavaScript这一门编程语言即可，不用担心自己不懂C语言。记住这是最最重要的一点，不必了解C也可写出Node可运行的程序。
+
+## 和Node服务器的交互
+
+刚才我们在Node上运行了NodeFileServer.js。这时你可以访问你本机的1337端口，可以看到正常的输出。
+
+![interacting](http://jayli.github.com/whatisnode/assets/interacting.png)
+
+没错，输出结果不足为奇。但应当意识到我们只用短短20行代码就实现了一个文件服务器。输出结果是你刚刚保存的脚本源文件的文本，并没有以二进制的形式输出。这个文件服务器可以输出它上面的任何文件。如果在同样目录下放入一张图片，在URL后缀中写上图片文件名，就像这样：http://localhost:8080/my_image.png。
+
+![mockup](http://jayli.github.com/whatisnode/assets/mockup.png)
+
+Node也可以展示出二进制的图片文件。当你回头再看这段短小的程序时，一定觉得这太不可思议了。用JavaScript轻易就能写出一个你想要的服务程序难道不让人感到惬意吗？不仅如此，假设你想写一个可以处理多个请求的服务（这是一个提示，同时打开四个五个甚至十个浏览器访问服务器），这也是很容易做到的。Node让人着迷的地方在于，你完全可以用很简单而且很不起眼的JavaScript程序来完成你想要的这些结果。
+
+## 快速入门手册
 
