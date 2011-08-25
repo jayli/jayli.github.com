@@ -1,12 +1,12 @@
-" ~/.vimrc by Edward G.J. Lee
-" This code is Public Domain
+" ~/.vimrc by Jayli (拔赤)
 "
-set nocompatible        " Use Vim defaults (much better!)
+set nocompatible        "使用vim默认配置
 
-"Default backspace like normal
+"reset默认后退键
 set backspace=indent,eol,start
 
-set viminfo='20,\"50    " read/write a .viminfo file, don't store more
+"读写.viminfo文件，但不存储太多行
+set viminfo='20,\"50
 set formatoptions=mtcql
 
 au BufNewFile,BufRead * set foldlevel=99
@@ -14,7 +14,7 @@ au BufNewFile,BufRead * set foldlevel=99
 highlight Folded ctermbg=darkgray ctermfg=lightmagenta
 
 if has ( "autocmd" )
-	" When editing a file, always jump to the last cursor position
+	" 当编辑一个文件时，总是滚屏到光标所在的最终位置
 	autocmd BufReadPost *
 	\ if line("'\"") > 0 && line ("'\"") <= line("$") |
 	\   exe "normal g'\"" |
@@ -22,9 +22,7 @@ if has ( "autocmd" )
 endif  " has ("autocmd") 
 
 
-"by jay
-
-"编辑器样式hack
+"编辑器样式的 hack,只针对term终端作 hack，在gui终端沿用默认样式
 hi Comment      term=bold ctermfg=darkcyan
 hi Constant     term=underline ctermfg=Red
 hi Special      term=bold ctermfg=Magenta
@@ -40,7 +38,6 @@ hi ErrorMsg     term=reverse ctermbg=Red ctermfg=White
 hi StatusLine   ctermfg=darkblue  ctermbg=gray
 hi StatusLineNC ctermfg=brown   ctermbg=darkblue
 
-
 "鼠标隐藏
 set mouse=v
 
@@ -55,7 +52,7 @@ set nu
 set laststatus=2
 set statusline=%<[%n]\ %F\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}][%{&ff}][ASCII=\%03.3b]\ %-10.(%l,%c%V%)\ %P
 
-"欢迎文字
+"欢迎文字,这里可以换成你想要的任意文字
 autocmd VimEnter * echo "Welcome back jayli :)"
 autocmd VimLeave * echo "Byebye jayli.."
 
@@ -79,17 +76,22 @@ set backupcopy=yes
 
 "编辑模式自动缩进
 set autoindent 
+
 "记录历史
 set history=150 
+
 "标尺
 set ruler
+
 "显示不完整的命令
 set showcmd
-" Added to default to high security within Gentoo. Fixes bug #14088
+
+" Linux 系统中的行模式重置
 set modelines=0
 
-"文件编码
+"文件编码可自动识别utf系列和gb系列,新建文件采用utf8编码
 set fileencodings=ucs-bom,utf-8,GB18030,gbk
+
 "gui字体，随意模式
 set guifontset=*-r-*
 
@@ -97,9 +99,10 @@ set guifontset=*-r-*
 syntax enable
 syntax on
 
-"F功能键定义
+"F功能键定义,使用频度较低
 map <F2> <ESC>zA<CR>            
 map <F3> <ESC>*
+map <F4> <ESC>#                
 map <F11> :bp<CR>              
 map <F12> :bn<CR>               
 map <F7> <ESC>:wa<CR>:make<CR>
@@ -110,6 +113,10 @@ map <C-t> :tabnew
 nmap wm :tabnew .<CR>
 map <Tab> :tabnext<CR> 
 map <S-Tab> :tabprevious<CR>
+
+"使用 Ctrl+C 或者 Y 复制到系统剪贴板
+vnoremap <C-C> "+y
+vnoremap Y "+y
 
 "快速左右移动光标
 map <C-l> <ESC>10l
@@ -128,7 +135,7 @@ if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
 endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
-"退出模式
+"退出模式,退出时保留残余窗口
 set t_ti=
 set t_te= 
 
@@ -154,15 +161,12 @@ colorscheme elflord
 "colorscheme torte
 "colorscheme zellner
 
-"编辑器主题样式hack，针对evening
-hi StatusLine	cterm=bold ctermbg=blue ctermfg=white guibg=gold guifg=blue
-hi StatusLineNC	cterm=bold ctermbg=blue ctermfg=black guibg=gold guifg=blue
-hi TabLine cterm=bold ctermbg=lightgray ctermfg=black guibg=gold guifg=blue
-hi TabLineSel cterm=bold ctermbg=darkblue ctermfg=white guibg=gold guifg=blue
+"状态栏样式hack，针对evening,包括gui模式下的状态栏样式
+hi StatusLine	cterm=bold ctermbg=blue ctermfg=white guifg=darkblue guibg=white
+hi StatusLineNC	cterm=bold ctermbg=blue ctermfg=black guifg=darkblue guibg=white
+hi TabLine cterm=bold ctermbg=lightgray ctermfg=black guibg=blue guifg=white
+hi TabLineSel cterm=bold ctermbg=darkblue ctermfg=white guibg=blue guifg=white
 hi CursorLine cterm=bold ctermbg=darkgray guibg=gold guifg=blue
-
-"hack for elflord 
-hi StatusLine	cterm=bold ctermbg=blue ctermfg=white guibg=gold guifg=blue
 
 "显示tab line
 "set showtabline=2
@@ -171,8 +175,6 @@ hi StatusLine	cterm=bold ctermbg=blue ctermfg=white guibg=gold guifg=blue
 set tabpagemax=20
 
 
-"set cursorline
-":hi cursorline ctermbg=Yellow
-
-
+"高亮光标所在的行
+":hi cursorline ctermbg=Red
 
