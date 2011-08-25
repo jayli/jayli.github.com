@@ -178,3 +178,6 @@ set tabpagemax=20
 "高亮光标所在的行
 ":hi cursorline ctermbg=Red
 
+"对所有文件设置关键字提示
+"set dictionary-=~/.vim/dict/dict.txt dictionary+=~/.vim/dict/dict.txt
+"set complete-=k complete +=k
