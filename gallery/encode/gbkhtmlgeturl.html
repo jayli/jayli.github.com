@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<!--created by 拔赤-->
+	<title>测试页面</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+
+<p>
+通过js得到url中的参数q:
+<span id="r"></span>
+</p>
+<script>
+function getUrlValue(url){
+	var url = (url !== undefined) ? url : window.location.href;
+	if(url.indexOf("#") > -1 && url.indexOf("?") > -1){
+		var variable = url.replace(/#/i,'&').split("?")[1];
+	}else{
+		var variable = url.split("?")[1];
+	}
+	if(variable == '' ||  typeof variable == "undefined"){
+		return {};
+	}else{
+		var value = {};
+		variable = variable.split("&");
+		for(var i = 0, m = variable.length; i<m; i++){
+			value[variable[i].split("=")[0]] = variable[i].split("=")[1];
+		}
+		return value;
+	}
+}
+
+function setUrlValue(sUrl, data){
+	var url = sUrl||window.location.href;
+	var prefix;
+	if(url.indexOf('#') > -1){
+		var prefix = url.split('#')[1];
+		url = url.split('#')[0];
+	}
+	if(url.indexOf("?") < 0){
+		url+='?';
+	}
+	var o = getUrlValue(url);
+	for(var i in data){
+		o[i] = data[i];
+	}
+	url = url.split("?")[0]+'?';
+	for(var i in o){
+		url+=i+'='+o[i]+'&';
+	}
+	url = url.substr(0,url.length-1);
+	return url;
+}
+
+
+
+
+(function(){
+	if(!getUrlValue().q){
+		document.location.href="?q=淘宝";
+	}else{
+		document.getElementById('r').innerHTML = getUrlValue().q?getUrlValue().q:'空';
+	}
+})();
+
+
+</script>
+</body>
+</html>

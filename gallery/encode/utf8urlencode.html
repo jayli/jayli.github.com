@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<!--created by 拔赤-->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="http://a.tbcdn.cn/s/yui/3.4.0/build/yui/yui-min.js" charset="utf-8"></script>
+</head>
+<body>
+<p>这个页面是utf-8编码的，提交表单后，URL编码为utf-8格式，比如提交“淘宝”二字，结果为?q=%E6%B7%98%E5%AE%9D<br />
+注意：某些浏览器在地址栏中将URL编码后的中文显示为汉字，即?q=淘宝，将地址栏的URL复制粘贴到其他地方，就可以看到完整的URL了<br />
+</p>
+<form action="" method="get">
+<input type=text value="淘宝" name="q" />
+<input type=submit value="提交表单" />
+</form>
+<p>通过JavaScript计算要提交的URL，永远是utf-8编码，因为JavaScript的内码以unicode表示，encodeURI转码结果也是utf-8编码，和上面的表单提交结果是一样的</p>
+<form action="" method="get">
+<input type=text value="淘宝" name="q" id="jq" />
+<input type=button value="通过JavaScript计算URL" onclick="foo()" />
+</form>
+<p style="color:green">
+q=<span id="r"></span>
+</p>
+<script>
+function getUrlValue(url){
+	var url = (url !== undefined) ? url : window.location.href;
+	if(url.indexOf("#") > -1 && url.indexOf("?") > -1){
+		var variable = url.replace(/#/i,'&').split("?")[1];
+	}else{
+		var variable = url.split("?")[1];
+	}
+	if(variable == '' ||  typeof variable == "undefined"){
+		return {};
+	}else{
+		var value = {};
+		variable = variable.split("&");
+		for(var i = 0, m = variable.length; i<m; i++){
+			value[variable[i].split("=")[0]] = variable[i].split("=")[1];
+		}
+		return value;
+	}
+}
+
+function setUrlValue(sUrl, data){
+	var url = sUrl||window.location.href;
+	var prefix;
+	if(url.indexOf('#') > -1){
+		var prefix = url.split('#')[1];
+		url = url.split('#')[0];
+	}
+	if(url.indexOf("?") < 0){
+		url+='?';
+	}
+	var o = getUrlValue(url);
+	for(var i in data){
+		o[i] = data[i];
+	}
+	url = url.split("?")[0]+'?';
+	for(var i in o){
+		url+=i+'='+o[i]+'&';
+	}
+	url = url.substr(0,url.length-1);
+	return url;
+}
+
+
+function foo(){
+	var q = document.getElementById('jq').value;
+	window.location.href = setUrlValue(window.location.href,{
+		q:encodeURI(q)
+	});
+}
+
+(function(){
+	document.getElementById('r').innerHTML = getUrlValue().q?getUrlValue().q:'空';
+})();
+
+</script>
+
+</body>
+</html>
