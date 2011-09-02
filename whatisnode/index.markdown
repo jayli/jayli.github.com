@@ -12,7 +12,9 @@ p img {
 
 学习Node不是一件轻松事儿，但你所收到的回报是对得起你的付出的。因为当下Web应用开发中的诸多难题唯有JavaScript才能解决。
 
-作者：Brett McLaughlin ，翻译：[拔赤](http://jayli.github.com)
+作者：[Brett McLaughlin](http://www.oreillynet.com/pub/au/152) ，翻译：[拔赤](http://jayli.github.com)
+
+原文：[What is Node?](http://oreilly.com/catalog/0636920021506)
 
 ### 目录
 
