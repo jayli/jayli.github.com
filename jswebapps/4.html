@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="http://a.tbcdn.cn/app/dp/s/screen.css" />
+<style>
+#bd {margin-left:20px;margin-right:20px;}
+</style>
+<title>wd-gallery - markdown</title>
+</head>
+<body>
+<div id="bd">
+
+<h1>第4章 控制器和状态</h1>
+
+<p>从以往的开发经验来看，我们通常是用服务器的session cookies来管理状态。因此当用户页面跳转之后，上一个页面的状态就丢失了，只有cookies保存了下来。然而JavaScript应用往往被限制在单页面，这也意味着可以将状态保存在客户端的内存中。</p>
+
+<p>将状态保存在客户端其中一个主要好处是带来更快速的界面响应。用户和页面产生交互时可以立即得到反馈，而不必花好几秒种时间等待下一个页面的加载。速度的改善极大提升了用户体验，这让很多JavaScript应用的体验更加愉悦。</p>
+
+<p>但将状态保存在客户端也存在诸多挑战。状态保存在哪里？在本地变量中？或者保存在DOM里？这也是大多数开发者困惑之处，状态保存的确是让人很纠结的一件事，正确的保存状态非常重要，处理好状态的保存才能做到更加自如的控制应用的状态。</p>
+
+<p>首先，应当避免将状态数据保存在DOM中，因为根据滑坡理论【译注：滑坡理论（Slippery slope）也称为滑坡谬误，是一种逻辑谬论，即不合理的使用连串的因果关系，将‘可能性’转换为‘必然性’，以达到某种意欲之结论】，这会导致程序逻辑变得更加错综复杂且混乱不堪。在我们的例子中使用了MVC架构来搭建应用，状态都是保存在应用的控制器里的。</p>
+
+<p>到底什么是控制器？你可以将控制器理解为应用中视图和模型之间的纽带。只有控制器知道视图和模型的存在并将它们连接在一起。当页面加载的时候，控制器将事件处理程序绑定在视图里，并适时的处理回调，以及和模型必要的对接。</p>
+
+<p>创建控制器并不需要依赖任何类库，尽管类库看起来很有用。控制器是模块化的且非常独立，了解这一点非常重要。理想状况下不应该定义任何全局变量，而应当定义完全解偶的功能组件。模块模式是处理组件解偶的非常好的方法。</p>
+
+<h2>模块模式</h2>
+
+<p>模块模式是用来封装逻辑并避免全局命名空间污染的好方法。使用匿名函数可以做到这一点，匿名函数也是JavaScript中被证明最优秀的特性之一。通常是创建一个匿名函数并立即执行它。在匿名函数里的逻辑都在闭包里运行，为应用中的变量提供了局部作用域和私有的运行环境。</p>
+
+<pre><code>(function(){
+    /* ... */
+})();
+</code></pre>
+
+<p>在执行这个匿名函数之前，我们用一对括号将它包裹起来。这样才能让JavaScript解释器正确的将这段代码解析为一个语句。</p>
+
+<h3>全局导入</h3>
+
+<p>定义在模块里的变量都是局部变量，因此在全局命名空间中是无法访问它们的。然而应用的全局变量仍都是可用的，从模块的内部可以很容易的访问并修改它们。开发者往往很难一眼看出哪个全局变量被模块使用了，尤其是当模块数量很多的时候。</p>
+
+<p>另外，隐式的全局变量会让程序变得更慢，因为JavaScript解释器不得不遍历作用域链。局部变量的读取会更快更高效。</p>
+
+<p>非常幸运，模块为我们提供了一种简单的方法来解决这些问题。将全局对象作为参数传入匿名函数，可以将它们导入进我们的代码中，这种实现方法比隐式的全局对象更加简洁而且速度更快。</p>
+
+<pre><code>(function($){
+    /* ... */
+})(jQuery);
+</code></pre>
+
+<p>在这个例子中，我们将全局变量jQuery导入进我们的模块里，并将其重命名为$。它清晰的表明这个模块中所用到的全局变量是什么，并且对这个全局对象的读取速度很快。实际上这是一种最佳实践（http://docs.jquery.com/Plugins/Authoring#Getting_Started），用这种模式可以安全的使用jQuery的别名$，而且你的代码不会和其他的类库产生冲突。</p>
+
+<h3>全局导出</h3>
+
+<p>我们可以使用类似的技术来实现全局对象的导出。理想状况下应当使用尽可能少的全局变量，但总会有某些特殊场景会用到全局变量。可以将页面的window导入进我们的模块，直接给它定义属性，通过这种方式可以暴露全局变量：</p>
+
+<pre><code>(function($, exports){
+
+    exports.Foo = "wem";
+
+})(jQuery, window);
+
+assertEqual( Foo, "wem" );
+</code></pre>
+
+<p>这里我们使用的变量名叫exports，用它来暴露全局变量，这样代码看起来更干净易读，可以直接看出模块创建了哪些全局变量。</p>
+
+<h2>添加少量上下文</h2>
+
+<p>使用局部上下文是一种架构模块很有用的方法，特别是当需要给事件注册回调函数时。实际情况是，模块中的上下文都是全局的，this就是window：</p>
+
+<pre><code>(function(){
+    assertEqual( this, window );
+})();
+</code></pre>
+
+<p>如果想自定义作用域的上下文，则需要将函数添加至一个对象中，比如：</p>
+
+<pre><code>(function(){
+    var mod = {};
+
+    mod.contextFunction = function(){
+        assertEqual( this, mod );
+    };
+
+    mod.contextFunction();
+})();
+</code></pre>
+
+<p>在contextFunction()中的上下文不是全局的，而是mod对象。这时使用this就不必担心会创建全局变量了。为了展示如何在实际中更好的使用这种技术，我们对例子作进一些修改：</p>
+
+<pre><code>(function($){
+
+    var mod = {};
+
+    mod.load = function(func){
+        $($.proxy(func, this));
+    };
+
+    mod.load(function(){
+        this.view = $("#view");
+    });
+
+    mod.assetsClick = function(e){
+        // 处理点击
+    };
+
+    mod.load(function(){
+        this.view.find(".assets").click(
+            $.proxy(this.assetsClick, this)
+        );
+    });
+
+})(jQuery);
+</code></pre>
+
+<p>这里新建了load()函数来处理回调，当页面加载后执行它。注意，我们使用了jQuery.proxy()来确保回调是基于正确的上下文执行的。</p>
+
+<p>然后，当页面加载时，我们给一个元素添加了点击事件监听，这里使用了局部函数assetsClick()作为回调函数。创建控制器不会比这更复杂。控制器内所有的状态都是局部的、且整洁的封装进模块里，这一点非常重要。</p>
+
+<h3>抽象出库</h3>
+
+<p>现在我们将它抽离成库，这样就可以在别的模块和控制器中重用它了。我们包含了已有的load()函数，并添加了新的函数，比如proxy()和include()：</p>
+
+<pre><code>(function($, exports){
+    var mod = function(includes){
+        if (includes) this.include(includes);
+    };
+    mod.fn = mod.prototype;
+
+    mod.fn.proxy = function(func){
+        return $.proxy(func, this);
+    };
+
+    mod.fn.load = function(func){
+        $(this.proxy(func));
+    };
+
+    mod.fn.include = function(ob){
+        $.extend(this, ob);
+    };
+
+    exports.Controller = mod;
+})(jQuery, window);
+</code></pre>
+
+<p>proxy()保证了函数在局部上下文中执行，对于事件回调来说是非常有用的模式。include()函数只是给控制器添加属性、保存类型功能的快捷方式。</p>
+
+<p>代码中将控制器挂载到exports对象中，对外暴露为全局的Controller变量，在模型中我们使用构造函数来实现Controller对象。来看一个简单的例子，这个例子是根据鼠标是否划过元素来给它添加和删除一个class。</p>
+
+<pre><code>(function($, Controller){
+
+    var mod = new Controller;
+
+    mod.toggleClass = function(e){
+        this.view.toggleClass("over", e.data);
+    };
+
+    mod.load(function(){
+        this.view = $("#view");
+        this.view.mouseover(this.proxy(this.toggleClass), true);
+        this.view.mouseout(this.proxy(this.toggleClass), false);
+    });
+
+})(jQuery, Controller);
+</code></pre>
+
+<p>当页面加载时创建了view变量，并绑定了一些事件监听。当鼠标移过元素就调用toggleClass()，改变元素的class。可以在本书附加文件中查阅完整的例子：assets/ch04/modules.html。</p>
+
+<p>当然，使用除了本地变量之外的上下文意味着使用this的时候可能写更多的代码。然而，这种技术带来了更优的代码重用机制包括实现对象拼合（mixin）。比如我们可以通过给它的prototype设置属性，将函数添加至每个Controller实例中：</p>
+
+<pre><code>Controller.fn.unload = function(func){
+    jQuery(window).bind("unload", this.proxy(func));
+};
+</code></pre>
+
+<p>或者可以使用之前定义的include()函数来扩展出一个独立的控制器，只需给它传入一个对象即可：</p>
+
+<pre><code>var mod = new Controller;
+mod.include(StateMachine);
+</code></pre>
+
+<p>这段示例代码中的StateMachine对象可以被其他的模型重复使用，从而避免了复制粘贴代码，这样的代码才会更简洁。</p>
+
+<h3>文档加载完成后载入控制器</h3>
+
+<p>根据目前情况，控制器的一部分在生成DOM之前就载入了，另一部分则在页面文档载入完成后触发的回调里。这让人很困惑，因为控制器逻辑在多个阶段执行，这就牵扯到很多文档加载完成的回调函数。</p>
+
+<p>这个问题是可以解决的，就是在DOM生成之后统一载入控制器。我非常推荐这种方式，因为这种做法可以让你不必考虑加载页面时DOM元素的渲染处于什么阶段。</p>
+
+<p>现在利用这一技巧来简化我们的类库，这样我们的控制器就更简洁了。Controller类并不一定非要是构造函数，因为这里并不需要在生成子控制器（subcontroller）时传入上下文：</p>
+
+<pre><code>// 使用全局对象作为上下文，而不是window对象
+// 用来创建全局对象
+var exports = this;
+
+(function($){
+    var mod = {};
+
+    mod.create = function(includes){
+        var result = function(){
+            this.init.apply(this, arguments);
+        };
+
+        result.fn = result.prototype;
+        result.fn.init = function(){};
+
+        result.proxy = function(func){ return $.proxy(func, this); };
+        result.fn.proxy = result.proxy;
+
+        result.include = function(ob){ $.extend(this.fn, ob); };
+        result.extend = function(ob){ $.extend(this, ob); };
+
+        if (includes) result.include(includes)
+        return result;
+    };
+
+    exports.Controller = mod;
+})(jQuery);
+</code></pre>
+
+<p>现在我们可以使用新的Controller.create()函数来创建控制器，传入一个包含实例属性的对象直接量。注意这里整个控制器都被包装在jQuery(function(){/<em>...</em>/})中。这是jQuery.ready()的另一种写法，这句话的意思就是在页面DOM节点构建完成后才执行初始化的动作加载控制器。</p>
+
+<pre><code>jQuery(function($){
+    var ToggleView = Controller.create({
+        init: function(view){
+            this.view = $(view);
+            this.view.mouseover(this.proxy(this.toggleClass), true);
+            this.view.mouseout(this.proxy(this.toggleClass), false);
+        },
+
+        this.toggleClass: function(e){
+            this.view.toggleClass("over", e.data);
+        }
+    });
+
+    // 实例化控制器，调用init()
+    new ToggleView("#view");
+});
+</code></pre>
+
+<p>我们还做了另一个重要的更改，就是根据实例化的情况来将视图元素传入控制器，而不是将元素直接写死在代码中。这一步提炼很重要，因为将代码抽离出来，我们就可以将控制器重用于不同的元素，同时保持代码最短。</p>
+
+<h3>访问视图</h3>
+
+<p>一种常见的模式是一个视图对应一个控制器。视图包含一个ID，因此可以很容易的传入控制器。然后在视图之中的元素则使用class而不是ID，所以和其他视图中的元素不会产生冲突。这种模式为一种通用实践提供了良好的架构，但用法可以很灵活。</p>
+
+<p>讲到这里，本章中所提到的访问视图的方法无非是使用jQuery()选择器，将指向视图的本地引用存储在控制器。后续对视图中的元素的查找则被视图的引用限制住了范围，从而提高了查找速度：</p>
+
+<pre><code>// ...
+init: function(view){
+    this.view = $(view);
+    this.form = this.view.find("form");
+}
+</code></pre>
+
+<p>但是，这的确意味着控制器中会塞满很多选择器，需要不断的查找DOM。我们可以在控制器中开辟一个空间专门存放选择器到变量的映射表，用这种方法可以让代码更简洁，比如：</p>
+
+<pre><code>elements: {
+    "form.searchForm": "searchForm",
+    "form input[type=text]": "searchInput"
+}
+</code></pre>
+
+<p>这样可以确保变量this.seachForm和this.searchInput在控制器实例化时就被创建了，并与DOM元素相对应。它们是普通的jQuery对象，因此可以像平常那样操纵它，设置事件回调和读取属性。</p>
+
+<p>让我们在控制器中实现这个elememts映射表，遍历所有的选择器并设置局部变量。这个过程在我们的init()函数中进行，当控制器实例化时调用init()函数：</p>
+
+<pre><code>var exports = this;
+jQuery(function ($) {
+    exports.SearchView = Controller.create({
+        // 选择器到局部变量名的映射
+        elements: {
+            "input[type=search]": "searchInput",
+            "form": "searchForm"
+        },
+
+        // 实例化时调用
+        init: function (element) {
+            this.el = $(element);
+            this.refreshElements();
+            this.searchForm.submit(this.proxy(this.search));
+        },
+        search: function () {
+            console.log("Searching:", this.searchInput.val());
+        },
+        // 私有
+        $: function (selector) {
+            // 需要一个`el`属性，同时传入选择器
+            return $(selector, this.el);
+        },
+        // 设置本地变量
+        refreshElements: function () {
+            for (var key in this.elements) {
+                this[this.elements[key]] = this.$(key);
+            }
+        }
+    });
+    new SearchView("#users");
+});
+</code></pre>
+
+<p>refreshElements()希望每个控制器都包含当前的元素属性el，el由选择器决定。一旦调用了refreshElements()，就会设置控制器的this.searchForm和this.searchInput属性，随后就可以进行绑定事件等DOM操作了。</p>
+
+<p>可以在本书附加文件中查阅完整的例子：assets/ch04/views.html。</p>
+
+<h3>委托事件</h3>
+
+<p>同样的，我们可以将绑定的事件都移除，并通过一个event对象来代理，这个event对象包含事件类型和选择器到回调函数的映射。这和elements对象非常类似，格式是这样的：</p>
+
+<pre><code>events: {events: {
+    "submit form": "submit"
+}
+</code></pre>
+
+<p>让我们继续，将它添加至我们的SearchView控制器，和refreshElements()类似，我们使用delegateEvents()函数，当控制器实例化的时候调用它。这会解析控制器的events对象，将它绑定至事件回调。在这个SearchView例子中，我们希望视图的表单提交的时候调用函数search()：</p>
+
+<pre><code>var exports = this;
+jQuery(function($){
+    exports.SearchView = Controller.create({
+        // 所有事件名称、选择器和回调的映射
+        events: {
+            "submit form": "search"
+        },
+        init: function(){
+            // ...
+            this.delegateEvents();
+        },
+        search: function(e){ /* ... */ },
+        // 私有
+        // 根据第一个空格来分割
+        eventSplitter: /^(\w+)\s*(.*)$/,
+        delegateEvents: function(){
+            for (var key in this.events) {
+                var methodName = this.events[key];
+                var method = this.proxy(this[methodName]);
+                var match = key.match(this.eventSplitter);
+                var eventName = match[1], selector = match[2];
+                if (selector === '') {
+                    this.el.bind(eventName, method);
+                } else {
+                    this.el.delegate(selector, eventName, method);
+                }
+            }
+        }
+        //...
+    });
+});
+</code></pre>
+
+<p>注意，这里在delegateEvent()中使用到了delegate()函数，包括bind()函数。如果没有提供事件选择器，这个事件将会直接放在el上。否则就将这个事件“委托”（http://api.jquery.com/delegate/）给el，如果在匹配选择器的子元素中触发了这个类型的事件时调用它。这种委托机制有一个优势，就是在含有大量事件监听的场景中，不必给每个元素都添加监听，因为当事件冒泡的时候会动态的触发相应的事件回调。</p>
+
+<p>我们可以将这个增强版的控制器添加至之前的Controller库，这样在每个控制器中都能重用它们了。这个是最终的示例代码。你可以在这里找到所有的控制器库代码：assets/ch04/finished_controller.html</p>
+
+<pre><code>var exports = this;
+jQuery(function($){
+    exports.SearchView = Controller.create({
+        elements: {
+            "input[type=search]": "searchInput",
+            "form": "searchForm"
+        },
+        events: {
+            "submit form": "search"
+        },
+        init: function(){ /* ... */ },
+        search: function(){
+            alert("Searching: " + this.searchInput.val());
+            return false;
+        },
+    });
+    new SearchView({el: "#users"});
+});
+</code></pre>
+
+<h2>状态机</h2>
+
+<p>状态机——之前我们称之为“有限状态机”【译注：有限状态机，又称有限状态自动机，简称状态机，是表示有限个状态以及在这些状态之间的转移和动作等行为的数学模型】——是编写UI程序的利器。使用状态机可以轻松的管理很多控制器，根据需要显示和隐藏视图。那么，到底什么是状态机？本质上讲状态机由两部分组成：状态和转换器。它只有一个活动状态，但也包含很多非活动状态（passive state）。当活动状态之间相互切换时就会调用转换器。</p>
+
+<p>状态机如何工作呢？考虑这样一个场景，应用中存在一些视图，它们的显示是相互独立的，比如一个视图用来显示联系人另一个视图用来编辑联系人。这两个视图一定是互斥的关系，其中一个显示时另一个一定是隐藏的。这个场景就非常适合引入状态机，因为它能确保每个时刻只有一种视图是激活的。的确，如果我们想添加一些新视图，比如一个承载设置操作的视图，用状态机来处理这种场景绰绰有余。</p>
+
+<p>我们来对实际的例子作进一步修改，来看一看实现一个状态机的思路是怎样的。这个例子非常简单，没有实现多个转换器，但足以满足我们的需要了。首先，我们使用jQuery的事件API创建一个Events对象（参照第2章），给它添加绑定和触发状态机的事件的能力：</p>
+
+<pre><code>var Events = {
+    bind: function(){
+        if ( !this.o ) this.o = $({});
+        this.o.bind.apply(this.o, arguments);
+    },
+
+    trigger: function(){
+        if ( !this.o ) this.o = $({});
+        this.o.trigger.apply(this.o, arguments);
+    }
+};
+</code></pre>
+
+<p>这里的Events对象本质上是扩展了jQuery现有的DOM外部事件的支持，这样我们就可以将它应用在我们的库中。现在我们来创建StateMachine类，它包含一个主要的方法add()：</p>
+
+<pre><code>var StateMachine = function(){};
+StateMachine.fn = StateMachine.prototype;
+
+// 添加事件绑定/触发行为
+$.extend(StateMachine.fn, Events);
+
+StateMachine.fn.add = function(controller){
+    this.bind("change", function(e, current){
+        if (controller == current)
+            controller.activate();
+        else
+            controller.deactivate();
+    });
+
+    controller.active = $.proxy(function(){
+        this.trigger("change", controller);
+    }, this);
+};
+</code></pre>
+
+<p>这个状态机的add()方法将传入的控制器添加至状态列表，并创建一个active()函数，当调用active()的时候，控制器的状态就转换为激活状态。对于激活状态的控制器，状态机将基于它调用activate()，对于其他的控制器，状态机则会调用deactivate()。这里给出两个例子，通过例子可以看出这两类控制器是如何工作的，我们首先将控制器添加至状态机中，然后激活其中一个控制器：</p>
+
+<pre><code>var con1 = {
+    activate: function(){ /* ... */ },
+    deactivate: function(){ /* ... */ }
+};
+
+var con2 = {
+    activate: function(){ /* ... */ },
+    deactivate: function(){ /* ... */ }
+};
+
+// 创建一个新的状态机，并添加状态
+var sm = new StateMachine;
+sm.add(con1);
+sm.add(con2);
+
+// 激活第一个状态
+con1.active();
+</code></pre>
+
+<p>状态机的add()方法给change事件绑定了一个回调，根据需要调用activate()或deactivate()方法。尽管状态机给我们提供了active()方法，我们同样可以通过手动触发change事件来改变状态：</p>
+
+<pre><code>sm.trigger("change", con2);
+</code></pre>
+
+<p>在控制器activate()函数的内部，我们可以创建并显示它的视图，添加并显示元素。与此类似，在deactivate()函数内部我们则将元素销毁来隐藏视图。可以通过CSS的class来隐藏和显示视图，这种方法非常不错，即给元素添加名为.active的class来显示视图，将它移除就可以隐藏视图：</p>
+
+<pre><code>var con1 = {
+    activate: function(){
+        $("#con1").addClass("active");
+    },
+    deactivate: function(){
+        $("#con1").removeClass("active");
+    }
+};
+
+var con2 = {
+    activate: function(){
+        $("#con2").addClass("active");
+    },
+    deactivate: function(){
+        $("#con2").removeClass("active");
+    }
+};
+</code></pre>
+
+<p>然后在样式表中定义.active的元素样式，以及不包含.active的元素样式：</p>
+
+<pre><code>#con1, #con2 { display: none; }
+#con1.active, #con2.active { display: block; }
+</code></pre>
+
+<p>在这里可以看到完整的示例代码：assets/ch04/state_machine.html.</p>
+
+<h2>路由选择</h2>
+
+<p>我们的应用是以单个页面的形式运行的，也就是说URL不会改变。这对于用户来说是一个问题，因为用户习惯通过唯一的URL来获取Web中的资源。此外，用户在浏览网页的时候还经常使用前进和后退按钮。</p>
+
+<p>为了解决这个问题，我们需要将应用的状态反应在URL中，建立状态和URL的某种对应关系，当应用的状态发生改变时，URL也随之改变。反之亦然，当URL改变时，应用的状态也会发生改变。在页面的初始化加载过程中，我们需要检查URL并设置应用的初始状态。</p>
+
+<h3>使用URL中的Hash</h3>
+
+<p>但是，定位本页面所用的URL（base URL）是不能更改的，如果改变则会引起页面的刷新，这是我们要避免发生的。幸好我们有一些解决办法。操作URL的一种传统办法是改变它的hash。hash不会发送给服务器，因此更改hash不会造成页面的刷新。比如，这个URL是Twitter的页面，它的hash值就是#!/maccman：</p>
+
+<pre><code>http://twitter.com/#!/maccman
+</code></pre>
+
+<p>可以通过location对象来读取或修改页面hash：</p>
+
+<pre><code>// 设置hash
+window.location.hash = "foo";
+assertEqual( window.location.hash , "#foo" );
+
+// 去掉 "#"
+var hashValue = window.location.hash.slice(1);
+assertEqual( hashValue, "foo" );
+</code></pre>
+
+<p>如果URL中没有hash，location.hash则返回空字符串。否则location.hash和URL的hash部分相等，带有#前缀。</p>
+
+<p>如果太过频繁的设置hash也会影响性能，特别是在移动终端里的浏览器中。因此，如果你对hash的改动太频繁，就要注意限制这种改动，否则在移动终端里可能会造成页面的频繁滚动。</p>
+
+<h3>检测hash的变化</h3>
+
+<p>以往检测hash变化的方法是通过轮询的计时器来监听，这种方法非常原始。现在情形有所改观，现代浏览器都支持hashchange事件。这是一个window的事件，如果想检测hash的改变就需要绑定这个监听：</p>
+
+<pre><code>window.addEventListener("hashchange", function(){ /* ... */ }, false);
+</code></pre>
+
+<p>使用jQuery的代码：</p>
+
+<pre><code>$(window).bind("hashchange", function(event){
+    // hash发生改变，更改状态
+});
+</code></pre>
+
+<p>当触发hashchange事件时，我们需要确定应用当前的状态。这个事件的浏览器兼容性非常不错，主流浏览器的最新版本都支持这个事件：</p>
+
+<ul>
+<li>IE >= 8</li>
+<li>Firefox >= 3.6</li>
+<li>Chrome</li>
+<li>Safari >= 5</li>
+<li>Opera >= 10.6</li>
+</ul>
+
+<p>但老的浏览器并不支持这个事件，jQuery为我们提供了一个有用的插件（http://benalman.com/projects/jquery-hashchange-plugin/）可以给老版本的浏览器添加hashchange事件的支持。</p>
+
+<p>不必太在意页面初始加载时是否触发了这个事件，只要关心hash发生改变时触发这个事件即可。如果你的应用中使用了hash来处理状态的路由，则需要在页面加载时手动触发这个事件：</p>
+
+<pre><code>jQuery(function(){
+    var hashValue = location.hash.slice(1);
+    if (hashValue)
+        $(window).trigger("hashchange");
+});
+</code></pre>
+
+<h3>抓取Ajax</h3>
+
+<p>由于很多搜索引擎和爬虫程序无法运行JavaScript，因此它们也无法得到动态创建的内容。当然页面的hash路由也不会起作用。在爬虫的眼中，它们看上去都是相同的URL，因为hash字段从来不会发送给服务器。</p>
+
+<p>如果我们想让纯粹的JavaScript应用程序在搜索引擎（比如Google）中也能运行的话，则必须解决这个显而易见的问题。工程师想到了一个办法，就是创建内容的镜像【译注：原文是parallel universe即平行的宇宙，意思是说要把由JavaScript创建的内容再拼成静态的html内容】。将这个特殊的静态HTML内容的快照发送给爬虫程序，而正常的浏览器则继续使用动态生成内容的方法来展现应用。这增加了工程师的工作量，而且要做很多额外工作，比如浏览器嗅探，通常不推荐在应用中添加浏览器嗅探。幸运的是，Google对引擎做了改进，它提出了“Ajax抓取规则“（http://code.google.com/web/ajaxcrawling/index.html）。</p>
+
+<p>我们再来看一下我的Twitter用户信息页的地址（注意#后面的感叹号）：</p>
+
+<pre><code>http://twitter.com/#!/maccman
+</code></pre>
+
+<p>对于Google的爬虫程序来说，看到这个感叹号就知道了当前页面是遵从“Ajax抓取规则“的。这时爬虫程序就会将这个URL转换为下面这种形式，这样当然就不会包含hash。</p>
+
+<pre><code>http://twitter.com/?_escaped_fragment_=/maccman
+</code></pre>
+
+<p>这里的hash替换成了URL中的<em>escaped</em>fragment_参数。在“规则”中称之为“丑陋的URL”（ugly URL），用户是接触不到这个地址的。爬虫程序就会从这个“丑陋的URL”抓取内容。这样hash片段就可以转换为URL参数，服务器就可以精确的定位到要爬取的资源位置，这里例子中就是我的Twitter页面。</p>
+
+<p>不管“丑陋的URL”包含多么纯净的HTML或文本片段，服务器都可以根据它来定位其资源位置，用这种规则就可以实现资源的索引。因为Twitter实现了静态页面的版本，因此只需将爬虫爬取的URL重定向到对应的静态页面地址即可。</p>
+
+<pre><code>curl -v http://twitter.com/?_escaped_fragment_=/maccman
+    302 redirected to http://twitter.com/maccman
+</code></pre>
+
+<p>由于Twitter使用了暂时重定向（302）而非永久重定向（301），因此在搜索结果中所展示的页面URL还是带有hash的URL，即由JavaScript动态生成内容的页面地址（http://twitter.com/#!/maccman）。如果你的站点没有实现静态内容的版本，则在URL中带有请求参数<em>escaped</em>fragment_时输出静态的HTML或文本片段即可。</p>
+
+<p>一旦给你的站点增加了对“Ajax抓取规则”的支持，可以使用“Fetch as googlebot tool”（http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=158587）来检查你的工作是否生效。如果你的站点不支持“Ajax抓取规则”，虽然通过浏览器访问站点是可用的，但很可能无法在搜索引擎中正确展示你的站点带索引的页面的内容。但长期来看，诸如Google这种搜索引擎应当给爬虫程序增加JavaScript的支持，这样本小节所述的内容就可以忽略了。</p>
+
+<h3>使用HTML5 History API</h3>
+
+<p>History API是HTML5规范的组成部分，利用它可以实现将当前地址替换为任意URL。你也可以控制是否将新的URL添加至浏览器的历史记录当中，从而根据需要来控制浏览器的“后退”按钮。和设置地址的hash类似，关键是页面不会重新加载，页面状态也会一直保持下来。</p>
+
+<p>支持History API的浏览器有：</p>
+
+<ul>
+<li>Firefox >= 4.0</li>
+<li>Safari >= 5.0</li>
+<li>Chrome >= 7.0</li>
+<li>IE: no support</li>
+<li>Opera >= 11.5</li>
+</ul>
+
+<p>这个API非常简单，主要是history.pushState()函数。它包含三个参数：数据对象，标题和新URL：</p>
+
+<pre><code>// 数据对象可以是任意的，当popstate事件触发时传入
+var dataObject = {
+    createdAt: '2011-10-10',
+    author: 'donnamoss'
+};
+
+var url = '/posts/new-url';
+history.pushState(dataObject, document.title, url);
+</code></pre>
+
+<p>这三个参数都是可选的，我们用它们来控制将哪些内容添加至浏览器的历史堆栈中：</p>
+
+<ul>
+<li>data对象：这个对象可以是任意的，可以是任意结构的。当触发popstate事件的时候随之传入回调（稍候会讲解到这个事件）</li>
+<li>title参数：大多数浏览器都将其忽略了，但根据规范的描述，这个参数是用来设置浏览器历史记录中的新页面标题的。</li>
+<li>url参数：这是一个字符串，表示用来替换当前地址的URL。如果是相对地址，则新地址同样使用当前地址的域名、端口、和协议。当然也可以传入绝对地址，但由于安全原因，绝对地址也做了限制，必须使用和当前地址相同的域名。</li>
+</ul>
+
+<p>在JavaScript应用中使用History API，是为了让每个URL都和真实的HTML对应起来。尽管调用history.pushState()时浏览器不会请求新的URL，但当页面刷新的时候就会发起请求了。换句话说，你所传入API的每个URL都是真实存在的，就像上文提到的对hash的设置一样，不能处理完页面的内容片段就万事大吉了，还要对历史记录或者URL做相应的修改。</p>
+
+<p>如果你的站点已经实现了展现静态HTML的版本的话，这些问题都不是难题，但如果你的应用是纯JavaScript应用时，URL的控制就是一个不得不考虑的问题了。一种解决办法就是忽略URL控制，不幸的是这会造成404（页面没有找到）的问题，因此每个URL需要返回一个成功的响应。一种改进的办法是在服务器端作相应的检查，来确保URL和请求的资源都是可用的。</p>
+
+<p>History API包含了一些其他特性。history.replaceState()的作用几乎和history.pushState()一模一样，但它不会给历史记录堆栈添加新东西。可以通过history.back()和history.forward()方法来在浏览器历史记录中做跳转。</p>
+
+<p>之前我们提到popstate事件，这个事件是在页面加载后或history.pushState()方法调用时触发的。在下面的例子中，event对象包含了state属性，这个属性就是传递给history.pushState()的数据对象：</p>
+
+<pre><code>window.addEventListener("popstate", function(event){
+    if (event.state) {
+        // 调用了history.pushState()
+    }
+});
+</code></pre>
+
+<p>你可以对这个事件绑定监听，确保你的应用状态保持和URL的一一对应。如果你使用了jQuery，只需将这个事件当成标准事件来对待即可，因此，为了访问状态对象，你需要访问原始事件：</p>
+
+<pre><code>$(window).bind("popstate", function(event){
+    event = event.originalEvent;
+    if (event.state) {
+        // 调用了history.pushState()
+    }
+});
+</code></pre>
+</div>
+</body>
+</html>
