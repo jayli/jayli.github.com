@@ -1,0 +1,411 @@
+# 第2章 事件和监听
+
+事件是JavaScript应用的核心，是所有内容的驱动，它决定了产生用户交互的起始时刻。然而在JavaScript诞生之初“事件”的实现并不标准，也非常丑陋。在之后的浏览器大战中网景和微软分道扬镳，他们各自实现的事件模型互不兼容。尽管后来W3C对此作了标准化，但IE仍然坚持使用与W3C不兼容的事件模型，直到最新发布的IE9才遵循标准。
+
+幸运的是，有很多诸如jQuery和Prototye的类库很好的处理了兼容性问题，对外提供了统一的API来处理事件。但是了解事件的机制仍然是非常重要的，因此这里首先讲解W3C中的事件模型，然后展示各种流行类库的一些实例。
+
+## 监听事件
+
+绑定事件监听的函数叫做addEventListener()，它有三个参数：type（比如click），listener（比如callback）以及useCapture（后续会讲到useCapture）。使用前两个参数可以给一个DOM元素绑定一个函数，当特定的事件（比如点击）被触发时执行这个函数：
+
+	var button = document.getElementById("createButton");
+	button.addEventListener("click", function(){ /* ... */ }, false);
+
+可以使用removeEventListener()来移除事件监听，参数和传入addEventListener()的一样。如果监听的函数是匿名函数，没有任何引用指向它，在不销毁这个元素的前提下，这个监听是无法被移除的：
+
+	var div = document.getElementById("div");
+
+	var listener = function(event) { /* ... */ };
+	div.addEventListener("click", listener, false);
+	div.removeEventListener("click", listener, false);
+
+带入listener函数的第一个参数是event对象，通过event对象可以得到事件相关的信息，比如时间戳、坐标和事件宿主元素（target）。它同样包含很多方法来停止事件冒泡和阻止事件的默认行为。
+
+不同的浏览器对事件类型的支持也不尽相同。但所有现代浏览器都支持这些事件：
+
+- click
+- dblclick
+- mousemove
+- mouseover
+- mouseout
+- focus
+- blur
+- change (表单输入框特有)
+- submit (表单特有)
+
+可以从PPK的文章中（http://www.quirksmode.org/dom/events/index.html）查看怪异模式支持的事件类型。
+
+## 事件顺序
+
+在更进一步讨论之前，很有必要介绍一下事件的顺序。如果一个节点和它的一个父节点都绑定了相同事件类型的回调，当事件触发时哪个回调会先执行？尽管网景和微软的处理方式不一致，也不要太过担心。
+
+Netscape 4 支持事件捕捉（capturing），从最顶层父节点开始触发事件，从外到内传播。
+
+微软则支持事件冒泡（bubbling），从最内层的节点开始触发事件，逐级冒泡直到顶层节点，从内到外传播。
+
+我认为事件冒泡看起来更合理一些，这也是我们日常开发所用的事件模型。W3C对此作了让步，将对这两种事件模型的支持都加入标准规范之中。根据W3C模型，事件首先被目标元素所捕捉，然后向上冒泡。
+
+你可以自行选择要注册的事件处理程序的调用类型，捕捉或冒泡，通过给addEventListener()传入第三个参数useCapture来设置。如果addEventListener()的最后一个参数是true，事件处理程序以捕捉模式触发，如果是false，事件处理程序以冒泡模式触发：
+
+	// 最后一个参数传入false，来设置事件的冒泡
+	button.addEventListener("click", function(){ /* ... */ }, false);
+
+大多数情况下我们都在使用冒泡模式，如果对此不太确定，可以给addEventListener()的最后一个参数传入false。
+
+## 取消事件
+
+当事件冒泡时，可以通过stopPropagation()函数来终止冒泡，这个函数是event对象中的方法。比如这段代码，任何父级节点的事件回调都不会触发：
+ 
+	button.addEventListener("click", function(e){
+	   e.stopPropagation();
+	   /* ... */
+	}, false);
+
+此外，一些类库比如jQuery还支持stopImmediatePropagation()函数，用来阻止后续所有的事件触发——哪怕这些事件是注册在同一个节点元素上的也不例外。
+
+浏览器同样给事件赋予了默认行为，比如，当你点击一个链接时，浏览器的默认行为是载入新页面，当点击一个复选框时，浏览器会将其选中（或取消选中）。在事件传播阶段（之后）会触发这些默认行为，在任何一个件处理程序中都可以阻止默认行为。可以通过调用event对象的preventDefault()函数来阻止默认行为，同样也可以通过在回调中返回false来实现同样的效果：
+
+	bform.addEventListener("submit", function(e){
+	   /* ... */
+	   return confirm("Are you super sure?");
+	}, false);
+
+如果confirm()返回false（用户点击了对话框的取消按钮），这个事件回调就返回false，这样就会取消事件，阻止表单的提交。
+
+## 事件对象
+
+和上面提到的函数（stopPropagation()和preventDefault()）一样，event对象还包含很多有用的属性。W3C规范中包含的大部分属性都列在下面，更多信息请参照完整的标准规范(http://www.w3.org/TR/DOM-Level-2-Events/)。
+
+事件类型：
+
+- bubbles：布尔值，表示事件是否以冒泡形式触发
+
+事件发生时，和当前事件相关的环境信息：
+
+- button：表示（如果有）鼠标所按下的按钮
+- ctrlKey：布尔值，表示Ctrl键是否按下
+- altKey：布尔值，表示Alt键是否按下
+- shiftKey：布尔值，表示Shift键是否按下
+- metaKey：布尔值，表示Meta键【译注：Meta键是以前MIT计算机键盘上的的一个特殊键，一般的电脑键盘没有这个键，类似Ctrl和Alt的功能】是否按下
+
+表示键盘事件的属性：
+
+- isChar：布尔值，表示当前按下的键是否表示一个字符
+- charCode：表示当前按键的unicode值（仅对keypress事件有效）
+- keyCode：表示非字符按键的unicode值
+- which：表示当前按键的unicode值，不管当前按键是否表示一个字符
+
+事件发生时的环境参数：
+
+- pageX,pageY：事件发生时相对于页面（viewport区域）的坐标
+- screenX,screenY：事件发生时相对于屏幕的坐标
+
+和事件相关的元素：
+
+- currentTarget：事件冒泡阶段所在的当前DOM元素
+- target,originalTarget：原始的DOM元素
+- relatedTarget：其他和事件相关的DOM元素（如果有的话）
+
+不同的浏览器对这些属性的兼容性也不同，尤其是那些不兼容W3C的浏览器。幸运的是，诸如jQuery和Prototype这些类库为我们解决了这些兼容性问题。
+
+## 事件库
+
+很多时候我们仅仅是将JavaScript类库用于事件管理，毕竟手动处理众多浏览器的差异性吃力不讨好。现在我为大家介绍如何使用jQuery的API来作事件管理，当然使用其他的类库也是不错的选择，比如Prototype，MooTools和YUI。可以参照他们的文档来获取更多信息【译注：Ptototype：http://www.prototypejs.org/，MooTools：http://mootools.net/，YUI：http://developer.yahoo.com/yui/】。
+
+jQuery提供了bind()函数用来跨浏览器绑定事件监听。在一个jQuery的实例上调用此方法，传入事件类型和回调函数：
+
+	jQuery("#element").bind(eventName, handler);
+
+比如，给一个元素注册点击事件：
+ 
+	jQuery("#element").bind("click", function(event) {
+	   // ...
+	});
+
+jQuery提供了一些常用事件的快捷方法，比如click、submit和mouseover。看这段代码：
+ 
+	$("#myDiv").click(function(){
+	   // ...
+	});
+
+需要注意的是，使用这个方法之前要确保DOM元素是存在的，这一点很重要，应当在页面载入完成后绑定事件，因此需要绑定window的load事件，然后添加监听：
+ 
+	jQuery(window).bind("load", function() {
+	   $("#signinForm").submit(checkForm);
+	});
+
+然而，还有一个比监听window的load事件更好的方法，即DOMContentLoaded。当DOM构建完成时触发这个事件，这时图片和样式表可能还未加载完毕。也就是说这个事件一定会在用户和页面产生交互之前触发。
+
+并不是所有的浏览器都支持DOMContentLoaded，因此jQuery将它融入了ready()函数，这个函数是兼容各个浏览器的：
+ 
+	jQuery(function($){
+	   // 当页面内容可用时执行
+	});
+
+
+
+## 切换上下文
+
+关于事件有一点经常让人感到迷惑，就是调用事件回调函数时上下文的切换。当使用浏览器内置的addEventListener()时，上下文从局部变量切换为目标HTML元素：
+ 
+	new function(){
+	   this.appName = "wem";
+	   
+	   document.body.addEventListener("click", function(e){
+		   //上下文发生改变，因此appName是undefined
+		   alert(this.appName);
+	   }, false);
+	};
+
+为了保持原有的上下文，需要将回调函数包装入一个匿名函数，然后定义一个引用指向它。我们在第1章已经提到这种模式，即使用代理函数来保持当前的上下文。这在jQuery中也是很常用的一种模式，只需将指定的上下文传入函数即可：
+
+	$("signinForm").submit($.proxy(function(){ /* ... */ }, this));
+
+## 委托事件
+
+从事件冒泡时开始就发生了事件委托，我们可以直接给父级元素绑定事件监听，用来检测在其子元素内发生的事件。这也是类似SproutCore(http://www.sproutcore.com/)这种框架所使用的技术，用来减少应用中的事件监听的数量：
+	 
+	// 在ul列表上做了事件委托
+	list.addEventListener("click", function(e){
+	   if (e.currentTarget.tagName == "li") {
+		   /* ... */
+		   return false;
+	   }
+	}, false);
+
+jQuery的处理方式更妙，只需给delegate()函数传入子元素的选择器、事件类型和回调函数即可。如果使用事件绑定话，就会给每一个li都绑定click事件，然而使用delegate()方法就能减少这种事件监听，改善代码性能：
+ 
+	// 不要这样作，这样会给每个li元素都添加事件监听（非常浪费）
+	$("ul li").click(function(){ /* ... */ });
+
+	// 这样只会添加一个事件监听
+	$("ul").delegate("li", "click", /* ... */);
+
+使用事件委托的另一个好处是，所有动态添加的子元素都具有事件监听。因此，在上面的例子中，在页面载入完成后添加的li节点同样可以触发点击事件的回调。
+
+## 自定义事件
+
+除了浏览器内置的事件之外，我们也可以触发和绑定自定义事件。实际上，这是架构库的一个好方法——也是jQuery的多数插件所使用的模式。大多数浏览器厂商均未实现W3C标准中的自定义事件，可以使用诸如jQuery或Prototype的类库来使用这个特性。
+
+jQuery中可以使用trigger()函数来触发自定义事件。可以通过命名空间的形式来管理事件名称，命名空间中的单词用点号分隔【译注：用点号分隔只是一种约定，并无特殊含义，点号在jQuery中比较常用，而在YUI中自定义事件名称通常使用冒号分隔，比如ddm:start】，比如：
+ 
+	// 绑定自定义事件
+	$(".class").bind("refresh.widget", function(){});
+
+	// 触发自定义事件
+	$(".class").trigger("refresh.widget");
+
+通过给trigger()传入一个额外的参数来给事件处理程序传入数据。数据会以附加参数的形式带入回调：
+ 
+	$(".class").bind("frob.widget", function(event, dataNumber){
+	   console.log(dataNumber);
+	});
+
+	$(".class").trigger("frob.widget", 5);
+
+和内置事件一样，自定义事件同样会沿着DOM树做冒泡。
+
+## 自定义事件和jQuery插件
+
+jQuery插件的实现深受自定义事件机制的影响，同样，自定义事件也是处理与DOM产生交互的代码逻辑片段之间耦合的很好的架构方法。如果你对jQuery的插件不甚了解，请移步附录B，附录中更深入的讲解了jQuery。
+
+当你想给你的应用添加一个功能片段时，或许经常纠结于是否应当将这个片段抽离为一个插件。自定义事件的思路可以帮你做这种解偶，并逐渐形成一个可复用的库。
+
+比如，我们来看一个简单的jQuery插件——选项卡。我们让ul列表来响应点击事件。当用户点击某个元素，给这个元素添加一个名为active的class，同时将其他列表项class中的active移除：
+ 
+	<ul id="tabs">
+	   <li data-tab="users">Users</li>
+	   <li data-tab="groups">Groups</li>
+	</ul>
+
+	<div id="tabsContent">
+	   <div data-tab="users"> ... </div>
+	   <div data-tab="groups"> ... </div>
+	</div>
+
+另外，id为tabsContent的div用来存放每个选项卡对应的内容。根据当前激活的选项卡，来对应的给div的子节点添加或删除active的class。实际的显示和隐藏选项卡和内容都由CSS来控制，我们的插件仅仅处理active的开关：
+ 
+	jQuery.fn.tabs = function(control){
+	   var element = $(this);
+	   control = $(control);
+
+	   element.find("li").bind("click", function(){
+		   // 从列表元素中添加/删除 active
+		   element.find("li").removeClass("active");
+		   $(this).addClass("active");
+
+		   // 给tabContent添加/删除active
+		   var tabName = $(this).attr("data-tab");
+		   control.find(">[data-tab]").removeClass("active");
+		   control.find(">[data-tab='" + tabName + "']").addClass("active");
+	   });
+
+	   // 激活第一个选项卡
+	   element.find("li:first").addClass("active");
+
+	   // 返回this以启用链式调用
+	   return this;
+	};
+
+插件位于jQuery的prototype里，因此可以基于jQuery实例来调用：
+
+	$("ul#tabs").tabs("#tabContent");
+
+现在看上去有什么问题吗？没错，我们给所有的列表元素都注册了click事件回调，这是第一个错误。我们可以使用上文提到的delegate()来优化代码。同样，点击事件回调的实现很臃肿，很难一眼看出发生了什么。除此之外，如果另一个开发者想要扩展这个插件，他很可能会将其重写。
+
+我们来看下如何使用自定义事件来让代码变的更整洁。在点击选项卡时触发一个change.tabs事件，并绑定若干逻辑片段来适当的修改class属性：
+ 
+	jQuery.fn.tabs = function (control) {
+	   var element = $(this);
+	   control = $(control);
+	   element.delegate("li", "click", function () {
+		   // 遍历选项卡名称
+		   var tabName = $(this).attr("data-tab");
+		   
+		   // 在点击选项卡时触发自定义事件
+		   element.trigger("change.tabs", tabName);
+
+	   });
+
+	   // 绑定到自定义事件
+	   element.bind("change.tabs", function (e, tabName) {
+		   element.find("li").removeClass("active");
+		   element.find(">[data-tab='" + tabName + "']").addClass("active");
+	   });
+
+	   element.bind("change.tabs", function (e, tabName) {
+		   control.find(">[data-tab]").removeClass("active");
+		   control.find(">[data-tab='" + tabName + "']").addClass("active");
+	   });
+
+	   // 激活第一个选项卡
+	   var firstName = element.find("li:first").attr("data-tab");
+	   element.trigger("change.tabs", firstName);
+	   return this;
+	};
+
+我们看到使用自定义事件可以让代码逻辑更加清晰。这也意味着选项卡状态切换的逻辑彼此分离，这也让插件代码更具扩展性。比如我们可以在程序中直接更改选项卡的状态，只需触发某个元素的change.tabs事件即可：
+
+	$("#tabs").trigger("change.tabs", "users");
+
+同样，我们可以将切换选项卡的动作和窗口的hash做关联，这样就可以使用浏览器的后退按钮了：
+ 
+	$("#tabs").bind("change.tabs", function(e, tabName){
+	   window.location.hash = tabName;
+	});
+
+	$(window).bind("hashchange", function(){
+	   var tabName = window.location.hash.slice(1);
+	   $("#tabs").trigger("change.tabs", tabName);
+	});
+
+自定义事件的运用实际上给其他开发者很大的空间来扩展我们的工作成果。
+
+## DOM无关的事件
+
+基于事件的编程非常强大，因为它能解偶你的应用架构，让功能变得更加内聚且具有更好的可维护性。事件本质上是和DOM无关的，你可以很容易的开发出一个事件驱动的库。这种模式称为“发布/订阅”【译注：更多内容请参照http://en.wikipedia.org/wiki/Publish/subscribe】，这是很有用的一个模式。
+
+发布/订阅（Pub/Sub）是一种消息模式，它有两个参与者：发布者和订阅者。发布者向某个信道（channel）发布一个消息，订阅者绑定这个信道，当有消息发布至信道时就会接收到一个通知。最重要的一点是，发布者和订阅者是完全解偶的，彼此并不知晓对方的存在。两者仅仅共享一个信道名称。
+
+发布者和订阅者的解偶可以让你的应用易于扩展，而不必引入额外的交叉依赖和耦合，从而提高了应用的可维护性，添加新的功能也非常容易。
+
+那么，应当如何在应用中使用发布/订阅（Pub/Sub）模式呢？你只需记录回调和事件名称的对应关系以及调用它们的方法。看一下这个例子，这段代码中实现了PubSub对象，用它可以添加并触发事件监听：
+ 
+	var PubSub = {
+	   subscribe: function(ev, callback) {
+		   // 创建 _callbacks 对象，除非它已经存在了
+		   var calls = this._callbacks || (this._callbacks = {});
+
+		   // 针对给定的事件key创建一个数组，除非这个数组已经存在
+		   // 然后将回调函数追加到这个数组中
+		   (this._callbacks[ev] || (this._callbacks[ev] = [])).push(callback);
+		   return this;
+	   },
+
+	   publish: function() {
+		   // 将arguments对象转换为真正的数组
+		   var args = Array.prototype.slice.call(arguments, 0);
+
+		   // 拿出第一个参数，即事件名称
+		   var ev = args.shift();
+
+		   // 如果不存在_callback对象，则返回
+		   // 或者如果不包含给定事件对应的数组
+		   var list, calls, i, l;
+		   if (!(calls = this._callbacks)) return this;
+		   if (!(list = this._callbacks[ev])) return this;
+
+		   // 触发回调
+		   for (i = 0, l = list.length; i < l; i++)
+		       list[i].apply(this, args);
+		   return this;
+	   }
+	};
+
+	// 使用方法
+	PubSub.subscribe("wem", function(){
+	   alert("Wem!");
+	});
+
+	PubSub.publish("wem");
+	
+你可以使用命名空间的方式来管理事件名称，比如使用冒号分隔符（:）
+
+	PubSub.subscribe("user:create", function(){ /* ... */ });
+
+如果你在使用jQuery，可以关注下Ben Alman写的一个更轻的库。这个库非常简单，用不了一页纸：
+ 
+	/*!
+	* jQuery Tiny Pub/Sub - v0.3 - 11/4/2010
+	* http://benalman.com/
+	*
+	* Copyright (c) 2010 "Cowboy" Ben Alman
+	* Dual licensed under the MIT and GPL licenses.
+	* http://benalman.com/about/license/
+	*/
+
+	(function($){
+	   var o = $({});
+
+	   $.subscribe = function() {
+		   o.bind.apply( o, arguments );
+	   };
+
+	   $.unsubscribe = function() {
+		   o.unbind.apply( o, arguments );
+	   };
+
+	   $.publish = function() {
+		   o.trigger.apply( o, arguments );
+	   };
+	})(jQuery);
+
+这里的API和jQuery的bind()以及trigger()函数的参数一致。唯一的区别就是这两个函数直接保存在jQuery对象中，且名叫publish()和subscribe()：
+ 
+	$.subscribe( "/some/topic", function( event, a, b, c ) {
+	   console.log( event.type, a + b + c );
+	});
+
+	$.publish( "/some/topic", "a", "b", "c" );
+
+上面我们将Pub/Sub用于全局事件，也能很容易的将其用于局部事件。现在我们用上面提到的PubSub对象来创建一个对象的局部事件：
+ 
+	var Asset = {};
+
+	// 添加PubSub
+	jQuery.extend(Asset, PubSub);
+
+	// 现在就可以用publish/subscribe函数了
+	Asset.subscribe("create", function(){
+	   // ...
+	});
+
+我们使用了jQuery的extend()来将PubSub的属性拷贝至Asset对象。这样的话，所有对publish()和subscribe()的调用均是针对Asset的局部调用。这在很多场景中非常有用，包括对象关系映射（ORM）中的事件、状态机以及当Ajax请求结束时的回调等场景。
+
+
+
+
+
+
+
+
