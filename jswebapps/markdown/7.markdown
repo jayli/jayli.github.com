@@ -1,6 +1,11 @@
+<style>
+p img {
+	    float:none;
+}
+</style>
 #第7章 使用文件
 
-以往，文件的访问和操作都是基于桌面应用程序，在Web中操作文件必须借助第三方插件技术，比如Adobe Flash。然而随着HTML5的普及和推广，基于Web应用的文件操作不再变得遥不可及，HTML5赋予开发者更多权限来处理文件，这进一步打破了桌面应用和Web应用之间的界限。在现代浏览器中，用户可以直接将文件拖拽进页面中，粘贴格式化数据，查看上传文件的实时进度条。
+以往，文件的访问和操作都是基于桌面应用程序，在Web中操作文件必须借助第三方插件技术，比如Adobe Flash。然而随着HTML5的普及和推广，基于Web应用的文件操作不再变得遥不可及，HTML5赋予开发者更多权限来处理文件，这进一步打破了桌面应用和Web应用之间的界限。在现代浏览器中，用户可以直接将文件拖拽进页面中，粘贴格式化数据，实时查看上传文件的进度。
 
 ## 浏览器支持
 
@@ -20,7 +25,7 @@
 
 ## 获取文件信息
 
-HTML5的文件操作有一定的安全限制，主要的限制是只有被用户选中的文件才能被访问。在将文件拖拽至浏览器中、选择要输入的文件、或将文件粘贴至Web应用中，这些操作自然会满足这个安全限制。尽管已经有人实现了“基于JavaScript的文件系统“（http://www.html5rocks.com/en/tutorials/file/filesystem/），但这里的访问都是基于沙箱的。显然，允许JavaScript任意无限制的操作文件会带来很严重的安全风险。
+HTML5的文件操作有一定的安全限制，主要的限制是只有被用户选中的文件才能被访问。将文件拖拽至浏览器中、选择要输入的文件、或将文件粘贴至Web应用中，这些操作自然会满足这个安全限制。尽管已经有人实现了“基于JavaScript的文件系统“（http://www.html5rocks.com/en/tutorials/file/filesystem/），但这里的访问都是基于沙箱的。显然，允许JavaScript任意无限制的操作文件会带来很严重的安全风险。
 
 在HTML5中使用File对象来表示文件，它有三个属性：
 
@@ -63,7 +68,7 @@ files属性是只读的，它返回一个FileList，可以用它对文件作遍�
 
 早在1999年，微软的IE5就“设计“并实现了最原始的拖拽，自那时起后续的IE版本都支持拖拽。HTML5规范刚刚增加了拖拽的内容，现在Safari，Firefox和Chrome也都模仿IE的实现做到了拖拽支持。然而，坦白讲HTML5的规范并不明晰，需要重新整理。
 
-关于拖拽有至少七个事件：dragstart, drag, dragover, dragenter, dragleave, drop, 和 dragend。接下来会对每个事件作详细讲解。
+关于拖拽的事件至少有七个：dragstart, drag, dragover, dragenter, dragleave, drop, 和 dragend。接下来会对每个事件作详细讲解。
 
 即使你的浏览器不支持HTML5的文件API，但你仍可继续使用拖拽API。当前的浏览器支持情况如下：
 
@@ -107,7 +112,7 @@ jQuery提供了一个抽象的事件【译注：为了处理底层API的差异�
 	event.dataTransfer.setData("text/uri-list", "http://example.com\nhttp://google.com");
 	event.dataTransfer.setData("text/plain", "http://example.com\nhttp://google.com");
 
-setDragImage()函数是可选的，用它可以设置拖拽操作过程中跟随鼠标移动的的图片，它的参数是图片源地址和x/y坐标，这个坐标是相对于鼠标位置的。如果没有提供，则会将拖拽的元素拷贝一份并显示为半透明。除了setDragImage()之外还可以使用addElement(element,x,y)，它使用给定的元素来更新拖拽的反馈。换句话说，你可以为拖拽操作的过程自定义要显示的元素。
+setDragImage()函数是可选的，用它可以设置拖拽操作过程中跟随鼠标移动的的图片，它的参数是图片源地址和x/y坐标，这个坐标是相对于鼠标位置的。如果没有提供，则会将拖拽的元素拷贝一份并显示为半透明。除了setDragImage()之外还可以使用addElement(element,x,y)，它使用给定的元素来更新被拖拽的元素。换句话说，你可以为拖拽操作的过程自定义要显示的元素。
 
 你同样可以让用户拖拽浏览器之外的文件，只需设置DownloadURL类型即可。你可以将URL指定为文件路径，浏览器随后会将它下载下来。Gmail实现了类似这种功能，特效非常棒，可以让用户将邮件附件从浏览器中拖拽至桌面。
 
@@ -125,7 +130,7 @@ setDragImage()函数是可选的，用它可以设置拖拽操作过程中跟随
 
 ### 释放拖拽
 
-拖拽API允许你监听drop事件，它可以对释放拖拽的文件和其他元素做出响应。现在开始就可以发现拖拽API的曼妙之处了。为了只触发drop事件，你需要撤销两个默认事件dragover和dragenter。例如，用这种方式来撤销这两个事件：
+拖拽API允许你监听drop事件，它可以对释放拖拽的文件和其他元素做出响应。现在开始就可以发现拖拽API的曼妙之处了。要想只触发drop事件，你需要撤销两个默认事件dragover和dragenter。例如，用这种方式来撤销这两个事件：
 
 	var element = $("#dropzone");
 
