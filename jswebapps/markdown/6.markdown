@@ -81,9 +81,9 @@ JavaScript中缺失了很多计算机高级编程语言所应有的功能特性�
 
 为了在客户端使用CommonJS模块，我们需要引入模块加载器类库。当然可选的库还有很多，每个类库都各有其优缺点。这里我会讲到多数流行的类库，你可以根据你的需要自行选择合适的类库【译注2】。
 
-【译注2：这里向大家强烈推荐模块加载器SeaJS（http://seajs.com/），它是由淘宝前端工程师玉伯开发，SeaJS开创性的在客户端实现了同步require()，使得在客户端也能遵循CommonJS标准规范进行编码开发，当然，SeaJS作为客户端的一个类库，仍然存在着无法回避的问题，比如伪阻塞。因此使用SeaJS作开发时需要遵守一些额外的约定（http://seajs.com/docs/zh-cn/rules.html）】
+【译注2：这里向大家强烈推荐模块加载器SeaJS（http://seajs.com/），SeaJS开创性的在客户端实现了同步require()，使得在客户端也能遵循CommonJS标准规范进行编码开发，当然，SeaJS作为客户端的一个类库，仍然存在着无法回避的问题，比如伪阻塞。因此使用SeaJS作开发时需要遵守一些额外的约定（http://seajs.com/docs/zh-cn/rules.html）】
 
-CommonJS模块格式目前还在修订之中，还有很多提议没有处理。就目前来看，并未有真正完美的官方的模块加载约定，很遗憾，缺少统一的标准会让情况变得更复杂。目前最主要最广泛的两个模块实现是 Transport C（http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition）和Transport D（http://wiki.commonjs.org/wiki/Modules/Transport/D）。如果你采用了接下来要讲的任意一个模块加载器类库的话，你必须确保你实现模块的代码格式遵循你所采用加载器所支持的格式规范。幸运的是，很多模块加载器的包装工具【译注：原文是wrapping tools，指的是包裹你的模块逻辑代码的最外层的添加模块的语法】可以兼容，而且会在它们的文档中给出各自支持的包装写法。
+CommonJS模块格式目前还在修订之中，还有很多提议没有处理。就目前来看，并未有真正完美的官方的模块加载约定，很遗憾，缺少统一的标准会让情况变得更复杂。目前最主要最广泛的两个模块实现是 Transport C（http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition）和Transport D（http://wiki.commonjs.org/wiki/Modules/Transport/D）。如果你采用了接下来要讲的任意一个模块加载器类库的话，你必须确保你实现模块的代码格式遵循你所采用加载器所支持的格式规范。幸运的是，很多模块加载器的包装工具【译注：原文是wrapping tools，指的是包裹你的模块逻辑代码的最外层的添加模块的语法】可以兼容，而且会在们各自的文档中给出所支持的包装写法。
 
 ### Yabble
 
@@ -115,7 +115,9 @@ Yabble（http://github.com/jbrantly/yabble）是一款优秀的轻量级的模�
 
 ### RequrieJS
 
-RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载器之一。RequireJS对模块加载的看法略有不同，它遵循“异步模块定义“（Asynchronous Module Definition，简称AMD）格式。主要的不同之处在于AMD的API是即时计算依赖关系，而不是延迟计算。实际上，RequireJS完全和CommonJS的模块相互兼容，只是包装转换的写法格式不同。
+RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载器之一。RequireJS对模块加载的看法略有不同，它遵循“异步模块定义“（Asynchronous Module Definition，简称AMD）格式。主要的不同之处在于AMD的API是即时计算依赖关系，而不是延迟计算。实际上，RequireJS完全和CommonJS的模块相互兼容，只是包装转换的写法格式不同【译注3】。
+
+【译注3：关于AMD规范到底是一种“模块书写格式”（Module Authoring Format）还是一种“转换格式”（Transport Format）一直存在争议】
 
 为了加载JavaScript文件，只需将它们的路径传入require()函数即可，并指定一个回调函数，当依赖都加载完成后执行这个回调函数：
 
@@ -165,11 +167,13 @@ RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载�
 
 ## 包装模块
 
-现在我们有了管理模块依赖和命名空间的方法，但仍然存在一个原始的问题：每个文件都独占一个HTTP请求。我们依赖的所有模块都从远程加载，尽管是以异步的形式，还是会造成很严重的性能问题，将应用的启动时间推后。
+现在我们有了管理模块依赖和命名空间的方法，但仍然有一个问题自始至终都没有解决，每个文件都独占一个HTTP请求。我们依赖的所有模块都从远程加载，尽管是以异步的形式，还是会造成很严重的性能问题，将应用的启动时间推后。
 
 对于需要异步加载的模块，我们手动将模块包装成一种转换格式，这种做法看起来也很冗余。可以在服务器端将小文件合并为一个文件输出，这种做法一箭双雕。这样浏览器只需发起一个HTTP请求来抓取一个资源文件就能将所有的模块都载入进来，显然这种做法更高效。使用打包工具也是一种聪明的做法，这样就不必随意无组织的打包模块了，而是静态分析这些文件然后递归的计算它们的依赖关系。它们会同样会将不符合要求的模块包装成转换格式，这样就不必手动敲代码了。
 
-除了在服务器端合并代码，很多模块打包工具也支持代码的压缩（minify），进一步减少请求的体积。实际上，一些工具——比如rack-modulr和Transporter【译注：请参照https://github.com/maccman/rack-modulr和https://github.com/kriszyp/transporter】——已经整合进了Web服务器，当首次处理某个请求时会自动处理模块操作。
+除了在服务器端合并代码，很多模块打包工具也支持代码的压缩（minify），进一步减少请求的体积。实际上，一些工具——比如rack-modulr和Transporter【译注：请参照https://github.com/maccman/rack-modulr和https://github.com/kriszyp/transporter】——已经整合进了Web服务器，当首次处理某个请求时会自动处理模块操作【译注4】。
+
+【译注4：随着应用体积越来越庞大，考虑到可维护性需要将模块作很细的颗粒化，文件会拆分成很多个，考虑到性能又不得不将文件合并载入，两者是一对矛盾，所以模块依赖管理既要考虑到代码结构的整洁清晰又要兼顾性能最优化，文中提到的方法就是在努力寻求两者之间的最佳权衡。雅虎和淘宝都已经实现了基于CDN的静态文件合并（combo）输出功能，使用YUI3或KISSY的加载器来计算合并输出的url，是解决这一对矛盾的一种尝试】
 
 例如，这里是一段简单的Rack CommonJS模块服务示例代码，它使用rack-modulr来实现：
 
@@ -193,13 +197,15 @@ RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载�
 	//= require <jquery>
 	//= require "./states"
 
-在这个例子中，jquery.js是Sprockets所需的加载地址，states.js是以相对路径的形式给出的。Sprockets非常聪明，它会保证只加载库文件一次，自动忽略掉之后的加载需求。相比于CommonJS模块，Sprockets支持缓存和压缩（minify）。在开发过程中，你的服务器会根据页面的需要动态解析并合并文件。当站点是活动状态时【译注：所谓活动状态是指这个站点的访问量很高】，JavaScript文件可以被预合并，这样就可以作为静态文件来处理，从而提高了性能。
+在这个例子中，jquery.js是Sprockets所需的加载地址，states.js是以相对路径的形式给出的。Sprockets非常聪明，它会保证只加载库文件一次，自动忽略掉之后的加载需求。相比于CommonJS模块，Sprockets支持缓存和压缩（minify）。在开发过程中，你的服务器会根据页面的需要动态解析并合并文件。当站点的访问非常频繁时，JavaScript文件可以被预合并，这样就可以作为静态文件来处理，从而提高了性能。
 
 尽管Sprockets是一个基于命令行的工具，但也有一些工具集成进了Rack和Rails，比如rack-sprockets（https://github.com/kelredd/rack-sprockets）。甚至还有一些PHP的实现（https://github.com/stuartloxton/php-sprockets），Sprockets（包括所有的模块包装器）的中心思想是，所有的JavaScript文件都需要预处理，不管是用在服务器端用程序做处理还是使用命令行工具作处理。
 
 ### LABjs
 
-LABjs是最简单的模块依赖管理器。它不需要任何服务器支持和CommonJS模块支持。使用LABjs载入你的脚本代码减少了页面加载过程中的资源阻塞，这是一种极其简单且极为有效的性能优化的方法。默认状况下，LABjs会尽可能快速的以并行方式加载脚本。然而如果代码之间有依赖关系的话，也可以非常简单的指定他们的执行顺序：
+LABjs是最简单的模块依赖管理器【译注5】。它不需要任何服务器支持和CommonJS模块支持。使用LABjs载入你的脚本代码减少了页面加载过程中的资源阻塞，这是一种极其简单且极为有效的性能优化的方法。默认状况下，LABjs会尽可能快速的以并行方式加载脚本。然而如果代码之间有依赖关系的话，也可以非常简单的指定他们的执行顺序：
+
+【译注5：作者这里将LABjs归类为”依赖管理器“有些勉强，LABjs给自己的定位是”脚本加载器“，主要是为了解决加载脚本时的性能问题】
 
 	<script>
 		$LAB
