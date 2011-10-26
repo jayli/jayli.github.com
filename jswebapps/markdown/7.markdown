@@ -282,7 +282,7 @@ FileReader实例包含很多事件，当其中一个读文件的函数被调用�
 - onprogress：当数据在读取过程中，周期性的调用
 - onload：当数据可用时调用
 
-为了使用FileReader，你需要生成一个实例，添加事件监听，使用其中一个读文件的方法。onload事件包含result属性，以正确的格式表示读取的数据：
+要想使用FileReader，你需要生成一个实例，添加事件监听，使用其中一个读文件的方法。onload事件包含result属性，以正确的格式表示读取的数据：
 
 	var reader = new FileReader();
 	reader.onload = function(e) {

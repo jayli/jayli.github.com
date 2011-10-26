@@ -220,7 +220,7 @@ var exports = this;
 })(jQuery);
 </code></pre>
 
-<p>现在我们可以使用新的Controller.create()函数来创建控制器，传入一个包含实例属性的对象直接量。注意这里整个控制器都被包装在jQuery(function(){/<em>...</em>/})中。这是jQuery.ready()的另一种写法，这句话的意思就是在页面DOM节点构建完成后才执行初始化的动作加载控制器。</p>
+<p>现在我们可以使用新的Controller.create()函数来创建控制器，传入一个包含实例属性的对象直接量。注意这里整个控制器都被包装在jQuery(function(){/*...*/})中。这是jQuery.ready()的另一种写法，这句话的意思就是在页面DOM节点构建完成后才执行初始化的动作加载控制器。</p>
 
 <pre><code>jQuery(function($){
     var ToggleView = Controller.create({
@@ -550,7 +550,7 @@ assertEqual( hashValue, "foo" );
 <pre><code>http://twitter.com/?_escaped_fragment_=/maccman
 </code></pre>
 
-<p>这里的hash替换成了URL中的<em>escaped</em>fragment_参数。在“规则”中称之为“丑陋的URL”（ugly URL），用户是接触不到这个地址的。爬虫程序就会从这个“丑陋的URL”抓取内容。这样hash片段就可以转换为URL参数，服务器就可以精确的定位到要爬取的资源位置，这里例子中就是我的Twitter页面。</p>
+<p>这里的hash替换成了URL中的_escaped_fragment_参数。在“规则”中称之为“丑陋的URL”（ugly URL），用户是接触不到这个地址的。爬虫程序就会从这个“丑陋的URL”抓取内容。这样hash片段就可以转换为URL参数，服务器就可以精确的定位到要爬取的资源位置，这里例子中就是我的Twitter页面。</p>
 
 <p>不管“丑陋的URL”包含多么纯净的HTML或文本片段，服务器都可以根据它来定位其资源位置，用这种规则就可以实现资源的索引。因为Twitter实现了静态页面的版本，因此只需将爬虫爬取的URL重定向到对应的静态页面地址即可。</p>
 
@@ -558,7 +558,7 @@ assertEqual( hashValue, "foo" );
     302 redirected to http://twitter.com/maccman
 </code></pre>
 
-<p>由于Twitter使用了暂时重定向（302）而非永久重定向（301），因此在搜索结果中所展示的页面URL还是带有hash的URL，即由JavaScript动态生成内容的页面地址（http://twitter.com/#!/maccman）。如果你的站点没有实现静态内容的版本，则在URL中带有请求参数<em>escaped</em>fragment_时输出静态的HTML或文本片段即可。</p>
+<p>由于Twitter使用了暂时重定向（302）而非永久重定向（301），因此在搜索结果中所展示的页面URL还是带有hash的URL，即由JavaScript动态生成内容的页面地址（http://twitter.com/#!/maccman）。如果你的站点没有实现静态内容的版本，则在URL中带有请求参数_escaped_fragment_时输出静态的HTML或文本片段即可。</p>
 
 <p>一旦给你的站点增加了对“Ajax抓取规则”的支持，可以使用“Fetch as googlebot tool”（http://www.google.com/support/webmasters/bin/answer.py?hl=en&amp;answer=158587）来检查你的工作是否生效。如果你的站点不支持“Ajax抓取规则”，虽然通过浏览器访问站点是可用的，但很可能无法在搜索引擎中正确展示你的站点带索引的页面的内容。但长期来看，诸如Google这种搜索引擎应当给爬虫程序增加JavaScript的支持，这样本小节所述的内容就可以忽略了。</p>
 
