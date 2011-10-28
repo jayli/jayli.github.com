@@ -1,3 +1,8 @@
+<style>
+p img {
+        float:none;
+}
+</style>
 # 第9章 测试和调试
 
 从某种程度上说，每个开发者在开发过程中都需要测试。起码手动执行代码也是一种测试。但本章将要讲的是JavaScript自动化测试，编写特定的断言并自动的执行它们。自动化测试不会消除程序中的bug，但的确是一种必要的手段来减少程序出现瑕疵的几率并避免代码库出现较旧的bug。测试有很多类型，而且网上已经有很多相关的学习资料。关于测试的基本原理和概念性的东西本章不再赘述。这里只关注基于JavaScript的测试以及和其他语言区别。
@@ -35,7 +40,7 @@ IE的占有率在不断减少，而Firefox和Chome的占有率在不断攀升，
 【译注3：雅虎最早提出了浏览器分级支持（GBS），即根据功能需求的权重来将浏览器支持划分多个级别，并且非常详细系统的定义了浏览器测试基准和操作系统支持标准，请参照：http://yuilibrary.com/yui/docs/tutorials/gbs/，而作者在这里提到的主流浏览器更多的适用于Web App，并非所有的Web页面】
 
 - IE 8, 9
-- Firefox 3.6【译注：撰写本书时的Firefox版本还是3.6，从Firefox4之后版本升级非常快，最重要的一点不同是Firefox 3.6遵循ECMAScript3，而4及以后的版本则遵循EMCAScript5，因此这里更推荐使用Firefox 4+】
+Firefox 3.6【译注：撰写本书时的Firefox版本还是3.6，从Firefox4之后版本升级非常快，最重要的一点不同是Firefox 3.6遵循ECMAScript3，而4及以后的版本则遵循EMCAScript5，因此这里更推荐使用Firefox 4+】
 - Safari 5
 - Chrome 11
 
@@ -72,7 +77,370 @@ JavaScript中在希望使用布尔值的地方使用了undefined、0、和null�
 	// 如果语句是null，则断言失败
 	assert( User.first() );
 
-类型转换多少会影响你的测试，因此有必要在类型转换之前首先检查值的类型，以避免很多怪异的代码引起各种奇怪的问题。
+类型转换多少会影响你的测试，因此有必要在类型转换之前首先检查值的类型，以避免很多怪异的代码引起各种奇怪的问题（http://bonsaiden.github.com/JavaScript-Garden/）。
+
+断言类库不仅限于正确性检查。大多数类库还包含完整的数组匹配，以及通过比较原始对象来检查数字的大小。这些库中至少都实现了assertEqual()函数，用以比较两个值：
+
+	var assertEqual = function(val1, val2, msg) {
+		if (val1 !== val2)
+			throw(msg || (val1 + " does not equal " + val2));
+	};
+
+	// 断言通过
+	assertEqual("one", "one");
+
+接下来要讲的测试类库都实现了一组断言，每个库定义断言的API都有所不同。
+
+### QUnit
+
+QUnit（http://docs.jquery.com/Qunit）是现在最流行且维护良好的测试类库，这个库最初是用来测试jQuery用的。那么，如何用QUnit建立测试环境呢？第一步是将项目文件（https://github.com/jquery/qunit/zipball/master）下载到本地，然后创建静态测试执行页面：
+
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>QUnit Test Suite</title>
+		<link rel="stylesheet" href="qunit/qunit.css" type="text/css" media="screen">
+		<script type="text/javascript" src="qunit/qunit.js"></script>
+		<!-- include tests here... -->
+	</head>
+	<body>
+		<h1 id="qunit-header">QUnit Test Suite</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar"></div>
+		<h2 id="qunit-userAgent"></h2>
+		<ol id="qunit-tests"></ol>
+		<div id="qunit-fixture">test markup</div>
+	</body>
+	</html>
+
+要想创建断言，你需要将它们放入测试用例中。比如，现在我们来创建一个测试单元，来测试在第3章里介绍的ORM：
+
+	test("load()", function(){
+		var Asset = Model.setup();
+
+		var a = Asset.init();
+		a.load({
+			local: true,
+			name: "test.pdf"
+		});
+
+		ok(a.local, "Load sets properties");
+		equals(a.name, "test.pdf", "load() sets properties (2)");
+
+		var b = Asset.init({
+			name: "test2.pdf"
+		});
+
+		equals(b.name, "test2.pdf", "Calls load() on instantiation");
+	});
+
+这里调用了test()来创建一个新测试用例，并给它设置了名字和测试回调（主逻辑都放在回调里）。在回调函数中我们使用了若干种断言：ok()断言用来判断它的第一个参数是否是true，equals()用来比较它的前两个参数。所有的断言都可以带最后一个字符串参数，表示断言的名字，以便清楚的看出哪些断言通过了哪些失败了。
+
+现在把测试代码放入页面中并刷新这个页面，运行结果如图9-1所示：
+
+![图](http://img03.taobaocdn.com/tps/i3/T1aKSwXdNRXXXXXXXX-546-201.jpg)
+
+图9-1. QUnit测试结果
+
+运行结果非常清楚，非常不错！我们只需一眼就能看出哪些测试通过了哪些没有通过，每次测试都需要刷新页面。现在就可以将它在所有的浏览器中打开运行，来检查应用的兼容性，确保应用能在所有浏览器中都能正常运行。
+
+使用module()函数可以将测试分离开，它包含一个名字和一个配置项。现在对上一个例子做进一步整理，给module()传入setup选项，它是一个回调函数，这个模块中的每个测试执行的时候都会调用它。在这个例子中，我们所有的测试都需要Asset，所以我们在setup中创建它：
+
+	module("Model test", {
+		setup: function(){
+			this.Asset = Model.setup();
+		}
+	});
+
+	test("load()", function(){
+		var a = this.Asset.init();
+		a.load({
+			local: true,
+			name: "test.pdf"
+		});
+
+		ok(a.local, "Load sets properties");
+		equals(a.name, "test.pdf", "load() sets properties (2)");
+
+		var b = this.Asset.init({
+			name: "test2.pdf"
+		});
+
+		equals(b.name, "test2.pdf", "Calls load() on instantiation");
+	});
+
+代码变的更清晰了一些，这在为它增加更多测试代码时非常有帮助。module()还可以接收teardown选项，它是一个回调函数，模块中的每个测试执行完毕后会调用它。现在来给这个测试单元增加另一个测试：
+
+	test("attributes()", function(){
+		this.Asset.attributes = ["name"];
+
+		var a = this.Asset.init();
+		a.name = "test.pdf";
+		a.id = 1;
+
+		equals(a.attributes(), {
+			name: "test.pdf",
+			id: 1
+		});
+	});
+
+如果执行这段代码，你会发现测试失败了，正如图9-2中所示。
+
+这是因为equals()函数使用了==比较运算符，它无法比较数组和对象。相反，我们应当使用same()函数，它会执行更深度的比较，现在测试单元就都通过了：
+
+	test("attributes()", function(){
+		this.Asset.attributes = ["name"];
+
+		var a = this.Asset.init();
+		a.name = "test.pdf";
+		a.id = 1;
+
+		same(a.attributes(), {
+			name: "test.pdf",
+			id: 1
+		});
+	});
+
+QUnit还包含很多其他的断言类型，比如notEqual()和raises()。可以从这里看到这些断言的完整的使用方法assets/ch09/qunit/model.test.js，在Qunit的文档（http://docs.jquery.com/Qunit#API_documentation）中也可以查阅到使用方法。
+
+![png](http://img04.taobaocdn.com/tps/i4/T1PvOwXdxJXXXXXXXX-571-380.png)
+
+图9-2. QUnit出错提示
+
+### Jasmine
+
+Jasmine（http://pivotal.github.com/jasmine/）是另一个非常流行的测试类库（只是我的个人观点）。和QUnit不同，Jasmine定义了用以描述应用中特定对象的行为的规范。实际上这些规范和单元测试非常类似，只不过换了一种表述方式。
+
+Jasmine的优势是它不依赖任何其他三方库，甚至不依赖DOM。也就是说它可以在所有的JavaScript环境中运行，比如可以装有Node.js的服务器中运行。
+
+和QUnit一样，我们需要创建一个静态HTML页面来载入测试代码，执行测试代码可以得到运行结果：
+
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+	<html>
+	<head>
+		<title>Jasmine Test Runner</title>
+		<link rel="stylesheet" type="text/css" href="lib/jasmine.css">
+		<script type="text/javascript" src="lib/jasmine.js"></script>
+		<script type="text/javascript" src="lib/jasmine-html.js"></script>
+
+		<!-- 引入源文件... -->
+		<!-- 引入测试文件... -->
+	</head>
+	<body>
+
+		<script type="text/javascript">
+			jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+			jasmine.getEnv().execute();
+		</script>
+
+	</body>
+	</html>
+
+现在来看如何用Jasmine来写测试代码，现在来对第3章介绍的ORM库作进一步测试：
+
+	describe("Model", function(){
+		var Asset;
+
+		beforeEach(function(){
+			Asset = Model.setup();
+			Asset.attributes = ["name"];
+		});
+
+		it("can create records", function(){
+			var asset = Asset.create({name: "test.pdf"});
+			expect(Asset.first()).toEqual(asset);
+		});
+
+		it("can update records", function(){
+			var asset = Asset.create({name: "test.pdf"});
+
+			expect(Asset.first().name).toEqual("test.pdf");
+
+			asset.name = "wem.pdf";
+			asset.save();
+
+			expect(Asset.first().name).toEqual("wem.pdf");
+		});
+
+		it("can destroy records", function(){
+			var asset = Asset.create({name: "test.pdf"});
+			expect(Asset.first()).toEqual(asset);
+
+			asset.destroy();
+
+			expect(Asset.first()).toBeFalsy();
+		});
+	});
+
+这里使用describe()将测试代码划分为不同的分组（测试单元），每个分组都带有名字和一个匿名函数。在上面这个例子中，我们使用beforeEach()来为每段测试代码的运行创建设置程序，在每段测试代码运行之前会触发设置程序。Jasmine同样包含“扫尾函数“afterEach()，在每段测试代码运行之后调用扫尾函数。我们在beforeEach()函数之外定义了变量Asset，它对于每个测试单元来说是局部变量，在每段测试代码中都可以访问到它。
+
+每段测试代码都是以it()函数开始，it()函数带有名字和一个匿名回调函数，函数中包含我们所需的断言。通过给expect()函数传入期望得到的值来创建断言，包括调用一个判断匹配的方法，这些方法包括：
+
+*expect(x).toEqual(y)*
+
+比较对象或原始值x和y是否相等，如果相等则通过测试
+
+*expect(x).toBe(y)*
+
+比较对象或原始值是否相等，如果它们是同一个对象则通过测试
+
+*expect(x).toMatch(pattern)*
+
+比较x是否和字符串或者正则表达式相匹配，如果匹配则通过测试
+
+*expect(x).toBeNull()*
+
+如果x是null的话通过测试
+
+*expect(x).toBeTruthy()*
+
+如果x的值为真值则通过测试
+
+*expect(x).toBeFalsy()*
+
+如果x的值为假值则通过测试
+
+*expect(x).toContain(y)*
+
+如果数组或字符串x包含y则通过测试
+
+*expect(fn).toThrow(e)*
+
+如果函数fn在执行时抛出了异常e则通过测试
+
+Jasmine还包含其他很多匹配方法，甚至可以写一些自定义的匹配方法（http://github.com/pivotal/jasmine/wiki/Matchers）。
+
+图9-3是运行Jasmine测试代码时的结果，运行的就是上面这段代码：
+
+![png](http://img01.taobaocdn.com/tps/i1/T18MywXjNHXXXXXXXX-591-177.png)
+
+图9-3. Jasmine测试结果
+
+## 驱动
+
+尽管使用测试框架可以做到一定程度的自动化测试，但在众多不同的浏览器中进行测试依然是个问题。每次测试时都要开发者手动在五个浏览器中执行刷新，这种做法显然很低效。
+
+为了解决这个问题，有人就开发出了驱动。这里所说的驱动实际上是一个守护进程【译注：守护进程是一个操作系统级的概念，特指为了运行某些进程而开启的服务】，它整合了不同的浏览器，可以自动运行JavaScript测试代码，测试不通过时会给出提示【译注4】。
+
+【译注4：前端开发自动化测试是现在比较热门的话题，国内也有很多前端团队开始了这方面的研究和尝试，可以参照来自淘宝的“前端测试实践”（http://www.slideshare.net/taobaoued/ss-8584269）以及来自新浪的“多浏览器集成的JavaScript单元测试”（http://www.slideshare.net/taobaoued/multi-browser-integrationjsunittestframeworkweibobaokun），两种实践的思想和作者在本节提到的原则是一致的，即将不同的浏览器环境作集成，提供服务，以便展开下一步的自动化测试】
+
+要想将驱动安装在每个开发者的机器上需要很多工作要作，所以很多公司都有一个单独的持续集成服务器，利用post-commit的hook功能【译注5】来自动的运行JavaScript测试代码，确保每次提交的代码都是正确无误的。
+
+【译注5：为了方便管理员控制代码提交的过程，代码版本管理工具SVN提供了很多事件，post-commit其中一个事件，即“事务提交完毕，新的修订版被创建”。同时SVN还提供了Hook（钩子）机制，即当特定的事件发生时，相应的hook会被调用，这样就可以做到某种程度的“自动化”】
+
+Watir（http://watir.com/）（Watir的发音和water一样）是一个基于Ruby的驱动类库，整合了Chrome，Firefox，Safari和IE（IE的版本和平台有关）。安装之后，可以通过给Watir发送Ruby指令来启动浏览器，而且可以像真实用户一样完成点击链接和填写表单等行为。在这个过程中，你可以运行一些测试用例和断言以判断程序运行是否满足期望：
+
+	# FireWatir drives Firefox
+	require "firewatir"
+
+	browser = Watir::Browser.new
+	browser.goto("http://bit.ly/watir-example")
+
+	browser.text_field(:name => "entry.0.single").set "Watir"
+	browser.button(:name => "logon").click
+
+由于浏览器的安装受到操作系统的限制，如果你想测试IE，你的持续集成服务器就需要安装特定版本的Windows操作系统，同样，如果你想测试Safari，则需要一台安装Mac OS X的服务器。
+
+另外一个非常流行的浏览器驱动工具是Selenium（http://seleniumhq.org/）。这个库提供了一种域脚本语言（domain scripting language，简称DSL），用这种脚本语言可以为多种编程语言编写测试代码，比如C#，Java，Groovy，Perl，PHP，Python和Ruby。Selenium可以在本地运行。它往往是以后台服务的形式运行于持续集成服务器中，启动的方法和通过提交代码来启动测试一样，也会在测试不通过时给出提示。Selenium的优势在于它支持很多编程语言，同时提供了一个Firefox插件Selenium IDE（http://seleniumhq.org/projects/ide），这个插件可以记录浏览器的行为并可回放，这极大方便了开发者的自测。
+
+如图9-4所示，我们使用Selenium IDE工具来记录链接的点击、填写表单和表单提交。当记录了一组行为时，你可以使用绿色的play按钮来回放这个过程。这个工具可以对记录下的动作和行为进行仿真模拟，这让测试变得更加轻松且高效。
+
+我们可以将测试用例的记录导出为任何格式，如图9-5所示。
+
+来看一个例子，这里的一段测试用例就被导出为Ruby Test::Unit 用例。正如你所看到的，Selenium IDE为我们生成了所有的相关的驱动方法，极大的降低了直接在页面中手写代码的成本：
+
+![png](http://img04.taobaocdn.com/tps/i4/T1qwmwXeFNXXXXXXXX-622-534.png)
+
+图9-4. 使用Selenium记录的指令
+
+	class SeleniumTest < Test::Unit::TestCase
+		def setup
+			@selenium = Selenium::Client::Driver.new \
+				:host => "localhost",
+				:port => 4444,
+				:browser => "*chrome",
+				:url => "http://example.com/index.html",
+				:timeout_in_second => 60
+
+			@selenium.start_new_browser_session
+		end
+
+		def test_selenium
+			@selenium.open "http://example.com/index.html"
+			@selenium.click "link=Login.html"
+			@selenium.wait_for_page_to_load "30000"
+			@selenium.type "email", "test@example.com"
+			@selenium.type "password", "test"
+			@selenium.click "//input[@value='Continue →']"
+			@selenium.wait_for_page_to_load "30000"
+		end
+	end
+
+![png](http://img01.taobaocdn.com/tps/i1/T164KwXgRzXXXXXXXX-553-359.png)
+
+图9-5. 将Selenium测试用例导出为各种格式
+
+现在我们可以基于@selenium对象做断言，比如检查一个文本片段是否存在：
+
+	def test_selenium
+		# ...
+		assert @selenium.is_text_present("elvis")
+	end
+
+可以访问Selenium的官网来获取更多帮助信息，或者参照这个视频教程（http://seleniumhq.org/movies/intro.mov）。
+
+## 无界面的测试
+
+现在越来越多的人开始在服务器端（比如基于Node.js或Rhino）编写JavaScript程序，这时就需要在脱离浏览器环境的命令行中运行你的测试代码。这种做法的优势是命令行环境速度快而且易于安装，而且不用涉及多浏览器以及持续集成服务器环境。它的不足也很明显，就是测试代码无法在真实环境中运行。
+
+这听起来不像是太严重的问题，因为你会发现你写的大多数JavaScript代码都是应用逻辑，是不依赖于浏览器的。而jQuery更多的是处理DOM和Event的浏览器兼容性问题，不会太深入业务逻辑层面。对于小型的应用来说，都会有一些固定的环境专门用于代码部署以及一些高级的跨浏览器集成测试（不管是手动还是自动化），所以没有必要一定到真实的线上环境才能执行测试。
+
+Envjs（http://www.envjs.com/）是John Resig（jQuery的作者）开发的一个类库，这个类库在Rhino环境中实现了浏览器DOM API，Rhino是Mozilla实现的JavaScript引擎。你可以使用Rhino和env.js在命令行执行JavaScript测试。
+
+### Zombie
+
+Zombie.js（http://zombie.labnotes.org/）是一个无界面的JavaScript类库，专门为Node.js设计，充分利用了它的高性能和异步特性。主要特点是速度快，花在等待测试执行上的时间越少，用在实现新功能和修复bug的时间就越多。
+
+如果你的应用使用了很多客户端JavaScript【译注：客户端JavaScript是指和DOM或BOM相关的JavaScript】，那么加载、渲染和运行JavaScript的时间会很久。而如果使用纯粹的Google V8 JavaScript引擎则会让你的测试运行速度倍增。
+
+尽管你的测试用例和客户端JavaScript都运行在相同的引擎之上，但Zombine还利用了V8的另一个特性：上下文，这个特性让它们彼此隔离【译注：“它们彼此隔离”是说基于业务逻辑的测试代码和处理浏览器兼容性的底层代码之间彼此隔离，因为开发者最不希望因为引入了测试代码而影响到原有业务逻辑的运行】，因此它们也不会共用同一个全局变量/全局上下文。这和Chrome中每个标签都各自独占一个进程是类似的。
+
+上下文带来的另一个好处是使得多个测试代码可以并行运行，每个测试代码都有自己的Browser对象。一个用来检查DOM内容，另一个用来等待页面请求的回调，从而减少整个测试单元的运行时间。你需要使用一个异步测试框架，比如Vows.js（http://vowsjs.org/），这是一个非常优秀的框架，它可以识别出哪些测试需要并行执行哪些测试需要串行执行。
+
+Zombine.js提供了一个Browser对象，它和真实的web浏览器中的BOM非常类似：它包含页面的状态（cookie，历史记录和web存储）以及提供了访问当前窗口的接口（包括加载完成的DOM文档）。另外，它还提供了操作当前窗口的方法，可以模拟真实的用户和页面产生交互（访问页面，填写表单，弹出对话框等等），还可以监控窗口的内容（使用XPath或CSS选择器）。
+
+
+举个例子，比如填写用户名和密码、提交表单并测试标题元素的内容：
+
+	// 填写邮件、密码并提交表单
+	browser.
+		fill("email", "zombie@underworld.dead").
+		fill("password", "eat-the-living").
+		pressButton("Sign Me Up!", function(err, browser) {
+			// Form submitted, new page loaded.
+			assert.equal(browser.text("title"), "Welcome to Brains Depot");
+		});
+
+这个例子是不完整的。显然你需要首先引入Zombine.js类库，创建新的Browser，而且页面加载完成之后才能开始执行交互代码。同样，你需要注意这里的err参数。
+
+和web浏览器一样，Zombine.js本身就是异步的：你的代码不会阻塞页面的加载、事件的触发或定时器的超时【译注6】。相反，你可以注册事件监听（比如loaded和error），或传入回调。
+
+【译注6：这里的“异步“指的是JavaScript的异步编程模型，而不是浏览器的渲染机制，众所周知浏览器的渲染是单线程的，直接在页面中引入的JavaScript文件是会阻塞页面渲染的】
+
+根据约定，当你将一个回调传入Zombine，调用这个回调有几种方式。如果执行成功了，就会（给回调）传入null或其他的值，多数情况下是传入Browser对象的引用。如果执行不成功，则传入一个Error对象。所以可以通过检查第一个参数的值来判断你的请求是否成功了，并判断是不是还有其他你感兴趣的参数。
+
+对于Node.js来说这是一个通常的约定，很多库也实现了这个基本约定，包括刚才提到的Vows.js测试框架。Vows.js同样使用了回调，这个回调的参数是error或null，如果参数是null，则会给这个测试用例带入第二个参数。
+
+下面这段示例代码就是使用Zombine.js和Vows.js实现的一个测试用例。它访问了一个web页面并使用选择器“.brains“来查找元素（期望这个元素不存在）：
+
+
+
+
+
+
+
+
 
 
 
