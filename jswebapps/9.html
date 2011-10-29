@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="http://a.tbcdn.cn/app/dp/s/screen.css" />
+<style>
+#bd {margin-left:20px;margin-right:20px;}
+</style>
+<title>wd-gallery - markdown</title>
+</head>
+<body>
+<div id="bd">
+
+<p><style>
+p img {
+        float:none;
+}
+</style></p>
+
+<h1>第9章 测试和调试</h1>
+
+<p>从某种程度上说，每个开发者在开发过程中都需要测试。起码手动执行代码也是一种测试。但本章将要讲的是JavaScript自动化测试，编写特定的断言并自动的执行它们。自动化测试不会消除程序中的bug，但的确是一种必要的手段来减少程序出现瑕疵的几率并避免代码库出现较旧的bug。测试有很多类型，而且网上已经有很多相关的学习资料。关于测试的基本原理和概念性的东西本章不再赘述。这里只关注基于JavaScript的测试以及和其他语言区别。</p>
+
+<p>很多人认为JavaScript中的测试是一种鸡肋，因此多数JavaScript开发者没有为他们的程序写测试代码。在我看来主要原因是JavaScript的自动化测试非常困难，且不具备可伸缩性【译注1】。我们以jQuery为例，jQuery库中包含一百多个测试单元和大约十种不同的测试分组，模拟在不同环境中的运行场景。每次测试都要运行所有的测试用例。jQuery支持的浏览器包括：</p>
+
+<p>【译注1：相比传统的软件开发，Web应用的需求变化更加频繁，因此测试用例也在不断变化，这对自动化测试来说是一个挑战，另外，由于多数JavaScript功能的模块化和API的设计并不完善，编程模式和约定也不统一，导致某个功能的测试用例很难被复用，甚者，测试代码会随着需求的增加呈指数级的增长，这也就是作者所说的“不具备可伸缩性”】</p>
+
+<ul>
+<li>Safari: 3.2, 4, 5, 午夜版</li>
+<li>Chrome: 8, 9, 10, 11</li>
+<li>Internet Explorer: 6, 7, 8, 9</li>
+<li>Firefox: 2, 3, 3.5, 3.6, 午夜版</li>
+<li>Opera: 9.6, 10, 11</li>
+</ul>
+
+<p>因此，jQuery总共需要支持五大浏览器的二十多个版本，每个测试单元都要在所有浏览器中测试通过。你会发现测试的量级已经开始呈指数级增长了，我们甚至还没考虑到各个平台的情况【译注：指各种操作系统、PC、Mac机和各种移动终端】！因此这种测试根本不具备可伸缩性。</p>
+
+<p>显然，jQuery是特例，只是为了说明问题到底有多糟。你的程序所兼容的浏览器往往不超过jQuery支持浏览器的二分之一，所以你也不需要这么多测试用例。然而，你必须针对你的应用所兼容的浏览器作充分测试。</p>
+
+<p>在接下来的讨论之前，有必要先看下各大浏览器的市场占有率，因为这个统计会最终决定前端开发工程师做开发所依赖的浏览器类型和版本。但这个占有率的数据变化非常快，今天的统计数据可能明天就会过时，但大致的趋势是不会变的。</p>
+
+<p>浏览器的市场占有率的统计结果往往取决于数据采样的维度。不同的国家统计结果也不一样，这和每个国家互联网用户的专业程度有关。比如，下面的统计数据来自于Statcounter.com，是2011年欧洲的数据：</p>
+
+<ul>
+<li>Safari: 4%</li>
+<li>Chrome: 15%</li>
+<li>IE: 36%</li>
+<li>Firefox: 37%</li>
+<li>Opera: 2%</li>
+</ul>
+
+<p>IE的占有率在不断减少，而Firefox和Chome的占有率在不断攀升，这种趋势会一直持续下去。IE6早已是明日黄花风光不再了，占有率也跌至个位数。现在也只有为企业或政府部门开发网站时会考虑那些上了年纪的用户，除此之外基本不必再担心如何去兼容这些古老的浏览器了【译注：根据淘宝网的统计数据，国内IE6的占有率仍然接近半数，所以作者所说的情况并不适用于中国大陆】。</p>
+
+<p>古人云，“世界上有三种谎言：谎话，弥天大谎，还有统计数字”【译注2】。这句话用在浏览器的统计上再合适不过了。比如我的博客的流量统计显示IE占5%，低于国家的平均值。换句话说，你所看到的统计数据是跟你网站的用户群有关系的。如果你的站点是科技类、或喜欢炫一些花哨技术的站点，那么使用Friefox和Chrome的用户比例会非常高，而更多的主流网站的统计数据则能更好的反映国家的平均水平。首先考虑你的站点主要面向哪些人提供服务，然后决定要支持哪些浏览器，而不要太迷信统计数据。然而，根据经验来看，推荐大家主要测试这些浏览器【译注3】：</p>
+
+<p>【译注2：这句谚语据说最初出自英国前首相本杰明·迪斯雷利之口（Benjamin Disraeli），不过它的广泛流传却是因为马克·吐温的引用，意思是说统计数字不靠谱】</p>
+
+<p>【译注3：雅虎最早提出了浏览器分级支持（GBS），即根据功能需求的权重来将浏览器支持划分多个级别，并且非常详细系统的定义了浏览器测试基准和操作系统支持标准，请参照：http://yuilibrary.com/yui/docs/tutorials/gbs/，而作者在这里提到的主流浏览器更多的适用于Web App，并非所有的Web页面】</p>
+
+<ul>
+<li>IE 8, 9</li>
+<li>Firefox 3.6【译注：撰写本书时的Firefox版本还是3.6，从Firefox4之后版本升级非常快，最重要的不同是Firefox 3.6遵循ECMAScript3，而4及以后的版本则遵循EMCAScript5，因此这里更推荐使用Firefox 4+】</li>
+<li>Safari 5</li>
+<li>Chrome 11</li>
+</ul>
+
+<p>如果你不清楚你的网站访问来源的统计数据，也不知道用户用了哪些浏览器访问你的站点，就需猜测网站用户的受教育情况。不管通过什么方式，只要确定下来你的网站需要兼容的浏览器类型和版本，接下来就是写自动化测试，来确保你的应用能在这些浏览器中都正常运行。</p>
+
+<h2>单元测试</h2>
+
+<p>手工测试更像集成测试，从更高层次上保证应用的正常运行。单元测试则是更低层次的测试，确保特定的后台代码片段能正常运行。单元测试更多的是为了发现浏览器兼容性bug，但这些bug的解决相对容易，因为被测试的代码片段往往很短。</p>
+
+<p>单元测试的另一个优势是为自动化测试铺平道路。在本章后续的小节中会有深入讨论。将很多单元测试整合起来就可以做到连续的集成测试了，每次代码有更新时都重新执行一遍所有的单元测试。这要比对应用做手动回归测试省时省力的多，并可确保每一处代码的小改动都不会影响到应用中其他的功能。</p>
+
+<p>现在有很多JavaScript单元测试类库，每种库都各有优缺点。接下来会介绍一些主流的测试类库，但使用这些类库之前要理解测试的基本原理。</p>
+
+<h3>断言</h3>
+
+<p>断言是测试的核心【译注：很多初学者将断言和测试用例混为一谈，断言是用来检查测试用例中的条件的，理论上断言是测试用例的子集】，它们决定了哪些测试会通过、哪些会失败。断言是一些表述代码期望执行结果的语句。如果断言不正确，则测试失败，你就会知道代码出了问题。</p>
+
+<p>比如，这里有一个简单的assets()函数，本书中还有很多其他示例代码会用到它：</p>
+
+<pre><code>var asset = function(value, msg) {
+    if ( !value )
+        throw(msg || (value + " does not equal true"));
+};
+</code></pre>
+
+<p>它得到一个值和一个可选的字符串消息。如果值不是true，那么断言失败：</p>
+
+<pre><code>// 这些断言均失败
+assert( false );
+assert( "" );
+assert( 0 );
+</code></pre>
+
+<p>JavaScript中在希望使用布尔值的地方使用了undefined、0、和null这些值都会被转换为false。换句话说，下面这个assert可以对null做检查：</p>
+
+<pre><code>// 如果语句是null，则断言失败
+assert( User.first() );
+</code></pre>
+
+<p>类型转换多少会影响你的测试，因此有必要在类型转换之前首先检查值的类型，以避免很多怪异的代码引起各种奇怪的问题（http://bonsaiden.github.com/JavaScript-Garden/）。</p>
+
+<p>断言类库不仅限于正确性检查。大多数类库还包含完整的数组匹配，以及通过比较原始对象来检查数字的大小。这些库中至少都实现了assertEqual()函数，用以比较两个值：</p>
+
+<pre><code>var assertEqual = function(val1, val2, msg) {
+    if (val1 !== val2)
+        throw(msg || (val1 + " does not equal " + val2));
+};
+
+// 断言通过
+assertEqual("one", "one");
+</code></pre>
+
+<p>接下来要讲的测试类库都实现了一组断言，每个库定义断言的API都有所不同。</p>
+
+<h3>QUnit</h3>
+
+<p>QUnit（http://docs.jquery.com/Qunit）是现在最流行且维护良好的测试类库，这个库最初是用来测试jQuery用的。那么，如何用QUnit建立测试环境呢？第一步是将项目文件（https://github.com/jquery/qunit/zipball/master）下载到本地，然后创建静态测试执行页面：</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;QUnit Test Suite&lt;/title&gt;
+    &lt;link rel="stylesheet" href="qunit/qunit.css" type="text/css" media="screen"&gt;
+    &lt;script type="text/javascript" src="qunit/qunit.js"&gt;&lt;/script&gt;
+    &lt;!-- include tests here... --&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1 id="qunit-header"&gt;QUnit Test Suite&lt;/h1&gt;
+    &lt;h2 id="qunit-banner"&gt;&lt;/h2&gt;
+    &lt;div id="qunit-testrunner-toolbar"&gt;&lt;/div&gt;
+    &lt;h2 id="qunit-userAgent"&gt;&lt;/h2&gt;
+    &lt;ol id="qunit-tests"&gt;&lt;/ol&gt;
+    &lt;div id="qunit-fixture"&gt;test markup&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>要想创建断言，你需要将它们放入测试用例中。比如，现在我们来创建一个测试单元，来测试在第3章里介绍的ORM：</p>
+
+<pre><code>test("load()", function(){
+    var Asset = Model.setup();
+
+    var a = Asset.init();
+    a.load({
+        local: true,
+        name: "test.pdf"
+    });
+
+    ok(a.local, "Load sets properties");
+    equals(a.name, "test.pdf", "load() sets properties (2)");
+
+    var b = Asset.init({
+        name: "test2.pdf"
+    });
+
+    equals(b.name, "test2.pdf", "Calls load() on instantiation");
+});
+</code></pre>
+
+<p>这里调用了test()来创建一个新测试用例，并给它设置了名字和测试回调（主逻辑都放在回调里）。在回调函数中我们使用了若干种断言：ok()断言用来判断它的第一个参数是否是true，equals()用来比较它的前两个参数。所有的断言都可以带最后一个字符串参数，表示断言的名字，以便清楚的看出哪些断言通过了哪些失败了。</p>
+
+<p>现在把测试代码放入页面中并刷新这个页面，运行结果如图9-1所示：</p>
+
+<p><img src="http://img03.taobaocdn.com/tps/i3/T1aKSwXdNRXXXXXXXX-546-201.jpg" alt="图" /></p>
+
+<p>图9-1. QUnit测试结果</p>
+
+<p>运行结果非常清楚，非常不错！我们只需一眼就能看出哪些测试通过了哪些没有通过，每次测试都需要刷新页面。现在就可以将它在所有的浏览器中打开运行，来检查应用的兼容性，确保应用能在所有浏览器中都能正常运行。</p>
+
+<p>使用module()函数可以将测试分离开，它包含一个名字和一个配置项。现在对上一个例子做进一步整理，给module()传入setup选项，它是一个回调函数，这个模块中的每个测试执行的时候都会调用它。在这个例子中，我们所有的测试都需要Asset，所以我们在setup中创建它：</p>
+
+<pre><code>module("Model test", {
+    setup: function(){
+        this.Asset = Model.setup();
+    }
+});
+
+test("load()", function(){
+    var a = this.Asset.init();
+    a.load({
+        local: true,
+        name: "test.pdf"
+    });
+
+    ok(a.local, "Load sets properties");
+    equals(a.name, "test.pdf", "load() sets properties (2)");
+
+    var b = this.Asset.init({
+        name: "test2.pdf"
+    });
+
+    equals(b.name, "test2.pdf", "Calls load() on instantiation");
+});
+</code></pre>
+
+<p>代码变的更清晰了一些，这在为它增加更多测试代码时非常有帮助。module()还可以接收teardown选项，它是一个回调函数，模块中的每个测试执行完毕后会调用它。现在来给这个测试单元增加另一个测试：</p>
+
+<pre><code>test("attributes()", function(){
+    this.Asset.attributes = ["name"];
+
+    var a = this.Asset.init();
+    a.name = "test.pdf";
+    a.id = 1;
+
+    equals(a.attributes(), {
+        name: "test.pdf",
+        id: 1
+    });
+});
+</code></pre>
+
+<p>如果执行这段代码，你会发现测试失败了，正如图9-2中所示。</p>
+
+<p>这是因为equals()函数使用了==比较运算符，它无法比较数组和对象。相反，我们应当使用same()函数，它会执行更深度的比较，现在测试单元就都通过了：</p>
+
+<pre><code>test("attributes()", function(){
+    this.Asset.attributes = ["name"];
+
+    var a = this.Asset.init();
+    a.name = "test.pdf";
+    a.id = 1;
+
+    same(a.attributes(), {
+        name: "test.pdf",
+        id: 1
+    });
+});
+</code></pre>
+
+<p>QUnit还包含很多其他的断言类型，比如notEqual()和raises()。可以从这里看到这些断言的完整的使用方法assets/ch09/qunit/model.test.js，在Qunit的文档（http://docs.jquery.com/Qunit#API_documentation）中也可以查阅到使用方法。</p>
+
+<p><img src="http://img04.taobaocdn.com/tps/i4/T1PvOwXdxJXXXXXXXX-571-380.png" alt="png" /></p>
+
+<p>图9-2. QUnit出错提示</p>
+
+<h3>Jasmine</h3>
+
+<p>Jasmine（http://pivotal.github.com/jasmine/）是另一个非常流行的测试类库（只是我的个人观点）。和QUnit不同，Jasmine定义了用以描述应用中特定对象的行为的测试片段（spec）。实际上这些片段和单元测试非常类似，只不过换了一种表述方式。</p>
+
+<p>Jasmine的优势是它不依赖任何其他三方库，甚至不依赖DOM。也就是说它可以在所有的JavaScript环境中运行，比如可以装有Node.js的服务器中运行。</p>
+
+<p>和QUnit一样，我们需要创建一个静态HTML页面来载入测试代码，执行测试代码可以得到运行结果：</p>
+
+<pre><code>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Jasmine Test Runner&lt;/title&gt;
+    &lt;link rel="stylesheet" type="text/css" href="lib/jasmine.css"&gt;
+    &lt;script type="text/javascript" src="lib/jasmine.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript" src="lib/jasmine-html.js"&gt;&lt;/script&gt;
+
+    &lt;!-- 引入源文件... --&gt;
+    &lt;!-- 引入测试文件... --&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;script type="text/javascript"&gt;
+        jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+        jasmine.getEnv().execute();
+    &lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>现在来看如何用Jasmine来写测试代码，现在来对第3章介绍的ORM库作进一步测试：</p>
+
+<pre><code>describe("Model", function(){
+    var Asset;
+
+    beforeEach(function(){
+        Asset = Model.setup();
+        Asset.attributes = ["name"];
+    });
+
+    it("can create records", function(){
+        var asset = Asset.create({name: "test.pdf"});
+        expect(Asset.first()).toEqual(asset);
+    });
+
+    it("can update records", function(){
+        var asset = Asset.create({name: "test.pdf"});
+
+        expect(Asset.first().name).toEqual("test.pdf");
+
+        asset.name = "wem.pdf";
+        asset.save();
+
+        expect(Asset.first().name).toEqual("wem.pdf");
+    });
+
+    it("can destroy records", function(){
+        var asset = Asset.create({name: "test.pdf"});
+        expect(Asset.first()).toEqual(asset);
+
+        asset.destroy();
+
+        expect(Asset.first()).toBeFalsy();
+    });
+});
+</code></pre>
+
+<p>这里使用describe()将测试代码划分为不同的分组（测试单元），每个分组都带有名字和一个匿名函数。在上面这个例子中，我们使用beforeEach()来为每段测试代码的运行创建设置程序，在每段测试代码运行之前会触发设置程序。Jasmine同样包含“扫尾函数“afterEach()，在每段测试代码运行之后调用扫尾函数。我们在beforeEach()函数之外定义了变量Asset，它对于每个测试单元来说是局部变量，在每段测试代码中都可以访问到它。</p>
+
+<p>每段测试代码都是以it()函数开始，it()函数带有名字和一个匿名回调函数，函数中包含我们所需的断言。通过给expect()函数传入期望得到的值来创建断言，包括调用一个判断匹配的方法，这些方法包括：</p>
+
+<p><em>expect(x).toEqual(y)</em></p>
+
+<p>比较对象或原始值x和y是否相等，如果相等则通过测试</p>
+
+<p><em>expect(x).toBe(y)</em></p>
+
+<p>比较对象或原始值是否相等，如果它们是同一个对象则通过测试</p>
+
+<p><em>expect(x).toMatch(pattern)</em></p>
+
+<p>比较x是否和字符串或者正则表达式相匹配，如果匹配则通过测试</p>
+
+<p><em>expect(x).toBeNull()</em></p>
+
+<p>如果x是null的话通过测试</p>
+
+<p><em>expect(x).toBeTruthy()</em></p>
+
+<p>如果x的值为真值则通过测试</p>
+
+<p><em>expect(x).toBeFalsy()</em></p>
+
+<p>如果x的值为假值则通过测试</p>
+
+<p><em>expect(x).toContain(y)</em></p>
+
+<p>如果数组或字符串x包含y则通过测试</p>
+
+<p><em>expect(fn).toThrow(e)</em></p>
+
+<p>如果函数fn在执行时抛出了异常e则通过测试</p>
+
+<p>Jasmine还包含其他很多匹配方法，甚至可以写一些自定义的匹配方法（http://github.com/pivotal/jasmine/wiki/Matchers）。</p>
+
+<p>图9-3是运行Jasmine测试代码时的结果，运行的就是上面这段代码：</p>
+
+<p><img src="http://img01.taobaocdn.com/tps/i1/T18MywXjNHXXXXXXXX-591-177.png" alt="png" /></p>
+
+<p>图9-3. Jasmine测试结果</p>
+
+<h2>驱动</h2>
+
+<p>尽管使用测试框架可以做到一定程度的自动化测试，但在各式各样的浏览器中进行测试依然是个问题。每次测试时都要开发者手动在五个浏览器中执行刷新，这种做法显然很低效。</p>
+
+<p>为了解决这个问题，有人就开发出了驱动。这里所说的驱动实际上是一个守护进程【译注：守护进程是一个操作系统级的概念，特指为了运行某些进程而开启的服务】，它整合了不同的浏览器，可以自动运行JavaScript测试代码，测试不通过时会给出提示【译注4】。</p>
+
+<p>【译注4：前端开发自动化测试是现在比较热门的话题，国内也有很多前端团队开始了这方面的研究和尝试，可以参照来自淘宝的“前端测试实践”（http://www.slideshare.net/taobaoued/ss-8584269）以及来自新浪的“多浏览器集成的JavaScript单元测试”（http://www.slideshare.net/taobaoued/multi-browser-integrationjsunittestframeworkweibobaokun），两种实践的思想和作者在本节提到的原则是一致的，即将不同的浏览器环境作集成，提供服务，以便展开下一步的自动化测试】</p>
+
+<p>要想将驱动安装在每个开发者的机器上需要很多工作要作，所以很多公司都有一个单独的持续集成服务器，利用post-commit的hook功能【译注5】来自动的运行JavaScript测试代码，确保每次提交的代码都是正确无误的。</p>
+
+<p>【译注5：为了方便管理员控制代码提交的过程，代码版本管理工具SVN提供了很多事件，post-commit其中一个事件，即“事务提交完毕，新的修订版被创建”。同时SVN还提供了Hook（钩子）机制，即当特定的事件发生时，相应的hook会被调用，这样就可以做到某种程度的“自动化”】</p>
+
+<p>Watir（http://watir.com/）（Watir的发音和water一样）是一个基于Ruby的驱动类库，整合了Chrome，Firefox，Safari和IE（IE的版本和平台有关）。安装之后，可以通过给Watir发送Ruby指令来启动浏览器，而且可以像真实用户一样完成点击链接和填写表单等行为。在这个过程中，你可以运行一些测试用例和断言以判断程序运行是否满足期望：</p>
+
+<pre><code># FireWatir drives Firefox
+require "firewatir"
+
+browser = Watir::Browser.new
+browser.goto("http://bit.ly/watir-example")
+
+browser.text_field(:name =&gt; "entry.0.single").set "Watir"
+browser.button(:name =&gt; "logon").click
+</code></pre>
+
+<p>由于浏览器的安装受到操作系统的限制，如果你想测试IE，你的持续集成服务器就需要安装特定版本的Windows操作系统，同样，如果你想测试Safari，则需要一台安装Mac OS X的服务器。</p>
+
+<p>另外一个非常流行的浏览器驱动工具是Selenium（http://seleniumhq.org/）。这个库提供了一种域脚本语言（domain scripting language，简称DSL），用这种脚本语言可以为多种编程语言编写测试代码，比如C#，Java，Groovy，Perl，PHP，Python和Ruby。Selenium可以在本地运行。它往往是以后台服务的形式运行于持续集成服务器中，启动的方法和通过提交代码来启动测试一样，也会在测试不通过时给出提示。Selenium的优势在于它支持很多编程语言，同时提供了一个Firefox插件Selenium IDE（http://seleniumhq.org/projects/ide），这个插件可以记录浏览器的行为并可回放，这极大方便了开发者的自测。</p>
+
+<p>如图9-4所示，我们使用Selenium IDE工具来记录链接的点击、填写表单和表单提交。当记录了一组行为时，你可以使用绿色的play按钮来回放这个过程。这个工具可以对记录下的动作和行为进行仿真模拟，这让测试变得更加轻松且高效。</p>
+
+<p>我们可以将测试用例的记录导出为任何格式，如图9-5所示。</p>
+
+<p>来看一个例子，这里的一段测试用例就被导出为Ruby Test::Unit 用例。正如你所看到的，Selenium IDE为我们生成了所有的相关的驱动方法，极大的降低了直接在页面中手写代码的成本：</p>
+
+<p><img src="http://img04.taobaocdn.com/tps/i4/T1qwmwXeFNXXXXXXXX-622-534.png" alt="png" /></p>
+
+<p>图9-4. 使用Selenium记录的指令</p>
+
+<pre><code>class SeleniumTest &lt; Test::Unit::TestCase
+    def setup
+        @selenium = Selenium::Client::Driver.new \
+            :host =&gt; "localhost",
+            :port =&gt; 4444,
+            :browser =&gt; "*chrome",
+            :url =&gt; "http://example.com/index.html",
+            :timeout_in_second =&gt; 60
+
+        @selenium.start_new_browser_session
+    end
+
+    def test_selenium
+        @selenium.open "http://example.com/index.html"
+        @selenium.click "link=Login.html"
+        @selenium.wait_for_page_to_load "30000"
+        @selenium.type "email", "test@example.com"
+        @selenium.type "password", "test"
+        @selenium.click "//input[@value='Continue →']"
+        @selenium.wait_for_page_to_load "30000"
+    end
+end
+</code></pre>
+
+<p><img src="http://img01.taobaocdn.com/tps/i1/T164KwXgRzXXXXXXXX-553-359.png" alt="png" /></p>
+
+<p>图9-5. 将Selenium测试用例导出为各种格式</p>
+
+<p>现在我们可以基于@selenium对象做断言，比如检查一个文本片段是否存在：</p>
+
+<pre><code>def test_selenium
+    # ...
+    assert @selenium.is_text_present("elvis")
+end
+</code></pre>
+
+<p>可以访问Selenium的官网来获取更多帮助信息，或者参照这个视频教程（http://seleniumhq.org/movies/intro.mov）。</p>
+
+<h2>无界面的测试</h2>
+
+<p>现在越来越多的人开始在服务器端（比如基于Node.js或Rhino）编写JavaScript程序，这时就需要在脱离浏览器环境的命令行中运行你的测试代码。这种做法的优势是命令行环境速度快而且易于安装，而且不用涉及多浏览器以及持续集成服务器环境。它的不足也很明显，就是测试代码无法在真实环境中运行。</p>
+
+<p>这听起来不像是太严重的问题，因为你会发现你写的大多数JavaScript代码都是应用逻辑，是不依赖于浏览器的。而jQuery更多的是处理DOM和Event的浏览器兼容性问题，不会太深入业务逻辑层面。对于小型的应用来说，都会有一些固定的环境专门用于代码部署以及一些高级的跨浏览器集成测试（不管是手动还是自动化），所以没有必要一定到真实的线上环境才能执行测试。</p>
+
+<p>Envjs（http://www.envjs.com/）是John Resig（jQuery的作者）开发的一个类库，这个类库在Rhino环境中实现了浏览器DOM API，Rhino是Mozilla实现的JavaScript引擎。你可以使用Rhino和env.js在命令行执行JavaScript测试。</p>
+
+<h3>Zombie</h3>
+
+<p>Zombie.js（http://zombie.labnotes.org/）是一个无界面的JavaScript类库，专门为Node.js设计，充分利用了它的高性能和异步特性。主要特点是速度快，花在等待测试执行上的时间越少，用在实现新功能和修复bug的时间就越多。</p>
+
+<p>如果你的应用使用了很多客户端JavaScript【译注：客户端JavaScript是指和DOM或BOM相关的JavaScript】，那么加载、渲染和运行JavaScript的时间会很久。而如果使用纯粹的Google V8 JavaScript引擎则会让你的测试运行速度倍增。</p>
+
+<p>尽管你的测试用例和客户端JavaScript都运行在相同的引擎之上，但Zombine还利用了V8的另一个特性：上下文，这个特性让它们彼此隔离【译注：“它们彼此隔离”是说基于业务逻辑的测试代码和处理浏览器兼容性的底层代码之间彼此隔离，因为开发者最不希望因为引入了测试代码而影响到原有业务逻辑的运行】，因此它们也不会共用同一个全局变量/全局上下文。这和Chrome中每个标签都各自独占一个进程是类似的。</p>
+
+<p>上下文带来的另一个好处是使得多个测试代码可以并行运行，每个测试代码都有自己的Browser对象。一个用来检查DOM内容，另一个用来等待页面请求的回调，从而减少整个测试单元的运行时间。你需要使用一个异步测试框架，比如Vows.js（http://vowsjs.org/），这是一个非常优秀的框架，它可以识别出哪些测试需要并行执行哪些测试需要串行执行。</p>
+
+<p>Zombine.js提供了一个Browser对象，它和真实的web浏览器中的BOM非常类似：它包含页面的状态（cookie，历史记录和web存储）以及提供了访问当前窗口的接口（包括加载完成的DOM文档）。另外，它还提供了操作当前窗口的方法，可以模拟真实的用户和页面产生交互（访问页面，填写表单，弹出对话框等等），还可以监控窗口的内容（使用XPath或CSS选择器）。</p>
+
+<p>举个例子，比如填写用户名和密码、提交表单并测试标题元素的内容：</p>
+
+<pre><code>// 填写邮件、密码并提交表单
+browser.
+    fill("email", "zombie@underworld.dead").
+    fill("password", "eat-the-living").
+    pressButton("Sign Me Up!", function(err, browser) {
+        // Form submitted, new page loaded.
+        assert.equal(browser.text("title"), "Welcome to Brains Depot");
+    });
+</code></pre>
+
+<p>这个例子是不完整的。显然你需要首先引入Zombine.js类库，创建新的Browser，而且页面加载完成之后才能开始执行交互代码。同样，你需要注意这里的err参数。</p>
+
+<p>和web浏览器一样，Zombine.js本身就是异步的：你的代码不会阻塞页面的加载、事件的触发或定时器的超时【译注6】。相反，你可以注册事件监听（比如loaded和error），或传入回调。</p>
+
+<p>【译注6：这里的“异步“指的是JavaScript的异步编程模型，而不是浏览器的渲染机制，众所周知浏览器的渲染是单线程的，直接在页面中引入的JavaScript文件是会阻塞页面渲染的】</p>
+
+<p>根据约定，当你将一个回调传入Zombine，调用这个回调有几种方式。如果执行成功了，就会（给回调）传入null或其他的值，多数情况下是传入Browser对象的引用。如果执行不成功，则传入一个Error对象。所以可以通过检查第一个参数的值来判断你的请求是否成功了，并判断是不是还有其他你感兴趣的参数。</p>
+
+<p>对于Node.js来说这是一个通常的约定，很多库也实现了这个基本约定，包括刚才提到的Vows.js测试框架。Vows.js同样使用了回调，这个回调的参数是error或null，如果参数是null，则会给这个测试用例带入第二个参数。</p>
+
+<p>下面这段示例代码就是使用Zombine.js和Vows.js实现的一个测试用例。它访问了一个web页面并使用选择器“.brains“来查找元素（期望这个元素不存在）：</p>
+
+<pre><code>var zombie = require("zombie");
+
+vows.describe("Zombie lunch").addBatch({
+    "visiting home page": {
+        topic: function() {
+            var browser = new zombie.Browser;
+            browser.cookies("localhost").update("session_id=5678");
+            browser.visit("http://localhost:3003/", this.callback);
+        },
+        "should find no brains": function(browser) {
+            assert.isEmpty(browser.css(".brains"));
+        }
+    }
+});
+</code></pre>
+
+<p>使用Zombie.js还可以做很多事情。比如，你可以在测试代码运行结束后将浏览器状态保存下来（cookie，历史记录，web存储等），以便其他的测试代码也能使用这些状态（例如使用旧的session来保持登录状态，这样运行新的测试代码就不用再去登录了）。</p>
+
+<p>同样你也可以触发DOM事件，比如模拟一次鼠标点击，或者对提示框做出响应。你可以查看请求和响应的历史记录，和WebKit（开发者工具）监视器中的“资源”选项卡类似。尽管Zombie是运行在Node.js之上的，它也可以向其他服务器发起HTTP请求，因此完全可以用它来测试你的Ruby或Python应用。</p>
+
+<h3>Ichabod</h3>
+
+<p>Ichabod（https://github.com/maccman/ichabod）是另一个用于无界面测试的类库，这个名字很富想象力【译注7】。如果你需要一个简洁高效的测试运行环境的话，强烈推荐你使用Ichabod。</p>
+
+<p>【译注7：Ichabod是迪斯尼的动画电影“The Adventures of Ichabod and Mr.Toad“（伊老师与小蟾蜍历险记）中的主人翁，这部电影1949年上映，是迪斯尼第一部颇具影响力的长篇动画片，本片荣获当年金球奖最佳色彩片奖，也是该奖首次颁发给动画电影】</p>
+
+<p>除了能模拟DOM和解析引擎之外，Ichabod的优势还在于它使用了Webkit解析引擎，这也是Safari和Chrome浏览器所使用解析引擎。但它的缺点是只能运行在OS X中，因为它需要MacRuby和OS X WebView API的支持。</p>
+
+<p>Ichabod的安装很简单，首先需要安装MacRuby，可以直接从项目官网上下载安装（http://www.macruby.org/）也可以通过rvm（https://rvm.beginrescueend.com/interpreters/macruby/）安装。然后安装Ichabod gem：</p>
+
+<pre><code>$ macgem install ichabod
+</code></pre>
+
+<p>Ichabod目前可以运行Jasmine和QUnit的测试代码，后续还会增加更多的测试类库的支持。运行测试代码也很简单，只需将待测试的地址带入ichabod命令即可：</p>
+
+<pre><code>$ ichabod --jasmine http://path/to/jasmine/specs.html
+$ ichabod --qunit http://path/to/qunit/tests.html
+</code></pre>
+
+<p>待测试页面不一定非要是外网地址，也可以是本地文件路径：</p>
+
+<pre><code>$ ichabod --jasmine ./tests/index.html
+    ...
+    Finished in 0.393 seconds
+    1 test, 5 assertions, 0 failures
+</code></pre>
+
+<p>Ichabod会把待测试的文件载入进来，并在一个无界面的WebKit中运行它们，这一切都可以在命令行中完成。</p>
+
+<h2>分布式测试</h2>
+
+<p>跨浏览器测试的一个解决方案是利用外包的专用服务器集群，这些集群都安装有不同的浏览器。这正是TestSwarm（http://swarm.jquery.org/）的做法：</p>
+
+<blockquote>
+  <p>TestSwarm的目标是简化在多个浏览器中执行繁琐耗时的JavaScript测试用例的工作。它为你的JavaScript项目提供了一个持续集成的工作流，并带有必要的测试工具。</p>
+</blockquote>
+
+<p>TestSwarm并不是通过向浏览器集成一些插件和扩展来实现，这种做法非常低端，而是选择了另外一种思路。浏览器在TestSwarm的终端里运行，并自动执行推送给它们的测试。它们可以部署在任意机器、任意操作系统中，TestSwarm会自动将得到的测试地址传递给一个新打开的浏览器。</p>
+
+<p>这种方法听起来很简单，但仍然需要对持续集成服务器做大量的部署工作，这个过程也非常痛苦和麻烦。要解决的主要问题是确保很多浏览器都能正确的连接至TestSwarm。实际上可以将这个工作外包给更专业的社区和公司来作，你只需告诉他们你想要的测试平台即可。图9-6就是TestSwram以表格形式返回测试在各浏览器中执行测试用例的结果。</p>
+
+<p><img src="http://img01.taobaocdn.com/tps/i1/T167iwXjtCXXXXXXXX-500-341.png" alt="png" /></p>
+
+<p>图9-6. TestSwram执行测试用例的结果</p>
+
+<p>可以选一些公司（比如Sauce Labs）提供的成熟的服务，这些公司大多是将浏览器运行于云端【译注：请参照http://zh.wikipedia.org/zh-cn/云计算】。你只需运行一个Selenium测试驱动，剩下的工作都交给服务器去做，包括在不同的平台启动不同的浏览器来运行你的测试代码，确保所有的场景下都能通过测试。</p>
+
+<h2>提供支持</h2>
+
+<p>不管你的测试是多么严格，你的应用一定还会存在bug。你最好接受这个现实，要知道你上线的应用总会有bug，用户也或多或少会遇到这些bug和错误。所以应当提供一种反馈机制，让用户可以很容易的将错误报告提交给你，同时你也应当做到有效的响应这些提交上来的bug报告。</p>
+
+<h2>调试工具</h2>
+
+<p>在过去，前端开发工程师最常用的开发和调试工具大概就是alert()了。现在大多数主流浏览器都包含了强大的元素查看器和调试器，这极大的提高了前端开发工程师的工作效率，降低了调试的复杂度。接下来会讲解两个主要的调试工具，浏览器中的调试工具都大同小异，学会使用一个其他的也能很快上手。</p>
+
+<h3>Web Inspector</h3>
+
+<p>Web Inspector是Safari和Google Chrome浏览器带有的调试工具。Safari和Chrome两者的调试工具的界面稍有差异，但功能都是一样的。</p>
+
+<p>在Safari中，需要在“设置”/“高级”面板中勾选“在菜单栏中显示开发菜单”，如图9-7所示。</p>
+
+<p><img src="http://img03.taobaocdn.com/tps/i3/T1FmqwXbltXXXXXXXX-667-301.png" alt="png" /></p>
+
+<p>图9-7. 启用Safari中的调试工具</p>
+
+<p>Chrome的开发者工具则在视图工具栏里，可以通过菜单来选择激活调试工具。在两个浏览器中都可以通过单击右键选择“查看元素“来启用调试工具。</p>
+
+<p>如图9-8所示，Web Inspector是一个非常有用的工具，使用它可以监控HTML元素，编辑样式，调试JavaScript等。目前这种调试器已经是前端开发工程师调试页面和JavaScript程序不可或缺的工具了。</p>
+
+<p>下面着重介绍一下调试工具的特性，但这里仍只是概要的介绍调试工具的组成部分：</p>
+
+<p><em>Elements</em></p>
+
+<p>监控HTML元素，编辑样式</p>
+
+<p><em>Resources</em></p>
+
+<p>页面的源文件和所需的资源</p>
+
+<p><em>Network</em></p>
+
+<p>HTTP请求</p>
+
+<p><em>Scripts</em></p>
+
+<p>JavaScript文件和调试器</p>
+
+<p><em>Timeline</em></p>
+
+<p>浏览器渲染过程的详细预览</p>
+
+<p><em>Audits</em></p>
+
+<p>代码和内存统计</p>
+
+<p><em>Console</em></p>
+
+<p>执行JavaScript，并可查看结果</p>
+
+<p><img src="http://img02.taobaocdn.com/tps/i2/T1LDGwXhddXXXXXXXX-914-286.png" alt="png" /></p>
+
+<p>图9-8. 使用Safari的Web Inspector抓取DOM元素</p>
+
+<h3>Firebug</h3>
+
+<p>Firefox没有自带JavaScript调试工具，但它有一个非常优秀的扩展插件：Firebug（http://getfirebug.com/），如图9-9。</p>
+
+<p><img src="http://img03.taobaocdn.com/tps/i3/T1_39wXhB7XXXXXXXX-841-284.png" alt="png" /></p>
+
+<p>图9-9. 使用Firebug抓取DOM元素</p>
+
+<p>你发现尽管Firebug操作面板中各个选项卡的名称和Web Inspector不一样，但它们的功能大都是类似的：</p>
+
+<p><em>Console</em></p>
+
+<p>执行JavaScript代码并查看结果</p>
+
+<p><em>HTML</em></p>
+
+<p>查看DOM元素，编辑样式</p>
+
+<p><em>CSS</em></p>
+
+<p>查看并编辑页面的CSS</p>
+
+<p><em>Script</em></p>
+
+<p>JavaScript文件和调试器</p>
+
+<p><em>DOM</em></p>
+
+<p>查看全局变量</p>
+
+<p><em>Net</em></p>
+
+<p>HTTP请求</p>
+
+<p>Firebug的开发团队还开发了一个不依赖于Firefox的Firebug——Firebug Lite【译注：在IE中使用Firebug Lite不支持JavaScript断点调试】。这个版本包含Firebug的大部分功能，甚至外观和交互都和Firebug一样，而且兼容主流的浏览器。尤其是在IE中使用Firebug Lite进行调试会非常方便（甚至比IE内置的调试工具还好用）。Firebug Lite不需要安装，只需在页面中引入一个script标签即可：</p>
+
+<pre><code>&lt;script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>除此之外你还可以在Firebug Lite（http://getfirebug.com/firebuglite#Stable）官网将它加入到书签里。</p>
+
+<h2>控制台</h2>
+
+<p>我们可以使用控制台来轻松的执行JavaScript代码并检查页面的全局变量。控制台的一个主要优势是你可以使用console.log()函数直接向它输出log。调用是异步的，可以带多个参数，并且不用将参数转化为字符串：</p>
+
+<pre><code>console.log("test");
+console.log(1, 2, {3: "three"});
+</code></pre>
+
+<p>还有另外一类的log提示。可以使用console.warn()和console.error()来提高log的级别，利用这两个函数可以在产生真正的程序错误之前就给出提示：</p>
+
+<pre><code>console.warn("a diabolical warning");
+console.error("something broke!");
+
+try {
+    // 可能会出问题的代码逻辑
+} catch(e) {
+    console.error("App error!", e);
+}
+</code></pre>
+
+<p>同样，使用一个代理函数也可以做到对log做命名空间的管理：</p>
+
+<pre><code>var App = {trace: true};
+App.log = function(){
+if (!this.trace) return;
+    if (typeof console == "undefined") return;
+    var slice = Array.prototype.slice;
+    var args = slice.call(arguments, 0);
+    args.unshift("(App)");
+    console.log.apply(console, args);
+};
+</code></pre>
+
+<p>这里的App.log()函数给它的参数都加上了字符串“App”前缀，然后调用了console.log()。</p>
+
+<p>当使用控制台输出log的时候，变量console有可能没有定义，不要忘了这一点。在那些不支持控制台的浏览器中——比如IE或没有安装Firebug的Firefox——就没有定义console对象，这时使用console.log()就会出错。这也是推荐使用代理函数（App.log()）来为应用输出log的原因【译注8】。</p>
+
+<p>【译注8：很多类库都实现了输出log的代理函数，比如在YUI3中就实现了Y.log()，甚至实现了一个轻型的控制台小组件，可以在不支持控制台的浏览器中正常的查看log，请参照http://yuilibrary.com/yui/docs/console/console-global.html】</p>
+
+<p>可以使用console.trace()来向控制台输出运行时脚本的当前堆栈。如果你想查看当前函数的被调用关系，这个方法非常有用，因为它可以追踪到程序中堆栈里所有的调用：</p>
+
+<pre><code>// 输出调用堆栈
+console.trace();
+</code></pre>
+
+<p>应用程序的错误都会显示在控制台中并且，除非浏览器的JIT编译器【译注9】对函数调用做了优化，控制台会显示出完整的堆栈调用。</p>
+
+<p>【译注9：JIT是Just-In-Time的缩写，JIT编译器的工作主要是对源码做优化，目的是提高程序执行效率，其中一个步骤就是减少函数的调用层级，更多信息请参照http://en.wikipedia.org/wiki/Just-in-time_compilation】</p>
+
+<h3>控制台函数</h3>
+
+<p>控制台通常提供很多快捷的工具函数，方便我们的调试。比如$0到$4变量存放的是用Web Inspector或Firebug选取的当前和前三个节点。这四个变量实在是太有用了，尤其是当你想访问多个被操作的元素时，相信我没错：</p>
+
+<pre><code>// $0 是当前选中的元素
+$0.style.color = "green";
+
+// 也可以使用jQuery
+jQuery($0).css({background: "black"});
+</code></pre>
+
+<p>可以给$()传入元素的ID来得到特定的元素。其实$()是document.getElementById()的缩写。jQuery、Prototype或其他的类库也都重写了$：</p>
+
+<pre><code>$("user").addEventListener("click", function(){ /* ... */});
+</code></pre>
+
+<p>$$()函数返回了匹配某个CSS选择器的一组元素组成的数组。它和document.querySelectorAll()类似。同样，如果你使用Prototype或Mootools这些类库，要注意这些类库也重写了这个函数：</p>
+
+<pre><code>// 使用.users来选取一组元素
+var users = $$(".users");
+users.forEach(function(){ /* ... */ });
+</code></pre>
+
+<p>$x()函数返回了匹配某个XPath表达式的一组元素组成的数组：</p>
+
+<pre><code>// 选择所有的form
+var checkboxes = $x("/html/body//form");
+</code></pre>
+
+<p>clear()函数用来将控制台里的log清空：</p>
+
+<pre><code>clear();
+</code></pre>
+
+<p>dir()输出了对象中的所有属性：</p>
+
+<pre><code>dir({one: 1});
+</code></pre>
+
+<p>inspect()的参数可以是元素、数据库、或存储区域，并自动跳转到调试工具的对应面板显示相关的信息：</p>
+
+<pre><code>inspect($("user"));
+</code></pre>
+
+<p>keys()返回由对象中所有的属性的名字组成的数组</p>
+
+<pre><code>// 返回 ["two"]
+keys({two: 2});
+</code></pre>
+
+<p>values()返回由对象属性值组成的数组，用法和keys()类似：</p>
+
+<pre><code>// 返回 [2]
+values({two: 2});
+</code></pre>
+
+<h2>使用JavaScript调试器</h2>
+
+<p>JavaScript调试器是做JavaScript开发必不可少的工具。它提供了完整的调试功能，可以设置端点、查看表达式、监控变量，来处理和运行时相关的一切事务。</p>
+
+<p>设置断点非常简单，只需在脚本中想设断点的位置添加debugger语句，程序执行到debugger时就会停住：</p>
+
+<pre><code>var test = function(){
+    // ...
+    debugger
+};
+</code></pre>
+
+<p>同样的，你还可以在调试器中的脚本选项卡面板里找到要设端点的位置，点击左侧的行号。如图9-10。</p>
+
+<p>第二个方法更好一些，因为你就不必冒在生产环境的代码中添加debugger的风险了。当JavaScript执行到设置断点的行时就会停止执行，你就可以监控当前的调用堆栈了，如图9-11所示。</p>
+
+<p><img src="http://img01.taobaocdn.com/tps/i1/T1FA5wXjhBXXXXXXXX-930-333.png" alt="png" /></p>
+
+<p>图9-10. 在Safari的Web Inspector中设置断点</p>
+
+<p><img src="http://img02.taobaocdn.com/tps/i2/T1UDqwXmliXXXXXXXX-930-333.png" alt="png" /></p>
+
+<p>图9-11. 在Safari的Web Inspector中调试断点</p>
+
+<p>在脚本面板的右侧是完整的调用堆栈，包括局部和全局变量，和其他相关的调试信息。可以将鼠标移动到每个变量之上来查看它当前的值。控制台当前所在的上下文和断点之处的上下文一样，这样你就可以直接操作变量和执行函数了。</p>
+
+<p>你可以继续执行代码，进入函数调用，跳出函数调用，并在调试工具条的右侧查看当前的调用堆栈。调试工具条上每个选项卡都带有一个图标，可以将鼠标移动到这些图标上，这时会弹出一个黄色的小气泡提示，说明这个选项卡的功能。</p>
+
+<p>页面刷新之后断点依然存在，这一点不要忘记。如果你想移除一个断点，也只需再次点击设置了断点的行号，或者在断点列表中将它们的复选框去掉勾选。JavaScript调试器是代替console.log()的强大工具，它能帮助你深入应用程序的内部调试每一行代码。</p>
+
+<h2>分析网络请求</h2>
+
+<p>如图9-12所示，调试工具中的网络监控面板显示了本页面发起的所有HTTP请求，包括每个请求耗费的时间、何时完成的【译注10】。</p>
+
+<p>【译注10：网络面板只能监控页面发出的HTTP请求，如果页面中包含Flash，Flash发起的请求是无法在网络面板中看到的，只能用更底层的抓包工具，比如WireShark】</p>
+
+<p><img src="http://img03.taobaocdn.com/tps/i3/T1vCewXa8tXXXXXXXX-881-376.png" alt="png" /></p>
+
+<p>图9-12. 使用Web Inspector分析网络请求</p>
+
+<p>你可以看到初始请求的延时是用半透明的颜色表示的。当开始接收数据时，时间轴的颜色就变成不透明。在如图所示的例子中，jQuery的文件体积比样式表更大，因此尽管初始请求的延时和样式差不多，但下载所耗费的时间更长。</p>
+
+<p>如果你没有在script标签中使用async或defer属性（参照第10章），你注意到JavaScript文件的加载是串行的而不是并行的。只有当前一个脚本加载完成并执行之后才会发起下一个脚本请求【译注11】。其他所有的资源都是并行加载的。</p>
+
+<p>【译注11：作者这里的表述有严重错误，浏览器是可以并行加载外部脚本文件的，只是脚本的执行一定要按照顺序】</p>
+
+<p>网络时间轴中的竖线表示了页面加载的状态。蓝色的线表示DOMContentLoaded事件的触发时间，换句话说是DOM加载完成的时间。红色的线表示页面的load事件触发的时间，当页面中所有的图片和资源文件都下载完成时页面才算加载完成，这时触发load事件【译注12】。</p>
+
+<p>【译注12：还有一个非常重要的时间线“页面首次渲染时间”，通常是绿色的线，这条线在Firebug和Web Inspector中看不到，可以使用HttpWatch（http://www.httpwatch.com/）来查看，这条线的重要性丝毫不亚于蓝线和红线】</p>
+
+<p>在网络面板中还可以打开每个HTTP请求的头信息，这样就可以非常方便的查看到这些请求是否被正确的缓存住。如图9-13。</p>
+
+<h2>Profile和函数运行时间</h2>
+
+<p>如果你所构建的是一个大型JavaScript应用，你需要特别关注性能，特别是当你的应用是运行在移动终端时。Web Inspector和Firebug都包含了检查程序运行效率和时间的工具，它们可以帮助你更精确的把控程序的性能。</p>
+
+<p>Profile【译注：这里的Profile指的是调试工具提供的一个功能，用来统计代码中函数执行的次数和时间，并给出报表】代码很简单，只要在你想统计的代码段两端加上console.profile()和console.profileEnd()即可：</p>
+
+<p><img src="http://img02.taobaocdn.com/tps/i2/T1e5GwXatWXXXXXXXX-882-378.png" alt="png" /></p>
+
+<p>图9-13. 查看HTTP请求的头信息，包括请求头和响应头</p>
+
+<pre><code>console.profile();
+// ...
+console.profileEnd();
+</code></pre>
+
+<p>当调用到profileEnd()时，控制台就会创建一个报表，将期间所有的函数调用都统计出来，包括每次调用花费的时间以及调用次数，如图9-14所示。</p>
+
+<p><img src="http://img02.taobaocdn.com/tps/i2/T1A6KwXfpKXXXXXXXX-882-378.png" alt="png" /></p>
+
+<p>图9-14. 使用Web Inspector统计出函数执行情况的报表</p>
+
+<p>同样，你也可以使用调试器Profile的record特性，它的功能和直接嵌入console语句是一样的。通过查看哪些函数被调用了以及哪些函数耗费了更长的时间，你可以发现你代码中的性能瓶颈。</p>
+
+<p>你也可以使用Profile的快照（snapshot）功能生成页面当前的堆（heap）【译注13】的快照，如图9-15所示。这里显示了当前使用了多少对象，占用了多少内存。这是查找内存泄漏的好方法，因为你可以看到哪些对象被无意间存储在内存中，应当被回收而未被回收。</p>
+
+<p>【译注13：和其他编程语言一样，JavaScript运行时的内存也划分为堆（heap）和栈（stack），栈是用来存储局部变量的原始值和“引用“（可以将引用理解为一个内存地址）的，而堆则是存放“引用值“（引用指向的内容）的，这里的快照查看的是堆的内容，而不是栈的内容，主要是因为和堆相比栈的内存占用很小。更多内容请参照http://www.aliued.cn/2010/09/19/gc-and-js-memory-leak.html】</p>
+
+<p><img src="http://img01.taobaocdn.com/tps/i1/T1x.mwXktbXXXXXXXX-925-335.png" alt="png" /></p>
+
+<p>图9-15. 使用Web Inspector查看堆的快照</p>
+
+<p>使用控制台工具函数同样可以查看代码的执行时间。API和Profile类似，只需给要统计时间的代码前后加上console.time(name)和console.timeEnd(name)即可。你可以直接在脚本代码中加入这两句：</p>
+
+<pre><code>console.time("timeName");
+// ...
+console.timeEnd("timeName");
+</code></pre>
+
+<p>当执行到timeEnd()时，它们之间的代码执行时间就会以毫秒为单位发送给控制台，以log的形式输出。使用控制台的时间统计API，可以将性能测试也加入到你的测试代码中，以保证你的代码不会出现性能瓶颈，从而从整体上保证应用的良好用户体验。</p>
+</div>
+</body>
+</html>
