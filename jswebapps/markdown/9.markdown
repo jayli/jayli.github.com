@@ -434,16 +434,345 @@ Zombine.js提供了一个Browser对象，它和真实的web浏览器中的BOM非
 
 下面这段示例代码就是使用Zombine.js和Vows.js实现的一个测试用例。它访问了一个web页面并使用选择器“.brains“来查找元素（期望这个元素不存在）：
 
+	var zombie = require("zombie");
+
+	vows.describe("Zombie lunch").addBatch({
+		"visiting home page": {
+			topic: function() {
+				var browser = new zombie.Browser;
+				browser.cookies("localhost").update("session_id=5678");
+				browser.visit("http://localhost:3003/", this.callback);
+			},
+			"should find no brains": function(browser) {
+				assert.isEmpty(browser.css(".brains"));
+			}
+		}
+	});
+
+使用Zombie.js还可以做很多事情。比如，你可以在测试代码运行结束后将浏览器状态保存下来（cookie，历史记录，web存储等），以便其他的测试代码也能使用这些状态（例如使用旧的session来保持登录状态，这样运行新的测试代码就不用再去登录了）。
+
+同样你也可以触发DOM事件，比如模拟一次鼠标点击，或者对提示框做出响应。你可以查看请求和响应的历史记录，和WebKit（开发者工具）监视器中的“资源”选项卡类似。尽管Zombie是运行在Node.js之上的，它也可以向其他服务器发起HTTP请求，因此完全可以用它来测试你的Ruby或Python应用。
+
+### Ichabod
+
+Ichabod（https://github.com/maccman/ichabod）是另一个用于无界面测试的类库，这个名字很富想象力【译注7】。如果你需要一个简洁高效的测试运行环境的话，强烈推荐你使用Ichabod。
+
+【译注7：Ichabod是迪斯尼的动画电影“The Adventures of Ichabod and Mr.Toad“（伊老师与小蟾蜍历险记）中的主人翁，这部电影1949年上映，是迪斯尼第一部颇具影响力的长篇动画片，本篇荣获当年金球奖最佳色彩片奖，也是该奖首次颁发给动画电影】
+
+除了能模拟DOM和解析引擎之外，Ichabod的优势还在于它使用了Webkit解析引擎，这也是Safari和Chrome浏览器所使用解析引擎。但它的缺点是只能运行在OS X中，因为它需要AmcRuby和OS X WebView API的支持。
+
+Ichabod的安装很简单，首先需要安装MacRuby，可以直接从项目官网上下载安装（http://www.macruby.org/）也可以通过rvm（https://rvm.beginrescueend.com/interpreters/macruby/）安装。然后安装Ichabod gem：
+
+	$ macgem install ichabod
+
+Ichabod目前可以运行Jasmine和QUnit的测试代码，后续还会增加更多的测试类库的支持。运行测试代码也很简单，只需将待测试的地址带入ichabod命令即可：
+
+	$ ichabod --jasmine http://path/to/jasmine/specs.html
+	$ ichabod --qunit http://path/to/qunit/tests.html
+
+待测试页面不一定非要是外网地址，也可以是本地文件路径：
+
+	$ ichabod --jasmine ./tests/index.html
+		...
+		Finished in 0.393 seconds
+		1 test, 5 assertions, 0 failures
+
+Ichabod会把待测试的文件载入进来，并在一个无界面的WebKit中运行它们，这一切都可以在命令行中完成。
 
 
+## 分布式测试
 
+跨浏览器测试的一个解决方案是利用外包的专用服务器集群，这些集群都安装有不同的浏览器。这正是TestSwarm（http://swarm.jquery.org/）的做法：
 
+> TestSwarm的目标是简化在多个浏览器中执行繁琐耗时的JavaScript测试用例的工作。它为你的JavaScript项目提供了一个持续集成的工作流，并带有必要的测试工具。
 
+TestSwarm并不是通过向浏览器集成一些插件和扩展来实现，这种做法非常低端，而是选择了另外一种思路。浏览器在TestSwarm的终端里运行，并自动执行推送给它们的测试。它们可以部署在任意机器、任意操作系统中，TestSwarm会自动将得到的测试地址传递给一个新打开的浏览器。
 
+这种方法听起来很简单，但仍然需要对持续集成服务器做大量的部署工作，这个过程也非常痛苦和麻烦。要解决的主要问题是确保很多浏览器都能正确的连接至TestSwarm。实际上可以将这个工作外包给更专业的社区和公司来作，你只需告诉他们你想要的测试平台即可。图9-6就是TestSwram以表格形式返回测试在各浏览器中执行测试用例的结果。
 
+![png](http://img01.taobaocdn.com/tps/i1/T167iwXjtCXXXXXXXX-500-341.png)
 
+图9-6. TestSwram执行测试用例的结果
 
+可以选一些公司（比如Sauce Labs）提供的成熟的服务，这些公司大多是将浏览器运行于云端【译注：请参照http://zh.wikipedia.org/zh-cn/云计算】。你只需运行一个Selenium测试驱动，剩下的工作都交给服务器去做，包括在不同的平台启动不同的浏览器来运行你的测试代码，确保所有的场景下都能通过测试。
 
+## 提供支持
+
+不管你的测试是多么严格，你的应用一定还会存在bug。你最好接受这个现实，要知道你上线的应用总会有bug，用户也或多或少会遇到这些bug和错误。所以应当提供一种反馈机制，让用户可以很容易的将错误报告提交给你，同时你也应当做到有效的响应这些提交上来的bug报告。
+
+## 调试工具
+
+在过去，前端开发工程师最常用的开发和调试工具大概就是alert()了。现在大多数主流浏览器都包含了强大的元素查看器和调试器，这极大的提高了前端开发工程师的工作效率，降低了调试的复杂度。接下来会讲解两个主要的调试工具，浏览器中的调试工具都大同小异，学会使用一个其他的也能很快上手。
+
+### Web Inspector
+
+Web Inspector是Safari和Google Chrome浏览器带有的调试工具。Safari和Chrome两者的调试工具的界面稍有差异，但功能都是一样的。
+
+在Safari中，需要在“设置”/“高级”面板中勾选“在菜单栏中显示开发菜单”，如图9-7所示。
+
+![png](http://img03.taobaocdn.com/tps/i3/T1FmqwXbltXXXXXXXX-667-301.png)
+
+图9-7. 启用Safari中的调试工具
+
+Chrome的开发者工具则在视图工具栏里，可以通过菜单来选择激活调试工具。在两个浏览器中都可以通过单击右键选择“查看元素“来启用调试工具。
+
+如图9-8所示，Web Inspector是一个非常有用的工具，使用它可以监控HTML元素，编辑样式，调试JavaScript等。目前这种调试器已经是前端开发工程师调试页面和JavaScript程序不可或缺的工具了。
+
+下面着重介绍一下调试工具的特性，但这里仍只是概要的介绍调试工具的组成部分：
+
+*Elements*
+
+监控HTML元素，编辑样式
+
+*Resources*
+
+页面的源文件和所需的资源
+
+*Network*
+
+HTTP请求
+
+*Scripts*
+
+JavaScript文件和调试器
+
+*Timeline*
+
+浏览器渲染的详细预览
+
+*Audits*
+
+代码和内存统计
+
+*Console*
+
+执行JavaScript，并可查看结果
+
+![png](http://img02.taobaocdn.com/tps/i2/T1LDGwXhddXXXXXXXX-914-286.png)
+
+图9-8. 使用Safari的Web Inspector抓取DOM元素
+
+### Firebug
+
+Firefox没有自带JavaScript调试工具，但它有一个非常优秀的扩展插件：Firebug（http://getfirebug.com/），如图9-9。
+
+![png](http://img03.taobaocdn.com/tps/i3/T1_39wXhB7XXXXXXXX-841-284.png)
+
+图9-9. 使用Firebug抓取DOM元素
+
+你发现尽管Firebug操作面板中各个选项卡的名称和Web Inspector不一样，但它们的功能大都是类似的：
+
+*Console*
+
+执行JavaScript代码并查看结果
+
+*HTML*
+
+查看DOM元素，编辑样式
+
+*CSS*
+
+查看并编辑页面的CSS
+
+*Script*
+
+JavaScript文件和调试器
+
+*DOM*
+
+查看全局变量
+
+*Net*
+
+HTTP请求
+
+Firebug的开发团队还开发了一个不依赖于Firefox的Firebug——Firebug Lite【译注：在IE中使用Firebug Lite不支持JavaScript断点调试】。这个版本包含Firebug的大部分功能，甚至外观和交互都和Firebug一样，而且兼容主流的浏览器。尤其是在IE中使用Firebug Lite进行调试会非常方便（甚至比IE内置的调试工具还好用）。Firebug Lite不需要安装，只需在页面中引入一个script标签即可：
+
+	<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js">
+	</script>
+
+除此之外你还可以在Firebug Lite（http://getfirebug.com/firebuglite#Stable）官网将它加入到书签里。
+
+## 控制台
+
+我们可以使用控制台来轻松的执行JavaScript代码并检查页面的全局变量。控制台的一个主要优势是你可以使用console.log()函数直接向它输出log。调用是异步的，可以带多个参数，并且不用将参数转化为字符串：
+
+	console.log("test");
+	console.log(1, 2, {3: "three"});
+
+还有另外一类的log提示。可以使用console.warn()和console.error()来提高log的级别，利用这两个函数可以在产生真正的程序错误之前就给出提示：
+
+	console.warn("a diabolical warning");
+	console.error("something broke!");
+
+	try {
+		// 可能会出问题的代码逻辑
+	} catch(e) {
+		console.error("App error!", e);
+	}
+
+同样，使用一个代理函数也可以做到对log做命名空间的管理：
+
+	var App = {trace: true};
+	App.log = function(){
+	if (!this.trace) return;
+		if (typeof console == "undefined") return;
+		var slice = Array.prototype.slice;
+		var args = slice.call(arguments, 0);
+		args.unshift("(App)");
+		console.log.apply(console, args);
+	};
+
+这里的App.log()函数给它的参数都加上了字符串“App”前缀，然后调用了console.log()。
+
+当使用控制台输出log的时候，变量console有可能没有定义，了解这一点非常重要。在那些不支持控制台的浏览器中——比如IE或没有安装Firebug的Firefox——就没有定义console对象，这时使用console.log()就会出错。这也是推荐使用代理函数（App.log()）来为应用输出log的原因【译注8】。
+
+【译注8：很多类库都实现了输出log的代理函数，比如在YUI3中就实现了Y.log()，甚至实现了一个轻型的控制台小组件，可以在不支持控制台的浏览器中正常的查看log，请参照http://yuilibrary.com/yui/docs/console/console-global.html】
+
+可以使用console.trace()来向控制台输出运行时脚本当前的堆栈。如果你想查看当前函数的被调用关系，这个方法非常有用，因为它可以追踪到程序中堆栈里所有的调用：
+
+	// 输出调用堆栈
+	console.trace();
+
+应用程序的错误都会显示在控制台中并且，除非浏览器的JIT编译器【译注9】对函数调用做了优化，控制台会显示出完整的堆栈调用。
+
+【译注9：JIT是Just-In-Time的缩写，JIT编译器的工作主要是对源码做优化，目的是提高程序执行效率，其中一个步骤就是减少函数的调用层级，更多信息请参照http://en.wikipedia.org/wiki/Just-in-time_compilation】
+
+### 控制台函数
+
+控制台通常提供很多快捷的工具函数，方便我们的调试。比如$0到$4变量存放的是用Web Inspector或Firebug选取的当前和之前三个选取的节点。这四个变量实在是太有用了，尤其是当你想访问多个被操作的元素时，相信我没错：
+
+	// $0 是当前选中的元素
+	$0.style.color = "green";
+
+	// 也可以使用jQuery
+	jQuery($0).css({background: "black"});
+
+可以给$()传入元素的ID来得到特定的元素。其实$()是document.getElementById()的缩写。jQuery、Prototype或其他的类库也都重写了$：
+
+	$("user").addEventListener("click", function(){ /* ... */});
+
+$$()函数返回了匹配某个CSS选择器的一组元素组成的数组。它和document.querySelectorAll()类似。同样，如果你使用Prototype或Mootools这些类库，要注意这些类库也重写了这个函数：
+
+	// 使用.users来选取一组元素
+	var users = $$(".users");
+	users.forEach(function(){ /* ... */ });
+
+$x()函数返回了匹配某个XPath表达式的一组元素组成的数组：
+
+	// 选择所有的form
+	var checkboxes = $x("/html/body//form");
+
+clear()函数用来将控制台里的log清空：
+
+	clear();
+
+dir()输出了对象中的所有属性：
+
+	dir({one: 1});
+
+inspect()的参数可以是元素、数据库、或存储区域，并自动跳转到调试工具的对应面板显示相关的信息：
+
+	inspect($("user"));
+
+keys()返回由对象中所有的属性的名字组成的数组
+
+	// 返回 ["two"]
+	keys({two: 2});
+
+values()返回由对象属性值组成的数组，用法和keys()类似：
+
+	// 返回 [2]
+	values({two: 2});
+
+## 使用JavaScript调试器
+
+JavaScript调试器是做JavaScript开发必不可少的工具。它提供了完整的调试功能，可以设置端点、查看表达式、监控变量，来处理和运行时相关的一切事务。
+
+设置断点非常简单，只需在脚本中想设断点的位置添加debugger语句，程序执行到debugger时就会停住：
+
+	var test = function(){
+		// ...
+		debugger
+	};
+
+同样的，你还可以在调试器中的脚本选项卡面板里找到要设端点的位置，点击左侧的行号。如图9-10。
+
+第二个方法更好一些，因为你就不必冒在生产环境的代码中添加debugger的风险了。当JavaScript执行到设置断点的行时就会停止执行，你就可以监控当前的调用堆栈了，如图9-11所示。
+
+![png](http://img01.taobaocdn.com/tps/i1/T1FA5wXjhBXXXXXXXX-930-333.png)
+
+图9-10. 在Safari的Web Inspector中设置断点
+
+![png](http://img02.taobaocdn.com/tps/i2/T1UDqwXmliXXXXXXXX-930-333.png)
+
+图9-11. 在Safari的Web Inspector中调试断点
+
+在脚本面板的右侧是完整的调用堆栈，包括局部和全局变量，和其他相关的调试信息。可以将鼠标移动到每个变量之上来查看它当前的值。控制台当前所在的上下文和断点之处的上下文一样，这样你就可以直接操作变量和执行函数了。
+
+你可以继续执行代码，进入函数调用，跳出函数调用，并在调试工具条的右侧查看当前的调用堆栈。调试工具条上每个选项卡都带有一个图标，可以将鼠标移动到这些图标上，这时会弹出一个黄色的小气泡提示，说明这个选项卡的功能。
+
+页面刷新之后断点依然存在，这一点不要忘记。如果你想移除一个断点，也只需再次点击设置了断点的行号，或者在断点列表中将它们的复选框去掉勾选。JavaScript调试器是代替console.log()的强大工具，它能帮助你深入应用程序的内部调试每一行代码。
+
+## 分析网络请求
+
+如图9-12所示，调试工具中的网络监控面板显示了本页面发起的所有HTTP请求，包括每个请求耗费的时间、何时完成的【译注10】。
+
+【译注10：网络面板只能监控页面发出的HTTP请求，如果页面中包含Flash，Flash发起的请求是无法在网络面板中看到的，只能用更底层的抓包工具，比如WireShark】
+
+![png](http://img03.taobaocdn.com/tps/i3/T1vCewXa8tXXXXXXXX-881-376.png)
+
+图9-12. 使用Web Inspector分析网络请求
+
+你可以看到初始请求的延时是用半透明的颜色表示的。当开始接收数据时，时间轴的颜色就变成不透明。在如图所示的例子中，jQuery的文件体积比样式表更大，因此尽管初始请求的延时和样式差不多，但下载所耗费的时间更长。
+
+如果你没有在script标签中使用async或defer属性（参照第10章），你注意到JavaScript文件的加载是串行的而不是并行的。只有当前一个脚本加载完成并执行之后才会发起下一个脚本请求【译注11】。其他所有的资源都是并行加载的。
+
+【译注11：作者这里的表述有严重错误，浏览器是可以并行加载外部脚本文件的，只是脚本的执行一定要按照顺序】
+
+网络时间轴中的竖线表示了页面加载的状态。蓝色的线表示DOMContentLoaded事件的触发时间，换句话说是DOM加载完成的时间。红色的线表示页面的load事件触发的时间，当页面中所有的图片和资源文件都下载完成时页面才算加载完成，这时触发load事件【译注12】。
+
+【译注12：还有一个非常重要的时间线“页面首次渲染时间”，通常是绿色的线，这条线在Firebug和Web Inspector中看不到，可以使用HttpWatch（http://www.httpwatch.com/）来查看，这条线的重要性丝毫不亚于蓝线和红线】
+
+在网络面板中还可以打开每个HTTP请求的头信息，这样就可以非常方便的查看到这些请求是否被正确的缓存住。如图9-13。
+
+## Profile和函数运算时间
+
+如果你所构建的是一个大型JavaScript应用，你需要特别关注性能，特别是当你的应用是运行在移动终端时。Web Inspector和Firebug都包含了检查程序运行效率和时间的工具，它们可以帮助你更精确的把控程序的性能。
+
+Profile【译注：这里的Profile指的是调试工具提供的一个功能，用来统计代码中函数执行的次数和时间】代码很简单，只要在你想统计的代码段两端加上console.profile()和console.profileEnd()即可：
+
+![png](http://img02.taobaocdn.com/tps/i2/T1e5GwXatWXXXXXXXX-882-378.png)
+
+图9-13. 查看HTTP请求的头信息，包括请求头和响应头
+
+	console.profile();
+	// ...
+	console.profileEnd();
+
+当调用到profileEnd()时，控制台就会创建一个报表，将期间所有的函数调用都统计出来，包括每次调用花费的时间以及调用次数，如图9-14所示。
+
+![png](http://img02.taobaocdn.com/tps/i2/T1A6KwXfpKXXXXXXXX-882-378.png)
+
+图9-14. 使用Web Inspector统计出函数执行情况的报表
+
+同样，你也可以使用调试器Profile的record特性，它的功能和直接嵌入console语句是一样的。通过查看哪些函数被调用了以及哪些函数耗费了更长的时间，你可以发现你代码中的性能瓶颈。
+
+你也可以使用Profile的快照（snapshot）功能生成页面当前的堆（heap）【译注13】的快照，如图9-15所示。这里显示了当前使用了多少对象，占用了多少内存。这是查找内存泄漏的好方法，因为你可以看到哪些对象被无意间存储在内存中，应当被回收而未被回收。
+
+【译注13：和其他编程语言一样，JavaScript运行时的内存也划分为堆（heap）和栈（stack），栈是用来存储局部变量的原始值和“引用“（可以将引用理解为一个内存地址）的，而堆则是存放“引用值“（引用指向的内容）的，这里的快照查看的是堆的内容，而不是栈的内容，主要是因为和堆相比栈的内存占用很小。更多内容请参照http://www.aliued.cn/2010/09/19/gc-and-js-memory-leak.html】
+
+![png](http://img01.taobaocdn.com/tps/i1/T1x.mwXktbXXXXXXXX-925-335.png)
+
+图9-15. 使用Web Inspector查看堆的快照
+
+使用控制台工具函数同样可以查看代码的执行时间。API和Profile类似，只需给要统计时间的代码前后加上console.time(name)和console.timeEnd(name)即可。你可以直接在脚本代码中加入这两句：
+
+	console.time("timeName");
+	// ...
+	console.timeEnd("timeName");
+
+当执行到timeEnd()时，它们之间的代码执行时间就会以毫秒为单位发送给控制台，以log的形式输出。使用控制台的时间统计API，可以将性能测试也加入到你的测试代码中，以保证你的代码不会出现性能瓶颈，从而从整体上保证应用的良好用户体验。
 
 
 
