@@ -64,7 +64,7 @@ User.prototype.destroy = function(){
 };
 </code></pre>
 
-<p>关于命名空间的更多内容，请参阅Peter Michaux的博客，其中有一个关于命名空间专题的文章（文章地址http://michaux.ca/articles/javascript-namespacing），非常不错。</p>
+<p>关于命名空间的更多内容，请参阅Peter Michaux的博客，其中有一个关于命名空间专题的文章（http://goo.gl/FOnPL），非常不错。</p>
 
 <h2>构建对象关系映射（ORM）</h2>
 
@@ -88,7 +88,7 @@ User.prototype.destroy = function(){
    };
 </code></pre>
 
-<p>这段示例代码摘自Douglas Crockford的文章“原型继承”（http://javascript.crockford.com/prototypal.html）。如果想深入挖掘JavaScript原型和继承的机制可以参阅这篇文章。</p>
+<p>这段示例代码摘自Douglas Crockford的文章“原型继承”（http://goo.gl/OLQhp）。如果想深入挖掘JavaScript原型和继承的机制可以参阅这篇文章。</p>
 
 <p>现在来创建Model对象，Model将用于创建新模型和实例：</p>
 
@@ -255,7 +255,7 @@ asset2.destroy();
 
 <p>此时，每次我们保存一条记录都必须手动指定一个ID。这实在是糟透了，但幸运的是，我们可以加入自动化处理。首先，我们需要一个方法来自动生成ID，可以使用全局统一标识（Globally Unique Identifier，简称GUID）生成器来做这一步。从技术的角度讲，出于API的原因，JavaScript无法友好正式的生成128位的GUID，它只能生成伪随机数。生成真正随机的GUID是一个众所周知的难题，操作系统使用MAC地址、BIOS的校验和、测量电信号的噪音或者检测放射性衰变来计算GUID，甚至用上了熔岩灯【译注：熔岩灯又称为蜡灯,水母灯。名字源于其内不定形状蜡滴的缓慢流动，让人联想到熔岩的流动。熔岩灯有多种形状和颜色，多用于装饰，更多信息请参照http://zh.wikipedia.org/wiki/熔岩灯】。但JavaScript中内置的Math.random()方法尽管产生的是伪随机数，但也足够用了。</p>
 
-<p>Robert Kieffer写了一个简单明了的GUID生成器，它使用Math.random()来产生一个伪随机的GUID（http://www.broofa.com/2008/09/javascript-uuid-function/），代码也很简单：</p>
+<p>Robert Kieffer写了一个简单明了的GUID生成器，它使用Math.random()来产生一个伪随机的GUID（http://goo.gl/0b0hu），代码也很简单：</p>
 
 <pre><code>Math.guid = function(){
    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -383,9 +383,9 @@ assert( asset in Person.records );
 
 <p>当说到后台请求时，你最先想到的载入远程数据的方法可能就是Ajax了，理由很简单，这是一个被充分证明可行而且支持所有浏览器的一种方法。这不是说Ajax就没有缺点，历史中的Ajax并不标准，因此其API也不统一，而且出于安全性的考虑，浏览器默认禁止Ajax夸域读取数据。</p>
 
-<p>如果你想快速学习Ajax和XMLHttpRequest类，请阅读Mozilla开发者手册“Getting Started”（请参阅https://developer.mozilla.org/en/Ajax/Getting_Started）。大多数情况下，我们都会使用类库比如jQuery来处理Ajax，因为这些类库抽象出一套不错的Ajax API，而且处理了浏览器的兼容性问题。因此这里我们简单讲解一下jQuery的API，这里不会对XMLHttpRequest类做过多介绍。</p>
+<p>如果你想快速学习Ajax和XMLHttpRequest类，请阅读Mozilla开发者手册“Getting Started”（http://goo.gl/TraAz）。大多数情况下，我们都会使用类库比如jQuery来处理Ajax，因为这些类库抽象出一套不错的Ajax API，而且处理了浏览器的兼容性问题。因此这里我们简单讲解一下jQuery的API，这里不会对XMLHttpRequest类做过多介绍。</p>
 
-<p>jQuery的Ajax API包含一个底层方法，jQuery.ajax()，以及一些高级方法，高级方法是对jQuery.ajax()的抽象，目的是减少编程时要写的代码。jQuery.ajax()接收一个哈希表【译注：哈希表就是键值对的集合，这里就是指一个对象，关于哈希表请参照https://developer.mozilla.org/en/Ajax/Getting_Started】作为参数，哈希表中存放的是配置信息，包括请求参数、content-type、回调函数以及其他信息。调用这个函数时，jQuery就会在后台发起一个异步请求。</p>
+<p>jQuery的Ajax API包含一个底层方法，jQuery.ajax()，以及一些高级方法，高级方法是对jQuery.ajax()的抽象，目的是减少编程时要写的代码。jQuery.ajax()接收一个哈希表【译注：哈希表就是键值对的集合，这里就是指一个对象，关于哈希表请参照http://goo.gl/QTE67】作为参数，哈希表中存放的是配置信息，包括请求参数、content-type、回调函数以及其他信息。调用这个函数时，jQuery就会在后台发起一个异步请求。</p>
 
 <ul>
 <li>url：请求的url，默认是当前页面的url</li>
@@ -448,7 +448,7 @@ assert( asset in Person.records );
 
 <p>Ajax的一个限制是同源策略（same origin policy），它要求所有的请求必须来自同一个域名、子域名，并且地址的端口也应当一致。主要原因是出于安全考虑，因为所有的请求都会附带cookie信息一起发送。也就是说，对于远程服务来讲，请求如果是来自于登录后的用户，若没有同源策略的限制，攻击者就有可能获取你的Gmail里的邮件、得到你的Fackbook状态或者你Twitter中的好友，这是一个非常严重的安全性问题。</p>
 
-<p>但是，尽管出于安全问题的考虑而提出了同源策略，这也对那些的确需要跨域获取合法数据的开发者造成一些不方便。诸如Adobe Flash和Java之类的技术已经着手解决了这个问题，通常是使用跨域策略文件。现在Ajax也在迎头赶上，提出了名为CORS的标准规范（cross-origin resource sharing）（请参照http://www.w3.org/TR/access-control/）。</p>
+<p>但是，尽管出于安全问题的考虑而提出了同源策略，这也对那些的确需要跨域获取合法数据的开发者造成一些不方便。诸如Adobe Flash和Java之类的技术已经着手解决了这个问题，通常是使用跨域策略文件。现在Ajax也在迎头赶上，提出了名为CORS的标准规范（cross-origin resource sharing）（http://goo.gl/fofEc）。</p>
 
 <p>CORS打破同源策略的限制，赋予了前端代码访问可信的远程服务的权限。主流的浏览器都很好的支持这个规范，除非使用IE6，基本上可以很好的使用它。</p>
 
@@ -484,11 +484,11 @@ req.open("POST", "/endpoint", true);
 req.setRequestHeader("Authorization", oauth_signature);
 </code></pre>
 
-<p>不幸的是，尽管CORS是可以正常工作在IE8及更高版本的IE中的，微软还是选择另辟蹊径，不兼容规范且对W3C工作组制定的标准视而不见（http://lists.w3.org/Archives/Public/public-webapps/2008AprJun/0168.html）。微软使用了一个新的对象XDomainRequest，用来代替 XMLHttpRequest进行跨域通信。它的接口和XMLHttpRequest非常相像，它包含一系列约束和限制（http://blogs.msdn.com/b/ieinternals/archive/2010/05/13/xdomainrequest-restrictions-limitations-and-workarounds.aspx），比如只支持GET和POST方法，不支持验证和自定义字段，最后最让人费解的是，只支持“Content-Type:text/plain”类型的请求。如果你满足了这些限制条件，就可以在IE中使用正确的Access-Control头字段来实现CORS了。</p>
+<p>不幸的是，尽管CORS是可以正常工作在IE8及更高版本的IE中的，微软还是选择另辟蹊径，不兼容规范且对W3C工作组制定的标准视而不见（http://goo.gl/sLc2R）。微软使用了一个新的对象XDomainRequest，用来代替 XMLHttpRequest进行跨域通信。它的接口和XMLHttpRequest非常相像，它包含一系列约束和限制（http://goo.gl/b3H2N），比如只支持GET和POST方法，不支持验证和自定义字段，最后最让人费解的是，只支持“Content-Type:text/plain”类型的请求。如果你满足了这些限制条件，就可以在IE中使用正确的Access-Control头字段来实现CORS了。</p>
 
 <h3>JSONP</h3>
 
-<p>JSONP（JSON with padding）（http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/）很早之前就被标准化了，甚至在CORS之前。这是另一种从远程服务端抓取数据的方式。原理是通过创建一个script标签，所辖的外部文件包含一段JSON数据，数据是由服务器所返回的，作为参数包裹在一个函数调用中。而获取脚本文件并不受跨域的限制，所有浏览器都支持这种技术。</p>
+<p>JSONP（JSON with padding）（http://goo.gl/cqDT6）很早之前就被标准化了，甚至在CORS之前。这是另一种从远程服务端抓取数据的方式。原理是通过创建一个script标签，所辖的外部文件包含一段JSON数据，数据是由服务器所返回的，作为参数包裹在一个函数调用中。而获取脚本文件并不受跨域的限制，所有浏览器都支持这种技术。</p>
 
 <p>来看这个例子，这里有一个script标签指向一个远程服务：</p>
 
@@ -569,7 +569,7 @@ req.setRequestHeader("Authorization", oauth_signature);
 <li>Opera >= 10.6</li>
 </ul>
 
-<p>HTML5本地存储的规范源自HTML5 Web Storage specification（http://www.w3.org/TR/webstorage/），其中包含两类：local storage和session storage。浏览器关闭后local storage数据也能够保持；而session storage数据则在浏览器关闭后就不存在了。浏览器端所存储的数据是以域名分隔开的，某个域中的脚本存储的数据只能被这个域读取。</p>
+<p>HTML5本地存储的规范源自“HTML5 Web Storage specification”（http://goo.gl/QXxkA），其中包含两类：local storage和session storage。浏览器关闭后local storage数据也能够保持；而session storage数据则在浏览器关闭后就不存在了。浏览器端所存储的数据是以域名分隔开的，某个域中的脚本存储的数据只能被这个域读取。</p>
 
 <p>你可以使用localStorage和sessionStorage对象来访问并操作local storage和session storage。设置属性的操作和JavaScript中的对象操作一样，这两个对象的设置属性操作一模一样：</p>
 

@@ -81,7 +81,7 @@ container.show();
 
 <p>在本书的例子中，我们使用jQuery.tmpl库作为模板引擎。如果你不想用jQuery或者想用其他不同的模板类库，这些示例代码会非常有帮助。大多数模板类库的语法即使不完全相同也非常相近。如果你想从中挑选一个不错的模板类库，可以关注下Mustache（http://mustache.github.com/），它包含很多语言的实现版本，包括JavaScript。</p>
 
-<p>jQuery.tmpl是由微软开发的，是在John Resig【译注：John Resig是jQuery的作者】的原始工作（http://ejohn.org/blog/javascript-micro-templating/）的基础上做的模板插件。这个库目前仍在维护之中，并在jQuery官网（http://api.jquery.com/jquery.tmpl/）上有完整的文档。这个库有一个主要的方法，jQuery.tmpl()，可以给它传入一个模板和一些数据，函数会返回渲染好的元素节点，可以将渲染的结果追加至页面里。如果数据是数组的话，对于数组中的每个项都会生成渲染好的模板，否则，将只会渲染一个模板：</p>
+<p>jQuery.tmpl是由微软开发的，是在John Resig【译注：John Resig是jQuery的作者】的原始工作（http://goo.gl/sFh6c）的基础上做的模板插件。这个库目前仍在维护之中，并在jQuery官网上有完整的文档。这个库有一个主要的方法，jQuery.tmpl()，可以给它传入一个模板和一些数据，函数会返回渲染好的元素节点，可以将渲染的结果追加至页面里。如果数据是数组的话，对于数组中的每个项都会生成渲染好的模板，否则，将只会渲染一个模板：</p>
 
 <pre><code>var object = {
     url: "http://example.com",
@@ -207,7 +207,7 @@ helper.autoLink = function(data){
 
 <p>绑定是一件“大事“。它意味着当记录发生改变时你的控制器不必处理视图的更新，因为这些更新都是在后台自动完成的。使用绑定来架构你的应用同样为构建实时应用打下了基础。在第8章会对实时应用作进一步阐述。</p>
 
-<p>因此，为了将JavaScript对象和视图绑定在一起，我们需要设置一个回调函数，当对象的属性发生改变时发送一个更新视图的通知。问题是JavaScript并没有提供原生方法支持。JavaScript中也不像Ruby和Python一样提供了method_missing功能。并且也不可能使用JavaScript的getter和setter（http://ejohn.org/blog/javascript-getters-and-setters/）来模拟这种行为。但要知道JavaScript是一门极其灵活的动态语言，我们可以直接写change回调：</p>
+<p>因此，为了将JavaScript对象和视图绑定在一起，我们需要设置一个回调函数，当对象的属性发生改变时发送一个更新视图的通知。问题是JavaScript并没有提供原生方法支持。JavaScript中也不像Ruby和Python一样提供了method_missing功能。并且也不可能使用JavaScript的getter和setter（http://goo.gl/9haXh）来模拟这种行为。但要知道JavaScript是一门极其灵活的动态语言，我们可以直接写change回调：</p>
 
 <pre><code>var addChange = function(ob){
     ob.change = function(callback){

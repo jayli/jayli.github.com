@@ -50,7 +50,7 @@ div.removeEventListener("click", listener, false);
 <li>submit (表单特有)</li>
 </ul>
 
-<p>可以从PPK的文章中（http://www.quirksmode.org/dom/events/index.html）查看怪异模式支持的事件类型。</p>
+<p>可以从PPK的文章中（http://goo.gl/l7Zqk）查看怪异模式支持的事件类型。</p>
 
 <h2>事件顺序</h2>
 
@@ -94,7 +94,7 @@ button.addEventListener("click", function(){ /* ... */ }, false);
 
 <h2>事件对象</h2>
 
-<p>和上面提到的函数（stopPropagation()和preventDefault()）一样，event对象还包含很多有用的属性。W3C规范中包含的大部分属性都列在下面，更多信息请参照完整的标准规范(http://www.w3.org/TR/DOM-Level-2-Events/)。</p>
+<p>和上面提到的函数（stopPropagation()和preventDefault()）一样，event对象还包含很多有用的属性。W3C规范中包含的大部分属性都列在下面，更多信息请参照完整的标准规范(http://goo.gl/PGufh)。</p>
 
 <p>事件类型：</p>
 
@@ -198,7 +198,7 @@ button.addEventListener("click", function(){ /* ... */ }, false);
 
 <h2>委托事件</h2>
 
-<p>从事件冒泡时开始就发生了事件委托，我们可以直接给父级元素绑定事件监听，用来检测在其子元素内发生的事件。这也是类似SproutCore(http://www.sproutcore.com/)这种框架所使用的技术，用来减少应用中的事件监听的数量：</p>
+<p>从事件冒泡时开始就发生了事件委托，我们可以直接给父级元素绑定事件监听，用来检测在其子元素内发生的事件。这也是类似SproutCore（http://www.sproutcore.com/）这种框架所使用的技术，用来减少应用中的事件监听的数量：</p>
 
 <pre><code>// 在ul列表上做了事件委托
 list.addEventListener("click", function(e){
@@ -348,7 +348,7 @@ $(window).bind("hashchange", function(){
 
 <h2>DOM无关的事件</h2>
 
-<p>基于事件的编程非常强大，因为它能让你的应用架构充分解偶，让功能变得更加内聚且具有更好的可维护性。事件本质上是和DOM无关的，你可以很容易开发出一个事件驱动的库。这种模式称为“发布/订阅”【译注：更多内容请参照http://en.wikipedia.org/wiki/Publish/subscribe】，这是很有用的一个模式。</p>
+<p>基于事件的编程非常强大，因为它能让你的应用架构充分解偶，让功能变得更加内聚且具有更好的可维护性。事件本质上是和DOM无关的，你可以很容易开发出一个事件驱动的库。这种模式称为“发布/订阅”【译注：更多内容请参照 http://goo.gl/lthZa】，这是很有用的一个模式。</p>
 
 <p>发布/订阅（Pub/Sub）是一种消息模式，它有两个参与者：发布者和订阅者。发布者向某个信道（channel）发布一个消息，订阅者绑定这个信道，当有消息发布至信道时就会接收到一个通知。最重要的一点是，发布者和订阅者是完全解偶的，彼此并不知晓对方的存在。两者仅仅共享一个信道名称。</p>
 

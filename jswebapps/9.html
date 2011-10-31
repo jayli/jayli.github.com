@@ -55,7 +55,7 @@ p img {
 
 <p>【译注2：这句谚语据说最初出自英国前首相本杰明·迪斯雷利之口（Benjamin Disraeli），不过它的广泛流传却是因为马克·吐温的引用，意思是说统计数字不靠谱】</p>
 
-<p>【译注3：雅虎最早提出了浏览器分级支持（GBS），即根据功能需求的权重来将浏览器支持划分多个级别，并且非常详细系统的定义了浏览器测试基准和操作系统支持标准，请参照：http://yuilibrary.com/yui/docs/tutorials/gbs/，而作者在这里提到的主流浏览器更多的适用于Web App，并非所有的Web页面】</p>
+<p>【译注3：雅虎最早提出了浏览器分级支持（GBS），即根据功能需求的权重来将浏览器支持划分多个级别，并且非常详细系统的定义了浏览器测试基准和操作系统支持标准，请参照http://goo.gl/49rKV，而作者在这里提到的主流浏览器更多的适用于Web App，并非所有的Web页面】</p>
 
 <ul>
 <li>IE 8, 9</li>
@@ -100,7 +100,7 @@ assert( 0 );
 assert( User.first() );
 </code></pre>
 
-<p>类型转换多少会影响你的测试，因此有必要在类型转换之前首先检查值的类型，以避免很多怪异的代码引起各种奇怪的问题（http://bonsaiden.github.com/JavaScript-Garden/）。</p>
+<p>类型转换多少会影响你的测试，因此有必要在类型转换之前首先检查值的类型，以避免很多怪异的代码引起各种奇怪的问题（http://goo.gl/M209w）。</p>
 
 <p>断言类库不仅限于正确性检查。大多数类库还包含完整的数组匹配，以及通过比较原始对象来检查数字的大小。这些库中至少都实现了assertEqual()函数，用以比较两个值：</p>
 
@@ -117,7 +117,7 @@ assertEqual("one", "one");
 
 <h3>QUnit</h3>
 
-<p>QUnit（http://docs.jquery.com/Qunit）是现在最流行且维护良好的测试类库，这个库最初是用来测试jQuery用的。那么，如何用QUnit建立测试环境呢？第一步是将项目文件（https://github.com/jquery/qunit/zipball/master）下载到本地，然后创建静态测试执行页面：</p>
+<p>QUnit（http://docs.jquery.com/Qunit）是现在最流行且维护良好的测试类库，这个库最初是用来测试jQuery用的。那么，如何用QUnit建立测试环境呢？第一步是将项目文件下载到本地，然后创建静态测试执行页面：</p>
 
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -230,7 +230,7 @@ test("load()", function(){
 });
 </code></pre>
 
-<p>QUnit还包含很多其他的断言类型，比如notEqual()和raises()。可以从这里看到这些断言的完整的使用方法assets/ch09/qunit/model.test.js，在Qunit的文档（http://docs.jquery.com/Qunit#API_documentation）中也可以查阅到使用方法。</p>
+<p>QUnit还包含很多其他的断言类型，比如notEqual()和raises()。可以从这里看到这些断言的完整的使用方法assets/ch09/qunit/model.test.js，在Qunit的文档中也可以查阅到使用方法。</p>
 
 <p><img src="http://img04.taobaocdn.com/tps/i4/T1PvOwXdxJXXXXXXXX-571-380.png" alt="png" /></p>
 
@@ -340,7 +340,7 @@ test("load()", function(){
 
 <p>如果函数fn在执行时抛出了异常e则通过测试</p>
 
-<p>Jasmine还包含其他很多匹配方法，甚至可以写一些自定义的匹配方法（http://github.com/pivotal/jasmine/wiki/Matchers）。</p>
+<p>Jasmine还包含其他很多匹配方法，甚至可以写一些自定义的匹配方法（http://goo.gl/ddH89）。</p>
 
 <p>图9-3是运行Jasmine测试代码时的结果，运行的就是上面这段代码：</p>
 
@@ -354,7 +354,7 @@ test("load()", function(){
 
 <p>为了解决这个问题，有人就开发出了驱动。这里所说的驱动实际上是一个守护进程【译注：守护进程是一个操作系统级的概念，特指为了运行某些进程而开启的服务】，它整合了不同的浏览器，可以自动运行JavaScript测试代码，测试不通过时会给出提示【译注4】。</p>
 
-<p>【译注4：前端开发自动化测试是现在比较热门的话题，国内也有很多前端团队开始了这方面的研究和尝试，可以参照来自淘宝的“前端测试实践”（http://www.slideshare.net/taobaoued/ss-8584269）以及来自新浪的“多浏览器集成的JavaScript单元测试”（http://www.slideshare.net/taobaoued/multi-browser-integrationjsunittestframeworkweibobaokun），两种实践的思想和作者在本节提到的原则是一致的，即将不同的浏览器环境作集成，提供服务，以便展开下一步的自动化测试】</p>
+<p>【译注4：前端开发自动化测试是现在比较热门的话题，国内也有很多前端团队开始了这方面的研究和尝试，可以参照来自淘宝的“前端测试实践”（http://goo.gl/koPLJ）以及来自新浪的“多浏览器集成的JavaScript单元测试”（http://goo.gl/2CnHe），两种实践的思想和作者在本节提到的原则是一致的，即将不同的浏览器环境作集成，提供服务，以便展开下一步的自动化测试】</p>
 
 <p>要想将驱动安装在每个开发者的机器上需要很多工作要作，所以很多公司都有一个单独的持续集成服务器，利用post-commit的hook功能【译注5】来自动的运行JavaScript测试代码，确保每次提交的代码都是正确无误的。</p>
 
@@ -374,7 +374,7 @@ browser.button(:name =&gt; "logon").click
 
 <p>由于浏览器的安装受到操作系统的限制，如果你想测试IE，你的持续集成服务器就需要安装特定版本的Windows操作系统，同样，如果你想测试Safari，则需要一台安装Mac OS X的服务器。</p>
 
-<p>另外一个非常流行的浏览器驱动工具是Selenium（http://seleniumhq.org/）。这个库提供了一种域脚本语言（domain scripting language，简称DSL），用这种脚本语言可以为多种编程语言编写测试代码，比如C#，Java，Groovy，Perl，PHP，Python和Ruby。Selenium可以在本地运行。它往往是以后台服务的形式运行于持续集成服务器中，启动的方法和通过提交代码来启动测试一样，也会在测试不通过时给出提示。Selenium的优势在于它支持很多编程语言，同时提供了一个Firefox插件Selenium IDE（http://seleniumhq.org/projects/ide），这个插件可以记录浏览器的行为并可回放，这极大方便了开发者的自测。</p>
+<p>另外一个非常流行的浏览器驱动工具是Selenium（http://seleniumhq.org/）。这个库提供了一种域脚本语言（domain scripting language，简称DSL），用这种脚本语言可以为多种编程语言编写测试代码，比如C#，Java，Groovy，Perl，PHP，Python和Ruby。Selenium可以在本地运行。它往往是以后台服务的形式运行于持续集成服务器中，启动的方法和通过提交代码来启动测试一样，也会在测试不通过时给出提示。Selenium的优势在于它支持很多编程语言，同时提供了一个Firefox插件Selenium IDE（http://goo.gl/7KD8G），这个插件可以记录浏览器的行为并可回放，这极大方便了开发者的自测。</p>
 
 <p>如图9-4所示，我们使用Selenium IDE工具来记录链接的点击、填写表单和表单提交。当记录了一组行为时，你可以使用绿色的play按钮来回放这个过程。这个工具可以对记录下的动作和行为进行仿真模拟，这让测试变得更加轻松且高效。</p>
 
@@ -422,7 +422,7 @@ end
 end
 </code></pre>
 
-<p>可以访问Selenium的官网来获取更多帮助信息，或者参照这个视频教程（http://seleniumhq.org/movies/intro.mov）。</p>
+<p>可以访问Selenium的官网来获取更多帮助信息，或者参照这个视频教程：http://seleniumhq.org/movies/intro.mov。</p>
 
 <h2>无界面的测试</h2>
 
@@ -436,7 +436,7 @@ end
 
 <p>Zombie.js（http://zombie.labnotes.org/）是一个无界面的JavaScript类库，专门为Node.js设计，充分利用了它的高性能和异步特性。主要特点是速度快，花在等待测试执行上的时间越少，用在实现新功能和修复bug的时间就越多。</p>
 
-<p>如果你的应用使用了很多客户端JavaScript【译注：客户端JavaScript是指和DOM或BOM相关的JavaScript】，那么加载、渲染和运行JavaScript的时间会很久。而如果使用纯粹的Google V8 JavaScript引擎则会让你的测试运行速度倍增。</p>
+<p>如果你的应用使用了很多客户端JavaScript，那么加载、渲染和运行JavaScript的时间会很久。而如果使用纯粹的Google V8 JavaScript引擎则会让你的测试运行速度倍增。</p>
 
 <p>尽管你的测试用例和客户端JavaScript都运行在相同的引擎之上，但Zombine还利用了V8的另一个特性：上下文，这个特性让它们彼此隔离【译注：“它们彼此隔离”是说基于业务逻辑的测试代码和处理浏览器兼容性的底层代码之间彼此隔离，因为开发者最不希望因为引入了测试代码而影响到原有业务逻辑的运行】，因此它们也不会共用同一个全局变量/全局上下文。这和Chrome中每个标签都各自独占一个进程是类似的。</p>
 
@@ -490,13 +490,13 @@ vows.describe("Zombie lunch").addBatch({
 
 <h3>Ichabod</h3>
 
-<p>Ichabod（https://github.com/maccman/ichabod）是另一个用于无界面测试的类库，这个名字很富想象力【译注7】。如果你需要一个简洁高效的测试运行环境的话，强烈推荐你使用Ichabod。</p>
+<p>Ichabod（http://goo.gl/lHwxC）是另一个用于无界面测试的类库，这个名字很富想象力【译注7】。如果你需要一个简洁高效的测试运行环境的话，强烈推荐你使用Ichabod。</p>
 
 <p>【译注7：Ichabod是迪斯尼的动画电影“The Adventures of Ichabod and Mr.Toad“（伊老师与小蟾蜍历险记）中的主人翁，这部电影1949年上映，是迪斯尼第一部颇具影响力的长篇动画片，本片荣获当年金球奖最佳色彩片奖，也是该奖首次颁发给动画电影】</p>
 
 <p>除了能模拟DOM和解析引擎之外，Ichabod的优势还在于它使用了Webkit解析引擎，这也是Safari和Chrome浏览器所使用解析引擎。但它的缺点是只能运行在OS X中，因为它需要MacRuby和OS X WebView API的支持。</p>
 
-<p>Ichabod的安装很简单，首先需要安装MacRuby，可以直接从项目官网上下载安装（http://www.macruby.org/）也可以通过rvm（https://rvm.beginrescueend.com/interpreters/macruby/）安装。然后安装Ichabod gem：</p>
+<p>Ichabod的安装很简单，首先需要安装MacRuby，可以直接从项目官网上下载安装（http://www.macruby.org/）也可以通过rvm安装。然后安装Ichabod gem：</p>
 
 <pre><code>$ macgem install ichabod
 </code></pre>
@@ -670,7 +670,7 @@ if (!this.trace) return;
 
 <p>当使用控制台输出log的时候，变量console有可能没有定义，不要忘了这一点。在那些不支持控制台的浏览器中——比如IE或没有安装Firebug的Firefox——就没有定义console对象，这时使用console.log()就会出错。这也是推荐使用代理函数（App.log()）来为应用输出log的原因【译注8】。</p>
 
-<p>【译注8：很多类库都实现了输出log的代理函数，比如在YUI3中就实现了Y.log()，甚至实现了一个轻型的控制台小组件，可以在不支持控制台的浏览器中正常的查看log，请参照http://yuilibrary.com/yui/docs/console/console-global.html】</p>
+<p>【译注8：很多类库都实现了输出log的代理函数，比如在YUI3中就实现了Y.log()，甚至实现了一个轻型的控制台小组件，可以在不支持控制台的浏览器中正常的查看log，请参照http://goo.gl/lccfz】</p>
 
 <p>可以使用console.trace()来向控制台输出运行时脚本的当前堆栈。如果你想查看当前函数的被调用关系，这个方法非常有用，因为它可以追踪到程序中堆栈里所有的调用：</p>
 
@@ -680,7 +680,7 @@ console.trace();
 
 <p>应用程序的错误都会显示在控制台中并且，除非浏览器的JIT编译器【译注9】对函数调用做了优化，控制台会显示出完整的堆栈调用。</p>
 
-<p>【译注9：JIT是Just-In-Time的缩写，JIT编译器的工作主要是对源码做优化，目的是提高程序执行效率，其中一个步骤就是减少函数的调用层级，更多信息请参照http://en.wikipedia.org/wiki/Just-in-time_compilation】</p>
+<p>【译注9：JIT是Just-In-Time的缩写，JIT编译器的工作主要是对源码做优化，目的是提高程序执行效率，其中一个步骤就是减少函数的调用层级，更多信息请参照http://goo.gl/lkYCO】</p>
 
 <h3>控制台函数</h3>
 
@@ -815,7 +815,7 @@ console.profileEnd();
 
 <p>你也可以使用Profile的快照（snapshot）功能生成页面当前的堆（heap）【译注13】的快照，如图9-15所示。这里显示了当前使用了多少对象，占用了多少内存。这是查找内存泄漏的好方法，因为你可以看到哪些对象被无意间存储在内存中，应当被回收而未被回收。</p>
 
-<p>【译注13：和其他编程语言一样，JavaScript运行时的内存也划分为堆（heap）和栈（stack），栈是用来存储局部变量的原始值和“引用“（可以将引用理解为一个内存地址）的，而堆则是存放“引用值“（引用指向的内容）的，这里的快照查看的是堆的内容，而不是栈的内容，主要是因为和堆相比栈的内存占用很小。更多内容请参照http://www.aliued.cn/2010/09/19/gc-and-js-memory-leak.html】</p>
+<p>【译注13：和其他编程语言一样，JavaScript运行时的内存也划分为堆（heap）和栈（stack），栈是用来存储局部变量的原始值和“引用“（可以将引用理解为一个内存地址）的，而堆则是存放“引用值“（引用指向的内容）的，这里的快照查看的是堆的内容，而不是栈的内容，主要是因为和堆相比栈的内存占用很小。更多内容请参照http://goo.gl/lbECT】</p>
 
 <p><img src="http://img01.taobaocdn.com/tps/i1/T1x.mwXktbXXXXXXXX-925-335.png" alt="png" /></p>
 
