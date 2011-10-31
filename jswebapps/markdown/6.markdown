@@ -29,7 +29,7 @@ JavaScript中缺失了很多计算机高级编程语言所应有的功能特性�
 
 当大家开始关注如何将JavaScript应用于服务器端时，引入了很多解决依赖管理问题的建议方法。SpiderMonkey和Rhino提供了load()函数，但并没有很好的解决命名空间的问题。Node.js提供了require()函数用来加载外部资源文件，Node.js自有的模块系统也使用这种方式来管理。但代码的可移植性并不好，所以当你想在Node.js中运行Rhino的代码时会不会出问题呢？
 
-为了让代码更具可移植性，则亟需引入一个标准解决方案，让所有的JavaScript都能遵照这个标准实现统一的模块管理系统，这样JavaScript代码库就可以运行在所有的环境中了。Kevini Dangoor按照这个思路提出了CommonJS规范。它在一篇博客（http://www.blueskyonmars.com/2009/01/29/what-server-side-javascript-needs/）中首次提出一个公开的标准，这个标准适用于JavaScript解释器和开发者，他对此做了一些说明：
+为了让代码更具可移植性，则亟需引入一个标准解决方案，让所有的JavaScript都能遵照这个标准实现统一的模块管理系统，这样JavaScript代码库就可以运行在所有的环境中了。Kevini Dangoor按照这个思路提出了CommonJS规范。它在一篇博客（http://goo.gl/voRNb）中首次提出一个公开的标准，这个标准适用于JavaScript解释器和开发者，他对此做了一些说明：
 
 > JavaScript需要一个标准的方法来解决加载外部模块和用命名空间的方式谨慎管理模块的问题。命名空间的问题很容易解决。但并没有标准的编程模式来解决（一次性）加载模块的问题。
 > 
@@ -54,7 +54,7 @@ JavaScript中缺失了很多计算机高级编程语言所应有的功能特性�
 
 ### 模块和浏览器
 
-那么，如何在客户端JS中也实现CommonJS呢？因为很多开发者发现在客户端实现的模块加载器和服务器端有所不同，也就是说如果遵照现行版本的CommonJS规范，模块都是以异步的方式加载的。在服务器端可以完美的实现CommonJS规范，但在浏览器端实现CommonJS就不那么容易了，因为它需要阻塞UI并适时的执行刚加载的script脚本（在客户端则需要避免这种情况的出现）。CommonJS团队为此提出了一个规范：“模块转换格式“（http://wiki.commonjs.org/wiki/Modules/Transport）。这种转换格式将CommonJS的模块包装在一个回调函数中，以便更好的处理客户端的异步加载【译注1】。
+那么，如何在客户端JS中也实现CommonJS呢？因为很多开发者发现在客户端实现的模块加载器和服务器端有所不同，也就是说如果遵照现行版本的CommonJS规范，模块都是以异步的方式加载的。在服务器端可以完美的实现CommonJS规范，但在浏览器端实现CommonJS就不那么容易了，因为它需要阻塞UI并适时的执行刚加载的script脚本（在客户端则需要避免这种情况的出现）。CommonJS团队为此提出了一个规范：“模块转换格式“（http://goo.gl/Vd1vD）。这种转换格式将CommonJS的模块包装在一个回调函数中，以便更好的处理客户端的异步加载【译注1】。
 
 【译注1：在客户端里，为了处理模块依赖关系不得不将模块主逻辑包含在某个回调函数中，加载模块的过程实际是“保存回调“的过程，最后统一处理这些回调函数的执行顺序。作为模块加载器鼻祖的YUILoader便是遵循这种逻辑实现的，并在YUI3中形成了其独具特色的use()和add()模块化编程风格。为了便于理解客户端的模块加载器基本原理，可以参照译者实现的一个小型的类库Sandbox.js（https://github.com/jayli/sandbox），文档中详细讲解了模块加载器的基本原理】
 
@@ -83,11 +83,11 @@ JavaScript中缺失了很多计算机高级编程语言所应有的功能特性�
 
 【译注2：这里向大家强烈推荐模块加载器SeaJS（http://seajs.com/），SeaJS开创性的在客户端实现了同步require()，使得在客户端也能遵循CommonJS标准规范进行编码开发，当然，SeaJS作为客户端的一个类库，仍然存在着无法回避的问题，比如伪阻塞。因此使用SeaJS作开发时需要遵守一些额外的约定（http://seajs.com/docs/zh-cn/rules.html）】
 
-CommonJS模块格式目前还在修订之中，还有很多提议没有处理。就目前来看，并未有真正完美的官方的模块加载约定，很遗憾，缺少统一的标准会让情况变得更复杂。目前最主要最广泛的两个模块实现是 Transport C（http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition）和Transport D（http://wiki.commonjs.org/wiki/Modules/Transport/D）。如果你采用了接下来要讲的任意一个模块加载器类库的话，你必须确保你实现模块的代码格式遵循你所采用加载器所支持的格式规范。幸运的是，很多模块加载器的包装工具【译注：原文是wrapping tools，指的是包裹你的模块逻辑代码的最外层的添加模块的语法】可以兼容，而且会在们各自的文档中给出所支持的包装写法。
+CommonJS模块格式目前还在修订之中，还有很多提议没有处理。就目前来看，并未有真正完美的官方的模块加载约定，很遗憾，缺少统一的标准会让情况变得更复杂。目前最主要最广泛的两个模块实现是 Transport C（http://goo.gl/iaksA）和Transport D（http://goo.gl/An9qK）。如果你采用了接下来要讲的任意一个模块加载器类库的话，你必须确保你实现模块的代码格式遵循你所采用加载器所支持的格式规范。幸运的是，很多模块加载器的包装工具【译注：原文是wrapping tools，指的是包裹你的模块逻辑代码的最外层的添加模块的语法】可以兼容，而且会在们各自的文档中给出所支持的包装写法。
 
 ### Yabble
 
-Yabble（http://github.com/jbrantly/yabble）是一款优秀的轻量级的模块加载器。你可以配置Yabble来支持通过XHR加载模块或者使用script标签来加载模块。通过XHR来抓取模块的优势是你不必再用转换格式把模块再包装一层了。然而，这种做法的缺点是必须用eval()来执行模块代码，调试器来很不方便。另外还会遇到跨域的问题，尤其是当使用了CDN【译注：CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定，比如雅虎所用的cn.yimg.com和淘宝使用的a.tbcdn.cn，都属于CDN】的时候。理想情况是，应当使用XHR来实现一些“快餐式”【译注：原文是quick and dirty，意思是“一种迅速而又随性的“，专指用快速且肮脏的手法来实现一些功能，虽然性能和可维护性都很糟糕，但的确很有效的完成功能】的开发，而不是严谨规范的开发：
+Yabble（http://goo.gl/1A3d1）是一款优秀的轻量级的模块加载器。你可以配置Yabble来支持通过XHR加载模块或者使用script标签来加载模块。通过XHR来抓取模块的优势是你不必再用转换格式把模块再包装一层了。然而，这种做法的缺点是必须用eval()来执行模块代码，调试器来很不方便。另外还会遇到跨域的问题，尤其是当使用了CDN【译注：CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定，比如雅虎所用的cn.yimg.com和淘宝使用的a.tbcdn.cn，都属于CDN】的时候。理想情况是，应当使用XHR来实现一些“快餐式”【译注：原文是quick and dirty，意思是“一种迅速而又随性的“，专指用快速且肮脏的手法来实现一些功能，虽然性能和可维护性都很糟糕，但的确很有效的完成功能】的开发，而不是严谨规范的开发：
 
 	<script src="https://github.com/jbrantly/yabble/raw/master/lib/yabble.js"> </script>
 	<script>
@@ -171,7 +171,7 @@ RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载�
 
 对于需要异步加载的模块，我们手动将模块包装成一种转换格式，这种做法看起来也很冗余。可以在服务器端将小文件合并为一个文件输出，这种做法一箭双雕。这样浏览器只需发起一个HTTP请求来抓取一个资源文件就能将所有的模块都载入进来，显然这种做法更高效。使用打包工具也是一种聪明的做法，这样就不必随意无组织的打包模块了，而是静态分析这些文件然后递归的计算它们的依赖关系。它们会同样会将不符合要求的模块包装成转换格式，这样就不必手动敲代码了。
 
-除了在服务器端合并代码，很多模块打包工具也支持代码的压缩（minify），进一步减少请求的体积。实际上，一些工具——比如rack-modulr和Transporter【译注：请参照https://github.com/maccman/rack-modulr和https://github.com/kriszyp/transporter】——已经整合进了Web服务器，当首次处理某个请求时会自动处理模块操作【译注4】。
+除了在服务器端合并代码，很多模块打包工具也支持代码的压缩（minify），进一步减少请求的体积。实际上，一些工具——比如rack-modulr（http://goo.gl/0YcFK）和Transporter（http://goo.gl/Exkpm）——已经整合进了Web服务器，当首次处理某个请求时会自动处理模块操作【译注4】。
 
 【译注4：随着应用体积越来越庞大，考虑到可维护性需要将模块作很细的颗粒化，文件会拆分成很多个，考虑到性能又不得不将文件合并载入，两者是一对矛盾，所以模块依赖管理既要考虑到代码结构的整洁清晰又要兼顾性能最优化，文中提到的方法就是在努力寻求两者之间的最佳权衡。雅虎和淘宝都已经实现了基于CDN的静态文件合并（combo）输出功能，使用YUI3或KISSY的加载器来计算合并输出的url，是解决这一对矛盾的一种尝试】
 
@@ -187,19 +187,19 @@ RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载�
 	>> curl "http://localhost:9292/lib/application.js"
 		require.define("maths"....
 
-如果你不熟悉Ruby的话，还有很多其他的选择。FlyScript（http://www.flyscript.org/）是用PHP写的一个CommonJS模块包装器，Transporter是基于JSGI（http://jackjs.org/）服务器的转换器，Stitch（https://github.com/sstephenson/stitch）整合入了Node.js服务器。
+如果你不熟悉Ruby的话，还有很多其他的选择。FlyScript（http://www.flyscript.org/）是用PHP写的一个CommonJS模块包装器，Transporter是基于JSGI（http://jackjs.org/）服务器的转换器，Stitch（http://goo.gl/uRmtQ）整合入了Node.js服务器。
 
 
 ## 模块的按需加载
 
-你可能不想用模块化的方式来写代码，或许因为你现有的代码和库要改成用模块化的方法来管理需要作太多改动。幸运的是，还有很多其他的替代方案，比如Sprockets。Sprockets给你的JavaScript代码添加了同步require()支持。以//=形式书写的注释指令都会被Sprockets作预处理。比如，//=require指令通知Sprockets来检查类库的加载路径，加载它并以行内形式包含进来：
+你可能不想用模块化的方式来写代码，或许因为你现有的代码和库要改成用模块化的方法来管理需要作太多改动。幸运的是，还有很多其他的替代方案，比如Sprockets。Sprockets给你的JavaScript代码添加了同步require()支持。以`//=`形式书写的注释指令都会被Sprockets作预处理。比如，`//=require`指令通知Sprockets来检查类库的加载路径，加载它并以行内形式包含进来：
 
 	//= require <jquery>
 	//= require "./states"
 
 在这个例子中，jquery.js是Sprockets所需的加载地址，states.js是以相对路径的形式给出的。Sprockets非常聪明，它会保证只加载库文件一次，自动忽略掉之后的加载需求。相比于CommonJS模块，Sprockets支持缓存和压缩（minify）。在开发过程中，你的服务器会根据页面的需要动态解析并合并文件。当站点的访问非常频繁时，JavaScript文件可以被预合并，这样就可以作为静态文件来处理，从而提高了性能。
 
-尽管Sprockets是一个基于命令行的工具，但也有一些工具集成进了Rack和Rails，比如rack-sprockets（https://github.com/kelredd/rack-sprockets）。甚至还有一些PHP的实现（https://github.com/stuartloxton/php-sprockets），Sprockets（包括所有的模块包装器）的中心思想是，所有的JavaScript文件都需要预处理，不管是用在服务器端用程序做处理还是使用命令行工具作处理。
+尽管Sprockets是一个基于命令行的工具，但也有一些工具集成进了Rack和Rails，比如rack-sprockets（http://goo.gl/cJSLR）。甚至还有一些PHP的实现（http://goo.gl/0HvwT），Sprockets（包括所有的模块包装器）的中心思想是，所有的JavaScript文件都需要预处理，不管是用在服务器端用程序做处理还是使用命令行工具作处理。
 
 ### LABjs
 

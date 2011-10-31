@@ -20,7 +20,7 @@ Comet技术是非标准的hack技术，正因为此，浏览器端的兼容性�
 
 ## WebSocket
 
-WebSocket是HTML5规范的一部分，提供了基于TCP的双向的、全双工【译注2】的Socket连接。这意味着服务器可以直接将数据推送给客户端，而不需要开发者求助于长轮询或插件来实现，这是一个很大的进步。尽管有一些浏览器实现了WebSocket，但由于一些安全问题没有解决，因此协议（http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-76）仍然在修订之中。然而这不会阻碍我们的脚步，这些安全问题属于技术性问题，会很快修复掉，WebSocket很快就会成为最终规范。与此同时，对于那些不支持WebSocket的浏览器可以降级使用笨方法来实现，比如Comet或轮询。
+WebSocket是HTML5规范的一部分，提供了基于TCP的双向的、全双工【译注2】的Socket连接。这意味着服务器可以直接将数据推送给客户端，而不需要开发者求助于长轮询或插件来实现，这是一个很大的进步。尽管有一些浏览器实现了WebSocket，但由于一些安全问题没有解决，因此协议（http://goo.gl/F7lvW）仍然在修订之中。然而这不会阻碍我们的脚步，这些安全问题属于技术性问题，会很快修复掉，WebSocket很快就会成为最终规范。与此同时，对于那些不支持WebSocket的浏览器可以降级使用笨方法来实现，比如Comet或轮询。
 
 【译注2：全双工是指在发送数据的同时也能够接收数据，两者同步进行，这好像我们平时打电话一样，说话的同时也能够听到对方的声音。全双工的好处在于迟延小，速度快】
 
@@ -98,7 +98,7 @@ WebSocket是HTML5规范的一部分，提供了基于TCP的双向的、全双工
 
 说到现在，你或许会想，“我还不能在项目中使用WebSocket，因为标准还未成型而且IE中不支持WebSocket”。这些想法没什么错，幸运的是，我们有解决方案。Web-socket-js（https://github.com/gimite/web-socket-js）是一个基于Adobe Flash实现的WebSocket。用这个库就可以在不支持WebSocket的浏览器中做优雅降级。毕竟几乎所有的浏览器都安装了Flash插件。基于Flash实现的Socket API和HTML5标准规范完全一样，因此当WebSocket的浏览器兼容性更好的时候，只需简单的将库移除即可，而不必对代码做任何修改。
 
-尽管客户端的API非常简洁直接，但在服务器端情况就不同了。WebSocket协议包含几个互不兼容的草案协议，草案75（http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75）和草案76（http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-76）。服务器需要通过检测客户端使用的连接握手类型来判断使用哪个草案协议。
+尽管客户端的API非常简洁直接，但在服务器端情况就不同了。WebSocket协议包含几个互不兼容的草案协议，草案75（http://goo.gl/cgSjp）和草案76（http://goo.gl/2u78y）。服务器需要通过检测客户端使用的连接握手类型来判断使用哪个草案协议。
 
 WebSocket首先向服务器发起一个HTTP“升级”（upgrade）请求。如果你的服务器支持WebSocket，则会执行WebSocket握手并初始化一个连接。“升级”请求中包含了原始域（请求所发出的域名）的信息。客户端可以和任意域名建立WebSocket连接，只有服务器才会决定哪些客户端可以和它建立连接，常用做法是将允许连接的域名做成白名单。
 
@@ -174,7 +174,7 @@ Socket.IO的浏览器支持非常全面。“服务器推“的实现是众所�
 
 在后台Socket.IO会选择使用最佳的传输方式。正如在readme文件中所描述的，“你可以使用Socket.IO在任何地方构建实时app“。
 
-如果你想寻求比Socket.IO更高级的解决方案，可以关注一下Juggernaut（https://github.com/maccman/juggernaut），它就是基于Socket.IO实现的。Juggernaut包含一个信道接口（channel interface）：客户端可以订阅信道监听，服务器端可以向信道发布消息，即所谓的订阅/发布模式。这个库可以针对不同的客户端和实现环境作灵活扩展，比如基于TLS等。
+如果你想寻求比Socket.IO更高级的解决方案，可以关注一下Juggernaut（http://goo.gl/AtQmY），它就是基于Socket.IO实现的。Juggernaut包含一个信道接口（channel interface）：客户端可以订阅信道监听，服务器端可以向信道发布消息，即所谓的订阅/发布模式。这个库可以针对不同的客户端和实现环境作灵活扩展，比如基于TLS等。
 
 如果你需要虚拟主机中的解决方案，可以参照Pusher（http://pusherapp.com/）。Pusher可以让你从繁杂的服务器管理事务中抽身出来，使你能将注意力集中在有意义的部分：web应用的开发。在客户端的实现非常简单，只需将JavaScript文件引入页面中并订阅信道监听即可。当有消息发布的时候，仅仅是发送一个HTTP请求到REST API（http://pusherapp.com/docs）。
 
@@ -197,7 +197,7 @@ Socket.IO的浏览器支持非常全面。“服务器推“的实现是众所�
 4. 查找聊天室中所有和这个Chat记录有关的用户，我们需要给这些用户发送更新通知
 5. 用一条更新来描述发生了什么事情（创建了Chat记录），将这个更新推送给相关的用户
 
-这个过程的细节和你选用的服务器环境有关，然而，如果你使用Rails，Holla（https://github.com/maccman/holla）是一个非常不错的例子。当创建了Message记录时，JuggernautObserver会更新相关的客户端。
+这个过程的细节和你选用的服务器环境有关，然而，如果你使用Rails，Holla（http://goo.gl/xDwUZ）是一个非常不错的例子。当创建了Message记录时，JuggernautObserver会更新相关的客户端。
 
 现在就引入了另外一个问题：如何向特定用户发送通知？最佳办法是使用发布/订阅模式：客户端订阅某个特定的信道，服务器向这个信道发布消息。每个用户订阅唯一的信道，信道包含一个ID，可以用户在数据库中存放的ID。然后，服务器只需向这个唯一的信道发布消息即可，这样就可以做到将通知发送给特定的用户。
 
