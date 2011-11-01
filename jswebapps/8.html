@@ -226,7 +226,7 @@ socket.on("disconnect", function(){});
 
 <p>在后台Socket.IO会选择使用最佳的传输方式。正如在readme文件中所描述的，“你可以使用Socket.IO在任何地方构建实时app“。</p>
 
-<p>如果你想寻求比Socket.IO更高级的解决方案，可以关注一下Juggernaut（http://goo.gl/AtQmY），它就是基于Socket.IO实现的。Juggernaut包含一个信道接口（channel interface）：客户端可以订阅信道监听，服务器端可以向信道发布消息，即所谓的订阅/发布模式。这个库可以针对不同的客户端和实现环境作灵活扩展，比如基于TLS等。</p>
+<p>如果你想寻求比Socket.IO更高级的解决方案，可以关注一下Juggernaut（http://github.com/maccman/juggernaut），它就是基于Socket.IO实现的。Juggernaut包含一个信道接口（channel interface）：客户端可以订阅信道监听，服务器端可以向信道发布消息，即所谓的订阅/发布模式。这个库可以针对不同的客户端和实现环境作灵活扩展，比如基于TLS等。</p>
 
 <p>如果你需要虚拟主机中的解决方案，可以参照Pusher（http://pusherapp.com/）。Pusher可以让你从繁杂的服务器管理事务中抽身出来，使你能将注意力集中在有意义的部分：web应用的开发。在客户端的实现非常简单，只需将JavaScript文件引入页面中并订阅信道监听即可。当有消息发布的时候，仅仅是发送一个HTTP请求到REST API（http://pusherapp.com/docs）。</p>
 
@@ -253,7 +253,7 @@ socket.on("disconnect", function(){});
 <li>用一条更新来描述发生了什么事情（创建了Chat记录），将这个更新推送给相关的用户</li>
 </ol>
 
-<p>这个过程的细节和你选用的服务器环境有关，然而，如果你使用Rails，Holla（http://goo.gl/xDwUZ）是一个非常不错的例子。当创建了Message记录时，JuggernautObserver会更新相关的客户端。</p>
+<p>这个过程的细节和你选用的服务器环境有关，然而，如果你使用Rails，Holla（http://github.com/maccman/holla）是一个非常不错的例子。当创建了Message记录时，JuggernautObserver会更新相关的客户端。</p>
 
 <p>现在就引入了另外一个问题：如何向特定用户发送通知？最佳办法是使用发布/订阅模式：客户端订阅某个特定的信道，服务器向这个信道发布消息。每个用户订阅唯一的信道，信道包含一个ID，可以用户在数据库中存放的ID。然后，服务器只需向这个唯一的信道发布消息即可，这样就可以做到将通知发送给特定的用户。</p>
 

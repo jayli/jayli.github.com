@@ -17,7 +17,7 @@ JavaScript程序开发已经和最初我们想象中的模样有了天壤之别�
 
 这种趋势说明JavaScript应用会如雨后春笋一般遍地开花。不幸的是，可能是因为JavaScript糟糕的过去，很多新构建的应用是非常脆弱的。由于某些原因，当使用JavaScript开发应用时，那些经典的设计模式和最佳实践却被抛在了脑后。开发者往往忽略架构模型，比如MVC模型，他们常将应用中的HTML和JavaScript混杂在一起，远看像一个大杂烩。
 
-这本书不会教给你JavaScript是一门什么样的语言，你可以阅读其他的书来学习使用JavaScript，比如 Douglas Crockford的“JavaScript 语言精萃”。但是，本书将会向你展示如何搭建复杂的JavaScript应用，教你创造不可思议的用户体验。
+这本书不会教给你JavaScript是一门什么样的语言，你可以阅读其他的书来学习使用JavaScript，比如 Douglas Crockford的“JavaScript 语言精萃”（http://goo.gl/JDoIT）。但是，本书将会向你展示如何搭建复杂的JavaScript应用，教你创造不可思议的用户体验。
 
 ## 增加结构
 
@@ -552,7 +552,7 @@ jQuery在其API的实现中就利用了apply()和call()来更改上下文，比�
 	   };
 	}
 
-如果浏览器原生不支持bind()，我们仅仅重写了Function的原型。现代浏览器则可以继续使用内置的实现。对于数组来说这种“打补丁”【译注：原文为Shimming，意指“补偿”】式的做法非常有用，因为在新版本的JavaScript中，数组增加了很多新的特性。我个人推荐使用es5-shim（http://goo.gl/bbzdE）项目，因为它涵盖了ES5中新增的大部分特性。
+如果浏览器原生不支持bind()，我们仅仅重写了Function的原型。现代浏览器则可以继续使用内置的实现。对于数组来说这种“打补丁”【译注：原文为Shimming，意指“补偿”】式的做法非常有用，因为在新版本的JavaScript中，数组增加了很多新的特性。我个人推荐使用es5-shim（http://github.com/kriskowal/es5-shim）项目，因为它涵盖了ES5中新增的大部分特性。
 
 ## 添加私有方法
 
@@ -590,7 +590,7 @@ JavaScript的确支持不可变属性，然而在主流浏览器中并未实现�
 
 ## “类”库
 
-为了便于理解本书中的很多概念，最好先理解“类”的一些基础理论，但实际上开发人员往往是直接使用一个类库。jQuery本身并不支持类，但通过插件的方式可以轻易引入类的支持，比如HJS(http://goo.gl/nGYqR)，HJS允许你通过给$.Class.create传入一组属性来定义类：
+为了便于理解本书中的很多概念，最好先理解“类”的一些基础理论，但实际上开发人员往往是直接使用一个类库。jQuery本身并不支持类，但通过插件的方式可以轻易引入类的支持，比如HJS（http://plugins.jquery.com/project/HJS），HJS允许你通过给$.Class.create传入一组属性来定义类：
 
 	var Person = $.Class.create({
 	   // 初始化函数
@@ -619,7 +619,7 @@ HJS的API中同样包含一些工具函数，比如clone()和equal()：
 
 	assert( alex.equal(bill) );
 
-HJS并不是我们的唯一选择，Spine（http://goo.gl/8kN8O）同样实现了类，通过直接在页面中引入spine.js来使用它：
+HJS并不是我们的唯一选择，Spine（http://maccman.github.com/spine）同样实现了类，通过直接在页面中引入spine.js（http://maccman.github.com/spine/spine.js）来使用它：
 
 	<script src="http://maccman.github.com/spine/spine.js"> </script>
 	<script>

@@ -87,7 +87,7 @@ CommonJS模块格式目前还在修订之中，还有很多提议没有处理。
 
 ### Yabble
 
-Yabble（http://goo.gl/1A3d1）是一款优秀的轻量级的模块加载器。你可以配置Yabble来支持通过XHR加载模块或者使用script标签来加载模块。通过XHR来抓取模块的优势是你不必再用转换格式把模块再包装一层了。然而，这种做法的缺点是必须用eval()来执行模块代码，调试器来很不方便。另外还会遇到跨域的问题，尤其是当使用了CDN【译注：CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定，比如雅虎所用的cn.yimg.com和淘宝使用的a.tbcdn.cn，都属于CDN】的时候。理想情况是，应当使用XHR来实现一些“快餐式”【译注：原文是quick and dirty，意思是“一种迅速而又随性的“，专指用快速且肮脏的手法来实现一些功能，虽然性能和可维护性都很糟糕，但的确很有效的完成功能】的开发，而不是严谨规范的开发：
+Yabble（http://github.com/jbrantly/yabble）是一款优秀的轻量级的模块加载器。你可以配置Yabble来支持通过XHR加载模块或者使用script标签来加载模块。通过XHR来抓取模块的优势是你不必再用转换格式把模块再包装一层了。然而，这种做法的缺点是必须用eval()来执行模块代码，调试器来很不方便。另外还会遇到跨域的问题，尤其是当使用了CDN【译注：CDN的全称是Content Delivery Network，即内容分发网络。其基本思路是尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定，比如雅虎所用的cn.yimg.com和淘宝使用的a.tbcdn.cn，都属于CDN】的时候。理想情况是，应当使用XHR来实现一些“快餐式”【译注：原文是quick and dirty，意思是“一种迅速而又随性的“，专指用快速且肮脏的手法来实现一些功能，虽然性能和可维护性都很糟糕，但的确很有效的完成功能】的开发，而不是严谨规范的开发：
 
 	<script src="https://github.com/jbrantly/yabble/raw/master/lib/yabble.js"> </script>
 	<script>
@@ -187,7 +187,7 @@ RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载�
 	>> curl "http://localhost:9292/lib/application.js"
 		require.define("maths"....
 
-如果你不熟悉Ruby的话，还有很多其他的选择。FlyScript（http://www.flyscript.org/）是用PHP写的一个CommonJS模块包装器，Transporter是基于JSGI（http://jackjs.org/）服务器的转换器，Stitch（http://goo.gl/uRmtQ）整合入了Node.js服务器。
+如果你不熟悉Ruby的话，还有很多其他的选择。FlyScript（http://www.flyscript.org/）是用PHP写的一个CommonJS模块包装器，Transporter是基于JSGI（http://jackjs.org/）服务器的转换器，Stitch（http://github.com/sstephenson/stitch）整合入了Node.js服务器。
 
 
 ## 模块的按需加载
@@ -199,7 +199,7 @@ RequireJS是Yabble的一个不错的替代品，它是现在最流行的加载�
 
 在这个例子中，jquery.js是Sprockets所需的加载地址，states.js是以相对路径的形式给出的。Sprockets非常聪明，它会保证只加载库文件一次，自动忽略掉之后的加载需求。相比于CommonJS模块，Sprockets支持缓存和压缩（minify）。在开发过程中，你的服务器会根据页面的需要动态解析并合并文件。当站点的访问非常频繁时，JavaScript文件可以被预合并，这样就可以作为静态文件来处理，从而提高了性能。
 
-尽管Sprockets是一个基于命令行的工具，但也有一些工具集成进了Rack和Rails，比如rack-sprockets（http://goo.gl/cJSLR）。甚至还有一些PHP的实现（http://goo.gl/0HvwT），Sprockets（包括所有的模块包装器）的中心思想是，所有的JavaScript文件都需要预处理，不管是用在服务器端用程序做处理还是使用命令行工具作处理。
+尽管Sprockets是一个基于命令行的工具，但也有一些工具集成进了Rack和Rails，比如rack-sprockets（http://github.com/kelredd/rack-sprockets）。甚至还有一些PHP的实现（http://goo.gl/0HvwT），Sprockets（包括所有的模块包装器）的中心思想是，所有的JavaScript文件都需要预处理，不管是用在服务器端用程序做处理还是使用命令行工具作处理。
 
 ### LABjs
 

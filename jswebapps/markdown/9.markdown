@@ -37,7 +37,7 @@ IE的占有率在不断减少，而Firefox和Chome的占有率在不断攀升，
 
 【译注2：这句谚语据说最初出自英国前首相本杰明·迪斯雷利之口（Benjamin Disraeli），不过它的广泛流传却是因为马克·吐温的引用，意思是说统计数字不靠谱】
 
-【译注3：雅虎最早提出了浏览器分级支持（GBS），即根据功能需求的权重来将浏览器支持划分多个级别，并且非常详细系统的定义了浏览器测试基准和操作系统支持标准，请参照http://goo.gl/49rKV，而作者在这里提到的主流浏览器更多的适用于Web App，并非所有的Web页面】
+【译注3：雅虎最早提出了浏览器分级支持（GBS），即根据功能需求的权重来将浏览器支持划分多个级别，并且非常详细系统的定义了浏览器测试基准和操作系统支持标准，请参照http://yuilibrary.com/yui/docs/tutorials/gbs/，而作者在这里提到的主流浏览器更多的适用于Web App，并非所有的Web页面】
 
 - IE 8, 9
 - Firefox 3.6【译注：撰写本书时的Firefox版本还是3.6，从Firefox4之后版本升级非常快，最重要的不同是Firefox 3.6遵循ECMAScript3，而4及以后的版本则遵循EMCAScript5，因此这里更推荐使用Firefox 4+】
@@ -342,7 +342,7 @@ Watir（http://watir.com/）（Watir的发音和water一样）是一个基于Rub
 
 由于浏览器的安装受到操作系统的限制，如果你想测试IE，你的持续集成服务器就需要安装特定版本的Windows操作系统，同样，如果你想测试Safari，则需要一台安装Mac OS X的服务器。
 
-另外一个非常流行的浏览器驱动工具是Selenium（http://seleniumhq.org/）。这个库提供了一种域脚本语言（domain scripting language，简称DSL），用这种脚本语言可以为多种编程语言编写测试代码，比如C#，Java，Groovy，Perl，PHP，Python和Ruby。Selenium可以在本地运行。它往往是以后台服务的形式运行于持续集成服务器中，启动的方法和通过提交代码来启动测试一样，也会在测试不通过时给出提示。Selenium的优势在于它支持很多编程语言，同时提供了一个Firefox插件Selenium IDE（http://goo.gl/7KD8G），这个插件可以记录浏览器的行为并可回放，这极大方便了开发者的自测。
+另外一个非常流行的浏览器驱动工具是Selenium（http://seleniumhq.org/）。这个库提供了一种域脚本语言（domain scripting language，简称DSL），用这种脚本语言可以为多种编程语言编写测试代码，比如C#，Java，Groovy，Perl，PHP，Python和Ruby。Selenium可以在本地运行。它往往是以后台服务的形式运行于持续集成服务器中，启动的方法和通过提交代码来启动测试一样，也会在测试不通过时给出提示。Selenium的优势在于它支持很多编程语言，同时提供了一个Firefox插件Selenium IDE（http://seleniumhq.org/projects/ide/），这个插件可以记录浏览器的行为并可回放，这极大方便了开发者的自测。
 
 如图9-4所示，我们使用Selenium IDE工具来记录链接的点击、填写表单和表单提交。当记录了一组行为时，你可以使用绿色的play按钮来回放这个过程。这个工具可以对记录下的动作和行为进行仿真模拟，这让测试变得更加轻松且高效。
 
@@ -455,7 +455,7 @@ Zombine.js提供了一个Browser对象，它和真实的web浏览器中的BOM非
 
 ### Ichabod
 
-Ichabod（http://goo.gl/lHwxC）是另一个用于无界面测试的类库，这个名字很富想象力【译注7】。如果你需要一个简洁高效的测试运行环境的话，强烈推荐你使用Ichabod。
+Ichabod（http://github.com/maccman/ichabod）是另一个用于无界面测试的类库，这个名字很富想象力【译注7】。如果你需要一个简洁高效的测试运行环境的话，强烈推荐你使用Ichabod。
 
 【译注7：Ichabod是迪斯尼的动画电影“The Adventures of Ichabod and Mr.Toad“（伊老师与小蟾蜍历险记）中的主人翁，这部电影1949年上映，是迪斯尼第一部颇具影响力的长篇动画片，本片荣获当年金球奖最佳色彩片奖，也是该奖首次颁发给动画电影】
 
@@ -627,7 +627,7 @@ Firebug的开发团队还开发了一个不依赖于Firefox的Firebug——Fireb
 
 当使用控制台输出log的时候，变量console有可能没有定义，不要忘了这一点。在那些不支持控制台的浏览器中——比如IE或没有安装Firebug的Firefox——就没有定义console对象，这时使用console.log()就会出错。这也是推荐使用代理函数（App.log()）来为应用输出log的原因【译注8】。
 
-【译注8：很多类库都实现了输出log的代理函数，比如在YUI3中就实现了Y.log()，甚至实现了一个轻型的控制台小组件，可以在不支持控制台的浏览器中正常的查看log，请参照http://goo.gl/lccfz】
+【译注8：很多类库都实现了输出log的代理函数，比如在YUI3中就实现了Y.log()，甚至实现了一个轻型的控制台小组件，可以在不支持控制台的浏览器中正常的查看log，请参照http://yuilibrary.com/yui/docs/console/console-global.html】
 
 可以使用console.trace()来向控制台输出运行时脚本的当前堆栈。如果你想查看当前函数的被调用关系，这个方法非常有用，因为它可以追踪到程序中堆栈里所有的调用：
 
@@ -636,7 +636,7 @@ Firebug的开发团队还开发了一个不依赖于Firefox的Firebug——Fireb
 
 应用程序的错误都会显示在控制台中并且，除非浏览器的JIT编译器【译注9】对函数调用做了优化，控制台会显示出完整的堆栈调用。
 
-【译注9：JIT是Just-In-Time的缩写，JIT编译器的工作主要是对源码做优化，目的是提高程序执行效率，其中一个步骤就是减少函数的调用层级，更多信息请参照http://goo.gl/lkYCO】
+【译注9：JIT是Just-In-Time的缩写，JIT编译器的工作主要是对源码做优化，目的是提高程序执行效率，其中一个步骤就是减少函数的调用层级，更多信息请参照http://en.wikipedia.org/wiki/Just-in-time_compilation】
 
 ### 控制台函数
 
