@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="http://a.tbcdn.cn/app/dp/s/screen.css" />
+<style>
+#bd {margin-left:20px;margin-right:20px;}
+</style>
+<title>wd-gallery - markdown</title>
+</head>
+<body>
+<div id="bd">
+
+<p><style>
+p img {
+    float:none;
+}
+</style></p>
+
+<h1>第12章 Backbone类库</h1>
+
+<p>Backbone是构建JavaScript应用程序的一个优秀的类库。它的优美之处在于其简单；类库很轻量，它覆盖了所有基础的同时提供了最大的灵活性。本书的其他内容中，MVC则是该游戏的名字，这也是贯穿Backbone核心的模式。该类库提供了模型、控制器和视图——构建应用程序的骨架。</p>
+
+<p>Backbone和其他框架，如SproutCore或者Cappuccino有什么不同呢？这么说吧，主要的不同就是Backbone其轻量的特质。SproutCore和Cappuccino提供了厚重的UI widgets和巨大的核心库，并且它们决定了你的HTML结构。在打包压缩以后，这两个库的大小都是数百KB，加载到浏览器中时，JavaScript、CSS和图片有好几兆。对比而言，Backbone测得大小只有4KB，只单纯地提供了模型、事件、集合、视图、控制器和持久化等核心的概念。</p>
+
+<p>Backbone唯一的依赖就是underscore.js（http://documentcloud.github.com/underscore/），它是一些非常有用的工具和通用目的的JavaScript函数组成的一个类库。Underscore提供了超过60个函数来处理数组操作、函数绑定、JavaScript模板和深度的相等检测。如果你经常大量的处理数组，检出Underscore的代码来用其API真是太值得了。出了Underscore，你也可以用jQuery或者Zepto.js来提升Backbone处理视图的能力，这样做是安全的。</p>
+
+<p>Backbone的文档虽然很完备，但初次探秘还是有点无法驾驭的感觉。本章的目标就是想帮调整这种状态，来对类库的深入和实际的介绍。刚开始的几个小节是Backbone组件的概览，接下来是一个实际的应用程序。如果你想马上看到Backbone可以直接跳过这些内容。</p>
+
+<h2>模型</h2>
+
+<p>让我们从MVC最关键的组建开始：模型。模型是保存应用程序数据的地方。把模型想定为应用程序原始数据之上的精心设计的抽象，并且添加一些工具函数和事件。在Backbone.Model上调用extend()函数来创建Backbone模型：</p>
+
+<pre><code>var User = Backbone.Model.extend({
+  initialize: function() {
+    // ...
+  }
+});
+</code></pre>
+
+<p>extend()的第一个参数是一个对象，它成为了模型实例的属性。第二个参数是可选的，类属性的hash。通过多次调用extend()可以生成模型的子类，它们将继承父亲所有的类和实例的属性：</p>
+
+<pre><code>var User = Backbone.Model.extend({
+  // 实例属性
+  instanceProperty: "foo"
+}, {
+  // 类属性
+  classProperty: "bar"
+});
+assertEqual( User.instanceProperty, "foo" );
+assertEqual( User.prototype.classProperty, "bar" );
+</code></pre>
+
+<p>当模型实例化时，它的initialize()函数调用时可以接受任意实例参数。背后的工作原理是，Backbone模型本身是构造函数，所以可以使用new关键词来生成一个新的实例：</p>
+
+<pre><code>var User = Backbone.Model.extend({
+  initialize: function(name) {
+    this.set({name: name});
+  }
+});
+var user = new User("Leo McGarry");
+assertEqual( user.get("name"), "Leo McGarry");
+</code></pre>
+
+<h3>模型和属性</h3>
+
+<p>使用set()和get()函数来设置和获取实例里的属性：</p>
+
+<pre><code>var user = new User();
+user.set({name: "Donna Moss"})
+assertEqual( user.get("name"), "Donna Moss" );
+assertEqual( user.attributes, {name: "Donna Moss"} );
+</code></pre>
+
+<p>set(attrs, [options])需要一个哈希形式表示的属性对象以便应用到实例上，get(attr)只需要一个参数——属性的名字——返回它的值。该实例使用本地一个哈希名为attributes的对象来保存和跟踪它的属性。你不能直接操作该属性对象；而使用get()和set()函数，保证了适当的校验和事件能够被调用。</p>
+
+<p>可以使用validate()函数来校验一个实例的属性。默认情况下，它是没有定义的，但你可以覆盖它来自定义校验逻辑：</p>
+
+<pre><code>var User = Backbone.Model.extend({      
+  validate: function(atts){
+    if (!atts.email || atts.email.length &lt; 3) {
+      return "email must be at least 3 chars";
+    }
+  }
+});
+</code></pre>
+
+<p>如果该模型和属性是合法的，validate()函数不需要返回任何东西；如果属性不合法，返回值既可以是一个描述错误的字符串也可以是一个Error对象。如果校验失败，set()和save()函数将不再继续，反而将触发一个error事件。程序可以绑定error事件，以保证有任何校验失败时得到通知：</p>
+
+<pre><code>var user = new User;
+user.bind("error", function(model, error) {
+  //错误处理
+});
+
+user.set({email: "ga"});
+
+// 或者给一个特定的集合添加一个错误处理程序
+user.set({"email": "ga"}, {error: function(model, error){
+  // ...
+}});
+</code></pre>
+
+<p>使用哈希名为defaults的对象来指定默认属性。在创建一个模型实例时，任何没有指定的属性都会设置成默认值：</p>
+
+<pre><code>var Chat = Backbone.Model.extend({
+  defaults: {
+    from: "anonymous"
+  }
+});
+
+assertEqual( (new Chat).get("from"), "anonymous" );
+</code></pre>
+
+<h2>集合</h2>
+
+<p>在Backbone中，模型实例的数据存放在多个集合中。模型之间使用独立的集合为什么重要，在这还不能立刻明显地说明原因，但在实际场景中是很普遍的。例如，如果你在重新创建Twitter，你就至少需要两个集合，Followers和Followees，两者都由User的实例来填充数据。虽然两个集合都是由同一个模型来填充数据，但每个包含了不同User的实例的一个数组；结果导致了它们是独立的集合。</p>
+
+<p>针对模型，可以使用Backbone.Collection扩展来创建一个集合：</p>
+
+<pre><code>var Users = Backbone.Collection.extend({
+  model: User
+});
+</code></pre>
+
+<p>在上面的例子中，可以看到我们覆盖了model属性来指定与之相关联的模型——这里就是User模型。这并不是绝对必须的，但给该集合设置一个默认的模型指向一旦需要就非常有用。通常，集合会包含单个模型类型的一个实例，而不是不同模型的多个实例。</p>
+
+<p>在创建一个集合时，可以可选的传递一个模型数组。比如Backbone的模型，如果定义了一个初始化实例的函数，它将在初始化时被调用：</p>
+
+<pre><code>var users = new Users([{name: "Toby Ziegler"}, {name: "Josh Lyman"}]);
+</code></pre>
+
+<p>另一种方法是使用add()函数给集合添加模型：</p>
+
+<pre><code>var users = new Users;
+// 添加一个单独的模型
+users.add({name: "Donna Moss"});
+// 或者添加模型组成的数组
+users.add([{name: "Josiah Bartlet"}, {name: "Charlie Young"}]);
+</code></pre>
+
+<p>在为集合添加一个模型时，会触发add事件：</p>
+
+<pre><code>users.bind("add", function(user) {
+  alert("Ahoy " + user.get("name") + "!");
+});
+</code></pre>
+
+<p>同样地，可以使用remove()函数从集合中删除一个模型，这时会触发remove事件：</p>
+
+<pre><code>users.bind("remove", function(user) {
+  alert("Adios " + user.get("name") + "!");
+});
+
+users.remove( users.models[0] );
+</code></pre>
+
+<p>获取指定的模型很简单；如果有模型的ID，可以使用控制器的get()函数：</p>
+
+<pre><code>var user = users.get("some-guid");
+</code></pre>
+
+<p>如果没有模型ID，获取模型还可以使用cid——当新创建一个模型时由Backbone自动创建的客户ID：</p>
+
+<pre><code>var user = users.getByCid("c-some-cid");
+</code></pre>
+
+<p>除了add和remove事件，一个集合中的模型一旦被修改了，还会触发change事件：</p>
+
+<pre><code>var user = new User({name: "Adam Buxton"});
+var users = new Backbone.Collection;
+users.bind("change", function(rec){
+  // 改变了一个记录
+});
+
+users.add(user);
+user.set({name: "Joe Cornish"});
+</code></pre>
+
+<h3>控制集合的内部顺序</h3>
+
+<p>一个集合的内部顺序可以通过你自己提供的comparator()函数来控制，返回你希望集合存储的一个值：</p>
+
+<pre><code>var Users = Backbone.Collection.extend({
+  comparator: function(user){
+    return user.get("name");
+  }
+});
+</code></pre>
+
+<p>返回值既可以是一个字符串也可以是一个数值，以便存储（不像JavaScript的常规排序）。在上面的例子中，保证了User集合以name的字母顺序存储的。排序是在后台自动完成的，但若要强制执行重新排序，可以调用sort()函数。</p>
+
+<h2>视图</h2>
+
+<p>Backbone视图并不是模板本身，却是一些控制类，它们处理模型的表现。这有些让人迷惑，因为很多MVC的实现将视图看作是多块HTML或模板，它们在控制器中处理时间和渲染。但不一样的是，在Backbone中，视图“代表了一个UI逻辑块，负责一个简单的DOM的内容”。</p>
+
+<p>如模型和集合，视图也是扩展自Backbone的现存类——这里就是Backbone.View：</p>
+
+<pre><code>var UserView = Backbone.View.extend({
+  initialize: function(){ /* ... */ },
+  render: function(){ /* ... */ }
+});
+</code></pre>
+
+<p>不管视图有没有被插入到页面中，每个视图的实例都知道当前的DOM的元素，抑或就是this.el。el是从视图的tagName、className或id等属性值中创建的元素。如果这些都没有指定，el是一个空的div：</p>
+
+<pre><code>var UserView = Backbone.View.extend({
+  tagName: "span",
+  className: "users"
+});
+
+assertEqual( (new UserView).el.className, "users" );
+</code></pre>
+
+<p>如果希望将视图绑定到页面中已存在的元素上，只要简单地直接指定el。很明显，应该在页面加载完成以后再设置该视图；否则，还找不到需要的元素：</p>
+
+<pre><code>var UserView = Backbone.View.extend({
+  el: $(".users")     
+});
+</code></pre>
+
+<p>也可以在实例化一个视图时传递el，它是可选的，用tagName、className或id等属性来标记：</p>
+
+<pre><code>new UserView({id: "followers"});
+</code></pre>
+
+<h3>渲染视图</h3>
+
+<p>每个视图有一个render()函数，默认情况下里面没有任何操作（空函数）。一旦视图需要重绘，应该调用该函数。你应该针对不同的视图用不同功能的函数来覆盖该函数，它们用来处理模板渲染，并使用新的HTML来更新el：</p>
+
+<pre><code>var TodoView = Backbone.View.extend({
+  template: _.template($("#todo-template").html()),
+  render: function() {
+    $(this.el).html(this.template(this.model.toJSON()));
+    return this;
+  }
+});
+</code></pre>
+
+<p>Backbone本身不知道你是如何来渲染视图的。可以自己生成元素也可以使用模板类库。建议使用后者，因为通常这种方法更加干净——让HTML保持在JavaScript程序之外。既然Backbone依赖的underscore.js加载到页面中了，那么就可以使用<code>_.template()</code>（http://documentcloud.github.com/underscore/#template）——一个生成模板非常方便的实用工具。</p>
+
+<p>以上，你会发现我们使用了一个叫做this.model的本地属性。它实际指向了一个模型的实例，一直传递下来到视图的实例化中。模型的toJSON()函数本质上返回模型未加工的原始属性，可以在模板中使用：</p>
+
+<pre><code>new TodoView({model: new Todo});
+</code></pre>
+
+<h3>委托事件</h3>
+
+<p>通过委托，Backbone的视图提供了一种简单快捷的添加事件到el的方法。如下代码就是在视图上通过events哈希对象设置了事件和对应回调：</p>
+
+<pre><code>var TodoView = Backbone.View.extend({
+  events: {
+    "change input[type=checkbox]" : "toggleDone",
+    "click .destroy"              : "clear",
+  },
+  toggleDone: function(e){ /* ... */},
+  clear: function(e){ /* ... */}
+});
+</code></pre>
+
+<p>events对象的格式，如{"eventType selector": "callback"}。selector是可选的，如果不提供，事件直接绑定在el上。如果提供了，事件就会被委托（http://api.jquery.com/delegate/），它的意思是动态发生在el的下面匹配选择器的子元素上的事件。委托利用了事件冒泡，它的意思是事件可以一直触发而不用管el中的内容是否已经改变过。</p>
+
+<p>callback是个字符串，它代表当前视图上的一个函数的实例。当视图的事件回调触发时，它们在当前视图的上下文中被调用，而不是当前的目标元素下或者window的上下文中。因此可以在任何回调中直接访问this.el和this.model，这非常方便，如在上述例子中的toggleDone()和clear()函数中。</p>
+
+<h3>绑定和上下文</h3>
+
+<p>实际情况中视图的render()函数是如何调用的？事实上每当模型变化时，就会触发change事件，然后调用该函数。这就意味着应用程序的视图和HTML与之对应的模型数据是同步的：</p>
+
+<pre><code>var TodoView = Backbone.View.extend({
+  initialize: function() {
+    _.bindAll(this, 'render', 'close');
+    this.model.bind('change', this.render);
+  },
+  close: function(){ /* ... */ }
+});
+</code></pre>
+
+<p>需要小心的是在回调函数中的上下文已经改变了。Underscore提供了一个很有用的方法来处理这个事情：<code>_.bindAll(context, *functionNames)</code>（http://documentcloud.github.com/underscore/#bindAll）。它将函数名字（字符串形式）和一个上下文绑定在一起了。<code>_.bindAll()</code>保证了所有给定的函数总是在指定的上下文中被调用。这在事件回调中尤其有用，否则它们的上下文总是变化无常。在上述的例子中，render()和close()函数总是能在TodoView的实例上下文中执行。</p>
+
+<p>模型销毁的配合工作很简单。视图只需要绑定模型的delete事件，当触发时删除el即可：</p>
+
+<pre><code>var TodoView = Backbone.View.extend({
+  initialize: function() {
+    _.bindAll(this, 'render', 'remove');
+    this.model.bind('change',  this.render);
+    this.model.bind('delete', this.remove);
+  },
+  remove: function(){ 
+    $(this.el).remove();
+  }
+});
+</code></pre>
+
+<p>请注意，渲染Backbone的视图也可以不使用模型或事件回调。从initialize()函数中简单地调用render()函数就可以在第一次实例化时渲染视图。但是，我们已经介绍过了模型和视图的集成，对于视图来说它才是典型的案例——这种绑定的能力是Backbone最有用和强大的特性之一。</p>
+
+<h2>控制器</h2>
+
+<p>Backbone的控制器将应用程序的状态和URL的hash片段关联在一起，它使得URL地址可分享、可作为书签使用。本质上，控制器由一些路由和函数构成，当导航到这些路由时那些函数会被自动调用。</p>
+
+<p>路由是一个哈希对象——键由路径、参数和“隔板”构成——值设置为与之相管理的函数：</p>
+
+<pre><code>routes: {                            // Matches:
+  "help":                 "help",    //  #help
+  "search/:query":        "search",  //  #search/kiwis
+  "search/:query/p:page": "search"   //  #search/kiwis/p7
+  "file/*path":           "file"     //  #file/any/path.txt
+}
+</code></pre>
+
+<p>上例中可以看到参数是以“：”开始的，紧接着是参数名。一个路由中所有参数都会在调用时传递到它的动作（译注：函数）中。用<code>“*”</code>指定的<code>“隔板”</code>基本上是一个通配符，匹配所有的内容。和参数一起“隔板”将和匹配的值一起传递到路由的动作中。</p>
+
+<p>路由是以在哈希对象中定义顺序的倒序进行解析的。换言之，最通用的“匹配所有”的路由应该位于routes哈希对象的尾部。</p>
+
+<p>同样地，控制器的创建扩展自Backbone.Controllers，给它传递一个包含初始化属性的对象：</p>
+
+<pre><code>var PageController = Backbone.Controller.extend({
+  routes: {
+    "":                     "index",
+    "help":                 "help",    // #help
+    "search/:query":        "search",  // #search/kiwis
+    "search/:query/p:page": "search"   // #search/kiwis/p7
+  },
+
+  index: function(){ /* ... */ },
+  help: function() {
+    // ...
+  },
+
+  search: function(query, page) {
+    // ...
+  }
+});   
+</code></pre>
+
+<p>在上例中，当用户被导航到http://example.com#search/coconut时，不管是手动输入的或者是点击后退按钮，都将调用search()函数，并传递进一个query变量，值为“cocount”。</p>
+
+<p>如果希望你的应用程序既适用于Ajax Crawling规范（http://goo.gl/rv0O），也能被搜索引擎索引（第四章有讨论），所有的路由前缀必须是“!/”，如下代码所示：</p>
+
+<pre><code>var PageController = Backbone.Controller.extend({
+  routes: {
+    "!/page/:title": "page", // #!/page/foo-title
+  }
+  // ...
+});
+</code></pre>
+
+<p>同时，根据规范你还需要对服务端做一些改变。如果需要让路由功能更丰富，如要保证某些参数是整数，可以直接给route()函数传递一个正则表达式：</p>
+
+<pre><code>var PageController = Backbone.Controller.extend({
+  initialize: function(){
+    this.route(/pages\/(\d+)/, 'id', function(pageId){
+      // ...
+    });
+  }
+});
+</code></pre>
+
+<p>总之，路由将URL的hash片段的变化和控制器联系了起来，但如何在起点设置该片段呢？而不是手动去设置window.location.hash，Backbone提供了一个便捷的方法——saveLocation(fragment)函数：</p>
+
+<pre><code>Backbone.history.saveLocation("/page/" + this.model.id);
+</code></pre>
+
+<p>当调用saveLocation()函数并更新了URL的hash片段时，并不会调用任何控制器。这意味着，比如你可以在视图的initialize()函数中安全地调用saveLocation()函数而不会有任何控制器的介入。</p>
+
+<p>在内部，如果浏览器支持，Backbone将监听浏览器的onhashchange事件，否则它会使用iframe和定时器来实现一个变通的方案。但，首先需要开启Backbone的history来支持这个功能：</p>
+
+<pre><code>Backbone.history.start();
+</code></pre>
+
+<p>在开启Backbone的history之前要保证页面已经加载完，并且保证视图、模型和集合都是可用的。就目前来说，Backbone还不支持HTML5中的pushState()和replaceState()等history API。因为它们在服务端需要特殊的处理，并且IE下也还不支持。在这些问题解决后Backbone也许会增加这些支持。目前所有的路由功能都是通过URL的hash片段来实现的。</p>
+
+<h2>与服务器的同步</h2>
+
+<p>默认情况下，只要保存模型，Backbone将会用Ajax请求通知服务器，它可以使用jQuery或者Zepto.js等类库。当一个模型创建、更新或删除之前Backbone通过调用Backbone.sync()函数来实现这个功能。Backbone发起REST形式的JSON请求到服务器，如果成功，再更新客户端的模型。</p>
+
+<p>如要利用这个特性，需要在模型中定义一个名为url的属性并赋值，并且要求服务器处理请求符合REST形式。Backbone将处理好剩下的所有任务：</p>
+
+<pre><code>var User = Backbone.Model.extend({
+  url: '/users'
+});
+</code></pre>
+
+<p>url属性既可以是一个字符串也可以是一个返回字符串的函数。路径既可以相当的也可以绝对，但必须返回模型端点。</p>
+
+<p>Backbone将创建、读取、更新和删除（CRUD）等动作映射到以下方法上：</p>
+
+<pre><code>create → POST   /collection
+read   → GET    /collection[/id]
+update → PUT    /collection/id
+delete → DELETE /collection/id
+</code></pre>
+
+<p>例如，如果创建过一个User实例，Backbone会发送一个POST请求到/users。同样地，更新一个User实例，会发送一个PUT请求到/users/id这个端点，这里的id模型的唯一标示。Backbone期望服务器响应POST、PUT和GET请求时返回一个JSON形式的哈希对象，它应该包含用来更新实例的一些属性。</p>
+
+<p>调用模型的save([attrs], [options])函数来将它保存到服务器上，作为可选，可以传递进去一个属性和请求项组成的哈希对象。如果模型有了一个id，它首先假设该模型在服务器上已经存在，sava()发送的是一个PUT（更新）请求。否则，save()发送的是一个POST（创建）请求：</p>
+
+<pre><code>var user = new User();
+user.set({name: "Bernard"});
+user.save(null, {success: function(){
+  // 保存用户成功
+}});
+</code></pre>
+
+<p>所有的save()调用都是异步的，但可以通过设置success和failure两个可选项来监听Ajax请求的回调。事实上，如果Backbone使用了jQuery，传递给save()的所有选项都将传递给$.ajax()。换言之，在保存模型时可以使用所有jQuery的Ajax选项（http://goo.gl/mCb2），如timeout。</p>
+
+<p>如果服务器返回错误，save操作就会失败，并在模型上触发一个error事件。反之，如果成功，模型将使用服务器的响应直接更新数据：</p>
+
+<pre><code>var user = new User();
+user.bind("error", function(e){
+  // 服务器返回了一个错误
+});
+user.save({email: "Invalid email"});
+</code></pre>
+
+<p>可以使用fetch()函数来刷新模型，这将会（通过一个GET请求）从服务器请求模型的属性。如果远程模型所表示的数据和当前模型属性数据不一致时将触发一个change事件：</p>
+
+<pre><code>var user = Users.get(1);
+user.fetch();
+</code></pre>
+
+<h3>填充集合</h3>
+
+<p>到目前为止，已经介绍了模型的创建和更新，但第一次如何从服务器上获取数据呢？这就是Backbone的集合应运而生的原因，它们用来请求远程的模型并保存在本地。和模型类似，必须给集合指定一个url属性来设置它的端点。如果没提供url，Backbone将后备使用与之相关联的模型的url：</p>
+
+<pre><code>var Followers = Backbone.Collection.extend({
+  model: User,
+  url: "/followers"
+});
+
+Followers.fetch();
+
+</code></pre>
+
+<p>集合的fetch()函数将发送一个GET请求到服务器——在这个例子中，发送到/followers——来获取远程模型。当模型数据从服务器返回后，该集合会刷新，并触发一个refresh事件。</p>
+
+<p>可以使用refresh()函数来手动刷新集合，传递进一个模型对象的数组即可。这在第一次设置页面的时候使用起来非常方便。和页面加载后发送的另外一个GET请求不一样，你可以通过refresh()解析一个内联的JSON对象，从而预先填充数据到集合中。如下代码所示，一个使用Rails的例子：</p>
+
+<pre><code>&lt;script type="text/javascript"&gt;
+  Followers.refresh(&lt;%= @users.to_json %&gt;);
+&lt;/script&gt;
+</code></pre>
+
+<h3>服务器端</h3>
+
+<p>如上面提到的，为了和Backbone无缝整合，服务器需要实现一些REST形式的端点：</p>
+
+<pre><code>create → POST   /collection
+read   → GET    /collection
+read   → GET    /collection/id
+update → PUT    /collection/id
+delete → DELETE /collection/id
+</code></pre>
+
+<p>Backbone在发送模型之间先将其序列化为JSON格式。User模型看上去像这样：</p>
+
+<pre><code>{"name": "Yasmine"}
+</code></pre>
+
+<p>请注意，上面的数据并没有使用当前模型作为前缀，这让Rails的开发者有些犯难。下面马上就来介绍Rails和Backbone整合的规范，如果读者没有使用该框架，请直接跳过下面的小节。</p>
+
+<p>在CRUD方法中，应该使用单纯的、无前缀的参数。如下代码的Rails控制器的update方法就能正常工作：</p>
+
+<pre><code>def update
+  user = User.find(params[:id])
+  user.update_attributes!(params)
+  render :json =&gt; user
+end
+</code></pre>
+
+<p>很显然，应该使用<code>attr_accessible</code>方法通过白名单属性（http://guides.rubyonrails.org/security.html#mass-assignment）来保护模型免受恶意的输入，这些超出了本书的范围。除了destroy，控制器的每一个方法都必须返回表示该记录的一个JSON对象。</p>
+
+<p>序列化属性为JSON格式也有问题，默认情况下，Rails会将模型名称作为前缀，就像这样：</p>
+
+<pre><code>{"user": {"name": "Daniela"}}
+</code></pre>
+
+<p>不幸的是，Backbone不能正确地解析该对象。你需要保证Rails序列化时在JSON中不包含模型名称，用新建一个初始化文件来解决：</p>
+
+<pre><code># config/initializers/json.rb
+ActiveRecord::Base.include_root_in_json = false
+</code></pre>
+
+<h3>自定义行为</h3>
+
+<p>在Backbone每次试图读取或保存模型到服务器时都会调用Backbone.sync()函数。可以覆盖它来改变默认的行为（发送Ajax请求），这就可以使用一种不同的持久化策略，如WebSocktes、XML传输流或本地存储。例如，下面的函数只是用来记录一些调用参数的日志，其他什么都没有做，用它来覆盖Backbone.sync()：</p>
+
+<pre><code>Backbone.sync = function(method, model, options) {
+  console.log(method, model, options);
+  options.success(model);
+};
+</code></pre>
+
+<p>可以看到，Backbone.sync()函数需要传递method、model和options等对象，如下所示：</p>
+
+<p>method</p>
+
+<p>即CRUD方法（create、read、update或delete）</p>
+
+<p>model</p>
+
+<p>需要保存的模型（或需要读取的集合）</p>
+
+<p>options</p>
+
+<p>请求的可选项，包括成功和失败的回调函数</p>
+
+<p>Backbone期望的唯一的一件事情就是要么调用options.success()，要么调用options.error()。</p>
+
+<p>每个模型或集合各自覆盖sync()函数而不是在全局处理也是可行的：</p>
+
+<pre><code>Todo.prototype.sync = function(method, model, options){ /* ... */ };
+</code></pre>
+
+<p>在本地存储适配器里（https://github.com/jeromegn/Backbone.localStorage）有一个很好的自定义Backbone.sysnc()函数的例子。包含该适配器，在相关的模型或集合中设置localStorage选项后，Backbone就能使用HTML5的localStorage，而不是后台的服务器。在下面的例子中，可以看到Backbone.sync()的CRUD方法的store对象，依赖于不同的方法，最后用合适的模型调用了options.success()函数：</p>
+
+<pre><code>// 将所有待完成的项都保存至本地存储的命名空间"todos"中
+Todos.prototype.localStorage = new Store("todos");
+// 重写Backbone.sync()，这样就可以给模型或者集合的本地存储属性添加委托
+// 本地存储属性应当是一个Store的实例
+Backbone.sync = function(method, model, options) {
+  var resp;
+  var store = model.localStorage || model.collection.localStorage;
+  switch (method) {
+    case "read":    resp = model.id ? store.find(model) : store.findAll(); break;
+    case "create":  resp = store.create(model);                            break;
+    case "update":  resp = store.update(model);                            break;
+    case "delete":  resp = store.destroy(model);                           break;
+  }
+  if (resp) {
+    options.success(resp);
+  } else {
+    options.error("Record not found");
+  }
+};
+
+</code></pre>
+
+<h2>构建To-Do列表应用</h2>
+
+<p>让我们把所学到的关于Backbone的知识做一个实际的练习，一个简单的to-do列表应用程序。我们希望用户能够对这些to-do进行增、删、改和查，在页面刷新后仍然能保持数据。可以用下面例子中的代码来构建这个应用程序，或者查看assets/ch12/todos目录下已经完成的应用程序。</p>
+
+<p>页面的初始结构如下；我们加载了CSS文件、一些JavaScript库以及包含在todos.js文件中的Backbone应用代码：</p>
+
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+  &lt;link href="todos.css" media="all" rel="stylesheet" type="text/css"/&gt;
+
+  &lt;script src="lib/json2.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/jquery.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/jquery.tmpl.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/underscore.js"&gt;&lt;/script&gt;
+  &lt;script src="lib/backbone.js"&gt;&lt;/script&gt;
+
+  &lt;script src="lib/backbone.localstorage.js"&gt;&lt;/script&gt;
+  &lt;script src="todos.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="todoapp"&gt;
+    &lt;div class="title"&gt;
+
+      &lt;h1&gt;Todos&lt;/h1&gt;
+    &lt;/div&gt;
+    &lt;div class="content"&gt;
+      &lt;div id="create-todo"&gt;
+        &lt;input id="new-todo" placeholder="What needs to be done?" type="text" /&gt;
+
+      &lt;/div&gt;
+      &lt;div id="todos"&gt;
+        &lt;ul id="todo-list"&gt;&lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>页面结构很简单；只包含了一个输入框（#new-todo）用来创建新的to-do，一个列表（#todo-list）用来显示已存在的to-do。</p>
+
+<p>接下来看看todos.js脚本，这里是Backbone应用的核心代码。所有的东西都包含在jQuery()中，保证了在页面加载完成以后才运行代码：</p>
+
+<pre><code>// todos.js
+jQuery(function($){
+  // Application goes here...
+})
+</code></pre>
+
+<p>创建基本的Todo模型，它有content和done等属性。同时提供了toggle()帮助函数来翻转模型的done属性值：</p>
+
+<pre><code>window.Todo = Backbone.Model.extend({
+  defaults: {
+    done: false
+  },
+  toggle: function() {
+    this.save({done: !this.get("done")});
+  }
+});
+</code></pre>
+
+<p>我们在window对象上设置Todo模型以便它能被全局访问。同时，使用这种模式，就能很简单地看到一个脚本定义了哪些全局变量——只要看一眼脚本中有哪些地方引用了window对象。</p>
+
+<p>下一步，设置TodoList集合，保存Todo模型数组的地方：</p>
+
+<pre><code>window.TodoList = Backbone.Collection.extend({
+  model: Todo,
+  // 将所有待完成的向都保存至“todos”命名空间下
+  localStorage: new Store("todos"),
+  // 从todo项列表中过滤掉对所有已经完成的任务
+  done: function() {
+    return this.filter(function(todo){ return todo.get('done'); });
+  },
+  remaining: function() {
+    return this.without.apply(this, this.done());
+  }
+});
+// 创建全局集合
+window.Todos = new TodoList;
+</code></pre>
+
+<p>我们正在使用Backbone的本地存储解决方案（backbone.localstorage.js），它要求必须在每个需要保存数据的集合或模型中设置一个localStorage属性。在TodoList中另外两个函数done()和remaining()来过滤集合，返回已经或还没有完成的to-do模型数据。因为只可能有一个TodoList，我们将其实例化为一个全局变量：window.Todos。</p>
+
+<p>再下一步，视图是用来显示单独的to-do，叫做TodoView。它绑定了Todo模型的change事件，当发生事件是重新渲染视图：</p>
+
+<pre><code>window.TodoView = Backbone.View.extend({
+  // 视图是一个li标签
+  tagName:  "li",
+  // 对于每个单独的项都缓存一个模板函数
+  template: $("#item-template").template(),
+  // 给视图函数委托事件
+  events: {
+    "change   .check"        : "toggleDone",
+    "dblclick .todo-content" : "edit",
+    "click    .todo-destroy" : "destroy",
+    "keypress .todo-input"   : "updateOnEnter",
+    "blur     .todo-input"   : "close"
+  },
+  initialize: function() {
+    // 确保调用函数时传入正确的作用域
+    _.bindAll(this, 'render', 'close', 'remove');
+    // 监听模型的修改
+    this.model.bind('change', this.render);
+    this.model.bind('destroy', this.remove);
+  },
+  render: function() {
+    // 使用存储的模板来更新el
+    var element = jQuery.tmpl(this.template, this.model.toJSON());
+    $(this.el).html(element);
+    return this;
+  },
+  // 当复选框被选中时，就切换模型的已完成状态
+  toggleDone: function() {
+    this.model.toggle();
+  },
+  // 将当前视图切换为编辑模式，显示input输入框
+  edit: function() {
+    $(this.el).addClass("editing");
+    this.input.focus();
+  },
+  // 关闭编辑模式，将更改保存至to-do列表中
+  close: function(e) {
+    this.model.save({content: this.input.val()});
+    $(this.el).removeClass("editing");
+  },
+  // 如果按下了回车键，则结束编辑状态
+  // 触发input的blur事件，调用close()
+  updateOnEnter: function(e) {
+    if (e.keyCode == 13) e.target.blur();
+  },
+  // 当模型被删除时也删除元素
+  remove: function() {
+    $(this.el).remove();
+  },
+  // 当点击“.todo-destory”时销毁模型
+  destroy: function() {
+    this.model.destroy();
+  }
+});
+</code></pre>
+
+<p>可以看到我们将许多事件委托给了视图，它管理了更新、完成和删除to-do等等。例如，每当复选框状态改变时，toggleDone()会被调用，切换模型的done属性值。这个结果将触发模型的change事件，致使视图重新渲染。</p>
+
+<p>我们使用了jQuery.tmpl（http://api.jquery.com/category/plugins/templates/）来处理HTML模板，每当渲染时视图就用重新生成的模板替换el中的内容。该模板引用自ID为#item-template的元素。将其放到index.html页面的body标签里面：</p>
+
+<pre><code>&lt;script type="text/template" id="item-template"&gt;
+  &lt;div class="todo {{if done}}done{{/if}}"&gt;
+    &lt;div class="display" title="Double click to edit..."&gt;
+
+      &lt;input class="check" type="checkbox" {{if done}}checked="checked"{{/if}} /&gt;
+      &lt;div class="todo-content"&gt;${content}&lt;/div&gt;
+      &lt;span class="todo-destroy"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="edit"&gt;
+
+      &lt;input class="todo-input" type="text" value="${content}" /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>如果你读过第五章，那里比较深入地介绍了jQuery.tmpl，模板语法看上去应该相当地熟悉了。本质上，我们是在互相操作#todo-content和#todo-input元素里的内容。另外，要保证复选框的“选择”状态是正确的。</p>
+
+<p>TodoView一定程度上是自包含的——只要在实例化的时候提供给它一个模型，并且将el属性指定为to-do列表。这就是基本的AppView的工作，保证初始的to-do列表用实例化的TodoView实例填充即可。AppView的另一个角色就是当用户点击Return时根据#new-todo的输入内容创建新Todo记录：</p>
+
+<pre><code>// 我们的整个AppView是顶层的UI片段
+window.AppView = Backbone.View.extend({
+  // 给现有的App骨架绑定已有的HTML，而不是创建新元素
+  el: $("#todoapp"),
+  events: {
+    "keypress #new-todo":  "createOnEnter",
+    "click .todo-clear a": "clearCompleted"
+  },
+  // 构造函数中，我们将相关的事件绑定给了Todos集合
+  // 当添加或者修改记录时触发这些事件
+  // 通过将可能存在本地存储中的记录载入来给出初始数据 
+  initialize: function() {
+    _.bindAll(this, 'addOne', 'addAll', 'render');
+    this.input = this.$("#new-todo");
+    Todos.bind('add',     this.addOne);
+    Todos.bind('refresh', this.addAll);
+    Todos.fetch();
+  },
+  // 通过创建一个视图并将这个元素绑定到`&lt;ul&gt;`中，
+  // 以此来添加一个单独的to-do项给这个列表
+  addOne: function(todo) {
+    var view = new TodoView({model: todo});
+    this.$("#todo-list").append(view.render().el);
+  },
+  // 一次性将所有项都添加至Todos集合中
+  addAll: function() {
+    Todos.each(this.addOne);
+  },
+  // 如果在主输入框域中敲击了回车，则创建一个新的Todo模型
+  createOnEnter: function(e) {
+    if (e.keyCode != 13) return;
+    var value = this.input.val();
+    if ( !value ) return;
+    Todos.create({content: value});
+    this.input.val('');
+  },
+  clearCompleted: function() {
+    _.each(Todos.done(), function(todo){ todo.destroy(); });
+    return false;
+  }
+});
+// 最后，创建一个App
+window.App = new AppView;
+</code></pre>
+
+<p>当页面首次加载后，Todos集合将填充数据然后触发refresh事件调用。这将调用addAll()来获取所有的Todo模型，生成TodoView视图，并将它们添加到#todo-list中。另外，有新的Todo模型添加到Todos中时，Todos触发add事件，调用addOne()并将它添加到TodoView的列表中。也就是说，初始化填充和Todo的创建是由AppView来处理的，而单独的TodoView视图来处理它们的更新和销毁。</p>
+
+<p>让我们马上刷新页面看看刚完成的工作的结果如何。尽管会有一些bug和排版的问题，看到的结果应该和图12-1类似。</p>
+
+<p><img src="http://img04.taobaocdn.com/tps/i4/T1kjGBXjJPXXXXXXXX-671-564.png" alt="" /></p>
+
+<p>图12-1,完整的Backbone Todo应用程序</p>
+
+<p>我们已经做到了包含添加、检查、更新和删除功能的“to-do”应用，所有这些只使用相对比较少的代码量。由于使用了Backbone适配器来处理本地存储，“to-do”在页面加载中做到了持久化。这个例子应该能让你充分理解Backbone的用武之地何在以及如何用它来创建你的应用程序。</p>
+
+<p>你可以在随书文件中找到完整的应用程序，位于assets/ch12/todos目录下。</p>
+</div>
+</body>
+</html>

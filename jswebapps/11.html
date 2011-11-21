@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" media="screen" href="http://a.tbcdn.cn/app/dp/s/screen.css" />
+<style>
+#bd {margin-left:20px;margin-right:20px;}
+</style>
+<title>wd-gallery - markdown</title>
+</head>
+<body>
+<div id="bd">
+
+<p><style>
+p img {
+    float:none;
+}
+</style></p>
+
+<h1>第11章 Spine类库</h1>
+
+<p>Spine（http://maccman.github.com/spine）是一个轻量级JavaScript应用程序开发库，涉及到本书中的很多概念，如MVC、事件和类。当说到轻量级，指的是体积轻便——整个库大约仅有500行的JavaScript代码，缩减和压缩后大约只有2K。但千万不要有错误的印象；Spine将会让你在保证代码干净整洁和耦合松散的前提之下构建功能全面丰富的JavaScript应用程序。</p>
+
+<p>在写这本书的时候我创建了Spine，因为当时找不到一个客户端MVC框架能满足我的需求。Spine尝试恪守本书中建议的最佳实践，而事实上本书中例子Holla就是用Spine打造的。</p>
+
+<p>和基于Widget的如Cappuccino（http://cappuccino.org）和SproutCore（http://sproutcore.com）等库不一样，Spine本身不会决定如何给用户显示数据。它的重点在于灵活和简单。Spine提供骨架，接下来按照你自己喜欢的方法处理——开发真正了不起的应用。</p>
+
+<p>Spine包含了一个可以继承的类库，Spine.Class；一个事件模块，Spine.Events；一个ORM，Spine.Model；以及一个控制器类，Spine.Controller。任何其他需要的库都取决于你自己，像模板支持或DOM库等，用你最熟悉就可以了。说到这里，Spine包含了对jQeury和Zepto.js库特别的支持，它们之间互补工作的很好。</p>
+
+<p>此刻Spine的不足就是缺乏文档。但既然现在还是该库的初级阶段，文档肯定会得以改善的。到目前位置，本章应该是个较好的介绍，示例应用程序将提供进一步的解释。</p>
+
+<h2>设置</h2>
+
+<p>很简单，从Spine项目代码仓库（http://github.com/maccman/spine）下载文件，引用到页面中；Spine没有依赖关系：</p>
+
+<pre><code>&lt;script src="spine.js" type="text/javascript" charset="utf-8"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Spine的命名空间完全在Spine变量之后，故它和其他变量都不会冲突。故可以安全地包含像jQeury、Zepto或Prototype等等类库而不会产生任何兼容性问题。</p>
+
+<h2>类</h2>
+
+<p>Spine中的几乎每一个对象都封装在类里面。但是，Spine的类使用Object.create()和纯原型继承的方式来构造的，在第三章中有介绍，它和大多数类抽象的构造方式是不一样的。</p>
+
+<p>为了创建一个新的类，调用Spine.Class.create([instanceProperties, classProperties])，传递可选的参数，实例和类的属性：</p>
+
+<pre><code>var User = Spine.Class.create({
+    name: "Caroline"
+});
+</code></pre>
+
+<p>如上例所示，User的实例现在有一个默认的name属性。背后之意，create()创建一个新对象，设置它的prototype为Spine.Class——也就是说，User继承自它。如果想要创建子类，只要简单地在父类上调用create()即可：</p>
+
+<pre><code>var Friend = User.create();
+</code></pre>
+
+<p>Friend现在是User的子类，将继承它所有的属性：</p>
+
+<pre><code>assertEqual( Friend.prototype.name, "Caroline" );
+
+</code></pre>
+
+<h3>实例化</h3>
+
+<p>因为使用了纯原型对象，并且用继承代替了构造函数，所以不能使用new关键词来生成实例。相反，Spine使用了init()函数：</p>
+
+<pre><code>var user = User.init();
+assertEqual( user.name,"Caroline" );
+user.name = "Trish";
+assertEqual( user.name, "Trish" );
+</code></pre>
+
+<p>任何传递给init()的参数都会被实例初始化函数init()：</p>
+
+<pre><code>var User = Spine.Class.create({
+    init: function(name){
+        this.name = name;
+    }
+});
+var user = User.init("Martina");
+assertEqual( user.name, "Martina" );
+</code></pre>
+
+<h3>类扩展</h3>
+
+<p>就像在创建时设置类和实例的属性一样，你可以使用include()和extend()传递进一个对象字面量：</p>
+
+<pre><code>User.include({
+    // Instance properties
+});
+User.extend({
+    // Class properties
+});
+</code></pre>
+
+<p>include()和extend()为模块铺设了道路，它们是可复用的代码片段，可以多次包含：</p>
+
+<pre><code>var ORM = {
+    extended: function(){
+        // 当继承的时候调用这里的逻辑
+        // this === User
+    },
+    find: function(){ /* ... */ },
+    first: function(){ /* ... */ }
+};
+User.extend( ORM );
+</code></pre>
+
+<p>当模块被包含或扩展时你会接收到一个回调。在上面的例子中，当调用User.extend()函数时，extended函数会被调用，上下文是User。同样，如果模块有included属性，当模块被包含到一个类中时它也会被调用。</p>
+
+<p>因为使用了基于原型的继承，任何添加到类中属性都能够在运行时动态反射到子类中：</p>
+
+<pre><code>var Friend = User.create();
+User.include({
+    email: "info@eribium.org"
+});
+assertEqual( Friend.init().email, "info@eribium.org" );
+</code></pre>
+
+<p>在子类中属性可以被覆盖而不影响父类。但修改子类中的对象，如数组会影响整个继承树。如果想让一个对象在一个类或实例中特有的，你需要在类或实例首次初始化时创建它。可以在created()函数中做这个事情，在类首次设置或实例化时，Spine会调用它：</p>
+
+<pre><code>// 我们想让一组记录来表示这个类
+var User = Spine.Class.create({
+    // 实例化时调用
+    init: function(){
+        this.attributes = {};
+    },
+    // 创建类的时候调用
+    created: function(){
+        this.records = [];
+    }
+});
+</code></pre>
+
+<h3>上下文</h3>
+
+<p>上下文的改变在JavaScript编程中是非常普遍的，所以Spine.Class包含了一些工具方法来控制作用域。问题举例，例如：</p>
+
+<pre><code>var Controller = Spine.Class.create({
+    init: function(){
+        // 绑定事件监听
+        $("#destroy").click(this.destroy);
+    },
+    destroy: function(){
+        // 这个析构函数的调用使用了错误的上下文
+        // 因此使用this会有问题
+        // 下面这个断言执行失败
+        assertEqual( this, Controller.fn );
+    }
+});
+</code></pre>
+
+<p>在上面的例子中，当事件发生时，destroy()函数会被调用，上下文是元素#destroy，而不是Controller。为了处理它，可以代理该上下文，强制为你指定的那个。Spine提供了proxy()函数来做到这件事情：</p>
+
+<pre><code>var Controller = Spine.Class.create({
+    init: function(){
+        $("#destroy").click(this.proxy(this.destroy));
+    },
+    destroy: function(){ }
+});
+</code></pre>
+
+<p>如果发现要不断地使用代理，你会想要重写它来实现总是包含代理。Spine包含了一个proxyAll()函数来做这件事件：</p>
+
+<pre><code>var Controller = Spine.Class.create({
+    init: function(){
+        this.proxyAll("destroy", "render")
+        $("#destroy").click(this.destroy);
+    },
+    // 现在调用函数时总是会使用正确的上下文
+    destroy: function(){ },
+    render: function(){ }
+});
+</code></pre>
+
+<p>proxyAll()接收可以接收多个函数名称，但被调用时它会重写这些函数，从而使用当前的作用域代理这些函数。这就保证了destroy()或render()总是在局部作用域下执行代码。</p>
+
+<h2>事件</h2>
+
+<p>事件在Spine中很关键，在内部它们也经常使用。Spine的事件功能包含在Spine.Events模块中，在任何需要的地方都可以包含它。例如，给一个Spine中的类添加事件支持：</p>
+
+<pre><code>var User = Spine.Class.create();
+User.extend(Spine.Events);
+</code></pre>
+
+<p>Spine.Events提供了三个处理事件的函数：</p>
+
+<ul>
+<li><code>bind(eventName, callback)</code></li>
+<li><code>trigger(eventName, [*data])</code></li>
+
+<li><code>unbind(eventName, [callback])</code></li>
+</ul>
+
+<p>如果你用过jQuery的事件API，这看起来很眼熟。例如，给我们的User类绑定和触发事件：</p>
+
+<pre><code>User.bind("create", function(){ /* ... */ });
+User.trigger("create");
+</code></pre>
+
+<p>绑定多个事件到一个回调函数上，只要使用空格间隔即可：</p>
+
+<pre><code>User.bind("create update", function(){ /* ... */ });
+</code></pre>
+
+<p>trigger()接收一个事件名称，并传递可选的参数给事件的回调函数：</p>
+
+<pre><code>User.bind("countChange", function(count){
+    // 调用trigger方法时将`count`传入
+    assertEqual(count, 5);
+});
+User.trigger("countChange", 5);
+</code></pre>
+
+<p>最常见的使用Spine事件的方式是和数据绑定在一起，用视图在应用程序的模型上挂接钩子。在后面“构建联系人管理”小节中将详细地介绍。</p>
+
+<h2>模型</h2>
+
+<p>如果看过一眼Spine的源代码（https://github.com/maccman/spine/blob/master/spine.js），就会看到它大量的篇幅是在处理模型，也就是——模型是任何MVC应用程序的核心部分。模型处理应用程序数据的排序和操作，通过提供完整的ORM Spine简化它。</p>
+
+<p>生成一个新的模型使用Spine.Model.setup(name, attrs)而不是使用create()函数，它已经被保留了。可以给setup()传递模型名称和一个属性数组：</p>
+
+<pre><code>// 创建任务模型
+var Task = Spine.Model.setup("Task", ["name", "done"]);
+
+</code></pre>
+
+<p>使用include()和extend()来添加实例和类属性：</p>
+
+<pre><code>Task.extend({
+    // 返回所有完成的任务
+    done: function(){ /* ... */ }
+});
+Task.include({
+    // 默认名字 
+    name: "Empty...",
+    done: false,
+    toggle: function(){
+        this.done = !this.done;
+    }
+});
+</code></pre>
+
+<p>当实例化一条记录时，可以传递一个包含初始属性的可选对象：</p>
+
+<pre><code>var task = Task.init({name: "Walk the dog"});
+assertEqual( task.name, "Walk the dog" );
+</code></pre>
+
+<p>设置和获取属性就像普通对象的设置和获取属性一样。另外，attributes()函数返回一个包含记录所有属性的对象字面量：</p>
+
+<pre><code>var task = Task.init();
+task.name = "Read the paper";
+assertEqual( task.attributes(), {name: "Read the paper"} );
+</code></pre>
+
+<p>保存新的或已存在的记录只要简单地调用save()函数。保存记录时，如果不存在就会生成一个ID；然后记录就会持久化到本地内存中：</p>
+
+<pre><code>var task = Task.init({name: "Finish book"});
+task.save();
+task.id //=&gt; "44E1DB33-2455-4728-AEA2-ECBD724B5E7B"
+</code></pre>
+
+<p>使用模型的find()函数可以获取记录，只要传递进记录的ID：</p>
+
+<pre><code>var task = Task.find("44E1DB33-2455-4728-AEA2-ECBD724B5E7B");
+assertEqual( task.name, "Finish book" );
+</code></pre>
+
+<p>如果对应的ID没有记录存在，将会产生一个异常。可以使用exists()函数来检查一条记录是否存在，而不用担心产生异常：</p>
+
+<pre><code>var taskExists = Task.exists("44E1DB33-2455-4728-AEA2-ECBD724B5E7B");
+assert( taskExists );
+</code></pre>
+
+<p>使用destroy()函数可以从本地缓存中删除一条记录：</p>
+
+<pre><code>var task = Task.create({name: "Thanks for all the fish"});
+assert( task.exists() );
+task.destroy();
+assertEqual( task.exists(), false );
+</code></pre>
+
+<h3>获取记录</h3>
+
+<p>使用ID来获取记录仅仅是一种方式。通常，它在遍历所有的记录或返回要过滤的子集时非常有用。使用all()、select()和each()等函数Spine可以让你轻松做到这些事情：</p>
+
+<pre><code>// 返回所有任务
+Task.all(); //=&gt; [Object]
+// 通过带回done属性的求反值来返回所有的任务
+var pending = Task.select(function(task){ return !task.done });
+// 每个任务都调用一个回调
+Task.each(function(task){ /* ... */ });
+</code></pre>
+
+<p>另外，Spine还提供了一些帮助函数，通过属性找到记录：</p>
+
+<pre><code>// 通过给定的属性值找到第一个任务
+Task.findByAttribute(name, value);
+//=&gt; Object
+// 通过给定的属性值找到所有的任务
+Task.findAllByAttribute(name, value); //=&gt; [Object]
+</code></pre>
+
+<h3>模型事件</h3>
+
+<p>可以在模型上绑定事件，当记录改变时触发回调：</p>
+
+<pre><code>Task.bind("save", function(record){
+    console.log(record.name, "was saved!");
+});
+</code></pre>
+
+<p>如果涉及到一条记录，它会被传递到事件回调函数中。还可以为每条记录在模型上绑定一个监听来处理全局的回调，或者也可以为特定的记录绑定事件：</p>
+
+<pre><code>Task.first().bind("save", function(){
+    console.log(this.name, "was saved!")
+});
+Task.first().updateAttributes({name: "Tea with the Queen"});
+</code></pre>
+
+<p>很显然，你可以使用trigger()来创建自定义的事件，但下面这些已经默认存在了：</p>
+
+<p>save</p>
+
+<p>记录被保存（创建或更新）</p>
+
+<p>update</p>
+
+<p>记录被更新</p>
+
+<p>create</p>
+
+<p>记录被创建</p>
+
+<p>destroy</p>
+
+<p>记录被销毁</p>
+
+<p>change</p>
+
+<p>任一上述事件；记录被创建或更新或销毁</p>
+
+<p>refresh</p>
+
+<p>所有记录被无效和替换</p>
+
+<p>error</p>
+
+<p>校验无效</p>
+
+<p>在创建应用程序是会发现模型事件非常关键，特别是在模型和视图绑定时。</p>
+
+<h3>校验</h3>
+
+<p>校验是以最简单的方法实现的：通过覆盖模型实例的validate()函数。只要记录被保存validate()函数就会被调用。只要validate()返回一些值，就说明校验失败了。否则，记录保存继续顺利持久化到本地内存中：</p>
+
+<pre><code>Task.include({
+    validate: function(){
+        if ( !this.name ) return "Name required";
+    }
+});
+</code></pre>
+
+<p>如果校验失败，应该返回一个字符串一边解释原因。可以将此消息通知给用户，告诉他们什么地方出错了，如何改正：</p>
+
+<pre><code>Task.bind("error", function(record, msg){
+    // 最简单的报错
+    alert("Task didn't save: " + msg);
+});
+</code></pre>
+
+<p>只要校验出错，模型错误事件就会被调用。回调函数传递进来的是出错的记录和指示错误的消息。</p>
+
+<h3>持久化</h3>
+
+<p>Spine的记录总是持久化在内存中的，但也有机会存储到后台，例如HTML5的Local Storage（本地存储）或Ajax。</p>
+
+<p>使用本地存储非常简单。只要包含spine.model.local.js这个JavaScript文件即可，然后用Spine.Model.Local来扩展你的模型：</p>
+
+<pre><code>// 使用本地存储来保存
+Task.extend(Spine.Model.Local);
+Task.fetch();
+
+</code></pre>
+
+<p>记录不会从浏览器的本地存储中自动获取，因此需要调用fetch()，用已存在的数据来填充模型。通常，在应用程序全部初始化后来做这件事情。一旦模型填充了新的数据，refresh事件就会被触发：</p>
+
+<pre><code>Task.bind("refresh", function(){
+    // 新任务!
+    renderTemplate(Task.all());
+});
+</code></pre>
+
+<p>使用Ajax来持久化也是类似的；只要包含spine.model.ajax.js这个JavaScript即可，然后用Spine.Model.Ajax来扩展你的模型：</p>
+
+<pre><code>// 保存至服务器
+Task.extend(Spine.Model.Ajax);
+</code></pre>
+
+<p>默认情况下，Spine会检测模型名称，并使用一些基本的变形来生成一个URL。故，如上例所示，Task模型的URL将会是“/tasks”。在类中提供你自己的URL属性可以覆盖默认的行为：</p>
+
+<pre><code>// 添加自定义URL
+Task.extend({
+    url: "/tasks"
+});
+// 从服务器获取新任务
+Task.fetch();
+</code></pre>
+
+<p>一旦调用了Task.fetch()，Spine会发起一个Ajax的GET请求到/tasks，它期望得到一个JSON的响应，里面应该是一个包含一些task（任务）的数组。如果服务器成功返回响应，这些记录将会被加载进来，并触发refresh事件。</p>
+
+<p>只要你创建、更新或销毁一个记录，Spine都会发起Ajax请求到服务器来同步两边的数据。该库期望服务器是以REST方式的架构，这样可以做到无缝运行，不过也可以覆盖之以便自定义安装。Spine期望存在这些对应终端：</p>
+
+<pre><code>read    →   GET     /collection
+create  →   POST    /collection
+update  →   PUT     /collection/id
+destroy →   DELETE  /collection/id
+</code></pre>
+
+<p>客户端创建了一条记录以后，Spine将会发送一个HTTP POST请求到服务器，提交以JSON形式表示的记录。例如，创建一个名称为“Bug eggs”的Task；将会发送到服务器的请求如下：</p>
+
+<pre><code>POST /tasks HTTP/1.0
+Host: localhost:3000
+Origin: http://localhost:3000
+Content-Length: 66
+Content-Type: application/json
+
+{"id": "44E1DB33-2455-4728-AEA2-ECBD724B5E7B", "name": "Buy eggs"}
+</code></pre>
+
+<p>同样地，销毁一条记录将会发送一个DELETE请求到服务器，更新一条记录将会发送一个PUT请求。对于PUT和DELETE请求，记录的ID的值是包含在URL中的：</p>
+
+<pre><code>PUT /tasks/44E1DB33-2455-4728-AEA2-ECBD724B5E7B HTTP/1.0
+Host: localhost:3000
+Origin: http://localhost:3000
+Content-Length: 71
+Content-Type: application/json
+
+{"id": "44E1DB33-2455-4728-AEA2-ECBD724B5E7B", "name": "Buy more eggs"}
+</code></pre>
+
+<p>Spine的Ajax同步和其他大多数库的有一个区别。它首先将记录保存到客户端，然后才发送到服务器，因此客户端不用等待响应。这意味着客户端完全和服务器解耦了——也就是说，为了实现功能并不一定需要有服务器的存在。</p>
+
+<p>和服务器解藕后提供了三个主要的优点。首先，接口速度很快，而且非阻塞，因此用户与应用程序交互不用等待。其次，简化了代码——记录在UI上可能显示，但是要等服务器的响应时内容不可编辑，这些逻辑就不用设计了。最后，如果真的需要添加离线支持，这可以很容易地做到。</p>
+
+<p>思考一下服务端校验？Spine假设你将在客户端做了所有必要的校验。服务器只在发生一个异常（代码有问题）时返回一个错误，这个只能在异常环境中发生。</p>
+
+<p>当服务器返回一个不成功的响应时，模型将触发一个ajaxError事件，包含该记录、一个XMLHttpRequest对象、Ajax设置属性和该抛出的异常对象：</p>
+
+<pre><code>Task.bind("ajaxError", function(record, xhr, settings, error){
+    // Invalid response
+});
+</code></pre>
+
+<h2>控制器</h2>
+
+<p>控制器是Spine最后一个组件，它们将应用程序剩下的部分粘合在一起。控制器通常就是添加事句柄到DOM元素、模型、渲染模板，并保持视图和模型的同步。创建一个Spine控制器，需要调用create()来子类化Spine.Controller：</p>
+
+<pre><code>jQuery(function(){
+    window.Tasks = Spine.Controller.create({
+        // 控制器属性
+    });
+});
+</code></pre>
+
+<p>建议在页面的其他部分都加载进来之后再加载控制器，从而无需处理各种不同的页面状态的问题。在Spine所有的例子中，会发现每个控制器都是在jQuery()调用的里面。这保证了控制器是在文档加载完成以后才被创建的。</p>
+
+<p>在Spine中，习惯使用驼峰复数形式给控制器命名，也就是相关模型的复数。大多数控制器只有实例属性，仅当实例化后使用。实例化控制器就像实例化任何类一样，调用init()：</p>
+
+<pre><code>var tasks = Tasks.init();
+</code></pre>
+
+<p>控制器总是会和DOM元素相关联，通过el属性来访问元素。可以在实例化时传递进去，是可选的；否则，控制器自身生成一个默认的div元素：</p>
+
+<pre><code>var tasks = Tasks.init({el: $("#tasks")});
+assertEqual( tasks.el.attr("id"), "tasks" );
+</code></pre>
+
+<p>该元素在内部可以用来添加模板和渲染视图：</p>
+
+<pre><code>window.Tasks = Spine.Controller.create({
+    init: function(){
+        this.el.html("Some rendered text");
+    }
+});
+var tasks = Tasks.init();
+$("body").append(tasks.el);
+</code></pre>
+
+<p>事实上，任何传递给init()函数的参数都会在控制器上设置属性。例如：</p>
+
+<pre><code>var tasks = Tasks.init({item: Task.first()});
+assertEqual( Task.first(), tasks.item );
+</code></pre>
+
+<h3>代理</h3>
+
+<p>在前面的例子中你会发现所有事件的回调函数都用this.proxy()包起来保证在正确的上下文中执行。由于这是一个很常用的模式，Spine提供了一个快捷方式：proxied。在控制器上只要简单地添加一个proxied属性，对应的值是包含函数名的数组，这些函数都将会在控制器的上下文中执行：</p>
+
+<pre><code>// 和使用proxyAll等价
+var Tasks = Spine.Controller.create({
+    proxied: ["render", "addAll"],
+    render: function(){ /* ... */ },
+    addAll: function(){ /* ... */ }
+});
+</code></pre>
+
+<p>现在可以将类似render()这些回调函数传递给事件监听了，而不用关心它们的执行上下文。这些函数总是会在正确的上下文中得到执行。</p>
+
+<h3>元素</h3>
+
+<p>在应用程序内部以本地属性的方式来访问元素是非常有用的。Spine提供了一个快捷方式：elements。只要在控制器上添加elements属性，值是一个对象，包含选择器的名字。在下面的例子中，this.input就是使用form input[type=text]选择得到的元素。所有的选择器都是在控制器的el元素之下执行选取的而并非整个页面：</p>
+
+<pre><code>// input实例变量
+var Tasks = Spine.Controller.create({
+    elements: {
+        "form input[type=text]": "input"
+    },
+    init: function(){
+        // this.input 指向表单的输入框
+        console.log( this.input.val() );
+    }
+});
+</code></pre>
+
+<p>但请记住，如果替换了控制器的el元素，你需要调用refreshElements()来刷新所有的元素引用。</p>
+
+<h3>委托事件</h3>
+
+<p>Spine的事件属性提供了一种简单的批量添加事件监听的方法。该场景背后的工作原理是，Spine利用了事件冒泡，所以只要在控制器的元素（el）上绑定了一个事件监听。像事件属性一样，所有的事件委托的作用域也是el。</p>
+
+<p>事件属性的形式是：{"eventName selector": "callback"}。选择器是可选的，如果没有提供事件就会直接绑定在元素el上。否则，事件就被委托：当在一个匹配选择器的子元素上该类型的事件发生时它就会触发。这是动态的，所以元素el里面的内容是否有变化并不重要：</p>
+
+<pre><code>var Tasks = Spine.Controller.create({
+    events: {
+        "keydown form input[type=text]": "keydown"
+    },
+    keydown: function(e){ /* ... */ }
+});
+</code></pre>
+
+<p>在上面的例子中，匹配选择器的input元素在收到keydown事件后，控制器的keydown回调函数就会执行。Spine保证了该函数在正确的上下文中执行，所以在这里无需担心，也不用代理事件回调函数。</p>
+
+<p>事件对象将传递到回调函数中，它非常有用，因为在本例中我们需要知道哪个键被按下了。另外，上面讨论到的元素可以从事件的target属性中获取。</p>
+
+<h3>控制器事件</h3>
+
+<p>类似事件委托，Spine的控制器支持自定义事件。默认情况下，控制器扩展自Spine.Events，这意味着它们具有必要的事件功能，如bind()和trigger()。利用这点可以保证各个控制器之间的解藕，或者作为控制器内部组织：</p>
+
+<pre><code>var Sidebar = Spine.Controller.create({
+    events: {
+        "click [data-name]": this.click
+    },
+    init: function(){
+        this.bind("change", this.change);
+    },
+    change: function(name){ /* ... */ },
+    click: function(e){
+        this.trigger("change", $(e.target).attr("data-name"));
+    }
+    // ...
+});
+var sidebar = Sidebar.init({el: $("#sidebar")});
+sidebar.bind("change", function(name){
+    console.log("Sidebar changed:", name);
+})
+
+</code></pre>
+
+<p>在上面的例子中，其他的控制器也能绑定Sidebar的change事件或触发它。就像在第二章展示的一样，自定义事件就算在外部从不使用，但在应用程序内部组织中是一个绝佳的方法。</p>
+
+<h3>全局事件</h3>
+
+<p>Spine可以让你在全局层面绑定和触发事件。这是一种发布和订阅的形式，让控制器的通讯甚至可以不了解对方，这保证了它们互相之间的解藕。这是通过一个全局对象Spine.App来实现的，在它上面什么都可以绑定或触发事件：</p>
+
+<pre><code>var Sidebar = Spine.Controller.create({
+    proxied: ["change"],
+    init: function(){
+        this.App.bind("change", this.change);
+    },
+    change: function(name){ /* ... */ }
+});
+</code></pre>
+
+<p>Spine的控制器将Spine.App的别名简称为this.App，减少了一些打字。看上面的例子Sidebar控制器绑定了全局的change事件。然后，其他控制器或脚本就可以触发该事件，可以传递进必要的数据：
+    Spine.App.trigger("change", "messages");</p>
+
+<h3>渲染模式</h3>
+
+<p>既然已经介绍了控制器中所有主要的可用选项，那下面就来看一下典型的用例。</p>
+
+<p>渲染模式是将模型和视图绑定在一起的非常有用的方法。控制器实例化以后，添加一个事件监听到对应的模型，在模型刷新或变化时调用回调函数。该回调函数将更新元素el，而通常就是使用渲染模板来替换el中的内容：</p>
+
+<pre><code>var Tasks = Spine.Controller.create({
+    init: function(){
+        Task.bind("refresh change", this.proxy(this.render));
+    },
+    template: function(items){
+        return($("#tasksTemplate").tmpl(items));
+    },
+    render: function(){
+        this.el.html(this.template(Task.all()));
+    }
+});
+</code></pre>
+
+<p>这个绑定数据的方法很简单但比较生硬，只要有一条记录发生变化，它就会更新所有的元素。在小而不复杂的列表上应用是没有问题的，但随后会发现我们需要对独立的元素有更多的控制，例如需要对其中的项目添加事件处理句柄。就这样元素模式应运而生了。</p>
+
+<h3>元素模式</h3>
+
+<p>本质上元素模式和渲染模式提供的功能是一样的，但有了更多的控制。它由两个控制器构成：一个用来控制多个项目的一个集合，另一个用来处理单个的项目。让我们深入代码来一窥究竟：</p>
+
+<pre><code>var TasksItem = Spine.Controller.create({
+    // 将点击事件委托给本地事件处理程序
+    events: {
+        "click": "click"
+    },
+    // 保证函数的执行拥有正确的上下文
+    proxied: ["render", "remove"],
+    // 将事件绑定至记录中
+    init: function(){
+        this.item.bind("update", this.render);
+        this.item.bind("destroy", this.remove);
+    },
+    // 渲染一个元素
+    render: function(item){
+        if (item) this.item = item;
+        this.el.html(this.template(this.item));
+        return this;
+    },
+    // 使用模板，这里使用了jQuery.tmpl.js
+    template: function(items){
+        return($("#tasksTemplate").tmpl(items));
+    },
+    // 当销毁一个元素时调用
+    remove: function(){
+        this.el.remove();
+    },
+    // 我们很好的控制了事件，同时也很轻松的就可以访问记录
+    click: function(){ /* ... */ }
+});
+var Tasks = Spine.Controller.create({
+    proxied: ["addAll", "addOne"],
+    init: function(){
+        Task.bind("refresh", this.addAll);
+        Task.bind("create", this.addOne);
+    },
+    addOne: function(item){
+        var task = TasksItem.init({item: item});
+        this.el.append(task.render().el);
+    },
+    addAll: function(){
+        Task.each(this.addOne);
+    }
+});
+</code></pre>
+
+<p>在上面的例子中，Tasks承担的责任是当记录初始创建时添加进去，TasksItem承担的责任是处理更新、销毁事件，并且在必要时渲染记录。虽然它比之前的渲染模式更加复杂了，但它也有一些优势。</p>
+
+<p><img src="http://img04.taobaocdn.com/tps/i4/T1HkeBXolJXXXXXXXX-723-587.png" alt="" /></p>
+
+<p>图11-1.Spine应用程序例子中的联系人列表</p>
+
+<p>首先，它更高效了——任何单个元素变化时，该列表不需要重绘。更进一步说，我们对单独的项目有了更多的控制。像上例中的点击回调一样，我们能够在单个项目的层面来设置事件处理句柄，处理渲染等。</p>
+
+<h2>构建联系人管理应用</h2>
+
+<p>下面就让使用我们对Spine的API掌握的知识做一些实际的应用，比如构建一个联系人管理应用。我们希望提供给用户读取、创建、更新和删除联系人的功能，当然也包括搜索。</p>
+
+<p>图11-1展示了完成的结果，从中已经可以看到这个想法所创建出来的东西。</p>
+
+<p>该联系人管理应用是Spine开源类库所提供的例子。你可以跟随下面的学习向导也可以从项目的代码仓库（http://github.com/maccman/spine.contacts）中下载到全部的代码。</p>
+
+<p>参加图11-1，联系人管理应用主要有两个单元：侧边栏和联系人视图。这两个分别构成了两个独立的控制器：Sidebar和Contacts。该应用只有一个模型：Contact。在展开讨论每个单独的组件之前，先来看看初始化页面的结构：</p>
+
+<pre><code>&lt;div id="sidebar"&gt;
+
+    &lt;ul class="items"&gt;
+    &lt;/ul&gt;
+    &lt;footer&gt;
+        &lt;button&gt;New contact&lt;/button&gt;
+    &lt;/footer&gt;
+
+&lt;/div&gt;
+&lt;div class="vdivide"&gt;&lt;/div&gt;
+&lt;div id="contacts"&gt;
+    &lt;div class="show"&gt;
+        &lt;ul class="options"&gt;
+            &lt;li class="optEdit"&gt;Edit contact&lt;/li&gt;
+
+            &lt;li class="optEmail"&gt;Email contact&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class="content"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="edit"&gt;
+
+        &lt;ul class="options"&gt;
+            &lt;li class="optSave default"&gt;Save contact&lt;/li&gt;
+            &lt;li class="optDestroy"&gt;Delete contact&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class="content"&gt;&lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>结构中有一个#sidebar的div和一个#contacts的div是两个独立的单元。我们的应用将会用联系人的姓名填充.items的列表，并选中一个当前的联系人，在#contacts中显示它的相关信息。同时，监听.optEmail和.optSave上面的点击事件，根据需要切换显示或编辑的状态。最后，监听.optDestroy上面的点击事件，处理销毁当前联系人并选中其他的联系人。</p>
+
+<h3>联系人模型</h3>
+
+<p>只用半打代码联系人模型就完成待命了。Contact有三个属性：<code>fist_name</code>、<code>last_name</code>和<code>email</code>。同时还提供了一个方便的函数可以得到全名，它在模板中将很有用：</p>
+
+<pre><code>// 创建一个模型
+var Contact = Spine.Model.setup("Contact", ["first_name", "last_name", "email"]);
+// 页面重新载入后也能保持原有的模型
+Contact.extend(Spine.Model.Local);
+// 添加一些实例方法
+Contact.include({
+    fullName: function(){
+        if ( !this.first_name &amp;&amp; !this.last_name ) return;
+        return(this.first_name + " " + this.last_name);
+    }
+});
+</code></pre>
+
+<p>请注意，Spine.Model.Local扩展了该模型。这保证了这些记录能保存到浏览器的本地存储中，使得下次页面加载后数据仍然是可用的。</p>
+
+<h3>侧边栏控制器</h3>
+
+<p>现在来看一下Sidebar控制器，它承担的责任是列表显示联系人并跟踪当前选中的是哪个联系人。一旦联系人有变化，Sidebar控制器必须完成自我更新来反映这些变化。另外，侧边栏有一个“New contact”按钮，它将监听点击事件，处理创建空联系人的任务。</p>
+
+<p>下面就是该控制器全部的使命。首先这里的代码就是最主要的部分——如果对Spine还不熟悉——它包含了丰富的注释，所以仔细研究以后还是应该能理解的：</p>
+
+<pre><code>jQuery(function($){
+    window.Sidebar = Spine.Controller.create({
+        // 创建实例变量
+        // this.items //=&gt; &lt;ul&gt;&lt;/ul&gt;
+        elements: {
+            ".items": "items"
+        },
+        // 绑定事件委托
+        events: {
+            "click button": "create"
+        },
+        // 确保函数调用使用了正确的作用域
+        // 正如在事件回调中使用它们一样
+        proxied: ["render"],
+        // 渲染模板
+        template: function(items){
+            return($("#contactsTemplate").tmpl(items));
+        },
+        init: function(){
+            this.list = Spine.List.init({
+                el: this.items,
+                template: this.template
+            });
+            // 当列表的当前项发生更改时，显示这个联系人
+            this.list.bind("change", this.proxy(function(item){
+                this.App.trigger("show:contact", item);
+            }));
+            // 当当前的联系人发生更改时，比如创建了新的联系人
+            // 更改这个列表的当前选中项
+            this.App.bind("show:contact edit:contact", this.list.change);
+            // 当联系人发生更改时就渲染联系人
+            Contact.bind("refresh change", this.render);
+        },
+        render: function(){
+            var items = Contact.all();
+            this.list.render(items);
+        },
+        // 当‘创建’按钮被点击时调用
+        create: function(){
+            var item = Contact.create();
+            this.App.trigger("edit:contact", item);
+        }
+    });
+});
+</code></pre>
+
+<p>你会发现该控制器的init()函数使用了一个叫Spine.List的类，之前还没有对它进行解释。Spine.List是一个实用工具控制器，生成记录列表它非常有用。另外，Spine.List将会跟踪当前选中的项目，并在用户选中一个不同的项目时用一个变化事件通知事件的监听者。</p>
+
+<p>当联系人有改变或刷新时该列表会全部刷新。这让该例子简单漂亮，但如果将来它的性能暴露了问题我们还需要做一些改进。</p>
+
+<p>在template()中的#contactsTemplate是一个script元素，它包含了单个列表项目的联系人模板：</p>
+
+<pre><code>&lt;script type="text/x-jquery-tmpl" id="contactsTemplate"&gt;
+    &lt;li class="item"&gt;
+        {{if fullName()}}
+            &lt;span&gt;${fullName()}&lt;/span&gt;
+        {{else}}
+            &lt;span&gt;No Name&lt;/span&gt;
+
+        {{/if}}
+    &lt;/li&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>我们使用jQuery.tmpl（http://api.jquery.com/jquery.tmpl/），如果读过第五章你可能已经很熟悉了。Spine.List将会使用该模板来渲染每一个选项，并且将当前选中的项目在其<code>&lt;li&gt;</code>上设置相应的class值。</p>
+
+<h3>联系人控制器</h3>
+
+<p>Sidebar控制器负责显示联系人列表，允许用户选中单个联系人。但如何显示当前选中的联系人呢？这就是Contacts控制器的来由：</p>
+
+<pre><code>jQuery(function($){
+    window.Contacts = Spine.Controller.create({
+        // 填充内部元素的属性
+        elements: {
+            ".show": "showEl",
+            ".show .content": "showContent",
+            ".edit": "editEl"
+        },
+        proxied: ["render", "show"],
+        init: function(){
+            // 内部视图显示联系人
+            this.show();
+            // 当联系人发生改变时重新渲染视图
+            Contact.bind("change", this.render);
+            // 绑定至全局事件
+            this.App.bind("show:contact", this.show);
+        },
+        change: function(item){
+            this.current = item;
+            this.render();
+        },
+        render: function(){
+            this.showContent.html($("#contactTemplate").tmpl(this.current));
+        },
+        show: function(item){
+            if (item &amp;&amp; item.model) this.change(item);
+            this.showEl.show();
+            this.editEl.hide();
+        }
+    });
+});
+</code></pre>
+
+<p>一旦侧边栏中有一个新的联系人被选中了，全局事件show:contact事件就会触发。在Contacts中我们绑定该事件，它执行show()函数，得到并解析新选中的联系人。然后渲染showContent的div，用当前选中的记录来代替。</p>
+
+<p>可以看到#contactTemplate模板中，我们将用来显示当前联系人。让我们继续并将该模板添加到页面中：</p>
+
+<pre><code>&lt;script type="text/x-jquery-tmpl" id="contactTemplate"&gt;
+    &lt;label&gt;
+
+        &lt;span&gt;Name&lt;/span&gt;
+        ${first_name} ${last_name}
+    &lt;/label&gt;
+    &lt;label&gt;
+        &lt;span&gt;Email&lt;/span&gt;
+
+        {{if email}}
+            ${email}
+        {{else}}
+            &lt;div class="empty"&gt;Blank&lt;/div&gt;
+        {{/if}}
+    &lt;/label&gt;
+&lt;/script&gt;
+</code></pre>
+
+<p>我们现在已经有显示联系人的功能了，但编辑和销毁的功能呢？要做到这一点，让我们重写一下Contacts控制代码。主要区别就是应用程序在两种状态下的切换，当点击.optEdit和.optSave元素时显示和编辑。同时添加一个增加联系人的模板：#editContactTemplate。当保存记录时，读取在编辑的表单输入，并且更新记录的属性：</p>
+
+<pre><code>jQuery(function($){
+    window.Contacts = Spine.Controller.create({
+        // 填充内部元素属性
+        elements: {
+            ".show": "showEl",
+            ".edit": "editEl",
+            ".show .content": "showContent",
+            ".edit .content": "editContent"
+        },
+        // 委托事件
+        events: {
+            "click .optEdit": "edit",
+            "click .optDestroy": "destroy",
+            "click .optSave": "save"
+        },
+        proxied: ["render", "show", "edit"],
+        init: function(){
+            this.show();
+            Contact.bind("change", this.render);
+            this.App.bind("show:contact", this.show);
+            this.App.bind("edit:contact", this.edit);
+        },
+        change: function(item){
+            this.current = item;
+            this.render();
+        },
+        render: function(){
+            this.showContent.html($("#contactTemplate").tmpl(this.current));
+            this.editContent.html($("#editContactTemplate").tmpl(this.current));
+        },
+        show: function(item){
+            if (item &amp;&amp; item.model) this.change(item);
+            this.showEl.show();
+            this.editEl.hide();
+        },
+        // 当点击‘编辑’按钮时调用
+        edit: function(item){
+            if (item &amp;&amp; item.model) this.change(item);
+            this.showEl.hide();
+            this.editEl.show();
+        },
+        // 当点击‘删除’按钮时调用
+        destroy: function(){
+            this.current.destroy();
+        },
+        // 当点击‘保存’按钮时调用
+        save: function(){
+            var atts = this.editEl.serializeForm();
+            this.current.updateAttributes(atts);
+            this.show();
+        }
+    });
+});
+</code></pre>
+
+<p>如上面提到的，我们正在使用一个名叫#editContactTemplate的新模板。我们需要将其添加到页面中，这样才能饮用成功。本质上来说，#editContactTemplate和#contactTemplate非常相似，不同的是它使用input元素来显示记录数据：</p>
+
+<pre><code>&lt;script type="text/x-jquery-tmpl" id="editContactTemplate"&gt;
+    &lt;label&gt;
+        &lt;span&gt;First name&lt;/span&gt;
+
+        &lt;input type="text" name="first_name" value="${first_name}" autofocus&gt;
+    &lt;/label&gt;
+    &lt;label&gt;
+        &lt;span&gt;Last name&lt;/span&gt;
+        &lt;input type="text" name="last_name" value="${last_name}"&gt;
+
+    &lt;/label&gt;
+    &lt;label&gt;
+        &lt;span&gt;Email&lt;/span&gt;
+        &lt;input type="text" name="email" value="${email}"&gt;
+    &lt;/label&gt;
+
+&lt;/script&gt;
+</code></pre>
+
+<h3>应用程序控制器</h3>
+
+<p>就这样，我们有了两个控制器——Sidebar和Contacts——来处理选中、显示和编辑Contact记录。到目前为止最后需要的是一个App控制器来实例化每个控制器，传递给他们需要的页面元素：</p>
+
+<pre><code>jQuery(function($){
+    window.App = Spine.Controller.create({
+        el: $("body"),
+        elements: {
+            "#sidebar": "sidebarEl",
+            "#contacts": "contactsEl"
+        },
+        init: function(){
+            this.sidebar = Sidebar.init({el: this.sidebarEl});
+            this.contact = Contacts.init({el: this.contactsEl});
+            // 从本地存储中获取联系人
+            Contact.fetch();
+        }
+    }).init();
+});
+</code></pre>
+
+<p>请注意，我们在App控制器创建后立即调用了它的init()函数。同时，在Contact模型上也调用了fetch()函数从本地存储中获取所有联系人信息。</p>
+
+<p>所以，这就是联系人的全部功能和代码！两个主要的控制器（Sidebar和Contacts），一个模型（Contact），两个视图。想要查看最终的产品，从仓库中检出代码（http://github.com/maccman/spine.contacts），对照图11-2。</p>
+
+<p><img src="http://img02.taobaocdn.com/tps/i2/T1OEiBXiRjXXXXXXXX-828-623.png" alt="" /></p>
+
+<p>图11-2.Spine应用程序例子中的编辑联系人</p>
+</div>
+</body>
+</html>
