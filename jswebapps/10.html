@@ -127,7 +127,9 @@ HTTP/1.1 304 Not Modified
 
 <p>源码压缩带来额外的好处是让代码晦涩难读。总是存在有充分动机的人能将代码重建出来，但对非正常的观察者来说这是一个障碍。</p>
 
-<p>当前有很多源码压缩的工具，但我建议选择一个带有JavaScript引擎能够翻译代码的工具。YUI Compressor（http://developer.yahoo.com/yui/compressor）是我的最爱，因为它有很好的维护和支持。它是由Yahoo!工程师Julien Lecomte开发的，它的目标就是通过智能优化源代码，要比JSMin（http://www.crockford.com/javascript/jsmin.html）更好地缩减JavaScript文件大小。假设有如下函数：</p>
+<p>当前有很多源码压缩的工具，但我建议选择一个带有JavaScript引擎能够翻译代码的工具。YUI Compressor（http://developer.yahoo.com/yui/compressor）是我的最爱，因为它有很好的维护和支持。它是由Yahoo!工程师Julien Lecomte开发的，它的目标就是通过智能优化源代码，要比JSMin（http://www.crockford.com/javascript/jsmin.html）更好地缩减JavaScript文件大小【译注1】。假设有如下函数：</p>
+
+<p>【译注1：对于带有中文的JavaScript文件来说，仅做源码压缩是不够的，还需要对文件做Unicode转码，以保证压缩后的文件不会因为编码问题引入bug，此外，由于每个项目中的JS文件往往比较多，也需要一些批量压缩工具来提高工作效率，这里推荐一个工具TPacker：http://github.com/taobao-wd/Tpacker】</p>
 
 <pre><code>function per(value, total) {
     return( (value / total) * 100 );
@@ -137,7 +139,6 @@ HTTP/1.1 304 Not Modified
 <p>除了移除空白，YUI Compressor会缩短局部变量来节省更多的字符：</p>
 
 <pre><code>function per(b,a){return((b/a)*100)};
-
 </code></pre>
 
 <p>YUI Compressor实际上解析了JavaScript代码，它通常会替换变量——不会引入代码错误。但也不总是如此；偶尔它也不能揣摩你的代码，只能保持原样。最最常见的原因是代码中使用了eval()或with()语句。如果它检测到你使用了任何一种，它就不再应用变量替换了。另外，eval()和with()都会导致性能问题——浏览器的JIT编译器有和压缩器一样的问题。我个人的建议是不要使用任何这类语句。</p>
@@ -182,7 +183,6 @@ HTTP/1.1 304 Not Modified
 &lt;!-- minimized version of the jQuery UI library --&gt;
 &lt;script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"&gt;
 &lt;/script&gt;
-
 </code></pre>
 
 <p>你会发现在上面的例子中我们没有指定请求的协议，而只使用//。这个鲜为人知的技巧使得获取脚本文件时使用和宿主页面一样的协议。换言之，如果页面通过安全的HTTPS加载，该脚本文件同样会使用HTTPS，从而避免所有的安全警告。没有协议的相对URL是合法并的，与RTF规范兼容的。更重要的是，它得到了全盘的支持；见鬼了！协议-相对URL甚至在IE 3.0中也能工作。</p>

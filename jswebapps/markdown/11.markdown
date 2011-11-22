@@ -110,7 +110,7 @@ include()和extend()为模块铺设了道路，它们是可复用的代码片段
 
 ### 上下文
 
-上下文的改变在JavaScript编程中是非常普遍的，所以Spine.Class包含了一些工具方法来控制作用域。问题举例，例如：
+更改上下文在JavaScript编程中是非常普遍的，所以Spine.Class包含了一些工具方法来控制作用域。问题举例，例如：
 
 	var Controller = Spine.Class.create({
 		init: function(){

@@ -134,7 +134,7 @@ var User = Spine.Class.create({
 
 <h3>上下文</h3>
 
-<p>上下文的改变在JavaScript编程中是非常普遍的，所以Spine.Class包含了一些工具方法来控制作用域。问题举例，例如：</p>
+<p>更改上下文在JavaScript编程中是非常普遍的，所以Spine.Class包含了一些工具方法来控制作用域。问题举例，例如：</p>
 
 <pre><code>var Controller = Spine.Class.create({
     init: function(){
@@ -381,7 +381,6 @@ Task.first().updateAttributes({name: "Tea with the Queen"});
 <pre><code>// 使用本地存储来保存
 Task.extend(Spine.Model.Local);
 Task.fetch();
-
 </code></pre>
 
 <p>记录不会从浏览器的本地存储中自动获取，因此需要调用fetch()，用已存在的数据来填充模型。通常，在应用程序全部初始化后来做这件事情。一旦模型填充了新的数据，refresh事件就会被触发：</p>

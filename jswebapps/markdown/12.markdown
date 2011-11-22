@@ -12,7 +12,7 @@ Backbone和其他框架，如SproutCore或者Cappuccino有什么不同呢？这�
 Backbone唯一的依赖就是underscore.js（http://documentcloud.github.com/underscore/），它是一些非常有用的工具和通用目的的JavaScript函数组成的一个类库。Underscore提供了超过60个函数来处理数组操作、函数绑定、JavaScript模板和深度的相等检测。如果你经常大量的处理数组，检出Underscore的代码来用其API真是太值得了。出了Underscore，你也可以用jQuery或者Zepto.js来提升Backbone处理视图的能力，这样做是安全的。
 
 
-Backbone的文档虽然很完备，但初次探秘还是有点无法驾驭的感觉。本章的目标就是想帮调整这种状态，来对类库的深入和实际的介绍。刚开始的几个小节是Backbone组件的概览，接下来是一个实际的应用程序。如果你想马上看到Backbone可以直接跳过这些内容。
+Backbone的文档虽然很完备，但初次探秘还是有点无法驾驭的感觉。本章的目标就是想帮你调整这种状态，来对类库的深入和实际的介绍。刚开始的几个小节是Backbone组件的概览，接下来是一个实际的应用程序。如果你想马上看到Backbone可以直接跳过这些内容。
 
 ## 模型
 
@@ -332,7 +332,7 @@ Backbone的控制器将应用程序的状态和URL的hash片段关联在一起�
 
 ## 与服务器的同步
 
-默认情况下，只要保存模型，Backbone将会用Ajax请求通知服务器，它可以使用jQuery或者Zepto.js等类库。当一个模型创建、更新或删除之前Backbone通过调用Backbone.sync()函数来实现这个功能。Backbone发起REST形式的JSON请求到服务器，如果成功，再更新客户端的模型。
+默认情况下，只要保存模型，Backbone将会用Ajax请求通知服务器，它可以使用jQuery或者Zepto.js等类库。当一个模型创建、更新或删除之前Backbone通过调用Backbone.sync()函数来实现这个功能。Backbone发起REST形式【译注：表征状态转移（英文：Representational State Transfer，简称REST），更多内容请阅读http://zh.wikipedia.org/zh-cn/REST】的JSON请求到服务器，如果成功，再更新客户端的模型。
 
 如要利用这个特性，需要在模型中定义一个名为url的属性并赋值，并且要求服务器处理请求符合REST形式。Backbone将处理好剩下的所有任务：
 
