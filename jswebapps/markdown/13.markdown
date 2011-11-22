@@ -601,13 +601,13 @@ JavaScriptMVC打包了4中不同的模板引擎：
 
 	var html = $.View("template/items.ejs", items );
 
-其实，最常见的案例是子模板。通常将单个项目模板和项目列表模板（items.ejs）隔离开比较实际。如，用template/items.ejs为每个项目的渲染一个<>，但用template/item.ejs渲染每个项目内部的内容：
+其实，最常见的案例是子模板。通常将单个项目模板和项目列表模板（items.ejs）隔离开比较实际。如，用template/items.ejs为每个项目的渲染一个`<>`，但用template/item.ejs渲染每个项目内部的内容：
 
-<% for( var i = 0; i < this.length; i++){ %>
-  <li>
-    <%= $.View("template/item.ejs", this[i]);  
-  </li>
-< % } %>
+	<% for( var i = 0; i < this.length; i++){ %>
+	  <li>
+	    <%= $.View("template/item.ejs", this[i]);  
+	  </li>
+	< % } %>
 
 this指代的是传递给模板的数据。这个案例中template/items.ejs，this是包含多个项目的数组。在template/item.ejs是单个项目。
 
