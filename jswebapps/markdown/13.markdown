@@ -557,15 +557,15 @@ JavaScriptMVC打包了4中不同的模板引擎：
 
 1. 加载文件mytemplate.ejs中的模板。看起来如下：
 
-	<h2><%= message %></h2>
+	`<h2><%= message %></h2>`
 
 2. 应用{message: ‘hello world'}来渲染，结果如下：
 
-	<h2>hello world</h2>
+	`<h2>hello world</h2>`
 
 3. 插到元素foo中以后，看起来如下：
 
-	<div id='foo'><h2>hello world</h2></div>
+	`<div id='foo'><h2>hello world</h2></div>`
 	
 ### jQuery修改器
 
