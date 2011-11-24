@@ -129,7 +129,7 @@ HTTP/1.1 304 Not Modified
 
 <p>当前有很多源码压缩的工具，但我建议选择一个带有JavaScript引擎能够翻译代码的工具。YUI Compressor（http://developer.yahoo.com/yui/compressor）是我的最爱，因为它有很好的维护和支持。它是由Yahoo!工程师Julien Lecomte开发的，它的目标就是通过智能优化源代码，要比JSMin（http://www.crockford.com/javascript/jsmin.html）更好地缩减JavaScript文件大小【译注1】。假设有如下函数：</p>
 
-<p>【译注1：对于带有中文的JavaScript文件来说，仅做源码压缩是不够的，还需要对文件做Unicode转码，以保证压缩后的文件不会因为编码问题引入bug，此外，由于每个项目中的JS文件往往比较多，也需要一些批量压缩工具来提高工作效率，这里推荐一个工具TPacker：http://github.com/taobao-wd/Tpacker】</p>
+<p>【译注1：对于带有中文的JavaScript文件来说，仅做源码压缩是不够的，还需要对文件做Unicode转码，以保证压缩后的文件不会因为编码问题引入bug，此外，由于每个项目中的JS文件往往比较多，也需要一些批量压缩工具来提高工作效率，这里推荐一个工具TPacker：http://github.com/jayli/Tpacker】</p>
 
 <pre><code>function per(value, total) {
     return( (value / total) * 100 );
