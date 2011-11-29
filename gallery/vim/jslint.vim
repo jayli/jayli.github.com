@@ -6,6 +6,8 @@
 " let g:JSLintHighlightErrorLine = 0
 " in your .vimrc
 "
+"
+
 if exists("b:did_jslint_plugin")
     finish
 else
@@ -60,14 +62,16 @@ function s:ToggleHighlightError()
 		call s:JSLintClear()
 	endif
 endfun
+
 command ToggleHighlightError :call s:ToggleHighlightError()
 
 let g:JSLintHighlightErrorLine = 0
 "JS文件updatetime设置为1秒
 au BufRead *.js set updatetime=1200
 
+au BufRead,BufNewFile *.js noremap <F4> :ToggleHighlightError<CR> 
+
 "F4来激发/撤销语法检查
-noremap <F4> :ToggleHighlightError<CR>
 
 "关闭没有必要的检查
 "noremap <buffer><silent> dd dd:JSLintUpdate<CR>
