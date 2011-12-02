@@ -23,8 +23,8 @@ endif
 au BufLeave <buffer> call s:JSLintClear()
 
 "au BufEnter <buffer> call s:JSLint()
-au InsertLeave <buffer> call s:JSLint()
-au InsertEnter <buffer> call s:JSLint()
+"au InsertLeave <buffer> call s:JSLint()
+"au InsertEnter <buffer> call s:JSLint()
 au BufWritePost <buffer> call s:JSLint()
 
 " due to http://tech.groups.yahoo.com/group/vimdev/message/52115
