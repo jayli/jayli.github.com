@@ -55,6 +55,7 @@ let g:CSSLint_HighlightErrorLine = 0
 
 "F4来激发/撤销语法检查
 au BufRead,BufNewFile *.css noremap <F4> :ToggleCSSHightError<CR> 
+au BufRead,BufNewFile *.less noremap <F4> :ToggleCSSHightError<CR> 
 """"by jayli end
 
 
