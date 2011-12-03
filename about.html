@@ -9,7 +9,7 @@ html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
+small, strike, strong, tt, var,
 dl, dt, dd, ul, li,
 form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {
@@ -47,18 +47,24 @@ q:before, q:after {
 blockquote, q {
 	quotes: "" "";
 }
+	html {
+		background:black;
+	}
       body {
 	  line-height: 1;
 	color: black;
 	background: white;
-        font-family: Courier New, Helvetica Neue, Arial, sans-serif;
+        font-family: "Inconsolata","Monaco","Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace,"Andale Mono",Courier New, Helvetica Neue, Arial, sans-serif;
         margin-left: 15px;
       }
       h1 { font-size: 120px; }
       p { padding-top: 20px; font-size: 30px; }
 	  .com {color:orange;}
-	  .pro {color:red}
+	  .pro {color:red;font-weight:bold;}
 	  span {_overflow:hidden;}
+	  sup {
+		color:gray;
+	  }
 
       .row > :nth-child(6n+1) a:hover {
         color: #FFFF00;
@@ -94,11 +100,13 @@ blockquote, q {
 
 <div class="row">
 <p>FE of <a href="http://ued.taobao.com" class="com">TAOBAO.COM</a>.</p>
-<p><a href="http://lijing00333.wordpress.com">http://lijing00333.wordpress.com</a></p>
-<p><a href="http://www.flickr.com/lijing00333">http://www.flickr.com/lijing00333</a></p>
-<p><a href="http://weibo.com/jayli">http://weibo.com/jayli</a></p>
-<p><a href="http://github.com/jayli">http://github.com/jayli</a></p>
-<p><a href="/projects.html" class="pro">projects</a> |
+<p><a href="http://lijing00333.wordpress.com">http://lijing00333.wordpress.com</a><sup>[blog]</sup></p>
+<p><a href="http://hi.baidu.com/lijing00333/">http://hi.baidu.com/lijing00333</a><sup>[memo]</sup></p>
+<p><a href="http://www.flickr.com/lijing00333">http://www.flickr.com/lijing00333</a><sup>[photos]</sup></p>
+<p><a href="http://weibo.com/jayli">http://weibo.com/jayli</a><sup>[weibo]</sup></p>
+<p><a href="http://github.com/jayli">http://github.com/jayli</a><sup>[github]</sup></p>
+<p><a href="http://www.slideshare.net/lijing00333/">http://www.slideshare.net/lijing00333</a><sup>[slide]</sup></p>
+<p><a href="projects.html" class="pro">Projects</a> |
 <a href="lijing00333@163.com">lijing00333@163.com</a></p>
 </div>
 <script>
