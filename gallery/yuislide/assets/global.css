@@ -161,8 +161,10 @@ a:hover.download,a:active.download {
 	float:left;
 	width:580px;
 	margin-top:9px;
+	margin-bottom:9px;
 	padding:4.5px 0 18px;
 	border-top:1px solid #dfdfdf;
+	border-bottom:1px solid #dfdfdf;
 }
 
 #footer p {
