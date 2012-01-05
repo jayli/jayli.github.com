@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	
+	<title>YUI Slide | by jayli</title>
+	
+	<script src="http://a.tbcdn.cn/s/yui/3.4.1/build/yui/yui-min.js"></script>
+	
+<script>
+var log = function(msg) {
+	document.getElementById('log').innerHTML += '<p>'+msg+'</p>';
+};
+</script>
+	
+</head>
+<body>
+<div id="log">
+dom rendering begin
+</div>
+<script>
+
+log('1');
+setTimeout(function(){
+	log(2);
+},1000);
+</script>
+
+
+</body>
+</html>

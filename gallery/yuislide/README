@@ -1,0 +1,7 @@
+这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，兼容移动终端（iphone/ipad/android），Slide插件配置简单、使用方便，具有良好的可定制性，目前已经运行于淘宝网的很多角落。
+
+这个插件最初源自Cubee项目，这个项目是淘宝北京UED团队发起的，基于YUI3开发了许多好用的插件，Slide是比较有代表性的一个，如果你发现插件的bug，可以直接在github上提交，我们会尽快修复。
+
+Slide插件兼容所有现代浏览器，包括ie6，它依赖的YUI的最低版本为3.3.0。 
+
+请访问Slide首页：http://jayli.github.com/gallery/yuislide

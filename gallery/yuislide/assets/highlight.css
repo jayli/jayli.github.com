@@ -1,0 +1,77 @@
+/* Generics */
+
+.DlHighlight {
+  background-color: #f8f8f8;
+  border-left: 2px solid #0c0;
+  font: 10pt monospace;
+  /*padding: 10px;*/
+  margin-left: 2em;
+  margin-top: 10px;
+  margin-bottom:10px;
+  padding-left:10px;
+  padding-right:10px;
+  font-family:Consolas,Monaco,"Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+  overflow: visible;
+}
+
+.DlHighlight pre { 
+	tab-size:4;  
+	-moz-tab-size:4;  
+	-o-tab-size:4; 
+	margin: 0; padding: 0;
+	font-family:Consolas,Monaco,"Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+}
+
+.DlHighlight .keyword { color: #00f; font-weight: bold; }
+
+.DlHighlight .builtin { color: #22c; }
+
+.DlHighlight .string { color: #282; }
+.DlHighlight .string .before, .DlHighlight .string .after { color: #040; }
+
+.DlHighlight .regexp { color: #b2c; }
+.DlHighlight .regexp .before, .DlHighlight .regexp .after { color: #509; font-weight: bold; }
+
+.DlHighlight .comment { color: #c22; }
+.DlHighlight .comment .before, .DlHighlight .comment .after { color: #baa; }
+
+.DlHighlight .hashkey { color: #a51; }
+
+.DlHighlight .hasharrow { color: #f00; }
+
+.DlHighlight .paren { font-weight: bold; }
+
+.DlHighlight .operator { color: #077; }
+
+.DlHighlight .error { background-color: #c00; color: #fff; }
+
+.DlHighlight .defun { font-weight: bold; }
+
+.DlHighlight .line-numbers {
+  float: left;
+  margin-left: -4.5em;
+  width: 3em;
+  text-align: right;
+  color: #999;
+  font: 0.9em tahoma,verdana,sans-serif;
+  padding-top: 0.05em;
+}
+.DlHighlight .line-numbers:after { content: "." }
+
+/* XML */
+
+.DlHighlight .xml-tag-close .before { color: #52a; }
+
+.DlHighlight .xml-entity { color: #b2a; }
+.DlHighlight .xml-entity .before, .DlHighlight .xml-entity .after { color: #607; }
+
+/* CSS */
+
+.DlHighlight .css-class { color: #000; /*font-style: italic;*/ }
+.DlHighlight .css-pseudo-class { color: #777; }
+.DlHighlight .css-id { font-weight: bold; }
+.DlHighlight .css-color-spec { color: #a51; }
+.DlHighlight .css-length { color: #a19; }
+.DlHighlight .css-length .after { font-weight: bold; }
+.DlHighlight .css-declaration-kw { font-weight: bold; }
+.DlHighlight .css-comma { color: red; }

@@ -1,5 +1,6 @@
 /**
  * Y.Slide
+ * @info http://jayli.github.com/gallery/yuislide
  * @author 拔赤/灵玉/虎牙
  * 幻灯片特效,特效默认为none,fade:渐隐,h-slide:水平切换,'v-slide':垂直切换<br/>
  * 实例话说明：new Y.Slide(id,options);
@@ -34,6 +35,7 @@ YUI.add('slide',function(Y){
 	Slide = function(){
 		this.init.apply(this,arguments);
 	};
+
 	Y.mix(Slide,{
 		init:function(id,config){
 			var that = this;
@@ -85,7 +87,7 @@ YUI.add('slide',function(Y){
 					var head = document.getElementsByTagName('head')[0] || docElem,
 						script = document.createElement('script');
 
-					// It works! All browsers support!
+					// 神奇的支持所有的浏览器
 					script.text = data;
 
 					head.insertBefore(script, head.firstChild);
@@ -94,7 +96,7 @@ YUI.add('slide',function(Y){
 			};
 
 			var id = 'K_'+new Date().getTime().toString(),
-				re_script = new RegExp(/<script([^>]*)>([^<]*(?:(?!<\/script>)<[^<]*)*)<\/script>/ig); // 防止
+				re_script = new RegExp(/<script([^>]*)>([^<]*(?:(?!<\/script>)<[^<]*)*)<\/script>/ig); // 防止过滤错误
 
 
 			var hd = Y.Node.getDOMNode(Y.one('head')),
@@ -107,27 +109,25 @@ YUI.add('slide',function(Y){
 			while ((match = re_script.exec(html))) {
 				attrs = match[1];
 				srcMatch = attrs ? attrs.match(RE_SCRIPT_SRC) : false;
-				// script via src
+				// 通过src抓取到脚本
 				if (srcMatch && srcMatch[2]) {
 					s = document.createElement('script');
 					s.src = srcMatch[2];
-					// set charset
+					// 设置编码类型
 					if ((charsetMatch = attrs.match(RE_SCRIPT_CHARSET)) && charsetMatch[2]) {
 						s.charset = charsetMatch[2];
 					}
-					s.async = true; // make sure async in gecko
+					s.async = true; // hack gecko
 					hd.appendChild(s);
 				}
-				// inline script
+				// 如果是内联脚本
 				else if ((text = match[2]) && text.length > 0) {
 					globalEval(text);
 				}
 			}
 				
 		},
-		/**
-		 * 事件中心
-		 */
+		// 构建事件中心
 		buildEventCenter:function(){
 			var that = this;
 			var EventFactory = function(){
@@ -137,9 +137,7 @@ YUI.add('slide',function(Y){
 			that.EventCenter = new EventFactory();
 			return this;
 		},
-		/**
-		 * 绑定函数 
-		 */
+		// 绑定函数 
 		on:function(type,foo){
 			var that = this;
 			that.EventCenter.subscribe(type,foo);
@@ -226,8 +224,7 @@ YUI.add('slide',function(Y){
                 });
             }
             //添加选中的class
-            that.tabs.removeClass(that.selectedClass);
-            that.tabs.item(that.defaultTab).addClass(that.selectedClass);
+			that.hightlightNav(that.getWrappedIndex(that.current_tab));
             //是否自动播放
             if (that.autoSlide == true) {
                 that.play();
@@ -235,13 +232,36 @@ YUI.add('slide',function(Y){
             return this;
         },
 
+
+		// 得到tabnav应当显示的当前index索引，0,1,2,3...
+		getWrappedIndex:function(index){
+			var that = this,wrappedIndex = 0;
+
+			if(index == 0){
+				//debugger;
+			}
+			if(that.carousel){
+				if(index == 0){
+					wrappedIndex = that.length - 3;
+				}else if(index == that.length - 1){
+					wrappedIndex = 0;
+				}else {
+					wrappedIndex = index - 1;
+				}
+			}else{
+				wrappedIndex = index;
+			}
+			return wrappedIndex;
+		},
+
+		// 绑定默认事件
 		bindEvent:function(){
 			var that = this;
 			if(that.eventype == 'click' || that.eventype == 'mouseover'){
 				that.con.delegate(that.eventype,function(e){
 					e.halt();
 					that.goto(Number(that.tabs.indexOf(e.currentTarget)));
-					if(that.autoSlide)that.stop().play();
+					//if(that.autoSlide)that.stop().play();
 				},'.'+that.navClass+' li');
 			}
 			//终端事件触屏事件绑定
@@ -256,7 +276,8 @@ YUI.add('slide',function(Y){
 				}else{
 					that.previous();
 				}
-				that.play();
+				// 去掉play()，防止移动终端里的重复执行
+				//that.play();
 			},'.tab-content');
 
 			if(that.hoverStop){
@@ -276,6 +297,7 @@ YUI.add('slide',function(Y){
 			var coors = e.changedTouches[0].clientX;
 			return coors;
 		},
+		// 构建参数列表
 		buildParam:function(o){
 			var that = this;
 			//基本参数
@@ -308,7 +330,7 @@ YUI.add('slide',function(Y){
 			//by bachi
 			// 如果是跑马灯，则不考虑默认选中的功能，一律定位在第一页,且只能是左右切换的不支持上下切换
 			if(that.carousel){
-				that.defaultTab = 1;
+				that.defaultTab = 1;//跑马灯显示的是真实的第二项
 				that.effect = 'h-slide';
 			}
 			that.current_tab = that.defaultTab;//0,1,2,3...
@@ -320,7 +342,6 @@ YUI.add('slide',function(Y){
             return this;
 			
 		},
-		//jayli
 		//针对移动终端的跑马灯的hack
 		fix_for_transition_when_carousel: function(){
 			var that = this;
@@ -348,11 +369,13 @@ YUI.add('slide',function(Y){
 				}
 			}
 			//重新获取重组之后的tabs
-			that.pannels = that.tabs = con.all('.' + that.contentClass + ' div.' + that.pannelClass);
+			that.pannels = con.all('.' + that.contentClass + ' div.' + that.pannelClass);
 			that.length += 2;
 
 		},
-		//接口函数
+
+		//接下来是接口函数
+
 		//上一个
 		previous:function(){
 			var that = this;
@@ -378,7 +401,7 @@ YUI.add('slide',function(Y){
 			that.goto(_index);
 			return this;
 		},
-		//判断当前tab是最后一个
+		//判断当前tab是否是最后一个
 		is_last:function(){
 			var that = this;
 			if(that.current_tab == (that.length - 1)){
@@ -387,7 +410,7 @@ YUI.add('slide',function(Y){
 				return false;
 			}
 		},
-		//判断当前tab是第一个
+		//判断当前tab是否是第一个
 		is_first:function(){
 			var that = this;
 			if(that.current_tab == 0){
@@ -422,6 +445,7 @@ YUI.add('slide',function(Y){
 			that.goto(_index);
 			return this;
 		},
+		// 修正跑马灯结尾的滚动位置
 		fix_next_carousel:function(){
 			var that = this;
 
@@ -446,6 +470,7 @@ YUI.add('slide',function(Y){
 					that.animwrap.setStyle('left',dic);
 				}
 			}else if (that.effect == 'v-slide'){
+				// 暂不支持纵向跑马灯的滚动
 
 			}
 
@@ -454,6 +479,7 @@ YUI.add('slide',function(Y){
 
 		},
 
+		// 修正跑马灯开始的滚动位置
 		fix_pre_carousel:function(){
 			var that = this;
 
@@ -476,15 +502,28 @@ YUI.add('slide',function(Y){
 					that.animwrap.setStyle('left',dic);
 				}
 			}else if (that.effect == 'v-slide'){
+				//竖向滚动暂时未实现
 
 			}
 
 			return;
 
 		},
-		//切换至index
+		//高亮显示第index(0,1,2,3...)个nav
+		hightlightNav:function(index){
+			var that = this;
+            that.tabs.removeClass(that.selectedClass);
+            that.tabs.item(index).addClass(that.selectedClass);
+			return this;
+		},
+		//切换至index,这里的index为真实的索引
 		switch_to:function(index){
 			var that = this;
+			//首先高亮显示tab
+			that.hightlightNav(that.getWrappedIndex(index));
+			if(that.autoSlide){
+				that.stop().play();
+			}
             if (index >= that.length) {
                 index = index % that.length;
             }
@@ -584,15 +623,12 @@ YUI.add('slide',function(Y){
                 });
                 that.anim.run();
             }
-            that.tabs.removeClass(that.selectedClass);
-            that.tabs.item(index).addClass(that.selectedClass);
             that.current_tab = index;
             that.EventCenter.fire('switch', {
                 index: index,
-                navnode: that.tabs.item(index),
+                navnode: that.tabs.item(that.getWrappedIndex(index)),
                 pannelnode: that.pannels.item(index)
             });
-			if(that.autoSlide)that.stop().play();
 			//延迟执行的脚本
 			var scriptsArea = that.pannels.item(index).all('.lazyload');
 			if(scriptsArea){
@@ -620,8 +656,8 @@ YUI.add('slide',function(Y){
 			var that = this;
 			if(that.timer != null)clearTimeout(that.timer);
 			that.timer = setTimeout(function(){
-				that.next();
-				that.timer = setTimeout(arguments.callee,Number(that.timeout));	
+				that.next().play();
+				//that.timer = setTimeout(arguments.callee,Number(that.timeout));	
 			},Number(that.timeout));
 			return this;
 		},

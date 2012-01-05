@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	
+	<title>YUI Slide | by jayli</title>
+	
+	<script src="http://a.tbcdn.cn/s/yui/3.4.1/build/yui/yui-min.js"></script>
+	<link rel="stylesheet" href="assets/highlight.css">
+	<link rel="stylesheet" href="assets/global.css">
+	<script src="assets/highlight.js"></script>
+	<script src="assets/lang-js.js"></script>
+	<script src="assets/lang-xml.js"></script>
+	<script src="assets/lang-html.js"></script>
+	<script src="assets/lang-css.js"></script>
+	
+	
+</head>
+<body>
+	<div id="container">
+		<div id="example">
+			<div id="slides"><!--Slide控件开始-->
+				<div class="slides_container tab-content">
+					<div class="tab-pannel">
+						<img src="assets/slide-1.jpg">
+					</div>
+					<div class="tab-pannel">
+						<img src="assets/slide-2.jpg">
+					</div>
+					<div class="tab-pannel">
+						<img src="assets/slide-3.jpg">
+					</div>
+					<div class="tab-pannel">
+						<img src="assets/slide-4.jpg">
+					</div>
+					<div class="tab-pannel">
+						<img src="assets/slide-5.jpg">
+					</div>
+					<div class="tab-pannel">
+						<img src="assets/slide-6.jpg">
+					</div>
+				</div>
+				<a href="javascript:void(0);" class="prev" id="J_pre"><img src="assets/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
+				<a href="javascript:void(0);" class="next" id="J_next"><img src="assets/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
+				<ul class="tab-nav pagination">
+					<li>
+						<a href="javascript:void(0);">1</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">2</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">3</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">4</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">5</a>
+					</li>
+					<li>
+						<a href="javascript:void(0);">6</a>
+					</li>
+				</ul>
+			</div><!--Slide控件结束-->
+			<img src="assets/example-frame.png" width="739" height="341" alt="Example Frame" id="frame">
+		</div>
+		<script>
+		//jayli
+		YUI({
+			modules:{
+				'slide':{
+					fullpath:'slide.js',
+					requires:['node','anim']
+				}
+			}
+		}).use('slide','dump',function(Y){
+			var C = new Y.Slide('slides',{
+				autoSlide:true,
+				effect:'h-slide',
+				timeout:3000,
+				speed:1,
+				selectedClass:'current',
+				carousel:true
+			});
+			Y.one('#J_pre').on('click',function(e){
+				e.halt();
+				C.previous().stop().play();
+			});
+			Y.one('#J_next').on('click',function(e){
+				e.halt();
+				C.next();
+			});
+			// for touch
+
+		});
+		</script>
+		<!--正文-->
+		<div id="content">
+			<h1>YUI Slide</h1>
+			<!--h2>一个基于YUI3的Slide插件</h2-->
+			<p>
+				这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，兼容移动终端（iphone/ipad/android），Slide插件配置简单、使用方便，具有良好的可定制性，目前已经运行于<a href="http://www.taobao.com" target="_blank">淘宝网</a>的很多角落。
+			</p>
+			<p>
+				这个插件最初源自<a href="http://cubee.github.com/doc" target="_blank">Cubee项目</a>，这个项目是<a href="http://weibo.com/tbbjued" target="_blank">淘宝北京UED团队</a>发起的，基于YUI3开发了许多好用的插件，Slide是比较有代表性的一个，如果你发现插件的bug，可以直接在<a href="http://github.com/jayli/yuislide" target="_blank">github</a>上提交，我们会尽快修复。
+			</p>
+			<p>
+				Slide插件兼容所有现代浏览器，包括ie6，它依赖的YUI的最低版本为3.3.0。
+			</p>
+			<h2>Demos</h2>
+			<small>演示例子</small>
+			<ul class="examples">
+				<li><a href="http://taobao-wd.github.com/slide/demo/tab.html">Tab Demo</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/slide.html">Slide Demo</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-none.html">none-effect DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-fade.html">fade-effect DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-v-scroll.html">v-slide DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-scroll.html">h-slide DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/tb-carousel.html">carsousel DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/le.taobao.com.html">le.taobao.com DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/slide/demo/mojo-slide.html">mojo DEMO</a></li>
+				<li><a href="http://taobao-wd.github.com/lazy-mojo/demo.html">lazyload Demo</a></li>
+			</ul>
+		</div>
+		<div id="download">
+			<a href="slide.js" class="download download_track">Download</a>
+			<p>Version 1.2.0<br>更新时间 2012-01-05</p>
+			<p>你可以为Slide贡献代码：<a href="http://github.com/nathansearles/slides/" target="_blank" class="contribute">Contribute on GitHub</a></p>
+			<p>关于Slide的任何想法都可以通过这里提交：<a href="http://github.com/jayli/yuislide/issues" target="_blank">Open a ticket on GitHub.</a></p>
+			<p>Author：<a href="http://jayli.github.com" target="_blank">拔赤</a>/<a href="http://www.cnblogs.com/cheche" target="_blank">灵玉</a>/<a href="http://weibo.com/ningzbruc" target="_blank">虎牙</a></p>
+			<p><a href="http://ued.taobao.com" target="_blank">Taobao UED</a></p>
+		</div>
+		
+		<div id="instructions">
+				<h2 id="html">HTML代码结构</h2>
+<pre class="html">
+<div id="J_tab" class="slide-style">
+	<ul class="tab-nav clearfix"><!--内容可以是空-->
+		<li class="selected"><a href="#">1</a></li>
+		<li><a href="">2</a></li>
+		<li><a href="">3</a></li>
+		<li><a href="">4</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pannel">
+			<p><img src="img/s1.jpg" /></p>
+		</div>
+		<div class="tab-pannel hidden">
+			<p><img src="img/s1.jpg" /></p>
+		</div>
+		<div class="tab-pannel hidden">
+			<p><img src="img/s2.jpg" /></p>
+		</div>
+		<div class="tab-pannel hidden">
+			<p><img src="img/s3.jpg" /></p>
+		</div>
+	</div>
+</div>
+</pre>
+<p>
+<ul class="example">
+	<li>#J_tab，Slide的ID，名称自取，必须指定，用作hook</li>
+	<li>ul.tab-nav,控制导航,必须指定,容器内容可以为空，默认指定自然数为下标，名称可定制</li>
+	<li>ul.tab-nav li.selected,控制tab页签,若有li，则必须指定，名称可定制</li>
+	<li>div.tab-content，内容容器，必须指定，名称可定制</li>
+	<li>div.tab-content div.tab-pannel，内容面板，必须指定，名称可定制</li>
+</ul>
+</p>
+
+				<h2 id="css">样式定制</h2>
+				<p>
+				如果是图片轮播，div.tab-content需要指定宽高，超出部分隐藏掉，div.tab-pannel的宽高都为100%即可，这里需要指定div.tab-content的position:relative。</p><p>
+				普通tab点击切换（无特效），内容部分高度不定，若带滚动切换效果，则需要制定div.tab-content尺寸</p><p>
+				基本结构包含导航和内容两部分，“向前”、“向后”的按钮切换由开发者添加,只需保证基本原型html的完整即可</p><p>
+				控制样式的class name可以配置，需要在js中启动的时候做相应配置，在不配置的情况下，Y.Slide以典型html结构做为默认配置进行渲染
+				</p>
+
+				<h2 id="initialization">种子的引入</h2>
+				<p>
+					slide.js要通过YUI模块的形式载入，组件不提供默认皮肤，皮肤需要自己提供，也建议以模块的形式载入
+				</p>
+<pre class="js">
+modules:{
+	'slide-skin':{//不提供默认皮肤，开发者自行绑定
+		fullpath:'skin.css',
+		type:'css'
+	},
+	'slide':{
+		fullpath:'slide.js',
+		requires:['slide-skin','node','anim']
+	}
+}
+</pre>
+
+<!--{{-->
+<h2>
+初始化
+</h2>
+<p>
+通过构造函数的形式来渲染一个幻灯（Tab），第二个对象是配置参数，比如下面这两段代码，这段代码用来初始化一个简单的Tab
+</p>
+<pre class="js">
+new Y.Slide('J_tab',{
+	eventype:'click' //通过点击页签来切换Tab
+});
+</pre>
+<p>
+通过配置参数来定制渲染：
+</p>
+<pre class="js">
+new Y.Slide('J_tab',{
+	eventype:'click',//tab上的触发事件
+	effect:'v-slide',//切换效果为纵向滚动
+	autoSlide:true,//自动播放
+	timeout:2000,//切换时间间隔
+	speed:0.5,//切换速度，越小越快，单位为秒
+	hoverStop:true//鼠标经过内容是否停止播放
+});
+</pre>
+<!--}}-->
+
+
+
+<!--{{-->
+<h2>
+跑马灯原理
+</h2>
+<p>
+跑马灯既是可以连续相同方向滚动的幻灯，有两种实现方式，一种是滚动时将首（尾）的节点拷贝至尾（首），另一种是初始化时处理首尾的节点，滚动时只改变位置，出于性能的考虑，这里选用第二种方式
+</p>
+<p>
+<img src="assets/slide-c.png" />
+</p>
+<!--}}-->
+
+
+
+			
+				<h2 id="defaults">配置参数</h2>		
+				<!--{{-->
+				<div class="expand">
+					<h4>autoSlide (boolean)</h4>
+					<p>是否自动播放，默认为非自动播放，默认值为false.</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>speed (float)</h4>
+					<p>幻灯切换的动画速度，单位为秒，数值越小就越快，默认为0.5</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>timeout (number)</h4>
+					<p>两次切换之间的时间间隔，单位为毫秒，默认为1000</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>effect (string)</h4>
+					<p>切换的特效类型，取值有四种：'none'（无特效）/'fade'（渐隐特效）/'h-slide'（水平滚动）/'v-slide'（垂直滚动），默认为'none'</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>eventype (string)</h4>
+					<p>触发tab切换的事件类型，默认为'click',取值：'click',点击，'mouseover',鼠标滑过</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>easing (string)</h4>
+					<p>切换面板的特效风格，默认为'easeBoth',参考<a href="http://yuilibrary.com/yui/docs/api/classes/Easing.html" target="_blank">YUI doc</a></p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>hoverStop (boolean)</h4>
+					<p>鼠标悬停面板上是否停止播放，默认为true</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>selectedClass (string)</h4>
+					<p>指定tab选中时的class name，默认为'selected'</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>conClass (string)</h4>
+					<p>整个容器的class name，默认为't-slide'，目前未实现</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>navClass (string)</h4>
+					<p>tab容器的class name，默认为'tab-nav'</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>contentClass (string)</h4>
+					<p>tab内容容器的class name,默认为tab-content</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>pannelClass (string)</h4>
+					<p>tab面板的class name，默认为tab-pannel</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>id (string)</h4>
+					<p>hook，暂时用不着</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>before_switch (function)</h4>
+					<p>每次切换之前执行的动作，参数同switch事件的参数，返回true，继续执行，返回false，停止执行</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>ready (function)</h4>
+					<p>初始化完成后的回调，参数同switch事件的参数，当前index为0</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>carousel (boolean)</h4>
+					<p>是否以旋转木马形式播放，默认为false</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>reverse (boolean)</h4>
+					<p>"播放下一个"和"播放上一个"对调，默认为false</p>
+				</div>
+				<!--}}-->
+				
+
+				<h2>实例对象的方法</h2>
+				<!--{{-->
+				<div class="expand">
+					<h4>init</h4>
+					<p>初始化，参数为options</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>previous</h4>
+					<p>滚动到上一个</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>next</h4>
+					<p>滚动到下一个</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>goto</h4>
+					<p>跳转到指定的tab，参数为index:0,1,2,3..，执行before_switch</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>switch_to</h4>
+					<p>跳转到指定的tab，参数为index:0,1,2,3...，和goto的不同是，不执行执行before_switch</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>play</h4>
+					<p>开始播放</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>stop</h4>
+					<p>停止播放</p>
+				</div>
+				<!--}}-->
+
+
+				<h2>实例的事件</h2>
+				<!--{{-->
+				<div class="expand">
+					<h4>switch</h4>
+					<p>切换时发生，不执行before_switch 回调参数为:{index:index,navnode:navnode,pannelnode:pannelnode}，当carousel为true时，index的值为真实的pannel的索引，这一点需要注意</p>
+
+<pre class="js">
+var slide = new Y.Slide('J_tab');
+slide.on('switch',function(o){
+	Y.log(o.index);//输出当前面板的真实索引
+	Y.log(o.navnode);//输出当前高亮的导航节点
+	Y.log(o.pannelnode);//输出显示的内容容器节点
+});
+
+</pre>
+				</div>
+				<!--}}-->
+
+		</div>
+		<div id="footer">
+			<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number" title="JavaScript Number toLocaleString" target="_blank" style="display:block;float:left;margin:4px 10px 0 0;"><img src="http://static.jsconf.us/promotejsh.gif" height="65" alt="JavaScript Number toLocaleString"/></a>
+			
+			<p>Slides is licensed under the <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT license</a>.</p>
+			
+			<p>Slider design by <a href="http://jayli.github.com" target="_blank">拔赤</a> at <a href="http://www.taobao.com/" target="_blank">淘宝UED</a>.</p>
+
+			<p>Enjoy yourself</p>
+			
+			<p>&copy; 2012 All rights reserved.</p>
+		</div>
+	</div>
+	<!--fork me on github-->
+	<a href="http://github.com/jayli/YUISlide"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/edc6dae7a1079163caf7f17c60495bbb6d027c93/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub"></a>
+<script>
+YUI({combine:true}).use('node',function(Y){
+
+
+	//根据className返回类型
+	var getType = function(className){
+		var a = ['html','js','css','xml'];
+		for(var i = 0;i<a.length;i++){
+			if(className.indexOf(a[i]) >= 0){
+				return a[i];
+			}
+		}
+		return '';
+	};
+
+	(function(){
+		var pres = Y.all('pre');
+		pres.each(function(node){
+			node.addClass('DlHighlight');
+			var code = node.get('innerHTML');
+			var type = getType(node.getAttribute('className') == ''?'html':node.getAttribute('className'));
+			var hl = new DlHighlight({
+				lang:type
+			});
+			var formatted = hl.doItNow(code);
+			node.set('innerHTML','<pre>'+formatted+'</pre>');
+		});
+	}());
+
+});
+</script>
+</body>
+</html>
