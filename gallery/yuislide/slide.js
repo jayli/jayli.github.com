@@ -260,7 +260,11 @@ YUI.add('slide',function(Y){
 			if(that.eventype == 'click' || that.eventype == 'mouseover'){
 				that.con.delegate(that.eventype,function(e){
 					e.halt();
-					that.goto(Number(that.tabs.indexOf(e.currentTarget)));
+					var ti = Number(that.tabs.indexOf(e.currentTarget));
+					if(that.carousel){
+						ti = (ti + 1) % that.length;
+					}
+					that.goto(ti);
 					//if(that.autoSlide)that.stop().play();
 				},'.'+that.navClass+' li');
 			}
