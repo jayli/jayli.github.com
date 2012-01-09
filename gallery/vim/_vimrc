@@ -1,12 +1,12 @@
-" ~/.vimrc by Jayli (拔赤)
+" ~/.vimrc by Jayli <lijing00333@163.com> 
+" http://jayli.github.com
 "
-set nocompatible        "使用vim默认配置
+set nocompatible        " Use Vim defaults (much better!)
 
-"reset默认后退键
+"Default backspace like normal
 set backspace=indent,eol,start
 
-"读写.viminfo文件，但不存储太多行
-set viminfo='20,\"50
+set viminfo='20,\"50    " read/write a .viminfo file, don't store more
 set formatoptions=mtcql
 
 au BufNewFile,BufRead * set foldlevel=99
@@ -14,7 +14,7 @@ au BufNewFile,BufRead * set foldlevel=99
 highlight Folded ctermbg=darkgray ctermfg=lightmagenta
 
 if has ( "autocmd" )
-	" 当编辑一个文件时，总是滚屏到光标所在的最终位置
+	" When editing a file, always jump to the last cursor position
 	autocmd BufReadPost *
 	\ if line("'\"") > 0 && line ("'\"") <= line("$") |
 	\   exe "normal g'\"" |
@@ -22,7 +22,45 @@ if has ( "autocmd" )
 endif  " has ("autocmd") 
 
 
-"编辑器样式的 hack,只针对term终端作 hack，在gui终端沿用默认样式
+" Editor config
+"
+"
+
+" 鼠标滚轮的事件
+if has("gui_running")
+	"color lucius
+	au GUIEnter * cd ~
+	set cursorcolumn
+	map <MiddleMouse> <Nop>
+	set cursorline
+else
+	set showtabline=2
+	"color vj
+endif
+
+" 字体设置
+if has("unix") && !has("mac")
+	set guifont=Inconsolata\ Medium\ 11
+	set guifontwide=WenQuanYi\ Micro\ Hei\ Mono\ Medium\ 10
+endif
+if has("mac")
+	set guifont=Monaco:h13
+endif
+
+" 文件设置
+filetype on
+filetype plugin on
+filetype indent on
+
+
+" js文件格式化，Shift-b
+nnoremap <S-b> :call g:Jsbeautify()<CR>
+
+
+
+"by jay
+
+"编辑器样式hack
 hi Comment      term=bold ctermfg=darkcyan
 hi Constant     term=underline ctermfg=Red
 hi Special      term=bold ctermfg=Magenta
@@ -38,6 +76,7 @@ hi ErrorMsg     term=reverse ctermbg=Red ctermfg=White
 hi StatusLine   ctermfg=darkblue  ctermbg=gray
 hi StatusLineNC ctermfg=brown   ctermbg=darkblue
 
+
 "鼠标隐藏
 set mouse=v
 
@@ -52,7 +91,7 @@ set nu
 set laststatus=2
 set statusline=%<[%n]\ %F\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}][%{&ff}][ASCII=\%03.3b]\ %-10.(%l,%c%V%)\ %P
 
-"欢迎文字,这里可以换成你想要的任意文字
+"欢迎文字
 autocmd VimEnter * echo "Welcome back jayli :)"
 autocmd VimLeave * echo "Byebye jayli.."
 
@@ -76,22 +115,17 @@ set backupcopy=yes
 
 "编辑模式自动缩进
 set autoindent 
-
 "记录历史
 set history=150 
-
 "标尺
 set ruler
-
 "显示不完整的命令
 set showcmd
-
-" Linux 系统中的行模式重置
+" Added to default to high security within Gentoo. Fixes bug #14088
 set modelines=0
 
-"文件编码可自动识别utf系列和gb系列,新建文件采用utf8编码
+"文件编码
 set fileencodings=ucs-bom,utf-8,GB18030,gbk
-
 "gui字体，随意模式
 set guifontset=*-r-*
 
@@ -99,10 +133,9 @@ set guifontset=*-r-*
 syntax enable
 syntax on
 
-"F功能键定义,使用频度较低
+"F功能键定义
 map <F2> <ESC>zA<CR>            
 map <F3> <ESC>*
-map <F4> <ESC>#                
 map <F11> :bp<CR>              
 map <F12> :bn<CR>               
 map <F7> <ESC>:wa<CR>:make<CR>
@@ -110,7 +143,8 @@ map <F8> <ESC>"0p
 
 "tab操作多文件
 map <C-t> :tabnew 
-nmap wm :tabnew .<CR>
+"nmap wm :tabnew .<CR>
+nmap wm :NERDTreeToggle<CR>
 map <Tab> :tabnext<CR> 
 map <S-Tab> :tabprevious<CR>
 
@@ -135,12 +169,12 @@ if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
 endfunction
 inoremap <Tab> <C-R>=CleverTab()<CR>
 
-"退出模式,退出时保留残余窗口
+"退出模式
 set t_ti=
 set t_te= 
 
 "折叠配置
-set fdm=manual
+set fdm=marker
 
 "选择编辑器主题
 "colorscheme evening
@@ -149,7 +183,8 @@ set fdm=manual
 "colorscheme default
 "colorscheme delek
 "colorscheme desert
-colorscheme elflord
+"colorscheme elflord
+"colorscheme darkburn  "依赖.vim/colors/darkburn.vim
 "colorscheme evening
 "colorscheme koehler
 "colorscheme morning
@@ -160,13 +195,17 @@ colorscheme elflord
 "colorscheme shine
 "colorscheme torte
 "colorscheme zellner
+colorscheme gemcolors 
 
-"状态栏样式hack，针对evening,包括gui模式下的状态栏样式
-hi StatusLine	cterm=bold ctermbg=blue ctermfg=white guifg=darkblue guibg=white
-hi StatusLineNC	cterm=bold ctermbg=blue ctermfg=black guifg=darkblue guibg=white
-hi TabLine cterm=bold ctermbg=lightgray ctermfg=black guibg=blue guifg=white
-hi TabLineSel cterm=bold ctermbg=darkblue ctermfg=white guibg=blue guifg=white
-hi CursorLine cterm=bold ctermbg=darkgray guibg=gold guifg=blue
+"编辑器主题样式hack，针对evening
+"hi StatusLine	cterm=bold ctermbg=blue ctermfg=white guibg=gold guifg=blue
+"hi StatusLineNC	cterm=bold ctermbg=blue ctermfg=black guibg=gold guifg=blue
+"hi TabLine cterm=bold ctermbg=lightgray ctermfg=black guibg=gold guifg=blue
+"hi TabLineSel cterm=bold ctermbg=darkblue ctermfg=white guibg=gold guifg=blue
+"hi CursorLine cterm=bold ctermbg=darkgray guibg=gold guifg=blue
+
+"hack for elflord 
+hi StatusLine	cterm=bold ctermbg=darkgray ctermfg=white guibg=gold guifg=blue
 
 "显示tab line
 "set showtabline=2
@@ -175,9 +214,16 @@ hi CursorLine cterm=bold ctermbg=darkgray guibg=gold guifg=blue
 set tabpagemax=20
 
 
-"高亮光标所在的行
-":hi cursorline ctermbg=Red
+"set cursorline
+":hi cursorline ctermbg=Yellow
+
+"darkburn 颜色设置
+"set t_Co=256
 
 "对所有文件设置关键字提示
-"set dictionary-=~/.vim/dict/dict.txt dictionary+=~/.vim/dict/dict.txt
-"set complete-=k complete +=k
+set dictionary-=~/.vim/dict/dict.txt dictionary+=~/.vim/dict/dict.txt
+set complete-=k complete +=k
+
+:filetype plugin on 
+
+au BufRead,BufNewFile *.less set filetype=css
