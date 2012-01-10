@@ -63,11 +63,11 @@ YUI.add('slide',function(Y){
 				that.next = _t;
 			}
 
+			// 在移动终端中的优化
 			if(that.carousel){
 				that.fix_for_transition_when_carousel();
 			}
 
-			
 			return this;
 		},
 		//渲染textarea中的内容，并放在与之相邻的一个div中，若有脚本，执行其中脚本
@@ -143,6 +143,7 @@ YUI.add('slide',function(Y){
 			that.EventCenter.subscribe(type,foo);
 			return this;
 		},
+		//构建html结构
 		construct: function() {
             var that = this;
 			var con = that.con = Y.one('#' + that.id);
@@ -254,6 +255,7 @@ YUI.add('slide',function(Y){
 			return wrappedIndex;
 		},
 
+
 		// 绑定默认事件
 		bindEvent:function(){
 			var that = this;
@@ -269,21 +271,90 @@ YUI.add('slide',function(Y){
 				},'.'+that.navClass+' li');
 			}
 			//终端事件触屏事件绑定
-			that.con.delegate('touchstart',function(e){
-				that.stop();
-				that.startX = e._event.changedTouches[0].clientX;
-			},'.tab-content'); 
-			that.con.delegate('touchend',function(e){
-				var endX  = e._event.changedTouches[0].clientX;
-				if(Math.abs(endX) < Math.abs(that.startX)){
-					that.next();
-				}else{
-					that.previous();
-				}
-				// 去掉play()，防止移动终端里的重复执行
-				//that.play();
-			},'.tab-content');
+			if ('ontouchstart' in document.documentElement) {
 
+				that.con.delegate('touchstart',function(e){
+					that.stop();
+					if(that.is_last()){
+						that.fix_next_carousel();
+					}
+					if(that.is_first()){
+						that.fix_pre_carousel();
+					}
+					that.startX = e._event.changedTouches[0].clientX;
+					that.startY = e._event.changedTouches[0].clientY;
+					that.animwrap.setStyles({
+						'-webkit-transition-duration': '0s',
+					});
+					that.startT = Number(new Date());//如果快速手滑，则掠过touchmove，因此需要计算时间
+				},'.tab-content'); 
+
+				that.con.delegate('touchend',function(e){
+					var endX  = e._event.changedTouches[0].clientX;
+					var width = Number(that.animcon.get('region').width);
+					that.deltaX = Math.abs(endX - that.startX);//滑过的距离
+
+					// 如果是滑动距离很大 && 支持touchmove || 快速手滑
+					if((that.deltaX > width / 3 ) && that.touchmove || !that.touchmove || Number(new Date()) - that.startT < 550){
+
+						if(Math.abs(endX) < Math.abs(that.startX)){//下一帧
+							that.next();
+						}else{//上一帧
+							that.previous();
+						}
+
+					}else{
+						//复位
+						that.animwrap.setStyles({
+							'-webkit-transition-duration': (Number(that.speed) / 2) + 's',
+							'-webkit-transform':'translate3d('+(-1 * that.current_tab * that.animcon.get('region').width)+'px,0,0)'
+						});
+
+					}
+					if(that.autoSlide){
+						that.play();
+					}
+				},'.tab-content');
+
+
+				//处理手指滑动事件相关
+				if(that.touchmove){
+
+					that.con.delegate('touchmove',function(e){
+						// 确保单手指滑动，而不是多点触碰
+						if(e._event.touches.length > 1 || e._event.scale && e._event.scale !== 1) return;
+
+						that.deltaX = e._event.touches[0].pageX - that.startX;
+
+						// 判断是否需要上下滑动页面
+						that.isScrolling = ( Math.abs(that.deltaX) < Math.abs(e._event.touches[0].pageY - that.startY) ) ? true: false;
+
+						if(!that.isScrolling){
+							// 阻止默认上下滑动事件
+							e.halt();
+
+							that.stop();
+
+							var width = Number(that.animcon.get('region').width);
+
+							var dic = that.deltaX - that.current_tab * width;
+
+							// 立即跟随移动
+							that.animwrap.setStyles({
+								'-webkit-transition-duration': '0s',
+								'-webkit-transform':'translate3d('+dic+'px,0,0)'
+							});
+
+
+						}
+						
+					},'.tab-content'); 
+					//that.animwrap.on('webkitTransitionEnd',that.onTransitionEnd'); 
+				}
+
+			}
+
+			// 是否支持鼠标悬停停止播放
 			if(that.hoverStop){
 				that.con.delegate('mouseover',function(e){
 					//e.halt();
@@ -296,10 +367,6 @@ YUI.add('slide',function(Y){
 			}
 			return this;
 
-		},
-		getCoors:function(e){
-			var coors = e.changedTouches[0].clientX;
-			return coors;
 		},
 		// 构建参数列表
 		buildParam:function(o){
@@ -322,6 +389,7 @@ YUI.add('slide',function(Y){
 			that.ready = (typeof o.ready == 'undefined' || o.ready == null)?new Function:o.ready;
 			that.carousel = (typeof o.carousel == 'undefined' || o.carousel == null)?false:o.carousel;
 			that.reverse = (typeof o.reverse == 'undefined' || o.reverse == null)?false:o.reverse;
+			that.touchmove = (typeof o.touchmove == 'undefined' || o.touchmove == null)?false:o.touchmove;
 			that.id = that.id;
 			//构造参数
 			that.tabs = [];
@@ -341,7 +409,6 @@ YUI.add('slide',function(Y){
 
 			//判断是否开启了内置动画
 			that.transitions = "webkitTransition" in document.body.style;
-
 
             return this;
 			
@@ -377,8 +444,6 @@ YUI.add('slide',function(Y){
 			that.length += 2;
 
 		},
-
-		//接下来是接口函数
 
 		//上一个
 		previous:function(){
@@ -574,7 +639,6 @@ YUI.add('slide',function(Y){
                     } catch (e) {}
                 }
 				
-				//jayli
 
 				if(that.transitions){
 					that.animwrap.setStyles({
@@ -661,7 +725,6 @@ YUI.add('slide',function(Y){
 			if(that.timer != null)clearTimeout(that.timer);
 			that.timer = setTimeout(function(){
 				that.next().play();
-				//that.timer = setTimeout(arguments.callee,Number(that.timeout));	
 			},Number(that.timeout));
 			return this;
 		},

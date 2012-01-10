@@ -79,9 +79,10 @@
 				autoSlide:true,
 				effect:'h-slide',
 				timeout:3000,
-				speed:1,
+				speed:0.7,
 				selectedClass:'current',
-				carousel:true
+				carousel:true,
+				touchmove:true
 			});
 			Y.one('#J_pre').on('click',function(e){
 				e.halt();
@@ -91,7 +92,6 @@
 				e.halt();
 				C.next();
 			});
-			// for touch
 
 		});
 		</script>
@@ -332,6 +332,12 @@ new Y.Slide('J_tab',{
 				<div class="expand">
 					<h4>carousel (boolean)</h4>
 					<p>是否以旋转木马形式播放，默认为false</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>touchmove (boolean)</h4>
+					<p>在触屏环境中，是否可以支持触屏移动行为，默认为false</p>
 				</div>
 				<!--}}-->
 				<!--{{-->
