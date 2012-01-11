@@ -27,6 +27,9 @@
  * <li>ready:(function) 初始化完成后的回调，参数同switch事件的参数，当前index为0</li>
  * <li>carousel:(boolean) 是否以旋转木马形式播放，默认为false</li>
  * <li>touchmove:(boolean) 是否支持手指滑动，默认为false</li>
+ * <li>adaptive_width:(boolean) 屏幕是否根据控件的宽度改变重新渲染尺寸，默认为false</li>
+ * <li>adaptive_height:(boolean) 屏幕是否根据控件的高度改变重新渲染尺寸，默认为false</li>
+ * <li>adaptive_size:(boolean) 屏幕是否根据控件的宽度和高度改变重新渲染尺寸，默认为false</li>
  * <li>reverse:(boolean) "播放下一个"和"播放上一个"对调，默认为false</li>
  * </ul>
  */
@@ -180,8 +183,6 @@ YUI.add('slide',function(Y){
                 //统一容器和item的宽高及选中默认值
                 var animconRegion = that.animcon.get('region');
                 that.pannels.setStyles({
-                    'width': animconRegion.width + 'px',
-                    'height': animconRegion.height + 'px',
                     'float': 'none',
                     'overflow': 'hidden'
                 });
@@ -190,6 +191,7 @@ YUI.add('slide',function(Y){
                     'overflow': 'hidden',
                     'top': -1 * that.defaultTab * animconRegion.height + 'px'
                 });
+				that.renderSize();
             } else if (that.effect == 'h-slide') {
                 that.animwrap = Y.Node.create('<div style="position:absolute;"></div>');
                 that.animwrap.set('innerHTML', that.animcon.get('innerHTML'));
@@ -199,8 +201,6 @@ YUI.add('slide',function(Y){
                 //统一容器和item的宽高及选中默认值
                 var animconRegion = that.animcon.get('region');
                 that.pannels.setStyles({
-                    'width': animconRegion.width + 'px',
-                    'height': animconRegion.height + 'px',
                     'float': 'left',
                     'overflow': 'hidden'
                 });
@@ -209,6 +209,7 @@ YUI.add('slide',function(Y){
                     'overflow': 'hidden',
                     'left': -1 * that.defaultTab * animconRegion.width + 'px'
                 });
+				that.renderSize();
             } else if (that.effect == 'fade') {
                 that.pannels = con.all('.' + that.contentClass + ' div.' + that.pannelClass);
                 that.pannels.setStyles({
@@ -234,6 +235,46 @@ YUI.add('slide',function(Y){
             return this;
         },
 
+		// 重新渲染slide的尺寸
+		renderSize:function(){
+			var that = this;
+			//根据父容器的长宽，渲染子容器的长宽
+			that.renderHeight().renderWidth();
+			return this;
+		},
+
+		// 重新渲染slide的宽度
+		renderWidth:function(){
+			var that = this;
+			that.pannels.setStyles({
+				width:that.animcon.get('region').width + 'px'
+			});
+			return this;
+		},
+		
+		//重新渲染slide的高度
+		renderHeight :function(){
+			var that = this;
+			that.pannels.setStyles({
+				height:that.animcon.get('region').height + 'px'
+			});
+			return this;
+		},
+
+		//根据配置条件修正控件尺寸
+		fixSlideSize:function(){
+			var that = this;
+			if(that.adaptive_width){
+				that.renderWidth();
+			}
+			if(that.adaptive_height){
+				that.renderHeight();
+			}
+			if(that.adaptive_size){
+				that.renderSize();
+			}
+			return this;
+		},
 
 		// 得到tabnav应当显示的当前index索引，0,1,2,3...
 		getWrappedIndex:function(index){
@@ -411,6 +452,9 @@ YUI.add('slide',function(Y){
 			that.carousel = (typeof o.carousel == 'undefined' || o.carousel == null)?false:o.carousel;
 			that.reverse = (typeof o.reverse == 'undefined' || o.reverse == null)?false:o.reverse;
 			that.touchmove = (typeof o.touchmove == 'undefined' || o.touchmove == null)?false:o.touchmove;
+			that.adaptive_width = (typeof o.adaptive_width == 'undefined' || o.adaptive_width == null)?false:o.adaptive_width;
+			that.adaptive_height = (typeof o.adaptive_height == 'undefined' || o.adaptive_height == null)?false:o.adaptive_height;
+			that.adaptive_size = (typeof o.adaptive_size == 'undefined' || o.adaptive_size == null)?false:o.adaptive_size;
 			that.id = that.id;
 			//构造参数
 			that.tabs = [];
@@ -610,6 +654,7 @@ YUI.add('slide',function(Y){
 			var that = this;
 			//首先高亮显示tab
 			that.hightlightNav(that.getWrappedIndex(index));
+			that.fixSlideSize();
 			if(that.autoSlide){
 				that.stop().play();
 			}
