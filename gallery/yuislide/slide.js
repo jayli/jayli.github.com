@@ -349,7 +349,6 @@ YUI.add('slide',function(Y){
 
 					that.con.delegate('touchmove',function(e){
 						// 确保单手指滑动，而不是多点触碰
-						Y.log(e._event.scale);
 						if(e._event.touches.length > 1 ) return;
 
 						//deltaX > 0 ，右移，deltaX < 0 左移
