@@ -360,7 +360,9 @@ YUI.add('slide',function(Y){
 							// 正常tab，支持touchmove，横向切换
 							( !that.carousel && that.touchmove && that.effect == 'h-slide' && !anti ) || 
 							// 不支持touchmove，不支持跑马灯
-							( !that.touchmove && !that.carousel && !anti)
+							( !that.touchmove && !that.carousel && !anti) ||
+							//快速手滑
+							( Number(new Date()) - that.startT < 550 )
 						
 						
 						){
