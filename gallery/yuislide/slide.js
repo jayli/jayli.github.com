@@ -26,6 +26,7 @@
  * <li>before_switch:(function) 切换之前执行的动作，参数同switch事件的参数，返回true，继续执行，返回false，停止执行</li>
  * <li>ready:(function) 初始化完成后的回调，参数同switch事件的参数，当前index为0</li>
  * <li>carousel:(boolean) 是否以旋转木马形式播放，默认为false</li>
+ * <li>touchmove:(boolean) 是否支持手指滑动，默认为false</li>
  * <li>reverse:(boolean) "播放下一个"和"播放上一个"对调，默认为false</li>
  * </ul>
  */
@@ -270,15 +271,28 @@ YUI.add('slide',function(Y){
 					//if(that.autoSlide)that.stop().play();
 				},'.'+that.navClass+' li');
 			}
+
+			// 是否支持鼠标悬停停止播放
+			if(that.hoverStop){
+				that.con.delegate('mouseover',function(e){
+					//e.halt();
+					if(that.autoSlide)that.stop();
+				},'.'+that.contentClass+' div.'+that.pannelClass);
+				that.con.delegate('mouseout',function(e){
+					//e.halt();
+					if(that.autoSlide)that.play();
+				},'.'+that.contentClass+' div.'+that.pannelClass);
+			}
+
 			//终端事件触屏事件绑定
 			if ('ontouchstart' in document.documentElement) {
 
 				that.con.delegate('touchstart',function(e){
 					that.stop();
-					if(that.is_last()){
+					if(that.is_last() && that.carousel){
 						that.fix_next_carousel();
 					}
-					if(that.is_first()){
+					if(that.is_first() && that.carousel){
 						that.fix_pre_carousel();
 					}
 					that.startX = e._event.changedTouches[0].clientX;
@@ -293,15 +307,28 @@ YUI.add('slide',function(Y){
 					var endX  = e._event.changedTouches[0].clientX;
 					var width = Number(that.animcon.get('region').width);
 					that.deltaX = Math.abs(endX - that.startX);//滑过的距离
+					var swipeleft = (Math.abs(endX) < Math.abs(that.startX));//是否是向左滑动
+					var swiperight = !swipeleft;
+					var anti = ( that.is_last() && swipeleft || that.is_first() && swiperight );//判断是否在边界反滑动，true，出现了反滑动，false，正常滑动
 
-					// 如果是滑动距离很大 && 支持touchmove || 快速手滑
-					if((that.deltaX > width / 3 ) && that.touchmove || !that.touchmove || Number(new Date()) - that.startT < 550){
+					if(
+							// 支持touchmove，跑马灯效果，任意帧，touchmove足够的距离
+							( that.touchmove && that.carousel && (that.deltaX > width / 3) ) ||
+							// 不支持touchmove，跑马灯
+							( !that.touchmove && that.carousel ) ||
+							// 正常tab，支持touchmove，横向切换
+							( !that.carousel && that.touchmove && that.effect == 'h-slide' && !anti ) || 
+							// 不支持touchmove，不支持跑马灯
+							( !that.touchmove && !that.carousel && !anti)
+						
+						
+						){
 
-						if(Math.abs(endX) < Math.abs(that.startX)){//下一帧
-							that.next();
-						}else{//上一帧
-							that.previous();
-						}
+							if(swipeleft){//下一帧
+								that.next();
+							}else{//上一帧
+								that.previous();
+							}
 
 					}else{
 						//复位
@@ -324,7 +351,15 @@ YUI.add('slide',function(Y){
 						// 确保单手指滑动，而不是多点触碰
 						if(e._event.touches.length > 1 || e._event.scale && e._event.scale !== 1) return;
 
-						that.deltaX = e._event.touches[0].pageX - that.startX;
+						//deltaX > 0 ，右移，deltaX < 0 左移
+						that.deltaX = e._event.touches[0].pageX - that.startX; 
+
+						//判断是否在边界反滑动，true，出现了反滑动，false，正常滑动
+						var anti = ( that.is_last() && that.deltaX < 0 || that.is_first() && that.deltaX > 0 );
+
+						if(!that.carousel && that.effect == 'h-slide' && anti){
+							that.deltaX = that.deltaX / 2; //如果是边界反滑动，则增加阻尼效果
+						}
 
 						// 判断是否需要上下滑动页面
 						that.isScrolling = ( Math.abs(that.deltaX) < Math.abs(e._event.touches[0].pageY - that.startY) ) ? true: false;
@@ -334,9 +369,7 @@ YUI.add('slide',function(Y){
 							e.halt();
 
 							that.stop();
-
 							var width = Number(that.animcon.get('region').width);
-
 							var dic = that.deltaX - that.current_tab * width;
 
 							// 立即跟随移动
@@ -344,7 +377,6 @@ YUI.add('slide',function(Y){
 								'-webkit-transition-duration': '0s',
 								'-webkit-transform':'translate3d('+dic+'px,0,0)'
 							});
-
 
 						}
 						
@@ -354,17 +386,6 @@ YUI.add('slide',function(Y){
 
 			}
 
-			// 是否支持鼠标悬停停止播放
-			if(that.hoverStop){
-				that.con.delegate('mouseover',function(e){
-					//e.halt();
-					if(that.autoSlide)that.stop();
-				},'.'+that.contentClass+' div.'+that.pannelClass);
-				that.con.delegate('mouseout',function(e){
-					//e.halt();
-					if(that.autoSlide)that.play();
-				},'.'+that.contentClass+' div.'+that.pannelClass);
-			}
 			return this;
 
 		},
@@ -399,7 +420,6 @@ YUI.add('slide',function(Y){
 			//默认选中的tab，默认值为0，添加默认选中的功能
 			//modified by huya
             that.defaultTab = (typeof o.defaultTab == 'undefined' || o.defaultTab == null) ? 0 : Number(o.defaultTab) - 1;//隐藏所有pannel
-			//by bachi
 			// 如果是跑马灯，则不考虑默认选中的功能，一律定位在第一页,且只能是左右切换的不支持上下切换
 			if(that.carousel){
 				that.defaultTab = 1;//跑马灯显示的是真实的第二项
