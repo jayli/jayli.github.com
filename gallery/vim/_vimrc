@@ -143,8 +143,8 @@ map <F8> <ESC>"0p
 
 "tab操作多文件
 map <C-t> :tabnew 
-"nmap wm :tabnew .<CR>
-nmap wm :NERDTreeToggle<CR>
+nmap wm :tabnew .<CR>
+"nmap wm :NERDTreeToggle<CR>
 map <Tab> :tabnext<CR> 
 map <S-Tab> :tabprevious<CR>
 
