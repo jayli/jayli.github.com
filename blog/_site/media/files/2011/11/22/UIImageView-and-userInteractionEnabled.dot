@@ -1,0 +1,74 @@
+digraph G {
+  node [shape = plaintext]
+  {
+    rank = min;
+    "UIImageView"
+  }
+  {
+    rank = same;
+    vc1  [label = "View Controller 1"]
+    p12  [label = "(present)"]
+    vc2  [label = "View Controller 2"]
+    p23  [label = "(present)"]
+    vc3  [label = "View Controller 3"]
+  }
+  {
+    vc2 -> UIImageView [arrowhead = none];
+  }
+  {
+    rank = same;
+    d32  [label = "(dismiss)"]
+  }
+  m  [label = "(didReceiveMemoryWarning)"]
+  vc1 -> p12 -> vc2 -> p23 -> vc3 -> m -> d32 -> vc2
+}
+
+digraph GD {
+  node [shape = plaintext]
+  {
+    rank = min;
+    "UIImageView"
+  }
+  {
+    rank = same;
+    vc1  [label = "View Controller 1"]
+    p12  [label = "(present)\n(no animate)",]
+    vc2  [label = "View Controller 2"]
+    p23  [label = "(present)\n(animated)"]
+    vc3  [label = "View Controller 3"]
+  }
+  {
+    vc2 -> UIImageView [arrowhead = none];
+  }
+  {
+    rank = same;
+    d32  [label = "(dismiss)\n(animated)"]
+  }
+  m  [label = "(didReceiveMemoryWarning)"]
+  vc1 -> p12 -> vc2 -> p23 -> vc3 -> m -> d32 -> vc2
+}
+
+digraph GDD {
+  node [shape = plaintext]
+  {
+    rank = min;
+    "UIImageView"
+  }
+  {
+    rank = same;
+    vc1  [label = "View Controller 1"]
+    p12  [label = "(present)\n(no animate)\n(user interaction enabled)",]
+    vc2  [label = "View Controller 2"]
+    p23  [label = "(present)\n(animated)"]
+    vc3  [label = "View Controller 3"]
+  }
+  {
+    vc2 -> UIImageView [arrowhead = none];
+  }
+  {
+    rank = same;
+    d32  [label = "(dismiss)\n(animated)\n(user interaction disabled)"]
+  }
+  m  [label = "(didReceiveMemoryWarning)"]
+  vc1 -> p12 -> vc2 -> p23 -> vc3 -> m -> d32 -> vc2
+}

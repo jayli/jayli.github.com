@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>setImpl</title>
+ <link href="http://lhzhang.com/atom.xml" rel="self"/>
+ <link href="http://lhzhang.com/"/>
+ <updated>2012-01-29T18:02:58+08:00</updated>
+ <id>http://lhzhang.com/</id>
+ <author>
+   <name>Linghua Zhang</name>
+   <email>linghua.zhang@me.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>完全Linux ---- 让kaffeine显示中文字幕</title>
+   <link href="http://lhzhang.comdata/2006/07/29/linux-kaffeine-with-subtitle.html"/>
+   <updated>2006-07-29T00:00:00+08:00</updated>
+   <id>urn:uuid:c6675166-6afd-4741-8ccd-d40517ff5231</id>
+   <content type="html">&lt;p&gt;Ubuntu 6.06已经的Kaffeine已经支持字幕的显示了，但是其默认安装还不能显示中文字幕。&lt;/p&gt;
+
+&lt;p&gt;Kaffeine作为Xine的前端，采用Xine引擎，当然字幕的显示也是以来Xine库了。Xine的字幕显示需要自己定义的一些特殊格式的字体，而其默认安装只带了几种英文字体，这就是Kaffine之所以无法显示中文字幕的原因，知道了原因，解决起来就很容易了。&lt;/p&gt;
+
+&lt;p&gt;首先我们需要准备的是制作字体的工具，叫做xine-fontconv。源里的xine是没有这个工具的，有兴趣的话大家可以去SourceForge上下xine的源码，自己编译一下就可以了，比较懒的话......这里有一个编译好的版本，下来放到/usr/bin下面，其实放哪里无所谓，执行的时候找的到就行然后要找一个中文字体，不用多说了吧，/usr/share/fonts/truetype下找一个顺眼的中文自己就行了，注意一下编码是gbk &amp;amp; gb2312的还是big5的，这里以文鼎PL细上海宋Uni（AR PL ShanHeiSun Uni）为例，字体文件为/usr/share/fonts/truetype/arphic/uming.ttf&lt;/p&gt;
+
+&lt;p&gt;&lt;del&gt;下载： xine-fontconv.bin&lt;/del&gt;&lt;/p&gt;
+
+&lt;p&gt;进入xine的字体目录：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /usr/share/xine/libxine1/fonts
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;制作字体，ming是最终生成的字体名，自选，gbk是编码，以实际情况为准：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;xine-fontconv /usr/share/fonts/truetype/arphic/uming.ttf ming gbk
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;等吧，很久的，去喝杯咖菲（晕，新换的雅黑字体居然没有咖fei的fei字，只好拿这个代替了%&lt;sup&gt;#$*&amp;amp;$&lt;sup&gt;&amp;amp;@$%#$@&lt;sup&gt;#@）好了，呵呵&lt;/sup&gt;&lt;/sup&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;之后我们会看到生成了ming-16-xinefont.gz这样的文件，就是新的字体了，16代表大小，一共会有16，20，24，32，48，64这几个，然后打开Kaffeine配置一下Xine：&lt;/p&gt;
+
+&lt;p&gt;设置－&gt;Xine引擎参数－&gt;Subtitles，在右边的新手选项中把最后一项（encoding of the subtitles）替换为我们的编码，这里是gbk，专家选项中的第一项（font for subtitles）替换为我们的字体名，这里为ming，确定。&lt;/p&gt;
+
+&lt;p&gt;现在可以找个电影试一下啦，把字幕文件名的.idx，.sub，.srt等等之前的部分改成和电影文件名一样就行了，在载入的时候会提示你选字幕的&lt;/p&gt;
+
+&lt;p&gt;enjoy :)&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>在 linux 下驱动 Compaq 万通宝</title>
+   <link href="http://lhzhang.comdata/2006/07/24/linux-with-compaq.html"/>
+   <updated>2006-07-24T00:00:00+08:00</updated>
+   <id>urn:uuid:b87da13a-a4dd-402f-b06a-cef7eeee2d80</id>
+   <content type="html">&lt;p&gt;近日完全转到 linux 了，不过 PocketPC 和万通宝的驱动是个大问题，Google 了好久，终于解决了万通宝的驱动，如下：&lt;/p&gt;
+
+&lt;p&gt;万通宝的驱动要自己编译安装，所以我们必须先要安装一些必要的软件包，以ubuntu为例，debian及其它发行版会略有不同:&lt;/p&gt;
+
+&lt;p&gt;我们需要的是 gcc，curl，cvs，以及与当前相对应的内核头文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上命令可安装编译所需要的软件包如 gcc，cpp等，然后是安装 cvs&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install cvs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以及当前版本的内核头文件&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install linux-headers-`uname -r`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意：` 符号是 tab 键上面数字 1 键左边那个，不是单引号&lt;/p&gt;
+
+&lt;p&gt;然后是 curl&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install curl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以上是为了说明清楚一些，当然也可以一次性安装：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential cvs linux-headers-`uname -r` curl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装好必要的软件包后，我们需要从 cvs 上去 checkout 最新的驱动源码&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cvs -z3 -d:pserver:anonymous@cvs.savannah.gnu.org:/cvsroot/orinoco co orinoco
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后编译驱动&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd orinoco
+
+make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译正确完成后需要安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;之后我们需要去下载 windows 的 firmware，当然这个不用我们动手，已经有写好的脚本来完成了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd firmware
+
+./get_ezusb_fw
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将得到的 firmware 拷贝到 linux 内核的 firmware 目录中，在 dapper （ubuntu 6.06）中为 /lib/firmware/linux-kernel-xxx （xxx为内核版本）目录中，其它发行版视实际情况而定&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo cp ./orinoco_ezusb_fw /lib/firmware/`uname -r`
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在我们可以尝试激活万通宝了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo modprobe -v orinoco_usb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;看看万通宝的绿灯有没有亮，不亮的话则需要重启一下&lt;/p&gt;
+
+&lt;p&gt;最后，保证系统在启动的时候自动加载万通宝模块，需要修改一下 /etc/modules 文件，在文件的末尾加一行&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;orinoco_usb
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重启，进入桌面后看看，绿灯还不亮的话试下 Fn + F2，这样子应该差不多正常工作了，enjoy～&lt;/p&gt;
+</content>
+ </entry>
+ 
+ 
+</feed>

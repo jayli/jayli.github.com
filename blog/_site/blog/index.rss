@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<rss version="2.0"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:dcterms="http://purl.org/dc/terms/" >
+<channel>
+<title>setImpl</title>
+<link href="blog/index.rss" rel="self" />
+  <item>
+  <author><name>wayne</name></author>  <title>If you saw this</title>
+  <guid isPermaLink="false">urn:uuid:de96fc8a-247a-4d09-a395-d3ce00317c6e</guid>  <link>http://lhzhang.com/blog/2011/12/16/if-u-saw-this.html</link>
+	<pubDate>2011-12-16T13:50:00Z</pubDate>
+	<dcterms:modified>2011-12-16T13:50:00Z</dcterms:modified>
+  <description>
+    &lt;p&gt;从 &lt;a href=&#34;http://ringce.com/hyde&#34; title=&#34;hyde&#34;&gt;hyde&lt;/a&gt; 换到了 &lt;a href=&#34;http://jekyllrb.com/&#34; title=&#34;jekyll&#34;&gt;jekyll&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其实之前切到 hyde 有考虑过 jekyll, 不过因为前者是 python 后者是 ruby 所以选择了前者. 不过 jekyll 更加清晰的目录结构和更灵活的 permalink 以及 github pages&amp;nbsp;的支持还是让我忍不住换了过来. &lt;/p&gt;
+&lt;p&gt;# 至于 octopress,&amp;nbsp;自带的东西太多太过于繁杂，处于洁癖还是放弃了&lt;/p&gt;
+&lt;p&gt;其实这篇的主要目的是，如果你看到这篇了那么请改一下 rss 地址：&amp;nbsp;http://lhzhang.com/atom.xml&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>Welcome to X3 world</title>
+  <guid isPermaLink="false">urn:uuid:82e6670e-8ad4-4ef9-972f-8ebe821ca3b0</guid>  <link>http://lhzhang.com/blog/2011/11/29/welcome-to-x3-world.html</link>
+	<pubDate>2011-11-29T14:12:50Z</pubDate>
+	<dcterms:modified>2011-11-29T14:12:50Z</dcterms:modified>
+  <description>
+    &lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/lhzhang/6423070739/in/photostream&#34; title=&#34;&#34;&gt;&lt;img alt=&#34;&#34; src=&#34;/media/files/2011/11/29/SDIM0029.jpg&#34; title=&#34;&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/lhzhang/6423073915/in/photostream&#34; title=&#34;&#34;&gt;&lt;img alt=&#34;&#34; src=&#34;/media/files/2011/11/29/SDIM0055.jpg&#34; title=&#34;&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/lhzhang/6423075223/in/photostream&#34; title=&#34;&#34;&gt;&lt;img alt=&#34;&#34; src=&#34;/media/files/2011/11/29/SDIM0061.jpg&#34; title=&#34;&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.flickr.com/photos/lhzhang/6423083557/in/photostream&#34; title=&#34;&#34;&gt;&lt;img alt=&#34;&#34; src=&#34;/media/files/2011/11/29/SDIM0087.jpg&#34; title=&#34;&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;一天下来的感觉是，操作并没有传说中的那么不堪，反倒是很容易上手，也有很多便利的地方。对焦也没有慢的感觉。24.2mm F2.8 &lt;span class=&#34;caps&#34;&gt;APSC&lt;/span&gt; 最重要是 X3&amp;nbsp;的传感器，没有高分辨率的录像，没有高解析度的液晶屏，朴素的反而更惹人喜爱。&lt;/p&gt;
+&lt;p&gt;从此上了 X3&amp;nbsp;的贼船&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>UIImageView as Root View of View Controller</title>
+  <guid isPermaLink="false">urn:uuid:7af13863-a8e9-40e6-918c-ed7a59f571ca</guid>  <link>http://lhzhang.com/blog/2011/11/22/uiimageview-as-root-view-of-view-controller.html</link>
+	<pubDate>2011-11-22T20:29:33Z</pubDate>
+	<dcterms:modified>2011-11-22T20:29:33Z</dcterms:modified>
+  <description>
+    &lt;p&gt;这是一个很诡异的 bug，表现为在收到 memory warning 后，回到上一个 View Controller&amp;nbsp;后界面无响应，如下&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;bug&#34; src=&#34;/media/files/2011/11/22/bug.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在 View Controller 3 收到低内存警告返回 View Controller 2&amp;nbsp;后界面失去响应。&lt;/p&gt;
+&lt;p&gt;仔细检查后发现 View Controller 2 的 root view 是 UIImageView 并且在 loadView 里并没有修改 userInteractionEnabled 属性的值，所以 UIImageView 不接受事件处理，界面没有响应反而是正常的，于是问题变得诡异：为什么从 View Controller 1 迁移过来时这个 image view&amp;nbsp;是接受事件响应的？&lt;/p&gt;
+&lt;p&gt;做个简单的 UIImageView 的 subclass 然后 override setUserInteractionEnabled: 方法后设 breakpoint，发现在 userInteractionEnabled 的值在 UIWindowController 的 transition:fromViewController:toViewController:target:didEndSelector: 方法里被修改成了&amp;nbsp;&lt;span class=&#34;caps&#34;&gt;YES&lt;/span&gt;。&lt;/p&gt;
+&lt;p&gt;问题变得更加诡异： transition:fromViewController:toViewController:target:didEndSelector: 方法在从 View Controller 3 被 dismiss 返回到 View Controller 2 时也会被调用，为什么这时候 userInteractionEnabled&amp;nbsp;的值没有变？&lt;/p&gt;
+&lt;p&gt;继续比较区别，注意到从 View Controller 1 迁移到 View Controller 2 时 animated 的参数是 &lt;span class=&#34;caps&#34;&gt;NO&lt;/span&gt; 而 View Controller 3 做 dismiss 时是设定了 animation&amp;nbsp;的：&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;bug&#34; src=&#34;/media/files/2011/11/22/with-description.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;猜测 UIWindowController 的 transition:fromViewController:toViewController:target:didEndSelector: 方法在 transition 时在没有动画效果的情况下会检查 root view 是否是 UIImageView 并且修改 userInteractionEnabled&amp;nbsp;的值，而在有动画时则不会。&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;bug&#34; src=&#34;/media/files/2011/11/22/with-analytics.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;在 subclass 的 setUserInteractionEnabled: 方法里加 log 然后调整 present 和 dismiss&amp;nbsp;的动画参数后得到了确认。&lt;/p&gt;
+&lt;p&gt;修正方法很简单，在 loadView 里创建 UIImageView 后设置 userInteractionEnabled 为&amp;nbsp;&lt;span class=&#34;caps&#34;&gt;YES&lt;/span&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;diff --git a/PLViewController.m b/PLViewController.m
+index 9d0dd8b..2386e0a 100644
+--- a/PLViewController.m
++++ b/PLViewController.m
+@@ -148,6 +148,7 @@ enum {
+ - (void)loadView
+ {        
+     UIImageView *imageView = [[UIImageView alloc] initWithImage:backgroundImage];
++    imageView.userInteractionEnabled = YES;
+     imageView.frame = [[UIScreen mainScreen] applicationFrame];
+     self.view = imageView;
+     [imageView release];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;其实在 UIImageView 作 root view 是修改 userInteractionEnabled 的值是必须的&lt;/strong&gt;，而 UIWindowController 在无动画 transition 时帮我们隐藏了这个 bug，并且这个 bug 隐藏的很深，只有在 View Controller 3 里出现内存不足，View Controller 2 的 view 被自动释放，然后在返回 View Controller 2 时重新 loadView&amp;nbsp;的场合才会出现。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;其实只作显示图片用的话直接操作 UIView 的 layer 应该是更好的选择吧，不会有这么奇怪的 bug&amp;nbsp;出现&lt;/em&gt;&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>R.I.P. Steve Jobs</title>
+  <guid isPermaLink="false">urn:uuid:0e19b236-b196-4f99-b274-e41b17eb9b82</guid>  <link>http://lhzhang.com/blog/2011/10/06/the-hero.html</link>
+	<pubDate>2011-10-06T17:35:03Z</pubDate>
+	<dcterms:modified>2011-10-06T17:35:03Z</dcterms:modified>
+  <description>
+    &lt;p&gt;&lt;a href=&#34;http://www.apple.com/stevejobs/&#34;&gt;&lt;img alt=&#34;&#34; src=&#34;/media/images/2011/10/06/RIPSteveJobs.png&#34; /&gt;&lt;/a&gt;&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>回忆</title>
+  <guid isPermaLink="false">urn:uuid:8454eed2-ae76-49b4-ab1f-861e309308bd</guid>  <link>http://lhzhang.com/blog/2011/09/26/memory.html</link>
+	<pubDate>2011-09-26T21:51:26Z</pubDate>
+	<dcterms:modified>2011-09-26T21:51:26Z</dcterms:modified>
+  <description>
+    &lt;p&gt;死党大婚在即，昨晚趴在 11 区的床上突然把自己人生的 timeline&amp;nbsp;回忆了一遍，很多人都以不再联系，有些昔日的好友已然觉得陌生，不知道他们现在在哪里，过着怎样的生活，而有些人甚至连名字都已经想不起来，只剩下对脸庞模糊的记忆。&lt;/p&gt;
+&lt;p&gt;无数次的在想，哪怕只是一个很小的车站，给某个时间段内出站的人都作上标记，他们离开后的轨迹将会绘制成一副多么美妙的图画。&lt;/p&gt;
+&lt;p&gt;忽然发现，一路走的过于专心，而忽略了两旁的风景，一路走的过于漫不经心，却忘记了思考&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>Xcode 里自动加 build 版本号</title>
+  <guid isPermaLink="false">urn:uuid:c0672177-cf08-4c4d-8d31-7516148ef4e7</guid>  <link>http://lhzhang.com/blog/2011/09/23/xcode-build-auto-increment.html</link>
+	<pubDate>2011-09-23T20:17:05Z</pubDate>
+	<dcterms:modified>2011-09-23T20:17:05Z</dcterms:modified>
+  <description>
+    &lt;p&gt;把 Info.plist 里的版本号改成某个数字，然后 Targets → your target → Build Phases → Run Script&amp;nbsp;的地方加上&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version=`/usr/libexec/PlistBuddy -c &#34;Print CFBundleVersion&#34; $PRODUCT_SETTINGS_PATH`
+version=`expr $version + 1`
+/usr/libexec/PlistBuddy -c &#34;Set :CFBundleVersion $version&#34; $PRODUCT_SETTINGS_PATH
+/usr/libexec/PlistBuddy -c &#34;Set :CFBundleShortVersionString $version&#34; $PRODUCT_SETTINGS_PATH
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个脚本会让 Xcode 在每次 build 时都自动把版本号加&amp;nbsp;1。&lt;/p&gt;
+&lt;p&gt;build 数字太大了不好看也不那么人性化，于是在 git&amp;nbsp;下面我们可以&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version=`git describe --tag`
+/usr/libexec/PlistBuddy -c &#34;Set :CFBundleVersion $version&#34; $PRODUCT_SETTINGS_PATH
+/usr/libexec/PlistBuddy -c &#34;Set :CFBundleShortVersionString $version&#34; $PRODUCT_SETTINGS_PATH
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样我们得到的就是 git 里最近的 tag，距离此 tag 的 commit 数以及 commit hash 的前 8 位，比如&amp;nbsp;v00.10-12-g071c526&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;em&gt;今天 iCloud&amp;nbsp;reset，大概离发布不远了吧&lt;/em&gt;&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>Mac 下那些常用的软件们</title>
+  <guid isPermaLink="false">urn:uuid:4e684ef0-78a6-4f03-8a37-984a4ae13ee3</guid>  <link>http://lhzhang.com/blog/2011/08/24/the-great-softwares-on-mac.html</link>
+	<pubDate>2011-08-24T18:29:18Z</pubDate>
+	<dcterms:modified>2011-08-24T18:29:18Z</dcterms:modified>
+  <description>
+    &lt;p&gt;自己平时比较常用的软件，有自带的也有第三方的，有收费的也有免费的，仅供参考。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1Password&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;极有名的密码管理软件，除支持网站帐号管理外还可以保存软件 license 信息，银行账号，信用卡以及护照等各种敏感数据。同时还有 iOS / Android&amp;nbsp;版本。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Alfred&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;类似 QucikSilver 的 launcher 软件，配合 PowerPack 已经可以完全替代 &lt;span class=&#34;caps&#34;&gt;QS&lt;/span&gt;&amp;nbsp;了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Automator&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;图形化的自定制工作流程软件，用类似 pipe 的概念把各个动作连接起来以完成一系列琐碎机械的任务。我一直认为这是 &lt;span class=&#34;caps&#34;&gt;OSX&lt;/span&gt; 比 Windows&amp;nbsp;人性化的很好的体现&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CalendarBar&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;菜单条上的 event 提醒软件，可以同步 iCal ，支持 Google Calendar ，以及 facebook 的&amp;nbsp;event&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ClipMenu&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;剪贴板管理，可以记录最近的 20 个拷贝记录。这个不重要， snippet&amp;nbsp;功能才是效率提升的关键&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Reeder&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;最好的 Google Reader&amp;nbsp;客户端，没有之一&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;TextMate&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;神一样的编辑器。虽然对 &lt;span class=&#34;caps&#34;&gt;CJK&lt;/span&gt; 支持不够理想，传说中的 2.0 也处于常年难产中，但这丝毫不影响 TextMate 在编辑器中的地位。编辑器不是只有 vim 和 emacs ，&lt;span class=&#34;caps&#34;&gt;OSX&lt;/span&gt;&amp;nbsp;下我们还有第三个选择。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Hit&amp;nbsp;List&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;caps&#34;&gt;TODO&lt;/span&gt; 管理，用过 OmniFocus ， Things ， TaskPaper 后还是 &lt;span class=&#34;caps&#34;&gt;THL&lt;/span&gt; 最顺手。唯一的不满是 sync&amp;nbsp;服务是收费的&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The&amp;nbsp;Unarchiver&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;用来对付常见的几乎所有压缩包&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Twitterrific&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Twitter&amp;nbsp;客户端&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;iTerm&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;terminal&amp;nbsp;的替代程序，比自带的终端来的顺手&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>五月病</title>
+  <guid isPermaLink="false">urn:uuid:a83fc204-45b6-44d0-b8ca-46ec67080261</guid>  <link>http://lhzhang.com/blog/2011/08/04/just-tired.html</link>
+	<pubDate>2011-08-04T15:40:00Z</pubDate>
+	<dcterms:modified>2011-08-04T15:40:00Z</dcterms:modified>
+  <description>
+    &lt;p&gt;5月病就这么持续到了8月，且照着这个势头很有可能继续持续下去。&lt;/p&gt;
+&lt;p&gt;一起的同事基本都辞职回天朝了，虽然自己对回国完全没有兴趣不过失落感还是很多的。也许是时候要出去走走了，大自然意义上的出去和工作意义上的出去。&lt;/p&gt;
+&lt;p&gt;不知何时能过上靠一个 app&amp;nbsp;维生然后旅居全球的生活。基本上我就是个マダオ所以还是喜欢自在随性的生活。越来越厌恶每天耗在公司为了那点儿可怜的加班费熬到灯火通明。&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>新域名</title>
+  <guid isPermaLink="false">urn:uuid:26e652df-1654-4557-9f55-5397fb14784a</guid>  <link>http://lhzhang.com/blog/2011/06/15/domain-changed.html</link>
+	<pubDate>2011-06-15T20:49:15Z</pubDate>
+	<dcterms:modified>2011-06-15T20:49:15Z</dcterms:modified>
+  <description>
+    &lt;p&gt;下决心扔掉原来那个域名了，看到这篇的麻烦改下友链&lt;/p&gt;  </description>
+</item>
+  <item>
+  <author><name>wayne</name></author>  <title>Getting old</title>
+  <guid isPermaLink="false">urn:uuid:19a1314e-b25d-46a1-83a1-c0b3e3d0f5da</guid>  <link>http://lhzhang.com/blog/2011/03/28/happybirthday.html</link>
+	<pubDate>2011-03-28T16:01:45Z</pubDate>
+	<dcterms:modified>2011-03-28T16:01:45Z</dcterms:modified>
+  <description>
+    &lt;p&gt;&lt;img alt=&#34;&amp;quot;&amp;quot;&#34; src=&#34;/media/images/2011/03/28/compass.jpg&#34; /&gt; &lt;/p&gt;
+&lt;p&gt;又老一岁，继续迷惘&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;算来自从02年开始就没有在家过过生日了&lt;/p&gt;  </description>
+</item>
+      
+</channel>
+</rss>
