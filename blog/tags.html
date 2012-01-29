@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="author" content="Jayli" />
-    <title>setImpl</title>
+    <title>tags</title>
     <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
     <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
     <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
@@ -19,7 +19,7 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-        <h1>setImpl</h1>
+        <h1>tags</h1>
         </header>
         <nav>
         <span><a title="home page" class="" href="index.html">home</a></span>
@@ -32,26 +32,65 @@
         </nav>
         <article class="content">
         <section class="post">
+<div id='tag_cloud'>
+
+<a href="#linux" title="linux" rel="2">linux</a>
+
+<a href="#kaffeine" title="kaffeine" rel="1">kaffeine</a>
+
+</div>
+
+
+
+
 <ul class="listing">
 
-  
-  
-    
-    <li class="listing-seperator">2006</li>
-  
+  <li class="listing-seperator" id="linux">linux</li>
+
   <li class="listing-item">
-    <time datetime="2006-07-29">2006-07-29</time>
-    <a href="data/2006/07/29/linux-kaffeine-with-subtitle.html" title="完全Linux ---- 让kaffeine显示中文字幕">完全Linux ---- 让kaffeine显示中文字幕</a>
+  <time datetime="2006-07-29">2006-07-29</time>
+  <a href="data/2006/07/29/linux-kaffeine-with-subtitle.html" title="完全Linux ---- 让kaffeine显示中文字幕">完全Linux ---- 让kaffeine显示中文字幕</a>
   </li>
 
-  
-  
   <li class="listing-item">
-    <time datetime="2006-07-24">2006-07-24</time>
-    <a href="data/2006/07/24/linux-with-compaq.html" title="在 linux 下驱动 Compaq 万通宝">在 linux 下驱动 Compaq 万通宝</a>
+  <time datetime="2006-07-24">2006-07-24</time>
+  <a href="data/2006/07/24/linux-with-compaq.html" title="在 linux 下驱动 Compaq 万通宝">在 linux 下驱动 Compaq 万通宝</a>
   </li>
+
+
+  <li class="listing-seperator" id="kaffeine">kaffeine</li>
+
+  <li class="listing-item">
+  <time datetime="2006-07-29">2006-07-29</time>
+  <a href="data/2006/07/29/linux-kaffeine-with-subtitle.html" title="完全Linux ---- 让kaffeine显示中文字幕">完全Linux ---- 让kaffeine显示中文字幕</a>
+  </li>
+
 
 </ul>
+
+
+
+
+<script src="../media/js/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+
+
+<p></p>
+
+<script src="../media/js/jquery.tagcloud.js" type="text/javascript" charset="utf-8"></script>
+
+
+<p></p>
+
+<script language="javascript">
+$.fn.tagcloud.defaults = {
+    size: {start: 1, end: 1, unit: 'em'},
+      color: {start: '#f8e0e6', end: '#ff3333'}
+};
+
+$(function () {
+    $('#tag_cloud a').tagcloud();
+});
+</script>
 
 
 </section>
