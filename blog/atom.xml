@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://lhzhang.com/atom.xml" rel="self"/>
  <link href="http://lhzhang.com/"/>
- <updated>2012-01-30T18:21:13+08:00</updated>
+ <updated>2012-01-30T18:24:09+08:00</updated>
  <id>http://lhzhang.com/</id>
  <author>
    <name>Linghua Zhang</name>
@@ -124,7 +124,7 @@ include('file.php')
 
 &lt;p&gt;由于无法对a.js和b.js的内容作任何假设，因此串行一定是最安全的，也是唯一的策略，如果所有文件都有统一的约定，比如Sandbox中的Sandbox.add(callback)、YUI的YUI.add(‘name’,callback)、以及SeaJS中的define(callback)，则多脚本加载有太多可优化的空间，比如YUI提供的comboCDN、以及SeaJS提供的build工具。&lt;/p&gt;
 
-&lt;p&gt;那么，JavaScript中什么时候适合使用autoload呢？应当是在做全站架构时最适合使用，由专人负责维护通用功能和组件，维护一份&lt;strong&gt;autoload函数即可，当然，子逻辑可以重写这个函数（函数劫持），只要在页面中引用了种子文件就会包含这个&lt;/strong&gt;autoload函数，共用功能和组件就可以任意使用而不用刻意引入“包名”。也就是说，组件名称本身就是一个标识，这个标识和它所在的文件地址是一一对应的，根本不必再知晓组件名称属于哪个包名，这也符合autoload机制的本意。&lt;/p&gt;
+&lt;p&gt;那么，JavaScript中什么时候适合使用autoload呢？应当是在做全站架构时最适合使用，由专人负责维护通用功能和组件，维护一份&lt;code&gt;__autoload&lt;/code&gt;函数即可，当然，子逻辑可以重写这个函数（函数劫持），只要在页面中引用了种子文件就会包含这个&lt;code&gt;__autoload&lt;/code&gt;函数，共用功能和组件就可以任意使用而不用刻意引入“包名”。也就是说，组件名称本身就是一个标识，这个标识和它所在的文件地址是一一对应的，根本不必再知晓组件名称属于哪个包名，这也符合autoload机制的本意。&lt;/p&gt;
 
 &lt;p&gt;当然这种做法有一个不足就是性能问题，这也是YUI为什么一定要将“包名”以及包的依赖预先定义好的原因。尽管从纯粹程序逻辑的角度讲，这样做是多余的。由于前端代码的性能依赖于网速，不像后端代码，因此在JavaScript中也应当有节制的使用autoload，切不可滥用，寻找架构代码可维护性和性能之间的平衡点，这一点非常重要。&lt;/p&gt;
 </content>
@@ -135,10 +135,13 @@ include('file.php')
    <link href="http://lhzhang.comdata/2011/05/01/fontface.html"/>
    <updated>2011-05-01T00:00:00+08:00</updated>
    <id>urn:uuid:b9234a49-4d30-421e-95b3-1d9c9ffe6aac</id>
-   <content type="html">&lt;p&gt;原文：http://www.nczonline.net/blog/2011/04/05/lessons-on-font-face-from-the-f2e-summit/
-标题：Lessons on @font-face from the F2E Summit
-作者：NCZakas
-译文：F2E大会上关于@font-face的分享&lt;/p&gt;
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;原文：http://www.nczonline.net/blog/2011/04/05/lessons-on-font-face-from-the-f2e-summit/&lt;/li&gt;
+&lt;li&gt;标题：Lessons on @font-face from the F2E Summit&lt;/li&gt;
+&lt;li&gt;作者：NCZakas&lt;/li&gt;
+&lt;li&gt;译文：F2E大会上关于@font-face的分享&lt;/li&gt;
+&lt;/ul&gt;
+
 
 &lt;p&gt;上周我参与组织了Yahoo F2E大会，这次大会聚集了Yahoo全球各地的前端工程师，其中@font-face是本次大会最受关注的话题之一，我们讨论了它的种种优势和缺陷，好记性不如烂笔头，我得赶紧把这些知识点记录下来，本篇内容来自于 Matt Seeley 关于“yahoo.com/tablet”的专题分享“iPad版Yahoo首页实战”（Lessons from the Tablet Front Page），以及来自于Adam Wang关于面向未来的CSS3的专题分享“无名小站新版首页案例分析”（Case Study:
 Wretch New Front Page），在这里我只是将他们的分享做了摘录。&lt;/p&gt;
