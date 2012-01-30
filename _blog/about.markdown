@@ -10,6 +10,9 @@ F2E@Taobao
 Follow me 
 
 > [@jayli](http://weibo.com/jayli)
+>
 > [SlideShare](http://www.slideshare.net/lijing00333/)
+>
 > [Github](http://github.com/jayli)
+>
 > [Hi](http://hi.baidu.com/lijing00333/blog/)
