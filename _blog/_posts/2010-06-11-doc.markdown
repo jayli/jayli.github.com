@@ -1,5 +1,5 @@
 ---
-title: '文档的“渐进增强”'
+title: '文档的渐进增强'
 layout: post
 guid: urn:uuid7826768a-fd3e-46b7-8623-62c9f7e2d057:
 tags:
