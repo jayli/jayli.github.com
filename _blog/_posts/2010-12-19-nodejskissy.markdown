@@ -24,11 +24,11 @@ tags:
 
 准备 npm：
 
-	curl http://npmjs.org/install.sh | sh</pre>
+	curl http://npmjs.org/install.sh | sh
 
 如果你的账户没有权限则先准备好目录权限：
 
-	sudo chown -R $USER /usr/local</pre>
+	sudo chown -R $USER /usr/local
 
 安装成功后就可以通过 `"npm install package_name"` 命令来安装 NodeJS 软件包了
 

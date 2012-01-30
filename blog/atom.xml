@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://lhzhang.com/atom.xml" rel="self"/>
  <link href="http://lhzhang.com/"/>
- <updated>2012-01-30T18:25:08+08:00</updated>
+ <updated>2012-01-30T18:26:35+08:00</updated>
  <id>http://lhzhang.com/</id>
  <author>
    <name>Linghua Zhang</name>
@@ -517,12 +517,12 @@ dd-drop,dd-scroll,dd-drop-plugin&quot;
 
 &lt;p&gt;准备 npm：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;curl http://npmjs.org/install.sh | sh&amp;lt;/pre&amp;gt;
+&lt;pre&gt;&lt;code&gt;curl http://npmjs.org/install.sh | sh
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;如果你的账户没有权限则先准备好目录权限：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo chown -R $USER /usr/local&amp;lt;/pre&amp;gt;
+&lt;pre&gt;&lt;code&gt;sudo chown -R $USER /usr/local
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;安装成功后就可以通过 &lt;code&gt;&quot;npm install package_name&quot;&lt;/code&gt; 命令来安装 NodeJS 软件包了&lt;/p&gt;
