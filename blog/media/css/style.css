@@ -31,7 +31,7 @@ blockquote p{margin:0;padding:0;}
 #tag_cloud a:hover{color:#333333 !important;text-decoration:none;}
 .listing-item,.listing-seperator{list-style-type:none;}
 .listing-item a{padding:.2em 1em;}
-.listing-item time{color:#999999;}
+.listing-item time{color:#999999;font-family:"Galdeano","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
 .listing-seperator{font-weight:bold;}
 .meta{text-align:right;font-size:12px;}
 header{padding:.5em 0;border-bottom: 1px solid #cccccc;}
