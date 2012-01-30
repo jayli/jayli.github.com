@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>YUISlide,针对移动设备的动画性能优化</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>YUISlide,针对移动设备的动画性能优化</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p><img src="http://lijing00333.files.wordpress.com/2012/01/screenshot-4.jpg?w=400" alt="" /></p>
+
+<p><a href="http://jayli.github.com/gallery/yuislide">YUISlide</a>这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在<a href="http://wt.taobao.com/">网厅</a>项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。</p>
+
+<p>在普通的PC平台里，动画的实现大都是通过setInterval函数来完成，jQuery和YUI以及Kissy中亦是如此，只不过帧频有所差异。后来都各自添加了对内置css3 transition的检测，优先使用css3 animation，动画在现代浏览器中的性能又上升了一个台阶。Slide使用了YUI的Anim，在iphone/ipad/android平台中使用的是css3 animation，却依然不流畅，更流畅的动画则需要开启webkit的硬件加速。可以参照之前的一个<a href="http://www.slideshare.net/lijing00333/graphic-programming-in-js">ppt</a>来了解js动画编程的一些背景知识。</p>
+
+<p>首先要清楚css3的transitions和transform有着细微的差别，css3 transform本质上是将元素的内容作平移，而非直接对元素作属性渐变，因此性能更好，通过Demo可以看出，移动端的Dom操作性能要比css3 animation慢几个数量级。因此要在Slide运行当中尽量减少Dom操作，因此这里对Slide里的跑马灯的实现原理做了微调，即在初始化的时候就处理好待用的Dom节点，而不用在每次执行next()时剪切Dom节点。</p>
+
+<p><img src="http://jayli.github.com/gallery/yuislide/assets/slide-c.png" alt="" /></p>
+
+<p>另外还有一个css3动画相关属性就是keyframe，这个是用来辅助作复杂动画时用的，通过设定关键帧来作动画，Slide中的简单动画暂时用不到。因此css3动画的几个属性小结如下：</p>
+
+<ul>
+<li>css3 transition：平滑的改变CSS属性值，和setInterval原理类似，但速度更快</li>
+<li>css3 2d transform：二维变换，CSS属性值未渐变，未用到webGL加速，速度有提升，但提升程度有限</li>
+<li>css3 3d transform：三维变换，CSS属性值未渐变，开启WebGL加速，速度明显提升</li>
+<li>css3 animation：即使用keyframe来模拟动画，用来实现复杂动画，和性能无关</li>
+</ul>
+
+
+<p>判断是否开启内置动画：</p>
+
+<pre><code>// true:支持，false:不支持
+var nativeTransition = 
+    "webkitTransition" in document.body.style;
+</code></pre>
+
+<p>在支持transition的平台中使用translate3d来启用webGL进行硬件加速，注意这里使用transform代替了transition：</p>
+
+<pre><code>animNode.setStyles({
+    '-webkit-transition-duration': speed + 's',
+    '-webkit-transform':'translate3d('+dic+',0,0)'
+});
+</code></pre>
+
+<p>最后比较下改造前和改造后的Slide在移动终端里的性能，在Ipad/Iphone中打开下面这两个Demo：</p>
+
+<p>改造前，使用css3 2d transform（性能糟糕）：<a href="http://jayli.github.com/gallery/yuislide/slide2.html">Demo</a>
+改造后，使用css3 3d transform（动画流畅）：<a href="http://jayli.github.com/gallery/yuislide/slide.html">Demo</a></p>
+
+<p>Slide项目首页：<a href="http://jayli.github.com/gallery/yuislide/slide.html">http://jayli.github.com/gallery/yuislide/</a></p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2011-12-23">2011-12-23</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:c16ed91c-567b-4700-9398-2dc2834b1fee';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

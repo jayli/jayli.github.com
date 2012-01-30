@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>yui3的namespace的bug</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>yui3的namespace的bug</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>yui3的namespace有严重bug，在执行YUI.namespace(‘a.b.c’)的时候应当生成对象a.b.c，而yui3的namespace却无法生成。在yui.js中，yui3少了对对象结构的eval。应当这样hack：</p>
+
+<pre><code>YUI.prototype.namespace = function() {
+    var a=arguments, o=null, i, j, d;
+    for (i=0; i&lt;a.length; i=i+1) {
+        d = ("" + a[ i ]).split(".");
+        o = this;
+        for (j=(d[0] == "YAHOO") ? 1 : 0; j&lt;d.length; j=j+1) {
+            o[d[j]] = o[d[j]] || {};
+            //added by jayli
+            try{var _o=(_o?(_o[d[j]]=_o[d[j]]||{}):
+                (eval(d[j]+"="+d[j]+"||{}")))
+            }catch(e){_o=eval(d[j]+"={}")}
+            o = o[d[j]];
+        }
+
+    }
+
+    return o;
+};
+</code></pre>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2009-11-02">2009-11-02</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:b23b7be5-c377-413e-80fd-4c24b942b931';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

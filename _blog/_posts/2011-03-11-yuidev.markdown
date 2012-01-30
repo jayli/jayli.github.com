@@ -1,0 +1,120 @@
+---
+title: '[翻译]YUI3.4.0 中对 Seed 和 Loader 的改造'
+layout: post
+guid: urn:uuid:cc706484-0a98-4403-bb96-6fca169c37c9
+tags:
+---
+- 原文：http://www.yuiblog.com/blog/2011/07/01/yui-and-loader-changes-for-3-4-0/
+- 标题：YUI and Loader changes for 3.4.0
+- 作者：Dav Glass
+- 译文：YUI3.4.0 中对 Seed 和 Loader 的改造
+
+在 YUI3.4.0 中，我们开始对 Loader 的核心逻辑进行升级改造。Loader 的性能有了很大提升，而且更加健壮，可以在更多场景下非常方便的使用（比如在服务器环境中）。同时我们会给出YUI的发展路线图，但首先还是有必要解释一下本次更新带来了哪些新内容，为什么做这些更新，以及这些更新对开发者带来的影响。对于大多数用例来说，开发者甚至不会察觉到有什么变化，但有一点变化最明显，就是速度更快，而且加载的资源文件更小了。
+
+种子文件
+
+我们首先来看 YUI 种子文件的一些变化，在之前的版本中，YUI 种子文件非常小，不包含 Loader 以及它的元组件（meta-data）。我们发现在90%的用例中，种子文件并未像我们设计的那样工作。大部分人引用种子文件之后再去载入他们自有的模块，也就意味着种子文件需要先获取 Loader，再计算模块依赖关系，然后再载入模块。我们感到这种策略是一种错误，它会带来一次额外的 http 请求，因此在新版的 YUI 中我们将 Loader 和它的元组件都整合进种子文件中。当然，这会让种子文件体积变大一些，但由于元组件已经包含在种子之内，页面模块的加载自然会提速很多。
+
+如果你仍希望使用旧的方式加载YUI，你只需引入 yui-base 种子文件就可以了。基于 yui-base 可以单机模式运行YUI，它也可以根据需要去自动加载 Loader。如果你想更细粒度的使用 YUI，我们提供了 yui-core 种子文件，yui-core 文件几乎就是原来的 yui-base。
+
+	/build/yui/yui-min.js //YUI Seed + Loader
+	/build/yui-base/yui-base-min.js //Old YUI Seed with Loader fetch support
+	/build/yui-core/yui-core-min.js //Old yui-base without Loader fetch support
+
+注意，这些URL和之前的URL有所不同。如果想使用 yui/yui-base.js 文件，则需要重新定位至 yui-core/yui-core.js，如果你想使用旧的方式来加载种子和 Loader，则需要使用 yui-base/yui-base.js 种子文件。
+
+促使我们对 YUI 作这种调整的另一个重要原因是，根据 YUI 的发展路线图，我们需要 YUI 将来运行于各种平台上。如果你有 combo 服务器（译注：combo 是合并的意思，这里指可以在服务器端合并脚本的服务器），则旧有的种子外加 Loader 的使用方式是ok的，我们可以将种子和 Loader 合并入一个 http 请求。那么 YUI 如何运行在服务器端、离线应用程序以及手持终端里呢？这些场景所需的种子文件需要做到最小化，同时又要保持各自所需的功能。
+
+模块依赖计算器（Rullups）
+
+（译注：YUI 提供了两种模块粒度，粗粒度和细粒度，分别面向初级开发者和高级开发者使用。比如 event 中就包含了 event-key 和 event-move 等子模块，这里所说的“模块依赖计算”不是“向下”计算而是“向上”计算，比如我引用了 event-key，计算器得知它属于 event 大模块，这时就会加载 event，而放弃加载 event-key，由于 event 是很多小模块合写在一起的，因此可能会载入不需要的功能）
+
+接下来，我们将模块依赖计算器从 core 中删除掉了，同时将 Loader 中的 allowRollup 属性默认值设为 false。这意味着什么？希望它不会带来任何影响！在解释这个更新造成的影响之前，我们首先解释下背后的原因。还是“性能”——模块加载的负担过重。来看这个例子：
+
+	Module A: requires event-a, event-b
+	Module B: requires event-c, event-d
+
+在 YUI3.4.0 之前版本中的“模块依赖计算器”是用来决定还需加载哪些子模块，当同时加载这两个模块时，比如这个例子中通过计算得知需要加载 event 模块，这个模块包含：
+
+	event.a, event.b, event.c, event.d, event.e, event.f, event.g, event.h
+
+其实所载入的这些模块有些并不是我们真正需要的。如果关掉“模块依赖计算器”，YUI 将只会请求实际引用的模块，而不会去请求更多。多数情况下你不会注意到这些，如果你是模块的开发者，则可能会遇到一些麻烦，之前运行好好的模块现在不能运行了，其实是之前他们只是“碰巧”可以运行而已。来看一个实际的例子，Dial：
+
+在3.3.0中，Dial引用了这些：
+
+	requires: [
+		'widget',
+		'dd-drag',
+		'substitute',
+		'event-mouseenter',
+		'transition',
+		'intl'
+	]
+
+对于大多数场景来说，Dial 在 3.4.0 下可以照常工作，但不支持键盘事件。在简单分析之后发现，“模块依赖计算器”实际上请求了整个 Event 模块（包括event-move和event-key）。YUI3.4.0 中关掉了“模块依赖计算器”，Dial 也不再去请求 event-move 子模块所属的母模块 event。为了让 Dial 的模块引用更加细致有针对性，则需要引用所有实际用到的小模块，这样代码才会正常工作：
+
+	requires: [
+		'widget',
+		'dd-drag',
+		'substitute',
+		'event-mouseenter',
+		'event-move',
+		'event-key',
+		'transition',
+		'intl'
+	]
+
+对于模块开发者来说，清楚的知道自己的组件所依赖哪些模块非常重要，这也是比较好的习惯和实践。不要想当然去引用“上游模块”（就是刚才提到的粗粒度模块），始终确保只引用了真正需要的模块。
+
+这也意味着模块引用的定义更加合理，比如，datatype-date 内置支持全球化格式的数据，在之前的版本中这样使用：
+
+	Y.Intl.getAvailableLangs('datatype-date');
+
+但这个模块并不真正包含某种语言（datatype-date-format 模块包含）。因此需要指定正确的模块引用：
+
+	Y.Intl.getAvailableLangs('datatype-date-format');
+
+编译规则的修改和删除子模块
+
+除此之外，接下来的更新是修改了编译后的文件目录并从core中删除子模块。其实子模块并没有真正删除，只是元模块数据结构改变了。它使得当前 YUI 可以向后兼容。
+
+core 中的子模块有很多问题，我们必须把他们一一解决掉。第一个是性能。每次计算依赖关系的时候，程序会把子模块/插件结构中的每个节点都遍历一遍。在 Loader 运行过程中大量的遍历操作会严重损耗性能。去掉了 core 中的子模块支持，可以免去大量低效的函数调用和迭代运算。
+
+我们对 Loader 做了修改，以便能通过模块的元数据中属性来定义需要引用的模块，这样便可以载入我们指定的模块而不是去查找原始模块。如果你引用了“dd”（拖拽），Loader 将会把“dd”拆分成元模块（子模块），属性值看起来就像这样：
+
+	"dd-ddm-base,dd-ddm,dd-ddm-drop,
+	dd-drag,dd-proxy,dd-constrain,
+	dd-drop,dd-scroll,dd-drop-plugin"
+
+在 YUI 种子文件当中同样包含了“垂直模块依赖计算”或者称之为“别名”。模块的定义和 Loader 中的元模块是一模一样的。这样的话就可以直接根据“模块依赖配置工具”（Dependency Configurator）来获得文件的引用地址，同样也可以使用剥离出 Loader 的“模块依赖计算器”，在未来的版本发布中，我们还会对这部分功能作进一步的提炼。
+
+介绍过这些更新之后，我们来看一下 YUI 的项目文件，在之前的版本中，子模块决定模块的文件路径，比如：
+
+	"dd": {
+		"submodules": {
+			"dd-drag":
+				// Module data
+		}
+	}
+
+在3.3.0中编译“dd”得到的文件结果是：
+
+	/build/dd/dd-drag.js
+	/build/dd/dd-ddm.js
+	/build/dd/dd-drop.js
+
+在3.4.0的新编译规则下，“dd”编译后的结果是：
+
+	/build/dd-drag/dd-drag.js
+	/build/dd-ddm/dd-ddm.js
+	/build/dd-drop/dd-drop.js
+
+这样我们就可以将模块元数据中的“path”属性删掉了，减少了文件体积，也免去了根据模块名称查找它的文件路径的工作。
+
+如果你之前引用了配置好的合并了文件的（combo）URL，那么升级 YUI 到 3.4.0 后则需要重新生成这个 URL。
+
+本次更新也有不足，如果你引用了合并了多个模块文件的 URL 用以对页面进行初始化，则不能只更新版本号，你需要重新到模块依赖配置工具中获得新的 URL。
+
+未来
+
+我们还会对YUI作进一步的提炼、重构、优化，并将 Loader 和种子文件中的各个功能点的代码体积降到最低。当然首要工作依然是将 YUI 移植到除了客户端浏览器平台之外的服务器端、命令行和手持终端的各个平台中。

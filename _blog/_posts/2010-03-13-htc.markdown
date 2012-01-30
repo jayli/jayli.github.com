@@ -1,0 +1,37 @@
+---
+title: '用HTML Component(HTC)对ie做hack'
+layout: post
+guid: urn:uuid:73c8690b-7ac4-4855-95a1-eb8ac38af86a
+tags:
+---
+
+曾经异常强大的htc如今也沦落到只能做hack的地步了，在越来越强调跨浏览器通用性的今天，ie下更多花哨的事件已经淡出我们的视线，不过一些必要的hack却是只能在ie中去做，特别是一些难寻的beforeChange之类的事件只能在ie中找到。
+
+htc 是ie的一个古老技术，如今常用来在css中做hack，特别是针对ie6的hover和ie7的png的bug等等。简单讲就是用js来模拟css的效果，看个例子，ff中任意标签都可以用hover伪类，ie6中则只有a才有hover伪类，因此要给一个div定义一个hover的行为在ie中就会有问题。这时的解决办法就是通过htc用js来解决，而不必担心在ff浏览器中留下后遗症。
+
+在样式中这样定义：
+
+	div:hover{background:green;}
+	div{behavior:url(‘hover.htc’);}
+
+在hover.htc中的代码：
+
+	//by jayli
+	var hover = function(){
+		if(event.srcElement == element){
+			element.style.background = ‘green’;
+		}
+	};
+	var unhover = function(){
+		if(event.srcElement == element){
+			element.style.background = ”;
+		}
+	};
+
+这样就做到了在ie6和ff下表现是一致的，例子在这里：
+
+http://www.uedmagazine.com/test/htc/hover.html
+
+文档在这里：
+
+http://www.uedmagazine.com/test/htc/htc.rar

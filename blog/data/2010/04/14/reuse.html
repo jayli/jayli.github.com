@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>jquery、prototype、mootools、YUI的继承的实现</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>jquery、prototype、mootools、YUI的继承的实现</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>铺垫：js是基于原型的语言，其继承和传统的java式的继承有区别，实现js的继承除了要实现类本身方法的继承（实际上是从父类拷贝的），还要将原型继承（from原型链）。js框架对这种继承有着不同深度的封装，看下在这4个框架中的继承是如何实现的。实现这样一个场景，一个Window 类，Window类派生出一个Dialog，Dialog和Window有相同的构造方法，有不同的类型名称，他们均包含getType和 getConstructor两个方法。</p>
+
+<p>原生：</p>
+
+<pre><code>//Window
+var Window = function(){
+    this.init.apply(this,arguments);
+};
+Window.prototype = {
+    init:function(name){
+        this.type = this.getConstructor();
+        this.name = name
+    },
+    getType:function(){
+        return this.type;
+    },
+    getConstructor:function(){
+        return ‘Window’;
+    }
+
+};
+//Dialog
+var Dialog = function(){
+    Window.apply(this,arguments);//继承构造器
+};
+Dialog.prototype = new Window();//继承原型
+Dialog.prototype.getConstructor = function(){//扩展父类方法
+    return ‘Dialog’;
+};
+var _window = new Window(‘box1′);
+var _dialog= new Dialog(‘box2′);
+console.log(_window.getType === _dialog.getType);//true
+</code></pre>
+
+<p>这是原生的继承的实现，可以看到继承的过程有三部分，继承构造器，继承原型，扩展。</p>
+
+<p>jquery：</p>
+
+<pre><code>//Window
+var Window = function(){
+    this.init.apply(this,arguments);
+};
+Window.prototype = {
+    init:function(name){
+        this.type = this.getConstructor();
+        this.name = name
+    },
+    getType:function(){
+        return this.type;
+    },
+    getConstructor:function(){
+        return ‘Window’;
+    }
+};
+//Dialog
+var Dialog = function(){
+    Window.apply(this,arguments);
+};
+jQuery.extend(Dialog.prototype,Window.prototype,{
+    getConstructor:function(){
+        return ‘Dialog’;
+    }
+});
+var _window = new Window(‘box1′);
+var _dialog= new Dialog(‘box2′);
+console.log(_window.getType === _dialog.getType);
+</code></pre>
+
+<p>jquery的extend比较简单，只是简单的扩充，并不是真正的继承，因此实现代码比较冗余。</p>
+
+<p>prototype：</p>
+
+<pre><code>//Window
+var Window = Class.create({
+    initialize:function(){
+        this.type = this.getConstructor();
+        this.name = name;
+    },
+    getType:function(){
+        return this.type;
+    },
+    getConstructor:function(){
+        return ‘Window’;
+    }
+});
+//Dialog
+var Dialog = Class.create(Window,{
+    getConstructor:function(){
+        return ‘Dialog’;
+    }
+});
+var _window = new Window(‘box1′);
+var _dialog= new Dialog(‘box2′);
+console.log(_window.getType === _dialog.getType);//true
+</code></pre>
+
+<p>prototype 的继承很简洁，也很语义，只是这个Class以prototype的方式进行了一次封装，在定义class的时候必须指定initialize（构造器），其他的方法默认都挂载在prototype上。但若要增加Class本身的方法，就需要使用Class.pro = sth，且这个属性是无法直接继承的。</p>
+
+<p>mootools：</p>
+
+<pre><code>//Window
+var Window = new Class({
+    initialize:function(name){
+        this.type = this.getConstructor();
+        this.name = name;
+    },
+    getType:function(){
+        return this.type;
+    },
+    getConstructor:function(){
+        return ‘Window’;
+    }
+});
+//Dialog
+var Dialog = new Class({
+    Extends:Window,
+    getConstructor:function(){
+        return ‘Dialog’;
+    }
+});
+var _window = new Window(‘box1′);
+var _dialog= new Dialog(‘box2′);
+console.log(_window.getType === _dialog.getType);
+</code></pre>
+
+<p>mootools的实现思路和prototype大同小异，优点是简洁语义，缺点是缺少灵活性，理由同prototype。</p>
+
+<p>YUI3</p>
+
+<pre><code>//Window
+var Window = function(){
+    this.init.apply(this,arguments);
+};
+Window.prototype = {
+    init:function(name){
+        this.type = this.getConstructor();
+        this.name = name
+    },
+    getType:function(){
+        return this.type;
+    },
+    getConstructor:function(){
+        return ‘Window’;
+    }
+
+};
+//Dialog
+var Dialog = function(){
+    this.constructor.superclass.constructor.apply(this, arguments);
+    this.init.apply(this,arguments);
+};
+Y.extend(Dialog,Window,{
+    getConstructor:function(){
+        return ‘Dialog’;
+    }
+});
+var _window = new Window(‘box1′);
+var _dialog = new Dialog(‘box2′);
+console.log(_window.getType === _dialog.getType);
+</code></pre>
+
+<p>实际上Y.extend是由Y.mix配置来的，因此，Y.extend既可以从原型链上继承，也可以从类本身的方法和属性继承，个人感觉是比较灵活的一种实现，但在写代码的时候则需要手写一句this.constructor.superclass.constructor.apply(this, arguments)来实现构造器的继承，所以代码不够简洁和直观。</p>
+
+<p>其他框架比如Ext和Dojo的实现基本上是prototype的翻版，只是将Class的定义从Class.create改成了declare。</p>
+
+<p>总上所述，比较这四种js框架在继承方面的优劣：</p>
+
+<ul>
+<li>jquery，既无灵活性，代码又比较冗余，最弱</li>
+<li>prototype，代码简洁语义，但无灵活性，中等</li>
+<li>mootools，代码简洁语义，但无灵活性，中等</li>
+<li>YUI，代码比较臃肿，但有较高灵活性，中等</li>
+</ul>
+
+
+<p>总之：简洁语义的实现 or 强大的功能，永远是一个平衡。</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-04-14">2010-04-14</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:2b419947-10b4-41ae-aa94-000eb5bfaae1';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

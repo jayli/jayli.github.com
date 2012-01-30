@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>JavaScript语法检查插件 jsLint for Vim</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>JavaScript语法检查插件 jsLint for Vim</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>工欲善其事，必先利其器。作为更专业的前端工程师，我们需要强劲的IDE协助我们写出规范、美观、漂亮的JavaScript代码，首先要作的就是对代码进行合法性检查，而通过 <a href="www.jslint.com" target="_blank">www.jslint.com</a> 进行手工操作又显得碍手碍脚。为了提高效率，这里推荐使用 <a href="http://www.vim.org/scripts/script.php?script_id=2729" target="_blank">jsLint + Vim(gVim)</a>，能够协助你达到事半功倍的效果。</p>
+
+<p>首先，和 <a href="http://www.javascriptlint.com/" target="_blank">JavaScriptLint</a> 不同<strong>[注1]</strong>，<a href="http://www.vim.org/scripts/script.php?script_id=2729" target="_blank">jsLint</a> 是需要 <a href="http://en.wikipedia.org/wiki/JavaScript_engine" target="_blank">JavaScript 引擎</a>的支持的，linux中可选的有基于 C 语言的 <a href="http://en.wikipedia.org/wiki/SpiderMonkey_%28JavaScript_engine%29" target="_blank">Spidermonkey</a> 和基于 Java 的 <a href="http://en.wikipedia.org/wiki/Rhino_%28JavaScript_engine%29" target="_blank">Rhino</a>，考虑到速度，推荐使用 Spidermonkey。另外，<a href="https://github.com/hallettj/jslint.vim/blob/master/ftplugin/javascript/jslint.vim" target="_blank">jsLint.vim</a> 初始配置挂载的监听有些冗余，这会导致 <a href="http://www.vim.org" target="_blank">Vim</a> 运行很慢，影响编码的效率，这里我 hack 了一份 <a href="https://github.com/jayli/jayli.github.com/blob/master/gallery/vim/jslint.vim" target="_blank">jslint.vim</a>，只用F4键就可以开启/关闭语法检查，下面介绍配置方法（linux &amp; windows）。</p>
+
+<p><strong>jsLint + vim for Linux</strong></p>
+
+<p><a href="http://ued.taobao.com/blog/wp-content/uploads/2010/11/linux界面.png"><img class="alignnone size-full wp-image-2754" src="http://ued.taobao.com/blog/wp-content/uploads/2010/11/linux界面.png" alt="" width="525" height="317" /></a></p>
+
+<p>1，准备JS引擎</p>
+
+<p>linux 下默认没有 <a href="http://en.wikipedia.org/wiki/JavaScript_engine" target="_blank"> JavaScript 引擎</a>，需要安装，旧版本的 ubuntu 通过apt-get来安装</p>
+
+<pre><code>sudo apt-get install spidermonkey-bin
+</code></pre>
+
+<p>新版的 ubuntu 需要通过下面这个包安装</p>
+
+<p><a href="https://launchpad.net/ubuntu/hardy/i386/spidermonkey-bin/1.8.1.4-2ubuntu5" target="_blank">https://launchpad.net/ubuntu/hardy/i386/spidermonkey-bin/1.8.1.4-2ubuntu5</a></p>
+
+<p>其他linux发行版可以通过源码安装：</p>
+
+<p><a href="ftp://ftp.mozilla.org/pub/mozilla.org/js/" target="_blank">ftp://ftp.mozilla.org/pub/mozilla.org/js/</a></p>
+
+<p>2，安装ruby环境</p>
+
+<p>ubuntu下安装：</p>
+
+<pre><code>sudo apt-get install ruby
+</code></pre>
+
+<p>redhet系发行版中的安装：</p>
+
+<pre><code>yum install ruby
+</code></pre>
+
+<p>3，安装vim，通常linux中自带，不用安装</p>
+
+<p>4，下载<a href="http://www.vim.org/scripts/script.php?script_id=2729" target="_blank"> jsLint 插件</a>，下载后解压缩，把其中的 javascript 目录拷贝至 $VIM/plugin/中（作者给的文档有误，不应是$VIM/ftplugin/），当然也可以放到 ~/.vim/plugin/ 中</p>
+
+<p>5，将解压后 jslint/bin 目录中的 jslint 文件拷贝至 /usr/bin 中，也可以拷贝到~/bin/中</p>
+
+<p>6，下载 <a href="http://jayli.github.com/gallery/vim/jslint.vim" target="_blank">http://jayli.github.com/gallery/vim/jslint.vim</a> 文件，覆盖 $VIM/plugin/javascript/jslint.vim</p>
+
+<p>7，完成，打开一个js文件，用F4唤醒语法检查，再按F4关闭语法检查</p>
+
+<p><strong>jslint + gvim for windows</strong></p>
+
+<p><a href="http://ued.taobao.com/blog/wp-content/uploads/2010/11/windows界面.png"><img class="alignnone size-full wp-image-2756" src="http://ued.taobao.com/blog/wp-content/uploads/2010/11/windows界面.png" alt="" width="487" height="357" /></a></p>
+
+<p>windows 下自带 <a href="http://en.wikipedia.org/wiki/CScript" target="_blank">CScript</a>，不用再安装其他 JavaScript 引擎</p>
+
+<p>1，安装<a href="http://rubyinstaller.org/" target="_blank">ruby运行环境</a></p>
+
+<p>2，安装 <a href="http://www.google.com.hk/search?hl=zh-CN&amp;safe=strict&amp;biw=1680&amp;bih=868&amp;q=gvim&amp;aq=f&amp;aqi=&amp;aql=&amp;oq=&amp;gs_rfai=" target="_blank">gvim</a>，假设安装到 C:/Program Files/Vim 中</p>
+
+<p>3，下载<a href="http://www.vim.org/scripts/script.php?script_id=2729" target="_blank"> jsLint 插件</a>，下载后解压缩，将 ftplugin 目录中的 javascript 文件夹复制到 C:/Program Files/vim/vim72/plugin/ 目录中</p>
+
+<p>4，将 jslint 解压缩后的“/bin/jslint”文件添加后缀名 “exe”，并将其所在的路径添加到环境变量的 Path 中，比如我将 jslint.exe 放到 C:/user/bachi/ 中，配置环境变量</p>
+
+<p><a href="http://ued.taobao.com/blog/wp-content/uploads/2010/11/环境变量配置.png"><img class="alignnone size-full wp-image-2757" src="http://ued.taobao.com/blog/wp-content/uploads/2010/11/环境变量配置.png" alt="" width="373" height="297" /></a></p>
+
+<p>5，下载 <a href="http://jayli.github.com/gallery/vim/jslint.vim" target="_blank">http://jayli.github.com/gallery/vim/jslint.vim</a> 文件，覆盖 C:/Program Files/vim/vim72/plugin/javascript/jslint.vim</p>
+
+<p>6，修改这个 <a href="https://github.com/jayli/jayli.github.com/blob/master/gallery/vim/jslint.vim" target="_blank">jslint.vim</a> 文件，将 vim 安装路径替换为绝对路径，找到</p>
+
+<pre>expand("~/vimfiles/ftplugin/javascript")</pre>
+
+
+<p>修改为</p>
+
+<pre>expand("C:/Program Files/Vim/vim72/plugin/javascript")</pre>
+
+
+<p><a href="http://ued.taobao.com/blog/wp-content/uploads/2010/11/修改文件.png"><img class="alignnone size-full wp-image-2758" src="http://ued.taobao.com/blog/wp-content/uploads/2010/11/修改文件.png" alt="" width="581" height="54" /></a></p>
+
+<p>7，完成，打开一个 js 文件，用F4唤醒语法检查，再按F4关闭语法检查</p>
+
+<p>ps：其实很早之前，<a href="http://www.gracecode.com/" target="_blank">明城</a>就介绍过使用 <a href="http://www.gracecode.com/archives/2902/" target="_blank">JavaScriptLint + Vim进行语法检查</a><strong>[注2]</strong>，这种方法也相当不错，但使用体验稍有缺憾，语法提示单独占用视窗，看起来更像专门的 Debug 操作，而我更希望在编码过程中，实时监控我刚写过的代码的正确性，而给出语法提示也不应当进入一个“Debug”过程，只要编辑过程中，我用眼睛余光能注意到光标所在行的错误提示就可以了，没必要打开一个视窗给我看我有多少bug，另外，JavaScriptLint 的语法检查非常苛刻，我希望能有更加实用更加宽松的语法检查。很碰巧，jsLint 可以满足我这种挑剔的需求</p>
+
+<ul>
+<li><strong>[注1]</strong>：<a href="http://www.javascriptlint.com" target="_blank">JavaScriptLint</a> 的语法检查相比<a href="http://www.jslint.com/lint.html" target="_blank">老道的 jsLint</a> 更为苛刻，大量鸡肋警告非常干扰视线，比如  <a href="http://code.jquery.com/jquery-1.4.2.js" target="_blank">jquery-1.4.2.js</a> 通过 JavaScriptLint 检查有164个警告，通过 jsLint 检查只有10个警告，正是因为此，JavaScriptLint 实际上增加了我们编码的负担。</li>
+<li><strong>[注2]</strong>：明城的文章中有小小的误导，JavaScriptLint 和 jsLint 是两个不同的东东，这里推荐的是老道的 jsLint，而不是JavaScriptLint。</li>
+</ul>
+
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2011-01-04">2011-01-04</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:7fb56684-2ad6-4932-a87a-a3005117b46f';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

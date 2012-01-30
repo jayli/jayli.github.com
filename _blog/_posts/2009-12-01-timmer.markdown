@@ -1,0 +1,90 @@
+---
+title: 'yui3的node定时器'
+layout: post
+guid: urn:uuid:60a01f57-9663-4c5f-8a37-bdefdd05f33b
+tags:
+---
+jquery有一个插件叫Timer，很有意思，咱来实现一个简版的yui3的node timer。但还是应当首先交代下yui3的node扩展的一些事情，yui3 beta在实现上和pre版相比有很大不同，其中就包括yui原生元素的扩展方式的实现，之前在yui3还是pre的时候写过一篇yui3的链式调用的文章，阐述如何给原生的Node增加自定义方法，也就是实现了一个类似Y.Node.get(‘#id’).fuck()。在pre版需要使用 Node.addDOMMethod方法添加声明，而在yui3beta版这个方法就被去掉了，干脆直接通过在Y.Node.prototype上挂载新方法来实现扩展，这样确实方便了许多，自然，yui对Node的保护也变的较为脆弱，岂不是只通过Y.Node.prototype就可以重载原生的接口？但yui3内在的元素比如node和dom之间的继承的实现仍然采用了pre的思路，只是将那个addDomMethod改成了语义更通用的 Y.Node.importMethod（需要扩展的不只有Dom节点）。
+
+再来看node定时器的实现，这里我要实现两个div宽度增长这样一个功能，而且两个div之间的行为不应当相互影响，就类似两个线程同时执行不相互影响。直接裸写代码就应当这样。这里有一个需要注意的地方，就是短时间连续的dom操作可能会造成浏览器假死，就是说实际dom操作已经完成，但在页面上看不到效果，原因在这里。
+
+grow函数的实现：
+
+	var grow = function(id){
+		setTimeout(function(){
+			var _width = Number(Y.Node.get(‘#’+id).getStyle(‘width’).replace(‘px’,”));
+			if(_width >= 500)return;
+			Y.Node.get(‘#’+id).setStyle(‘width’,(_width+1).toString()+’px’).
+			set(‘innerHTML’,(_width+1).toString());
+			setTimeout(arguments.callee,0);
+		},0);
+	};
+
+这样就可以看到效果了，例子在这里
+
+http://www.uedmagazine.com/test/execthreads.html
+
+然而这里还是需要手动对相邻的dom操作做settimeout的hack，这里实现了一个everyTime的扩展，可以通过
+
+	Y.Node.get('#id').everyTime(10,function(node){
+		//your code here
+	},false);
+
+这样就将settimeout的方法的hack封装进node中，不用写那些晦涩难懂的settimeout和callee了。
+
+实现的代码是这样的：
+
+	YUI.add(‘node-timer’,function(Y){
+		Y.Node.prototype.everyTime = function() {
+			var node = this;
+			node._ttime = arguments[0];
+			if(typeof arguments[1] == ‘function’){
+				node._timer_f = arguments[1];
+			}else {
+				throw new TypeError(“function must be required”);
+				return false;
+			}
+			var _run_now = (arguments[2] == false)?false:true;
+			if(_run_now){
+				node.startTimer();
+			}
+		};
+		Y.Node.prototype.stopTimer = function(){
+			var node = this;
+			setTimeout(function(){
+				if(!node._timer)return false;
+				clearTimeout(node._timer);
+			},0);
+		};
+		Y.Node.prototype.startTimer = function(){
+			var node = this;
+			node._timer = setTimeout(function(){
+				if(node._timer_f(node) == false){
+					clearTimeout(node._timer);
+					return false;
+				}
+				node._timer = setTimeout(arguments.callee,node._ttime);
+			},node._ttime);
+		};
+	},”,{requires:['node']});
+
+例子在这里：
+
+http://www.uedmagazine.com/test/yui3NodeTimer.html
+
+用法：
+
+- node.every(time,foo,flag)
+- time：相邻操作的间隔时间
+- foo：foo(node)，每次操作的回调函数，回调参数是node本身，当函数返回false的时候停止循环
+- flag：true，立即执行，false，不立即执行，默认为true
+
+node.stopTimer()
+
+停止执行最后的一次timer，这里多次执行startTimer的时候会对node的timer进行叠加，并不去重，这个以后在说
+
+node.startTimer()
+
+开始执行，这里多次开始会叠加执行
+
+to be continue…

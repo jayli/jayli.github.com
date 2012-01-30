@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>js如何判断变量空值</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>js如何判断变量空值</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>判断变量是否存在是项目中是经常遇到的问题，list如下：</p>
+
+<p>1，a存在，但a无值</p>
+
+<pre><code>var a;
+alert(typeof a === ‘undefined’);//true
+alert(a == undefined);//true
+alert(a === undefined);//true
+alert(a == null);//true
+alert(a === null);//false
+</code></pre>
+
+<p>2，a不存在</p>
+
+<pre><code>alert(typeof a === ‘undefined’);//true
+alert(a == undefined);//error
+alert(a === undefined);//error
+alert(a == null);//error
+alert(a === null);//error
+</code></pre>
+
+<p>3，a存在，但a是一个占位符null</p>
+
+<pre><code>var a = null;
+alert(typeof a === ‘undefined’);//false
+alert(a == undefined);//true
+alert(a === undefined);//false
+alert(a == null);//true
+alert(a === null);//true
+</code></pre>
+
+<p>需要根据不同场景选择不同的判断方法，常用的是在函数中，判断实参是否正确的传递进来，通常会用null作为参数的占位符，这里就需要这样判断：</p>
+
+<pre><code>if(typeof a === ‘undefined’ || a === null )alert(‘a值出错’);
+</code></pre>
+
+<p>yui也提供了这两种方法</p>
+
+<pre><code>Y.Lang.isUndefined(a);
+</code></pre>
+
+<p>和</p>
+
+<pre><code>Y.Lang.isNull(a);
+</code></pre>
+
+<p>但是Y.Lang.isUndefined(a);会有问题，如果a真的不存在会报错。</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-04-18">2010-04-18</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:dae7c611-47ee-40aa-a4d3-59c2ca54f93d';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

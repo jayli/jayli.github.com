@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>如何量身打造一个前端框架</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>如何量身打造一个前端框架</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>为什么我们还要做前端框架？</p>
+
+<p>一方面，我把这个看成“学习”和“实作”的问题。对于既有的js库、框架，我们的态度只是学习和使用。我们学习再多，使用再多，也只是增强了学习和使用的能力。开发框架的能力并没有加强。
+学会使用与学会制造是两回事情。更进一步的话题，是不能因为别人能制造，我们就不需要学制造。因为别人会制造轮子，并且必将越造越好，但我们却一直是不会。
+中国在很多传统行业和IT行业中的很大部分上，已经成为了“全球工厂”了，确切地说是“全球代工工厂”。根源是在于我们不会，一直不会。现在不会，将来也不会，因为过去我们总在说“人家有比我们好的轮子，拿来用就可以了”。</p>
+
+<p>另一方面，现有的所谓框架多指jquery、yui、mootools这些“范库”，在企业级开发中充当tools的角色，针对不同的应用，要基于“范库” 构建DPL，而这些“范库”提供的零散widgets是远不能满足需求的，毕竟，商业应用对widgets的质量要求明显要比海量平民化的 “plugins”高很多。因此，针对企业级的开发构建DPL，也被称之为“框架开发”。显然，这里的“框架”是更高端更具针对性的。不同于更底层的“范库”的设计。</p>
+
+<p>框架的使用者是谁？</p>
+
+<p>这是任何软件和系统的设计之初都应当清楚的，软件设计给谁用？框架的目标使用者是谁？在淘宝，做框架是给淘宝的WD和工程师用的，在腾讯，框架是做给腾讯的工程师用的，因此这里的框架的使用者和“范库”有本质区别：我们是给特定的人群设计的框架，不是给互联网鱼龙混珠的哪些爱好者们用的。</p>
+
+<p>框架的直接商业价值和间接商业价值？</p>
+
+<p>直接商业价值：形成企业级规范，减轻业务开发负担，使生产率有质的飞跃，并降低成本。
+间接商业价值：这种专业性更强的框架更具学术价值。</p>
+
+<p>前端框架所承担的角色？</p>
+
+<p>首先，框架应当和“范库”功能类似，提供现成的widgets和模式库，用于快速构建更高层的上层应用。再者，提供解决团队冲突、代码共享的基本机制，形成团队开发基本模式(显然“范库”无法做到这一点)，也就是说，框架应当具备万行以上的代码量的管理能力。第三，融入全站系统架构中，作为全站前后端架构的组成部分，完成前后端合作的平滑高效(这也是“范库”无法做到的)。第四，高性能和可维护性的平衡。</p>
+
+<p>ok，以上是设计框架之初应当清楚必须清楚的事项，在做企业框架之前，这些思想准备工作务必先行。</p>
+
+<p>自然，淘宝也需要有量体裁衣的一套框架。这个框架使命是如此浓墨重彩，却也容易让人迷失其中。团队协作模式、万行代码的管理机制、模块的解耦和复用、对后端工程师的友好程度、外加一套完整和谐的视觉规范、以及大量精雕细琢的widgets，即复杂多变，又清晰易用，这才真正考验框架设计师的能力和水平。说到这里不得不提及Yahoo在这方面的出色工作，堪称教科书式的典范，使用YUI作为“范库”，拥有yloader、combo、phploader、 yapache、compressor tools、ypatterns、以及ydn，淘宝有了一个不错的榜样，照着这条路走就成了。</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-12-01">2010-12-01</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:adf2635d-362e-425a-b1c0-17514ad2ce1e';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

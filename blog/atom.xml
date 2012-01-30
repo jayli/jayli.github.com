@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://lhzhang.com/atom.xml" rel="self"/>
  <link href="http://lhzhang.com/"/>
- <updated>2012-01-30T09:56:01+08:00</updated>
+ <updated>2012-01-30T14:11:06+08:00</updated>
  <id>http://lhzhang.com/</id>
  <author>
    <name>Linghua Zhang</name>
@@ -13,422 +13,683 @@
 
  
  <entry>
-   <title>使用etag做缓存</title>
-   <link href="http://lhzhang.comdata/2009/06/12/etag.html"/>
-   <updated>2009-06-12T00:00:00+08:00</updated>
-   <id>urn:uuid:167c8c84-8bdb-4b24-8828-00add90a65a8</id>
-   <content type="html">&lt;p&gt;随着web项目规模的不断扩大，web页面早已不像从前那样看上去单薄简陋，门户和sns以及更加庞杂的web app使得web页面质量甚至以兆字节计算。因此web性能也越来越被重视起来，如今web性能优化的指导大都参考经典的yahoo 34条优化建议，在这34条优化原则中，对web性能提升最作用明显的有3条，1，cdn，2，减少http请求，3，缓存，cdn是服务器端的优化，减小http请求是前端优化，缓存则是协议优化，只从缓存的角度看，web页面本应当尽可能多的制造缓存，毕竟，不必要的占用请求等待时间是很多余的，不仅影响体验还浪费带宽。因此，缓存在web项目开发中应当放到比较重要的地位，即性能优化首先优化缓存。&lt;/p&gt;
+   <title>YUISlide,针对移动设备的动画性能优化</title>
+   <link href="http://lhzhang.comdata/2011/12/23/yuislide.html"/>
+   <updated>2011-12-23T00:00:00+08:00</updated>
+   <id>urn:uuid:c16ed91c-567b-4700-9398-2dc2834b1fee</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://lijing00333.files.wordpress.com/2012/01/screenshot-4.jpg?w=400&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;目前互联网使用最多的是 http1.1的协议版本，协议在设计上针对缓存方面留了很大空间，其中etag和last-modified两个字段和缓存直接挂钩，etag是指当前服务器文件的摘要，last-modified是指当前文件最后被修改的日期。其实etag是last-modified的一个补充，因为由于项目需要，某些文件会周期性的更改，但其内容并不改变，仅仅改变了修改时间，这个时候我们并不希望客户端认为这个文件被修改了，而重新 GET，另外，如果某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，则这种修改无法判断，在有的UNIX系统中记录的MTIME只能精确到秒，在者，有些服务器因为马虎疏忽或者配置错误导致服务器不能精确得到文件修改时间。这些情况下就不能只使用last-modified来判断文件是否被修改，因此，才需要etag作为其补充，上文提到etag是文件的指纹，协议并无规定etag是如何生成。这个不重要。可以根据具体项目情况实现etag。比如这样一段php：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://jayli.github.com/gallery/yuislide&quot;&gt;YUISlide&lt;/a&gt;这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在&lt;a href=&quot;http://wt.taobao.com/&quot;&gt;网厅&lt;/a&gt;项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cache();
-echo date(“Y-m-d H:i:s”);
+&lt;p&gt;在普通的PC平台里，动画的实现大都是通过setInterval函数来完成，jQuery和YUI以及Kissy中亦是如此，只不过帧频有所差异。后来都各自添加了对内置css3 transition的检测，优先使用css3 animation，动画在现代浏览器中的性能又上升了一个台阶。Slide使用了YUI的Anim，在iphone/ipad/android平台中使用的是css3 animation，却依然不流畅，更流畅的动画则需要开启webkit的硬件加速。可以参照之前的一个&lt;a href=&quot;http://www.slideshare.net/lijing00333/graphic-programming-in-js&quot;&gt;ppt&lt;/a&gt;来了解js动画编程的一些背景知识。&lt;/p&gt;
 
-function cache()
-{
-    $etag = “added by jayli”; //标记字符串，可以任意修改
-    if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag)
-    {
-        header(‘Etag:’.$etag,true,304);
-        exit;
-    }
-    else header(‘Etag:’.$etag);
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;首先要清楚css3的transitions和transform有着细微的差别，css3 transform本质上是将元素的内容作平移，而非直接对元素作属性渐变，因此性能更好，通过Demo可以看出，移动端的Dom操作性能要比css3 animation慢几个数量级。因此要在Slide运行当中尽量减少Dom操作，因此这里对Slide里的跑马灯的实现原理做了微调，即在初始化的时候就处理好待用的Dom节点，而不用在每次执行next()时剪切Dom节点。&lt;/p&gt;
 
-&lt;p&gt;在客户端curl一下看看返回的协议头是怎么样的：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://jayli.github.com/gallery/yuislide/assets/slide-c.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;这里使用的是If-None-Match字段来判断文件是否修改过，请求一个文件的流程可能如下：&lt;/p&gt;
-
-&lt;p&gt;第一次请求的时候：&lt;/p&gt;
+&lt;p&gt;另外还有一个css3动画相关属性就是keyframe，这个是用来辅助作复杂动画时用的，通过设定关键帧来作动画，Slide中的简单动画暂时用不到。因此css3动画的几个属性小结如下：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;客户端发起一个GET请求，&lt;/li&gt;
-&lt;li&gt;服务器端相应请求并生成一个etag，状态码是200，图中是第一次请求的http头&lt;/li&gt;
+&lt;li&gt;css3 transition：平滑的改变CSS属性值，和setInterval原理类似，但速度更快&lt;/li&gt;
+&lt;li&gt;css3 2d transform：二维变换，CSS属性值未渐变，未用到webGL加速，速度有提升，但提升程度有限&lt;/li&gt;
+&lt;li&gt;css3 3d transform：三维变换，CSS属性值未渐变，开启WebGL加速，速度明显提升&lt;/li&gt;
+&lt;li&gt;css3 animation：即使用keyframe来模拟动画，用来实现复杂动画，和性能无关&lt;/li&gt;
 &lt;/ul&gt;
 
 
-&lt;p&gt;第二次请求：&lt;/p&gt;
+&lt;p&gt;判断是否开启内置动画：&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;客户端发起一个GET请求，客户端应当发起一个If-None-Match头，这个头的内容就是第一次服务器返回的etag&lt;/li&gt;
-&lt;li&gt;服务器判断If-None-Match的值是否和之前生成etag向匹配，如果匹配则返回304，客户端从缓存取数据。图中是第二次请求的情况，看到请求字段中增加了一个If-None-Match字段。&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;这时浏览器从缓存取数据，而且可以看到当前缓存的信息：&lt;/p&gt;
-
-&lt;p&gt;因此，在不经常变化的web页面和css或img资源，应当应用这种缓存策略，而且配以过期头字段，这样的缓存机制相对完善，改天讨论下过期头以及过期头的设计，在web设计中缓存过期这方面是比较重要的。&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>yui3中的面向对象</title>
-   <link href="http://lhzhang.comdata/2009/05/02/oo.html"/>
-   <updated>2009-05-02T00:00:00+08:00</updated>
-   <id>urn:uuid:1ab18107-2d93-4c78-b740-95482798c4b7</id>
-   <content type="html">&lt;p&gt;javascript 是一种面向原型的语言，其实现代码重用的机制和传统的“面向对象”机制有比较大的区别，传统的面向对象是以封装继承和多态为基础的，比如java中经典的 23中设计模式完全以oop的这三条严格的原则为基础。在js中的原型可以省去某些重用写法上的麻烦，另外，js灵活的语法也使得js中的重用机制比传统 oop更加丰富多彩。yui3更是将这js中丰富的oop理论进行实践，堪称教科书式的典范。今天简单介绍下yui3对oop的经典实践。&lt;/p&gt;
-
-&lt;p&gt;概括来讲，js中的数据类型有两类，对象和函数，因此，js中的代码重用的操作对象也是这两者，分别来看看。&lt;/p&gt;
-
-&lt;h2&gt;针对对象的oop：&lt;/h2&gt;
-
-&lt;p&gt;简单克隆（Y.clone）：从传统的oop观点来将，对象的拷贝分为深拷贝和浅拷贝，深拷贝在oop中是比较常用的，但在yui2中并没有提供，在 yui3中则使用Y.clone实现，clone的源码写的相当仔细，对浏览器原生的date、regexp、function和array分别作了处理，clone一个对象使用var newO = Y.clone(o)即可。&lt;/p&gt;
-
-&lt;p&gt;对象合并（Y.merge）：将多个对象合并成一个对象，使用Y.merge(o1,o2,o3..)即可&lt;/p&gt;
-
-&lt;p&gt;聚合（Y.aggregate）：将一个对象的成员挂载到另一个对象上，和Y.merge很相似，Y.merge中的每个参数是并列关系，Y.aggregate的参数有主次之分，即要分清从谁挂载到谁身上。&lt;/p&gt;
-
-&lt;h2&gt;针对函数的oop：&lt;/h2&gt;
-
-&lt;p&gt;扩充（Y.augment）：从原型对目标类(函数)进行扩充。js中并不需要像java中这样严格的继承，在js中，可以实现一个包含通用方法的类，这个类不会被直接实力话或者直接调用，他存在的目的只是向其他类提供自己的方法，实现上类似“接口”，功能上类似“抽象类”，在js中被称为“掺元类”，是多亲继承的一种实现方法，前段时间写的一篇文章就使用到了“扩充“：“js观察者模式，以及自定义事件在yui3中的实现”，看下面这段代码，这里的“发布事件工厂“被Y.Event.Target扩充，这里的Y.Event.Target其实就是掺元类，他的作用仅仅是为了用来扩充，同样 Y.Event.Handle和Y.Event.Custom等等也是掺元类。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var tripleClickFactory = function(){};//发布者工厂
-Y.augment(tripleClickFactory,Y.Event.Target);//扩充
-var tripleClick = new tripleClickFactory();//实例化
+&lt;pre&gt;&lt;code&gt;// true:支持，false:不支持
+var nativeTransition = 
+    &quot;webkitTransition&quot; in document.body.style;
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;继承（Y.extend）：继承，从但实现上比传统oop复杂一点，和扩充的不同是，Y.extend继承的子类和父类之间有上下级关系，是一种严格的继承，扩充则和对象聚合（aggregate）类似，只是简单的函数属性的转移拷贝。继承写法：&lt;/p&gt;
+&lt;p&gt;在支持transition的平台中使用translate3d来启用webGL进行硬件加速，注意这里使用transform代替了transition：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Y.extend(oldClass,newClass,{
-    //原型方法列表
-},{
-    //静态方法列表
+&lt;pre&gt;&lt;code&gt;animNode.setStyles({
+    '-webkit-transition-duration': speed + 's',
+    '-webkit-transform':'translate3d('+dic+',0,0)'
 });
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;在newClass中还需要手动加上继承代码才可以&lt;/p&gt;
+&lt;p&gt;最后比较下改造前和改造后的Slide在移动终端里的性能，在Ipad/Iphone中打开下面这两个Demo：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;oldClass.superclass.constructor.apply(this, arguments);
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;改造前，使用css3 2d transform（性能糟糕）：&lt;a href=&quot;http://jayli.github.com/gallery/yuislide/slide2.html&quot;&gt;Demo&lt;/a&gt;
+改造后，使用css3 3d transform（动画流畅）：&lt;a href=&quot;http://jayli.github.com/gallery/yuislide/slide.html&quot;&gt;Demo&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;绑定（Y.bind）：刚开始看到bind还以为是监听，简单监听使用before和after实现，以后在讨论，这里的bind其实是一个包装器，用来绑定上下文环境，看看用法：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var o1 = {
-    name:’o1′
-};
-var o2 = {
-    name:’o2′
-};
-var foo = function(){
-    Y.log(this.name);
-};
-
-var foo1 = Y.bind(foo,o1);//绑定o1
-var foo2 = Y.bind(foo,o2);//绑定o2
-
-foo1();//输出o1
-foo2();//输出o2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;混淆（Y.mix）：这个是一个很基础的实现，有很多种定制参数，用来实现上文所述的克隆、合并或者扩充等方法，也可以直接拿来用，不过比前面一些方法更危险一些，建议不首先使用Y.mix。&lt;/p&gt;
-
-&lt;p&gt;总之yui3的oop比yui2完善的多高效的多，还是比较爽的。&lt;/p&gt;
+&lt;p&gt;Slide项目首页：&lt;a href=&quot;http://jayli.github.com/gallery/yuislide/slide.html&quot;&gt;http://jayli.github.com/gallery/yuislide/&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
-   <title>雅虎工作一年记</title>
-   <link href="http://lhzhang.comdata/2009/04/11/yahoo.html"/>
-   <updated>2009-04-11T00:00:00+08:00</updated>
-   <id>urn:uuid:dd9f2601-2b93-4b9a-9f13-dc6f56eb1380</id>
-   <content type="html">&lt;p&gt;难得有心情去写一些旧事，想起来在学校的时候，那时还在混论坛，纪念文集板不时的会有各种论坛的追忆文章。时间过的很快，不知不觉竟然已经工作一年多了，离自己上一次写某篇追忆的文章也有好几年时间，时间久不写东西自己大概又要失忆，或者现在已经处于失忆状态了，确实应当赶紧总结经验教训，以备将来图谋不轨。&lt;/p&gt;
+   <title>JavaScript Autoload 的实现</title>
+   <link href="http://lhzhang.comdata/2011/06/09/sandbox.html"/>
+   <updated>2011-06-09T00:00:00+08:00</updated>
+   <id>urn:uuid:ae17bef1-8663-43b0-9333-bbdf67130116</id>
+   <content type="html">&lt;iframe src='http://www.slideshare.net/slideshow/embed_code/8590158' width='500' height='410' border=0&gt;&lt;/iframe&gt;
 
-&lt;p&gt;说实话，当初在学校找工作的时候，从没有想过要作web，web只是一种爱好，只是茶余饭后的聊天消遣，我觉得我应当和其他同班一样，去金蝶东软华信去作erp外包，或者去华为中兴作通信，或者去百度网易作蜘蛛，或者去松下索尼作自主化，或者去腾讯作c++或者java，或者去甲骨文作数据库……web？真的没想过，似乎当初和同龄的大多数一样对web持有一种傲慢和偏见：技术单一简单，入门门槛奇低，对初学没什么基础的要求，简单讲，是个人都能学会。但在本职专业和业余爱好之间的复杂抉择中，还是选择了web这条路，并企望能在这条道路上有所斩获。&lt;/p&gt;
 
-&lt;p&gt;其实接下来的一年，在雅虎的经历改变了我对web的肤浅看法，特别是web前端。在雅虎，web前端是yahoo技术栈中的上层建筑，前端技术的感性与抽象，其实和诸多底层技术有着一脉相承的联系，因此前端工程师是最需要思维发散，最需要知识面广，最需要基础牢稳的一个门类。什么js、css还有 html、as之类，和其他编程语言没什么两样，其背后的设计模式和数据结构的思想都能在学校教科书上都能找到渊源。现在我才理解在学校的时候，为什么费力巴劲去学那些软件工程、数据结构、关系数据库、离散数学、网络、操作系统、编译原理这些抽象的甚至感觉没一点用的东西，现在发现这些东西不但有用，而且离了他们都没法干活，以至于现在还会不时去翻这些老旧的书本去寻找某些真理，并坚定的认为，这些东西才是js、css、html和as的灵魂所在。所以自己提高的瓶颈，是对计算机科学本质的理解，而非过渡追求语言本身的表象。纯粹的前端技术本身确实简单，但其精要却不是那么容易把握的，因为web前端技术并非孤立的存在，从这个角度讲，web前端技术更像博大精深的九阴真经，但我们不能像梅超风那样只抱着一本九阴真经不放，没有九阳真经的铺垫，练出来的就因白骨爪也只是徒具其行、根基甚浅，急于求成才会误入邪道，自乱本性。&lt;/p&gt;
+&lt;p&gt;熟悉PHP的同学一定对autoload不会陌生。我们知道，不管在任何语言和类库中，要使用某个类（或者方法）的前提是这个类必须存在，这个类或方法可能在类库的某个文件的某个角落中定义了，但当类库太过庞大时，初学者往往记不起某个方法属于哪个文件，或者不知道类库文件存放在哪里。另外，开发者不知道什么时候需要用到这个文件，特别是项目文件特别多时，不可能每个文件都在开始的部分写很长一串require。PHP5中提供了__autoload来解决这个问题。开发者将注意力完全放在程序逻辑上，大胆的使用基础类和方法，而不必考虑类和方法属于哪个模块、如何将模块require进来、何时require比较合适，是否有多余的require等等。PHP程序会对代码作分析，自动将程序中用到的“陌生的类和方法”所属的库文件引入进来，保证程序的正确执行。这就是autoload的基本机制，Ruby和Python中也实现了这种机制。&lt;/p&gt;
 
-&lt;p&gt;因此，所谓职业技能，一定要高低兼备，前后通吃，融会贯通，重点突破，最终得到的不是对一门技术的熟练掌握，而是对解决行业疑难杂症的能力。&lt;/p&gt;
+&lt;p&gt;autoload听起来不错，非常适于初学者，而且是动态语言必不可少的组成部分（我才不要像写Java或C++那样一本正经的纠结于程序定义了哪些变量、都是什么类型、作用域是什么、用了哪些类库、类库的引用关系是什么……）。&lt;/p&gt;
 
-&lt;p&gt;另外，这一年体会最深的是，调试技巧比技能本身更重要，找到bug不是什么难事，难的是找到bug产生的原因并给出解决方法。&lt;/p&gt;
+&lt;p&gt;现在我们在JavaScript中实现PHP的这种autoload机制，其中实现的难点在于对代码的静态分析，这里所指的静态分析只是伪分析（除非嵌入一个JavaScript解释器）。看下在&lt;a href=&quot;http://github.com/jayli/sandbox&quot;&gt;Sandbox&lt;/a&gt;中实现的autoload：&lt;/p&gt;
 
-&lt;p&gt;最后就是价值观方面的改观，并对团队有了更深的认识，以及基于团队的前后端开发和配合，如何保证开发的高质量并秩序井然，这些都是学问。&lt;/p&gt;
+&lt;p&gt;Demo：http://jayli.github.com/sandbox/examples/autoload/main.html&lt;/p&gt;
 
-&lt;p&gt;恩，好久不切页面了，不过下周貌似有新任务是切页面的，久不用windows，突然启动老旧的xp还真有点不习惯。谁让这是工作呢。上周末来加班了，给自己工位留个念，哈哈。&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>基于YUI3的方法链式调用</title>
-   <link href="http://lhzhang.comdata/2009/02/01/yuidev.html"/>
-   <updated>2009-02-01T00:00:00+08:00</updated>
-   <id>urn:uuid:92001fdd-008c-4523-8e79-d67cb8ecf3e4</id>
-   <content type="html">&lt;p&gt;yui3.0.0beta终于千呼万唤使出来，鼓掌！！！下载在这里：http://developer.yahoo.com/yui/3/&lt;/p&gt;
+&lt;p&gt;首先像PHP一样定义一个全局函数__autoload，返回值是一个map，给出每个方法对应的文件：:&lt;/p&gt;
 
-&lt;p&gt;说到js的方法链式调用，的确，jquery确实给了wd们很多美好的回忆；所谓链式调用是一种语法上的小hack，也仅仅停留在代码级别，不过这种方法确实能使工程师用少量的代码达到复杂的操作目的，是一种很值得推广的技巧。不过yui2在这方面没作多少工作，yui3开始大量的使用这种技巧，让人猛然感觉语法风格和yui2的迥异。&lt;/p&gt;
-
-&lt;p&gt;在yui2中，我要对某个dom元素执行一系列的操作必须要这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var el = YAHOO.util.Dom.get(‘id’);
-YAHOO.util.Dom.addClass(el,’className’);
-YAHOO.util.Dom.setStyle(el,’display’,'block’);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在yui3中可以这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Y.get(‘#id’).addClass(‘className’).setStyle(‘display’,'block’);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;语法上简洁了很多，这种写法就是所谓的链式调用。yui3的链式调用如何实现的、扩展行好不好呢？上篇介绍yui3的装饰者的时候涉及到一点这方面的内容：方法的声明＋定义。比如，要对dom节点扩展一个fuck行为，则需要：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;Y.mix(Y.DOM,{
-    fuck:function(o){
-        alert(o.innerHTML);//定义
-    }
-});
-Y.Node.addDOMMethods([
-    'fuck'//声明
-]);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;为什么不直接定义，而要加一个“声明“出来，这种做法是为了降低库模块之间的耦合，即我在定义这个fuck的时候不必知晓DOM内部的逻辑，DOM 在调用fuck的时候则会自动返回一个包装好的Node，这种做法增加了库的可扩展性。再来看一个例子，我要模拟一个‘人’的行为，分别用yui3和不用库来作，看两者的区别，基于yui3：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;YUI().use(‘node’, function(Y){
-    Y.mix(Y.DOM,{
-        eat:function(o){
-            o.innerHTML += ‘吃！’;
-        },
-        drink:function(o){
-            o.innerHTML += ‘喝！’;
-        },
-        shit:function(o){
-            o.innerHTML += ‘拉！’;
-        },
-        pee:function(o){
-            o.innerHTML += ‘撒！’;
-        },
-        fuck:function(o){
-            o.innerHTML += ‘o！’;
-        }
-    });
-
-    Y.Node.addDOMMethods(['eat','drink','shit','pee','fuck']);
-
-    //runtime
-    Y.get(‘#aperson’).eat().drink().shit().pee().fuck();
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;“Y.get(’#aperson’).eat().drink().shit().pee().fuck()“这句即是这个person一溜烟的执行了吃喝拉撒干的动作，连隔都不带打的。&lt;/p&gt;
-
-&lt;p&gt;在来看看不用任何库作的方法链式调用：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var $ = function(id){
-    var _$ = function(id){
-        this.el = document.getElementById(id);
+&lt;pre&gt;&lt;code&gt;function __autoload() {
+    return {
+        'MyClass1':'MyClass1.js',
+        'A.B.C.D':'MyClass1.js',
+        'MyClass2':'MyClass2.js',
+        'X.Y.Z':'MyClass2.js'
     };
-    _$.prototype.eat = function(){
-        this.el.innerHTML+=’吃！’;
-        return this;
-    };
-    _$.prototype.drink= function(){
-        this.el.innerHTML+=’喝！’;
-        return this;
-    };
-    _$.prototype.shit = function(){
-        this.el.innerHTML+=’拉！’;
-        return this;
-    };
-    _$.prototype.pee = function(){
-        this.el.innerHTML+=’撒！’;
-        return this;
-    };
-    _$.prototype.fuck = function(){
-        this.el.innerHTML+=’o！’;
-        return this;
-    };
-    return new _$(id);
-};
-
-//runtime
-$(‘aperson’).eat().drink().shit().pee().fuck();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的$(’aperson’).eat().drink().shit().pee().fuck()也是一溜烟的吃喝拉撒睡，但在实现具体方法的时候，每个方法都要return this，而真正灵活的扩展则不希望这样作。在js库流行的今天，这种降低耦合增加扩展性的小技巧显的尤为重要。&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>YUI3中的“装饰者”，以及其基于“装饰者”的继承</title>
-   <link href="http://lhzhang.comdata/2009/01/03/zhuangshizhe.html"/>
-   <updated>2009-01-03T00:00:00+08:00</updated>
-   <id>urn:uuid:1f0a0059-5d04-4930-b492-5e3c3269a864</id>
-   <content type="html">&lt;p&gt;和 YUI2相比，YUI3的模块粒度远远高于YUI2，高粒度可以使得基于yui的程序按需加载yui文件。比如yui2的connection组件在 yui3中就变成io组件，和yui2中单独一个12k的connection.js相比，yui3中的ajax组件被拆分成了io-base.js、 io-form.js、io-queue.js、io-upload-iframe.js和io-xdr.js每个文件平均3k多，那么如果开发者只要实现简单的ajax只使用io-base.js就够了，相比YUI2，页面所需要的js文件体积从12k降低到3.43K。&lt;/p&gt;
-
-&lt;p&gt;在这些&lt;code&gt;io-*.js&lt;/code&gt;功能极其相似有用处不同的文件中，YUI3使用一种极其简单的方法来管理这些相互依赖又功能不同的文件：妆饰者。装饰者模式是经典23 种设计模式中最常用的模式之一，其作用是降低相似模块之间的耦合，典型做法是在已有的功能性代码基础上，在不修改基础代码的前提下，有效扩展原有功能并继续保持原有类的高内聚。是替代“修改基础类”的一种高效的方法。类似yui2中的extend。yui3的装饰者是使用Y.mix来实现的，比如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;var A = {
-    a:1,b:2
-};
-Y.mix(A,{
-    c:0
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里的A就被增加了c的属性，而A原有的属性没有被改变。在yui3中大量使用了这种简单的装饰，是一种简化的继承和扩展。这样的话，io- form.js就可以基于io-base.js使用这种方式进行扩展，因此，io-form.js就可以包含io-base.js的所有功能，同时扩展出了form的功能，此外，io-base.js还可以被xdr、upload等进行功能性的扩展，使得代码具有很高的灵活性。在sns产品模块化的过程中，这种方法是很有启发的。&lt;/p&gt;
-
-&lt;p&gt;外一篇：&lt;/p&gt;
-
-&lt;p&gt;我在blueidea上发表的一篇：“js设计模式之装饰者模式”&lt;/p&gt;
-
-&lt;p&gt;http://bbs.blueidea.com/thread-2906913-1-1.html&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>基于yui的前端“团队开发”模式</title>
-   <link href="http://lhzhang.comdata/2008/10/14/yuiteamdev.html"/>
-   <updated>2008-10-14T00:00:00+08:00</updated>
-   <id>urn:uuid:3095e00d-d56c-46d7-99b0-4d336472e357</id>
-   <content type="html">&lt;p&gt;如今web项目也越来越大，单人开发一个网站已经不是什么新鲜事了，这种web项目规模扩大的速度似乎超过我们的想象，对代码的管理，对项目的控制，对分工的把握，对进度的高效推进……一系列的问题开始在web开发中显现出来，其实团队开发不是什么新东西，就像当年炒作ajax的概念一样，只是新瓶装旧酒罢了，只因互联网的丰富应用给了web工程师很多“创意”的空间，包括功能上、也包括技术上：比如google wave将10年前的聊天室技术做了包装，将长联接大胆应用于ajax中，再比如yui用面向团队面向对象的开发方法对web站点重新包装，使得web项目也具备类似erp的项目特点，在java风靡的年代大概还有些新意，再比如web开发中的迭代和极限编程则是10年前软件工程教科书上的东西……，因此 web行业本身没有太多新元素值得推崇，我们所做的，仅仅是在web高速发展的时候，将很多古老的方法应用其中而已。&lt;/p&gt;
-
-&lt;p&gt;刚才提到，web开发越来越依赖于团队，web项目也越来越具有完整、典型的生命周期：需求，设计，开发，测试，上线。这个过程会周而复始，并且会有多个周期的重叠或迭代。这使得我们越来越依赖传统软件工程学的方法，使用它来规范web项目的开发。&lt;/p&gt;
-
-&lt;p&gt;在大型web项目开发中，比较常用的是迭代模型。迭代是在一个主题项目中作类似增量开发的开发模式，它建立在主干代码相对稳定的基础上，适合项目革命性的版本升级不频繁的情况下使用。通常稳定的线上版本作为主干代码，如果在a时刻有新需求提出，则从此时从主干打出分支，在分支上针对a时刻的需求进行开发，开发完成并测试通过后将代码合并至主干。图中分支b在合并代码的时候和其母主干已经有区别，红色的部分就是新的“区别”，分支b在d时刻合并代码的时候，用 svn merge很方便，有冲突解决冲突，无冲突合并代码。&lt;/p&gt;
-
-&lt;p&gt;还有一种常用的开发模式：极限编程。极限编程是对团队成员要求很高的一种开发模式，每个成员负责的是一个方面而不是单独某个模块，比如一名php程序员负责项目中所有的后端程序，一名wd负责页面展示，一名项目经理，如果前端工作量很大的话顶多外加一名前端脚本工程师。整个项目的开发由这四人完成，而且完成既定需求的同时保持代码良好的结构、性能和可扩展。这种开发模式很精简也很快速，但这种项目往往不是孤立的，经常是一个大项目的子项目，或者仅仅是从主干拉出来的分支而已，每次快速开发后都会多少产生冗余，比如css、js或img文件不能被并行开发的其他分支共享，自然也无法重用，因此这种开发模式也仅仅适合工期短的项目开发。比如下图中的b分支。&lt;/p&gt;
-
-&lt;p&gt;然而在这两种典型的开发模式中，前端的开发一直处于一种尴尬境地，前端文件是一种资源文件，除了html页面之外，js、css和img文件是作为资源被 php文件使用的，因此js、css或img不像php文件那样，新功能开发完后可以直接覆盖掉原有文件，除了在svn中作备份以便回滚之外，并无版本的概念。而css、js和img在增加新功能后则不能覆盖原有文件，必须在文件名后缀上一个新的版本号另存一份，供新的php文件访问，而老版本的 css、js和img仍然被其他不确定的php文件引用着。&lt;/p&gt;
-
-&lt;p&gt;那么如果并发的多个分支项目中同时修改相同的js或css，问题就出现了，php代码可以合并到主干中，同一份js或css代码如何合并两个同时开发的版本呢？svn能解决部分问题，但解决不了根本问题，因此我们只有期望两个并发项目不会同时升级同一份js文件，也只有将js或css的粒度做到很细很细，即每个js或css文件都很小，只有一丁点的功能，这样小的功能被同时两个项目修改的概率自然会很低。可将js文件瓜分成众多小文件而且管理方便是何等不易。&lt;/p&gt;
-
-&lt;p&gt;yui很好的解决了这个问题，yui给出了一个高效拆分并管理js和css的思路：模块化。从yui2到yui3的过渡可以看到这种趋势，未来的 web项目但凡有点规模都需要模块化，在yui中，模块是分层次的，每个模块都有其依赖的子模块，子模块也有其依赖的孙模块，最后发现复杂的模块是由简单的模块拼装而成的。而每个模块都可以单独做成一个文件，这样就可以在项目开始之初，在前端架构阶段就规定好模块的粒度，这个粒度是取决于项目变化的程度的，变化越频繁，粒度就应当更高，以免并行项目对同一份js或css文件作更新。&lt;/p&gt;
-
-&lt;p&gt;这样的话，一个功能性的页面需要引用的只是一个页面逻辑的js文件，这个js文件去load其需要的模块，模块再去load各自需要的子模块以及孙模块，模块文件的递归load和去重由yui完成，我们只需要关注页面的js文件即可，每个模块都会自动去引用所需的css，不用我们操心。&lt;/p&gt;
-
-&lt;p&gt;如此高粒度的js文件和css文件在页面装载的时候是个大麻烦，下图是现在雅虎关系load的js文件，这还是在没有瓜分js模块的情况下，每个js文件占用一个请求，会大大降低页面的装载速度。&lt;/p&gt;
-
-&lt;p&gt;yui 给我们提供了combo的方法，但也仅仅针对yui的模块提供，对于项目中的js和css文件则没有combo的支持，yui3虽然是 beta版，至今也没有要支持的迹象，只要硬生生的去改yui源代码了。combo后的结果就是这样，yui2的资源和基于yui2的js文件以及 yui3的资源和基于yui3的js文件各一个请求，外加一个yuiloader.js和yui.js各一，这样yui2和yui3并存的情况下的js请求顶多也只有这4个了。&lt;/p&gt;
-
-&lt;p&gt;改 yui的代码也不费劲，在yui2中combo的处理是在的yuiloader.js中的&lt;em&gt;combine函数中，在yui3中则是yui.js 中的&lt;/em&gt;combine中，可以根据自己的项目资源存储情况修改。这样，修改后的yui可以更广泛的支持combo，项目js文件就会和yui文件一并 combo输出，页面展示也会一下子从D上升到B或者A，哈哈。&lt;/p&gt;
-
-&lt;p&gt;在yui的框架下的前端开发变的如此高效率也更加轻松，这样的话，高粒度的js模块代替了功能性的js开发，更加有利于代码的抽象和重用，也大大降低了并行开发中升级同一个js文件的苦恼。项目迭代前进的效率也会越来越高，而前端页面的性能却丝毫不受影响。&lt;/p&gt;
-
-&lt;p&gt;你看看自己是否还在辛苦的压缩合并js呢？是否在苦恼的频繁累赘的升级js文件版本？如果是，那么很遗憾，你已经落伍了。&lt;/p&gt;
-</content>
- </entry>
- 
- <entry>
-   <title>js观察者模式以及基于YUI中的实现</title>
-   <link href="http://lhzhang.comdata/2008/10/10/guanchazhe.html"/>
-   <updated>2008-10-10T00:00:00+08:00</updated>
-   <id>urn:uuid:6ec83167-c315-41de-aca2-aa89a7b355e7</id>
-   <content type="html">&lt;p&gt;观察者模式是一种典型的设计模式，不论基于什么语言研讲的设计模式都包含它。概括讲，观察者模式就是“当A事件发生的时候自动执行B事件”，这是我们所期望的结果，但这句话是如此之概括以至于很多关键细节被忽略掉了，更进一步讲，观察者模式是对“事件联动性”行为的模拟，这种模拟是如此之抽象，以至于我们在类似js这种事件满天飞的语言中忽视“事件”的细节。从这个角度讲，的确不利于我们理解js中的事件。&lt;/p&gt;
-
-&lt;p&gt;js依赖于浏览器，浏览器在启动的时候会为我们做很多事情，因此我们才可以通过一个简单的a.onclick = function(e){…}来实现当点击事件发生时要做的事情。但从设计模式的角度讲，这只是浏览器对click事件实现了观察者模式，即当用鼠标左键单击某个元素并致使元素状态改变时发生“点击”事件。之所以如此罗嗦的使用“用鼠标点击左键单击某个元素并致使元素状态改变”这种晦涩的语言来描述这，是因为这样才能比较准确完整的描述一个“事件”所应具备的特征，从而方便我们能模仿这个过程来做自定义事件。而‘单击左键’或‘元素状态改变’这些逻辑是被浏览器”捕捉”并”处理”，我们是看不到这些细节的。也就是说，浏览器将它认为常用的事件的定义、注册、监听行为都捆绑在浏览器运行时之中，只有事件需要绑定的句柄需要在js中给出。但如果我想使用浏览器没有默认提供的事件，比如元素尺寸改变、或者左键三击事件，又该如何做呢?&lt;/p&gt;
-
-&lt;p&gt;先让我们分析一下简单的点击事件：
-通常，绑定点击事件我们使用：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;el.onclick = function(e){
-    //dosth here
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;el 表示要点击的对象，我们称之为宿主，onclick表示事件类型，与此同时，浏览器在无时无刻的监听元素上发生的事情，并判断el状态是否发生改变，以此判断是否发生了某类事件，比如点击事件，进而开始执行用户为该元素的onclick句柄所指向的函数。由此看出，是否触发用户给 el.onclick绑定的函数是由浏览器判断完成的，浏览器承担了甄别事件类型和宿主并触发绑定函数的角色。而所谓“甄别事件类型和宿主”则是对一个 “事件”的抽象理解，自定义事件则需要实现这个抽象的“事件”逻辑。&lt;/p&gt;
+&lt;p&gt;然后在沙箱中就可以随意使用定义好的类和方法了，和PHP的写法唯一的不同之处在于，PHP需要手写include方法来“阻塞式”引入文件，Sandbox只给出映射表即可，另外，Sandbox也不支持给__autoload传入参数，比如&lt;code&gt;__autoload($class_name)&lt;/code&gt;。&lt;/p&gt;
 
-&lt;p&gt;以上，可以得出，一个事件的发生依赖与2个重要属性，宿主和状态，宿主用来判断事件发生地，状态用来判断是否fire用户绑定的事件。所有的事件都包含这两者。只是在浏览器原生事件的宿主和状态只被浏览器捕捉，对开发者不可见。&lt;/p&gt;
-
-&lt;p&gt;有了抽象的事件逻辑，有了事件的状态和宿主，还需要”事件注册”，只有“注册过”的事件才可以被识别和使用，或者说被大规模使用而不用重写代码，事件逻辑是固定的，不固定的只是宿主和事件发生后fire的函数。对于宿主的“状态”的监听，有两种方式，每个固定的时间间隔进行判断，或者手动给出需要判断状态的位置。出于性能考虑，常用第二种方法。&lt;/p&gt;
-
-&lt;p&gt;因此，一个完整的事件的发生是由“事件”、“宿主”、“宿主状态”、“事件发生”（也就是事件发生的位置）、“判断宿主状态”（也就是判断是否 fire绑定的函数）、和“事件绑定函数”这几部分组成。任何一个完整的事件都是由这些内容组成，包括浏览器原生事件和自定义事件。&lt;/p&gt;
-
-&lt;p&gt;在 YUI2.x中既是按照如上思路模拟了事件的全过程，并封装为customEvent（自定义）事件类，可以很方便的实现自定义事件，YUI2.x中的这种对观察者模式精炼的实践在复杂的web application中应用很广而且比较高效。在YUI3中，每类自定义事件都被抽象出来，形成“事件工厂”，事件工厂生成事件对象，事件对象注册事件类型，并绑定fire的函数，这种更深层次的抽象对自定义事件的管理是大有裨益的。最牛X的，YUI3的自定义事件居然可以冒泡，这些都是后话，先来实践下YUI3下的自定义事件，我们来作一个鼠标三击事件。&lt;/p&gt;
-
-&lt;p&gt;首先要注意的是，鼠标点击事件在ie和firefox里的表现是有区别的。两次快速的连续点击在ie中被当作双击事件，而在firefox中触发了两次单击事件和一次双击事件。因此这里需要针对ie作简单hack。&lt;/p&gt;
-
-&lt;p&gt;js代码:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;YUI().use(‘dump’,'node’,function(Y){
-
-    //发布者工厂
-    var tripleClickFactory = function(id,interval){
-        this.el = Y.get(id);
-        this.status = false;
-        this.trp = [];//三次点击的时间
-        this.interval = interval||100;//毫秒
-    };
-
-    //包装发布者
-    Y.augment(tripleClickFactory, Y.Event.Target);
-
-    //tripleClick事件对象
-    var tripleClick = new tripleClickFactory(‘#iid’,800);
-
-    //绑定函数
-    tripleClick.subscribe(‘tpClick’, function(a){
-        //a,时间间隔数组
-        alert(‘三击事件,三次点击的两个间隔分别为:’+a[0]+’和’+a[1]+’毫秒’);
-    });
-
-    //事件
-    var tripleClickEvent = function(e){
-        //var el = e.target;
-        tripleClick.trp.push((new Date()).getTime());
-        if(tripleClick.trp.length 3){
-            var a = [];
-            for(var i = 1;i&amp;lt;= 3;i++){
-                a[i-1] = tripleClick.trp[ i ];
-            }
-            delete tripleClick.trp;
-            tripleClick.trp = a;
-        }
-        var s1 = tripleClick.trp[2] – tripleClick.trp[1];
-        var s2 = tripleClick.trp[1] – tripleClick.trp[0];
-
-        if(Number(s1)&amp;lt;=tripleClick.interval &amp;amp;&amp;amp; 
-                Number(s2) &amp;lt;=tripleClick.interval){
-            tripleClick.fire('tpClick',[s1,s2]);
-            tripleClick.trp = [];
-        }
-    };
-
-    ///////////////runtime///////////////////
-
-    Y.on('click',function(e){
-        tripleClickEvent(e);
-    },'#iid');
-
-    if(Y.UA.ie != 0){//hack for ie
-        Y.on('dblclick',function(e){
-            tripleClickEvent(e);
-        },'#iid');
-    }
-
+&lt;pre&gt;&lt;code&gt;Sandbox.ready(function(S){
+    MyClass1.init();
+    MyClass2.init();
+    A.B.C.D.init();
 });
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;具体实现可参见&lt;a href=&quot;http://github.com/jayli/sandbox&quot;&gt;sandbox-seed.js&lt;/a&gt;源码&lt;/p&gt;
+
+&lt;p&gt;另外需要注意的一点是，看起来这里载入文件是“阻塞式”的，没错，逻辑的执行总是在载入文件完成后再执行，后端语言几乎都是阻塞式的引入文件，比如php中：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//logic1...
+include('file.php')
+//logic2...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;程序必然在file.php载入完成后再执行logic2，这就是所谓阻塞式载入外部文件，在服务器端的JavaScript中也是如此，比如CommonJS规范中定义的require方法，也是默认require的文件是“阻塞式”载入的，即requries时主程序“停止执行”，在载入文件结束后再继续执行。而在客户端JavaScript中是无法实现这种阻塞式载入外部文件的（有人提出可以用同步ajax来模拟载入外部脚本，但这涉及到跨域），在SeaJS中同样存在这个问题，玉伯给出的解决办法和Sandbox一样，都是对代码作过滤，都是一种“伪”阻塞，比如SeaJS中执行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;define(function(require) {
+    return;
+    require('./a');
+}); 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这段代码同样引入“./a.js”，而从逻辑上看是不应该引入这个文件的，Sandbox亦存在同样问题。&lt;/p&gt;
+
+&lt;p&gt;还需要注意一点，“阻塞式”加载的缺点就是串行，当然这是符合逻辑的，上下两个外部文件的引用必定有依赖关系，所以他们的执行不得不串行，Sandbox中加载多个脚本的实现也是串行，比如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Sandbox.loadScript(['a.js','b.js'],callback);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于无法对a.js和b.js的内容作任何假设，因此串行一定是最安全的，也是唯一的策略，如果所有文件都有统一的约定，比如Sandbox中的Sandbox.add(callback)、YUI的YUI.add(‘name’,callback)、以及SeaJS中的define(callback)，则多脚本加载有太多可优化的空间，比如YUI提供的comboCDN、以及SeaJS提供的build工具。&lt;/p&gt;
+
+&lt;p&gt;那么，JavaScript中什么时候适合使用autoload呢？应当是在做全站架构时最适合使用，由专人负责维护通用功能和组件，维护一份&lt;strong&gt;autoload函数即可，当然，子逻辑可以重写这个函数（函数劫持），只要在页面中引用了种子文件就会包含这个&lt;/strong&gt;autoload函数，共用功能和组件就可以任意使用而不用刻意引入“包名”。也就是说，组件名称本身就是一个标识，这个标识和它所在的文件地址是一一对应的，根本不必再知晓组件名称属于哪个包名，这也符合autoload机制的本意。&lt;/p&gt;
+
+&lt;p&gt;当然这种做法有一个不足就是性能问题，这也是YUI为什么一定要将“包名”以及包的依赖预先定义好的原因。尽管从纯粹程序逻辑的角度讲，这样做是多余的。由于前端代码的性能依赖于网速，不像后端代码，因此在JavaScript中也应当有节制的使用autoload，切不可滥用，寻找架构代码可维护性和性能之间的平衡点，这一点非常重要。&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
-   <title>jQuery、prototype、mootool、YUI框架比较</title>
-   <link href="http://lhzhang.comdata/2008/09/10/frameworks.html"/>
-   <updated>2008-09-10T00:00:00+08:00</updated>
-   <id>urn:uuid:c70c937d-23f0-4320-a3ab-d5c622068963</id>
-   <content type="html">&lt;p&gt;现在常用的框架有Jquery,prototype,mootool,yui等，其他的框架都是非主流，有一个数据很有意思，就是这几种框架的市场占有率，我觉得这个数据没有太大意义，因为这几种前端框架都有各自的针对性和特点，每种框架都适合相应规模的web项目，比如prototype和 jquery适合中小网站开发，mootool适合中型网站开发，yui适合大规模的web项目开发，而小网站的数量要远大于门户或sns这种大网站的，因此，不论怎么比较，jquery和prototype的使用数量都要超过mootool和yui。&lt;/p&gt;
+   <title>[翻译]F2E大会上关于@font-face的分享</title>
+   <link href="http://lhzhang.comdata/2011/05/01/fontface.html"/>
+   <updated>2011-05-01T00:00:00+08:00</updated>
+   <id>urn:uuid:b9234a49-4d30-421e-95b3-1d9c9ffe6aac</id>
+   <content type="html">&lt;p&gt;原文：http://www.nczonline.net/blog/2011/04/05/lessons-on-font-face-from-the-f2e-summit/
+标题：Lessons on @font-face from the F2E Summit
+作者：NCZakas
+译文：F2E大会上关于@font-face的分享&lt;/p&gt;
 
-&lt;p&gt;在入门级开发者人群中，prototype是使用量最大的，因为他相对简单一些，这里的简单和jquery的简洁不一样，prototype也算“老”一点的框架，而且很多js高手入门都是从prototype开始的，因此也有很多wd对prototype有特殊的感情，毕竟，prototype改变了我们对js的看法。它的很多设计思想也被沿用致其他框架中。但一个框架是否优秀不应当只看一面，更重要的，框架对浏览器的支持、文档、扩展行、性能、编码风格这些因素也在影响框架的使用者。prototype太基础以至于对ie浏览器的版本判断很粗糙，它糟糕的文档和扩展性，都是阻碍其在那些想深入学习js 的人群中更加流行的因素。因此，如果想积累一些入门级的前端实践 ，用prototype非常合适。&lt;/p&gt;
+&lt;p&gt;上周我参与组织了Yahoo F2E大会，这次大会聚集了Yahoo全球各地的前端工程师，其中@font-face是本次大会最受关注的话题之一，我们讨论了它的种种优势和缺陷，好记性不如烂笔头，我得赶紧把这些知识点记录下来，本篇内容来自于 Matt Seeley 关于“yahoo.com/tablet”的专题分享“iPad版Yahoo首页实战”（Lessons from the Tablet Front Page），以及来自于Adam Wang关于面向未来的CSS3的专题分享“无名小站新版首页案例分析”（Case Study:
+Wretch New Front Page），在这里我只是将他们的分享做了摘录。&lt;/p&gt;
 
-&lt;p&gt;有人说jQuery是被设计用来改变你写JavaScript的方法的。在这一方面jquery的确作的很好，20行的Dom javascript语句在jquery里只需要2－3行就可以完成，语言的简洁简直太吸引人了，尤其对于前端开发工程师这群多少有些代码洁癖的人来说，简直美妙绝伦，甚至忽视了其粗糙的面向对象的结构这一致命的缺点。当我们过多的沉浸在代码简洁的乐趣中无法自拔的时候，对更高级抽象的忽视往往阻挡住了我们的视野。因此，jquery本身无法承担庞大的网站架构任务，也只能在中小网站中搞一搞动画特效而已。但这仍然无法阻止wd们对jquery的偏爱，只要你有洁癖，那么你一定会喜欢jquery的。&lt;/p&gt;
+&lt;p&gt;兼容性&lt;/p&gt;
 
-&lt;p&gt;在面向对象的方面，mootool的确作的不错，软件设计模式中的高内聚和低耦合在mootool中有良好的体现。文档也很完整，但mootool的占有率一直不高是一个很尴尬的现象，作底端太多余，无法和jquery竞争，作高端又有点吃力，无法和yui竞争，给人鸡肋的感觉，就这样。&lt;/p&gt;
+&lt;p&gt;如果你不清楚&lt;code&gt;&amp;lt;video&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;audio&amp;gt;&lt;/code&gt;标签的兼容性问题的话，你可能也不会知道 @font-face 的兼容性情况，尽管在桌面浏览器中可以通过 OpenType、TrueType 和 WOFF 可以比较好的做到兼容，但在移动终端则没办法轻易做到兼容。iOS4.1 和较早的版本只支持 SVG 字体，而 Android 只支持 TrueType 字体。iOS4.2 及后续版本开始同时支持 OpenType、TrueType 和 SVG 字体。也就是说，要想兼容 iOS 和 Android，只要将 css 代码精简成如下模样即可：&lt;/p&gt;
 
-&lt;p&gt;如果你想作门户、如果你想作sns、如果你想作大型电子商务和电子政务网站，你大概只有一个选择，那就是yui，yui抽象出了比其他框架更复杂的层次结构、把模块按照不同的层次划分，并定义层次之间模块依赖关系，这种设计使得yui对万行级代码的管理游刃有余，这种重设计轻开发的思想是yui的核心之一，此外，yui不仅仅是js框架，他是js＋css＋规范的集合，必要的约束在团队协作项目中可以降低成本。其实yui本身也是团队合作的产物。在扩展性方面，我觉得yui是所有前端框架作的最好的，ext就是选择基于yui进行扩展。相对来讲，prototype和jquery显然太小了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@font-face {
+    font-family: &quot;Gotham Medium&quot;;
+    font-weight: normal;
+    font-style: normal;
+    src: url(gothmed.ttf) format(truetype),
+    url(gothmed.svg#id) format(svg);
+}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;总结&lt;/p&gt;
+&lt;p&gt;也许这还不是最糟的，毕竟兼容性问题不止这么简单，因为在 IE9 中，src 属性不支持多值定义。比如上段代码会被错误的解析成：&lt;/p&gt;
 
-&lt;p&gt;轻量级的选择主要是mootools和jquery，由于它们的设计思想的不同，jQuery是追求简洁和高效，Mootools除了追求这些目标以外，其核心在于面向对象，所以jQuery适合于快速开发，Mootools适合于稍大型和复杂的项目，其中需要面向对象的支持;另外，在Ajax的支持上，jQuery稍强一些;在Comet的支持上，jQuery有相关的插件，Mootools目前没有，但是Comet的核心在于服务器的支持，浏览器端的接口很简单，开发相关的插件很简单。在面向对象的Javascript Library中，mootools逐渐战胜了prototype(体积大，面向对象的设计不合理等)，也包括script.acul.ous(基于 prototype，实际上就是prototype上的UI库)。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@font-face {
+    font-family: &quot;Gotham Medium&quot;;
+    font-weight: normal;
+    font-style: normal;
+    src: url(gothmed.ttf)%20format(truetype),%20url(gothmed.svg#id)%20format(svg);
+}
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;因此，特定的框架有特定的使用范围，在合适的项目上，相应的框架都会发挥其应有的优势，因此，过分比较前端框架并得出熟优熟劣来纯粹是吃包了撑的，这和比较编程语言那个好和操作系统那个好一样没有意义。总结至此只为加深对前端框架的印象和理解，无他。&lt;/p&gt;
+&lt;p&gt;看到没，整个 src 属性被 URL 转码。也就是说在 IE8 及以下版本的浏览器中，将会发起一个类似这个 URL 的请求：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/gothmed.ttf)%20format(truetype),%20url(gotmed.svg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我们看到#之后的字串被当成 URL 的 hash 部分，并不参于组成 HTTP 请求地址。这样的话，每次浏览页面都会造成一个404的请求。因此尽管在早期版本的IE中不支持src的多值定义，依然会发起一个 HTTP 请求。&lt;/p&gt;
+
+&lt;p&gt;为了解决这个问题，Matt 使用了 dataURI  来代替 TTF 字体文件，这样在IE8及更早版本的浏览器中就不会再发请求了。Matt 同样提及 dataURI 并不能代替 SVG 字体，因为 dataURI 的长度在 iOS 中受到了限制。&lt;/p&gt;
+
+&lt;p&gt;意外情形&lt;/p&gt;
+
+&lt;p&gt;Matt 同样指出了给 SVG 字体定义 text-overflow: ellipsis 样式时的意外情形，其他字体的这种样式定义是没问题的。当给 SVG 字体定义 text-overflow: ellipsis 的时候，所有的字符都莫名其妙的不见了，只剩下省略号。比如”My text…”最终显示成了”…”。&lt;/p&gt;
+
+&lt;p&gt;性能&lt;/p&gt;
+
+&lt;p&gt;说到性能，我通常会提到用户体验，以及更重要的关系户感官体验的性能(user-perceived performance)。Matt 和 Adam 在各自专题中都有提到事关@font-face的性能问题，Matt指出iOS中的文本样式短失效（FOUT）问题实际上是“无文本闪烁”，他发现尽管网页渲染完毕，使用网页字体的文本内容也会因为字体文件没有下载完成而显示为空，他进一步指出，字体的下载只有在使用网页字体的dom元素被渲染的时候才会开始。这里我们采用了一种hack的手法来将字体下载时机提前——将字体定义放在&lt;html&gt;标签上，当然，更好的方式还有待进一步研究发掘。&lt;/p&gt;
+
+&lt;p&gt;网页字体的另一个性能问题是字体文件的大小，在美国我们可以肆无忌惮的使用网页字体，因为字体无非由26个英文字母和一些标点符号组成而已，Adam 提到在亚洲文字的字体文件则要庞大的多，有的甚至能达到4～5MB。因此，如果你想在亚洲网站中应用非标准的字体，你需要重新审视由此造成的性能问题。&lt;/p&gt;
+
+&lt;p&gt;小结&lt;/p&gt;
+
+&lt;p&gt;看起来我们还有很长的路要走，还需要更深入的研究在网速允许的情况下@font-face的应用，除了兼容性和性能问题之外，还有很多难题需要攻克，非常感谢 Matt 和Adam 的分享，让我们更好的理解围绕网页字体的页面设计原理。&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
-   <title>Hello World</title>
-   <link href="http://lhzhang.comdata/2008/09/01/helloworld.html"/>
-   <updated>2008-09-01T00:00:00+08:00</updated>
-   <id>urn:uuid:e9869195-1c21-41d8-8db4-d4f76af8ee90</id>
-   <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://wordpress.com/&quot;&gt;WordPress.com&lt;/a&gt;. This is your first post. Edit or delete it and start blogging!&lt;/p&gt;
+   <title>QCon 2011 后记</title>
+   <link href="http://lhzhang.comdata/2011/04/17/qcon.html"/>
+   <updated>2011-04-17T00:00:00+08:00</updated>
+   <id>urn:uuid:b9a827a7-cff0-46ea-8f34-ef665fee15b5</id>
+   <content type="html">&lt;p&gt;关于Qcon 2011&lt;/p&gt;
+
+&lt;p&gt;之前年初我参加了新版淘宝首页的开发，做了一些html5的实践，正好这次QCon有学鹍主持的html5专题，小马就推荐我去QCon分享一下这方面的心得，所以对我来说，能参加这次QCon很幸运，也很忐忑。一方面，我在html5方面的确算不得专家，另一方面，淘宝在html5实践之路上也在摸着石头过河，不过，感谢学鹍的鼓励，还有澄净、承玉、圆心和完颜的帮助，让我仔细梳理html5实践原则和一些教训，这才有了这个ppt&lt;/p&gt;
+
+&lt;iframe src='http://www.slideshare.net/slideshow/embed_code/7576035' width='500' height='410' border=0&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;说起来，这是我第二次参加QCon，之前QCon关于纯粹Web前端的专题很少，就像小马说的，QCon大会是后端开发工程师和架构师的技术大会，不过这次QCon前端的专题一下子增加到了三个，有点小意外。此外，敏捷开发、Java的回归、关于测试和服务器集群优化的专题演讲依然让人收获颇丰。
+关于敏捷&lt;/p&gt;
+
+&lt;p&gt;这次QCon“敏捷开发”突然就火了起来，当然不是说之前没有“敏捷”，甚至我们每天都在“敏捷”之中。那么，对于前端工程师来讲，有无必要去关注“敏捷”呢？我认为不但要关注，而且要有意识历练自己成为敏捷教练，也就是说前端工程师做不了PM(项目经理)的职位，不代表不能具备PM的能力，如果由前端工程师来驱动项目（比如Kissy的开发和淘宝首页的开发），能不能做到真正的敏捷高效，如何合理的做需求排期、安排迭代开发？这种基本能力应当是每个工程师——当然包括前端工程师——所必备的技能，我想，这也是前端工程师自身发展的一个必由节点。
+关于Java&lt;/p&gt;
+
+&lt;p&gt;我在QCon上听到关于前端工程师的言论最多的就是，“怎么看，都感觉前端写的代码比不上后端工程师那么专业功底扎实，写出来的东西也没有后端稳重可靠”。尽管这种言论有失偏颇，但也说明了IT行业对前端开发的普遍看法，没错，前端工程师多是半路出家，毕竟入门前端开发实在太简单了，所以我们在招聘前端工程师的时候都会加上一条：至少熟悉一门后端语言（当然熟悉Java更好，淘宝的后台大部分使用Java），如果前端工程师仅仅将关注点放在html/css/js上面，其成长将迅速到达瓶颈，所以，和传统后台开发语言不同，前端的学习曲线是先缓后陡，越到后来越会发现数据结构、设计模式、编译原理、网络协议的重要性，而这些内容，正是传统后端工程师所擅长的。这里不是说前后端之间不容水火，而是掌握全面的知识结构，对于前端工程师的成长百利而无一害。因此，当今天大家重新将目光聚焦在Java身上，重新审视Java时候，对于前端工程师，也要将目光收回，从箱底翻出那些破旧的计算机专业课本，这些东东才是我们更上一层楼的关键所在。
+关于测试&lt;/p&gt;
+
+&lt;p&gt;测试的话题一直都备受关注，这次QCon就有诸多专家做了这方面的分享，而我更想了解如何做前端测试，遗憾的是，专家的分享依然侧重于测试平台建设和分层测试理论。不过，不管是平台自动化还是分层理论，大家至少有两个共识，第一，对于MVC来讲，对M做测试最容易，对C做测试难度次之，对V做测试最难；第二，代码质量直接影响到测试效率。而需求变化频繁又影响代码质量，似乎注定测试是一个永恒的难题。不过，对于前端来讲，可以先让M可测，再深入搞定C，最后集中精力攻克V的测试难题，当然在这之前，则要先教会小白们如何写出符合MVC的代码。
+关于前端开发&lt;/p&gt;
+
+&lt;p&gt;这次QCon上三个前端专题基本描述清楚了前端开发的三个发展方向，第一，面向服务器端的JavaScirpt，第二、手持终端，第三、传统前端从html4到html5的进化。我想这种分工是一种必然，当然不是说现在一定是做分工的最佳时机，而是作为前端工程师来讲，应当具有这种危机意识和一定的前瞻性，而不管哪个方向，我们都能看到这个职位对前端工程师专业素养极高的要求。&lt;/p&gt;
+
+&lt;p&gt;其实，这次QCon给我带来的思考不止这些，我也非常高兴能把这些体会分享给大家，当然这次QCon上和html5专题的几位讲师（谢子斌、hax、杜欢）的合作相当愉快，学鹍对这个专题也是信心满满，也非常期待和他们的再次合作：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2011/04/qcon_html5.jpg&quot; alt=&quot;qcon&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>[翻译]YUI3.4.0 中对 Seed 和 Loader 的改造</title>
+   <link href="http://lhzhang.comdata/2011/03/11/yuidev.html"/>
+   <updated>2011-03-11T00:00:00+08:00</updated>
+   <id>urn:uuid:cc706484-0a98-4403-bb96-6fca169c37c9</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;原文：http://www.yuiblog.com/blog/2011/07/01/yui-and-loader-changes-for-3-4-0/&lt;/li&gt;
+&lt;li&gt;标题：YUI and Loader changes for 3.4.0&lt;/li&gt;
+&lt;li&gt;作者：Dav Glass&lt;/li&gt;
+&lt;li&gt;译文：YUI3.4.0 中对 Seed 和 Loader 的改造&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;在 YUI3.4.0 中，我们开始对 Loader 的核心逻辑进行升级改造。Loader 的性能有了很大提升，而且更加健壮，可以在更多场景下非常方便的使用（比如在服务器环境中）。同时我们会给出YUI的发展路线图，但首先还是有必要解释一下本次更新带来了哪些新内容，为什么做这些更新，以及这些更新对开发者带来的影响。对于大多数用例来说，开发者甚至不会察觉到有什么变化，但有一点变化最明显，就是速度更快，而且加载的资源文件更小了。&lt;/p&gt;
+
+&lt;p&gt;种子文件&lt;/p&gt;
+
+&lt;p&gt;我们首先来看 YUI 种子文件的一些变化，在之前的版本中，YUI 种子文件非常小，不包含 Loader 以及它的元组件（meta-data）。我们发现在90%的用例中，种子文件并未像我们设计的那样工作。大部分人引用种子文件之后再去载入他们自有的模块，也就意味着种子文件需要先获取 Loader，再计算模块依赖关系，然后再载入模块。我们感到这种策略是一种错误，它会带来一次额外的 http 请求，因此在新版的 YUI 中我们将 Loader 和它的元组件都整合进种子文件中。当然，这会让种子文件体积变大一些，但由于元组件已经包含在种子之内，页面模块的加载自然会提速很多。&lt;/p&gt;
+
+&lt;p&gt;如果你仍希望使用旧的方式加载YUI，你只需引入 yui-base 种子文件就可以了。基于 yui-base 可以单机模式运行YUI，它也可以根据需要去自动加载 Loader。如果你想更细粒度的使用 YUI，我们提供了 yui-core 种子文件，yui-core 文件几乎就是原来的 yui-base。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/build/yui/yui-min.js //YUI Seed + Loader
+/build/yui-base/yui-base-min.js //Old YUI Seed with Loader fetch support
+/build/yui-core/yui-core-min.js //Old yui-base without Loader fetch support
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意，这些URL和之前的URL有所不同。如果想使用 yui/yui-base.js 文件，则需要重新定位至 yui-core/yui-core.js，如果你想使用旧的方式来加载种子和 Loader，则需要使用 yui-base/yui-base.js 种子文件。&lt;/p&gt;
+
+&lt;p&gt;促使我们对 YUI 作这种调整的另一个重要原因是，根据 YUI 的发展路线图，我们需要 YUI 将来运行于各种平台上。如果你有 combo 服务器（译注：combo 是合并的意思，这里指可以在服务器端合并脚本的服务器），则旧有的种子外加 Loader 的使用方式是ok的，我们可以将种子和 Loader 合并入一个 http 请求。那么 YUI 如何运行在服务器端、离线应用程序以及手持终端里呢？这些场景所需的种子文件需要做到最小化，同时又要保持各自所需的功能。&lt;/p&gt;
+
+&lt;p&gt;模块依赖计算器（Rullups）&lt;/p&gt;
+
+&lt;p&gt;（译注：YUI 提供了两种模块粒度，粗粒度和细粒度，分别面向初级开发者和高级开发者使用。比如 event 中就包含了 event-key 和 event-move 等子模块，这里所说的“模块依赖计算”不是“向下”计算而是“向上”计算，比如我引用了 event-key，计算器得知它属于 event 大模块，这时就会加载 event，而放弃加载 event-key，由于 event 是很多小模块合写在一起的，因此可能会载入不需要的功能）&lt;/p&gt;
+
+&lt;p&gt;接下来，我们将模块依赖计算器从 core 中删除掉了，同时将 Loader 中的 allowRollup 属性默认值设为 false。这意味着什么？希望它不会带来任何影响！在解释这个更新造成的影响之前，我们首先解释下背后的原因。还是“性能”——模块加载的负担过重。来看这个例子：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Module A: requires event-a, event-b
+Module B: requires event-c, event-d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 YUI3.4.0 之前版本中的“模块依赖计算器”是用来决定还需加载哪些子模块，当同时加载这两个模块时，比如这个例子中通过计算得知需要加载 event 模块，这个模块包含：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;event.a, event.b, event.c, event.d, event.e, event.f, event.g, event.h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实所载入的这些模块有些并不是我们真正需要的。如果关掉“模块依赖计算器”，YUI 将只会请求实际引用的模块，而不会去请求更多。多数情况下你不会注意到这些，如果你是模块的开发者，则可能会遇到一些麻烦，之前运行好好的模块现在不能运行了，其实是之前他们只是“碰巧”可以运行而已。来看一个实际的例子，Dial：&lt;/p&gt;
+
+&lt;p&gt;在3.3.0中，Dial引用了这些：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;requires: [
+    'widget',
+    'dd-drag',
+    'substitute',
+    'event-mouseenter',
+    'transition',
+    'intl'
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;对于大多数场景来说，Dial 在 3.4.0 下可以照常工作，但不支持键盘事件。在简单分析之后发现，“模块依赖计算器”实际上请求了整个 Event 模块（包括event-move和event-key）。YUI3.4.0 中关掉了“模块依赖计算器”，Dial 也不再去请求 event-move 子模块所属的母模块 event。为了让 Dial 的模块引用更加细致有针对性，则需要引用所有实际用到的小模块，这样代码才会正常工作：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;requires: [
+    'widget',
+    'dd-drag',
+    'substitute',
+    'event-mouseenter',
+    'event-move',
+    'event-key',
+    'transition',
+    'intl'
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;对于模块开发者来说，清楚的知道自己的组件所依赖哪些模块非常重要，这也是比较好的习惯和实践。不要想当然去引用“上游模块”（就是刚才提到的粗粒度模块），始终确保只引用了真正需要的模块。&lt;/p&gt;
+
+&lt;p&gt;这也意味着模块引用的定义更加合理，比如，datatype-date 内置支持全球化格式的数据，在之前的版本中这样使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Y.Intl.getAvailableLangs('datatype-date');
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但这个模块并不真正包含某种语言（datatype-date-format 模块包含）。因此需要指定正确的模块引用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Y.Intl.getAvailableLangs('datatype-date-format');
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;编译规则的修改和删除子模块&lt;/p&gt;
+
+&lt;p&gt;除此之外，接下来的更新是修改了编译后的文件目录并从core中删除子模块。其实子模块并没有真正删除，只是元模块数据结构改变了。它使得当前 YUI 可以向后兼容。&lt;/p&gt;
+
+&lt;p&gt;core 中的子模块有很多问题，我们必须把他们一一解决掉。第一个是性能。每次计算依赖关系的时候，程序会把子模块/插件结构中的每个节点都遍历一遍。在 Loader 运行过程中大量的遍历操作会严重损耗性能。去掉了 core 中的子模块支持，可以免去大量低效的函数调用和迭代运算。&lt;/p&gt;
+
+&lt;p&gt;我们对 Loader 做了修改，以便能通过模块的元数据中属性来定义需要引用的模块，这样便可以载入我们指定的模块而不是去查找原始模块。如果你引用了“dd”（拖拽），Loader 将会把“dd”拆分成元模块（子模块），属性值看起来就像这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&quot;dd-ddm-base,dd-ddm,dd-ddm-drop,
+dd-drag,dd-proxy,dd-constrain,
+dd-drop,dd-scroll,dd-drop-plugin&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 YUI 种子文件当中同样包含了“垂直模块依赖计算”或者称之为“别名”。模块的定义和 Loader 中的元模块是一模一样的。这样的话就可以直接根据“模块依赖配置工具”（Dependency Configurator）来获得文件的引用地址，同样也可以使用剥离出 Loader 的“模块依赖计算器”，在未来的版本发布中，我们还会对这部分功能作进一步的提炼。&lt;/p&gt;
+
+&lt;p&gt;介绍过这些更新之后，我们来看一下 YUI 的项目文件，在之前的版本中，子模块决定模块的文件路径，比如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&quot;dd&quot;: {
+    &quot;submodules&quot;: {
+        &quot;dd-drag&quot;:
+            // Module data
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在3.3.0中编译“dd”得到的文件结果是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/build/dd/dd-drag.js
+/build/dd/dd-ddm.js
+/build/dd/dd-drop.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在3.4.0的新编译规则下，“dd”编译后的结果是：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/build/dd-drag/dd-drag.js
+/build/dd-ddm/dd-ddm.js
+/build/dd-drop/dd-drop.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样我们就可以将模块元数据中的“path”属性删掉了，减少了文件体积，也免去了根据模块名称查找它的文件路径的工作。&lt;/p&gt;
+
+&lt;p&gt;如果你之前引用了配置好的合并了文件的（combo）URL，那么升级 YUI 到 3.4.0 后则需要重新生成这个 URL。&lt;/p&gt;
+
+&lt;p&gt;本次更新也有不足，如果你引用了合并了多个模块文件的 URL 用以对页面进行初始化，则不能只更新版本号，你需要重新到模块依赖配置工具中获得新的 URL。&lt;/p&gt;
+
+&lt;p&gt;未来&lt;/p&gt;
+
+&lt;p&gt;我们还会对YUI作进一步的提炼、重构、优化，并将 Loader 和种子文件中的各个功能点的代码体积降到最低。当然首要工作依然是将 YUI 移植到除了客户端浏览器平台之外的服务器端、命令行和手持终端的各个平台中。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>JavaScript语法检查插件 jsLint for Vim</title>
+   <link href="http://lhzhang.comdata/2011/01/04/vim.html"/>
+   <updated>2011-01-04T00:00:00+08:00</updated>
+   <id>urn:uuid:7fb56684-2ad6-4932-a87a-a3005117b46f</id>
+   <content type="html">&lt;p&gt;工欲善其事，必先利其器。作为更专业的前端工程师，我们需要强劲的IDE协助我们写出规范、美观、漂亮的JavaScript代码，首先要作的就是对代码进行合法性检查，而通过 &lt;a href=&quot;www.jslint.com&quot; target=&quot;_blank&quot;&gt;www.jslint.com&lt;/a&gt; 进行手工操作又显得碍手碍脚。为了提高效率，这里推荐使用 &lt;a href=&quot;http://www.vim.org/scripts/script.php?script_id=2729&quot; target=&quot;_blank&quot;&gt;jsLint + Vim(gVim)&lt;/a&gt;，能够协助你达到事半功倍的效果。&lt;/p&gt;
+
+&lt;p&gt;首先，和 &lt;a href=&quot;http://www.javascriptlint.com/&quot; target=&quot;_blank&quot;&gt;JavaScriptLint&lt;/a&gt; 不同&lt;strong&gt;[注1]&lt;/strong&gt;，&lt;a href=&quot;http://www.vim.org/scripts/script.php?script_id=2729&quot; target=&quot;_blank&quot;&gt;jsLint&lt;/a&gt; 是需要 &lt;a href=&quot;http://en.wikipedia.org/wiki/JavaScript_engine&quot; target=&quot;_blank&quot;&gt;JavaScript 引擎&lt;/a&gt;的支持的，linux中可选的有基于 C 语言的 &lt;a href=&quot;http://en.wikipedia.org/wiki/SpiderMonkey_%28JavaScript_engine%29&quot; target=&quot;_blank&quot;&gt;Spidermonkey&lt;/a&gt; 和基于 Java 的 &lt;a href=&quot;http://en.wikipedia.org/wiki/Rhino_%28JavaScript_engine%29&quot; target=&quot;_blank&quot;&gt;Rhino&lt;/a&gt;，考虑到速度，推荐使用 Spidermonkey。另外，&lt;a href=&quot;https://github.com/hallettj/jslint.vim/blob/master/ftplugin/javascript/jslint.vim&quot; target=&quot;_blank&quot;&gt;jsLint.vim&lt;/a&gt; 初始配置挂载的监听有些冗余，这会导致 &lt;a href=&quot;http://www.vim.org&quot; target=&quot;_blank&quot;&gt;Vim&lt;/a&gt; 运行很慢，影响编码的效率，这里我 hack 了一份 &lt;a href=&quot;https://github.com/jayli/jayli.github.com/blob/master/gallery/vim/jslint.vim&quot; target=&quot;_blank&quot;&gt;jslint.vim&lt;/a&gt;，只用F4键就可以开启/关闭语法检查，下面介绍配置方法（linux &amp;amp; windows）。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;jsLint + vim for Linux&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/linux界面.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-2754&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/linux界面.png&quot; alt=&quot;&quot; width=&quot;525&quot; height=&quot;317&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;1，准备JS引擎&lt;/p&gt;
+
+&lt;p&gt;linux 下默认没有 &lt;a href=&quot;http://en.wikipedia.org/wiki/JavaScript_engine&quot; target=&quot;_blank&quot;&gt; JavaScript 引擎&lt;/a&gt;，需要安装，旧版本的 ubuntu 通过apt-get来安装&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install spidermonkey-bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;新版的 ubuntu 需要通过下面这个包安装&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://launchpad.net/ubuntu/hardy/i386/spidermonkey-bin/1.8.1.4-2ubuntu5&quot; target=&quot;_blank&quot;&gt;https://launchpad.net/ubuntu/hardy/i386/spidermonkey-bin/1.8.1.4-2ubuntu5&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;其他linux发行版可以通过源码安装：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;ftp://ftp.mozilla.org/pub/mozilla.org/js/&quot; target=&quot;_blank&quot;&gt;ftp://ftp.mozilla.org/pub/mozilla.org/js/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2，安装ruby环境&lt;/p&gt;
+
+&lt;p&gt;ubuntu下安装：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install ruby
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;redhet系发行版中的安装：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;yum install ruby
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;3，安装vim，通常linux中自带，不用安装&lt;/p&gt;
+
+&lt;p&gt;4，下载&lt;a href=&quot;http://www.vim.org/scripts/script.php?script_id=2729&quot; target=&quot;_blank&quot;&gt; jsLint 插件&lt;/a&gt;，下载后解压缩，把其中的 javascript 目录拷贝至 $VIM/plugin/中（作者给的文档有误，不应是$VIM/ftplugin/），当然也可以放到 ~/.vim/plugin/ 中&lt;/p&gt;
+
+&lt;p&gt;5，将解压后 jslint/bin 目录中的 jslint 文件拷贝至 /usr/bin 中，也可以拷贝到~/bin/中&lt;/p&gt;
+
+&lt;p&gt;6，下载 &lt;a href=&quot;http://jayli.github.com/gallery/vim/jslint.vim&quot; target=&quot;_blank&quot;&gt;http://jayli.github.com/gallery/vim/jslint.vim&lt;/a&gt; 文件，覆盖 $VIM/plugin/javascript/jslint.vim&lt;/p&gt;
+
+&lt;p&gt;7，完成，打开一个js文件，用F4唤醒语法检查，再按F4关闭语法检查&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;jslint + gvim for windows&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/windows界面.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-2756&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/windows界面.png&quot; alt=&quot;&quot; width=&quot;487&quot; height=&quot;357&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;windows 下自带 &lt;a href=&quot;http://en.wikipedia.org/wiki/CScript&quot; target=&quot;_blank&quot;&gt;CScript&lt;/a&gt;，不用再安装其他 JavaScript 引擎&lt;/p&gt;
+
+&lt;p&gt;1，安装&lt;a href=&quot;http://rubyinstaller.org/&quot; target=&quot;_blank&quot;&gt;ruby运行环境&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2，安装 &lt;a href=&quot;http://www.google.com.hk/search?hl=zh-CN&amp;amp;safe=strict&amp;amp;biw=1680&amp;amp;bih=868&amp;amp;q=gvim&amp;amp;aq=f&amp;amp;aqi=&amp;amp;aql=&amp;amp;oq=&amp;amp;gs_rfai=&quot; target=&quot;_blank&quot;&gt;gvim&lt;/a&gt;，假设安装到 C:/Program Files/Vim 中&lt;/p&gt;
+
+&lt;p&gt;3，下载&lt;a href=&quot;http://www.vim.org/scripts/script.php?script_id=2729&quot; target=&quot;_blank&quot;&gt; jsLint 插件&lt;/a&gt;，下载后解压缩，将 ftplugin 目录中的 javascript 文件夹复制到 C:/Program Files/vim/vim72/plugin/ 目录中&lt;/p&gt;
+
+&lt;p&gt;4，将 jslint 解压缩后的“/bin/jslint”文件添加后缀名 “exe”，并将其所在的路径添加到环境变量的 Path 中，比如我将 jslint.exe 放到 C:/user/bachi/ 中，配置环境变量&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/环境变量配置.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-2757&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/环境变量配置.png&quot; alt=&quot;&quot; width=&quot;373&quot; height=&quot;297&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;5，下载 &lt;a href=&quot;http://jayli.github.com/gallery/vim/jslint.vim&quot; target=&quot;_blank&quot;&gt;http://jayli.github.com/gallery/vim/jslint.vim&lt;/a&gt; 文件，覆盖 C:/Program Files/vim/vim72/plugin/javascript/jslint.vim&lt;/p&gt;
+
+&lt;p&gt;6，修改这个 &lt;a href=&quot;https://github.com/jayli/jayli.github.com/blob/master/gallery/vim/jslint.vim&quot; target=&quot;_blank&quot;&gt;jslint.vim&lt;/a&gt; 文件，将 vim 安装路径替换为绝对路径，找到&lt;/p&gt;
+
+&lt;pre&gt;expand(&quot;~/vimfiles/ftplugin/javascript&quot;)&lt;/pre&gt;
+
+
+&lt;p&gt;修改为&lt;/p&gt;
+
+&lt;pre&gt;expand(&quot;C:/Program Files/Vim/vim72/plugin/javascript&quot;)&lt;/pre&gt;
+
+
+&lt;p&gt;&lt;a href=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/修改文件.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-2758&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/修改文件.png&quot; alt=&quot;&quot; width=&quot;581&quot; height=&quot;54&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;7，完成，打开一个 js 文件，用F4唤醒语法检查，再按F4关闭语法检查&lt;/p&gt;
+
+&lt;p&gt;ps：其实很早之前，&lt;a href=&quot;http://www.gracecode.com/&quot; target=&quot;_blank&quot;&gt;明城&lt;/a&gt;就介绍过使用 &lt;a href=&quot;http://www.gracecode.com/archives/2902/&quot; target=&quot;_blank&quot;&gt;JavaScriptLint + Vim进行语法检查&lt;/a&gt;&lt;strong&gt;[注2]&lt;/strong&gt;，这种方法也相当不错，但使用体验稍有缺憾，语法提示单独占用视窗，看起来更像专门的 Debug 操作，而我更希望在编码过程中，实时监控我刚写过的代码的正确性，而给出语法提示也不应当进入一个“Debug”过程，只要编辑过程中，我用眼睛余光能注意到光标所在行的错误提示就可以了，没必要打开一个视窗给我看我有多少bug，另外，JavaScriptLint 的语法检查非常苛刻，我希望能有更加实用更加宽松的语法检查。很碰巧，jsLint 可以满足我这种挑剔的需求&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;[注1]&lt;/strong&gt;：&lt;a href=&quot;http://www.javascriptlint.com&quot; target=&quot;_blank&quot;&gt;JavaScriptLint&lt;/a&gt; 的语法检查相比&lt;a href=&quot;http://www.jslint.com/lint.html&quot; target=&quot;_blank&quot;&gt;老道的 jsLint&lt;/a&gt; 更为苛刻，大量鸡肋警告非常干扰视线，比如  &lt;a href=&quot;http://code.jquery.com/jquery-1.4.2.js&quot; target=&quot;_blank&quot;&gt;jquery-1.4.2.js&lt;/a&gt; 通过 JavaScriptLint 检查有164个警告，通过 jsLint 检查只有10个警告，正是因为此，JavaScriptLint 实际上增加了我们编码的负担。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;[注2]&lt;/strong&gt;：明城的文章中有小小的误导，JavaScriptLint 和 jsLint 是两个不同的东东，这里推荐的是老道的 jsLint，而不是JavaScriptLint。&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>淘宝2011新版首页开发实践</title>
+   <link href="http://lhzhang.comdata/2011/01/01/taobaoindex.html"/>
+   <updated>2011-01-01T00:00:00+08:00</updated>
+   <id>urn:uuid:d5ea4ee2-7adf-4354-b697-3f60201f1b0f</id>
+   <content type="html">&lt;p&gt;本文同期发表于 &lt;a href=&quot;http://ued.taobao.com&quot;&gt;http://ued.taobao.com&lt;/a&gt;&lt;/p&gt;
+
+&lt;iframe border=0 src='http://www.slideshare.net/slideshow/embed_code/6516501' width='500' height='410'&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;新年钟声刚过，&lt;a href=&quot;http://www.taobao.com&quot; target=&quot;_blank&quot;&gt;淘宝新版首页&lt;/a&gt;全“心”上线了，这次设计大胆的将布局从 960px 伸展至 1000px，页面更通透，新首页更大范围的实践了&lt;a href=&quot;http://en.wikipedia.org/wiki/HTML5&quot;&gt; HTML5&lt;/a&gt; 和&lt;a href=&quot;http://www.w3.org/TR/css3-roadmap/&quot;&gt; CSS3&lt;/a&gt;，全面兼容 iPad，并在&lt;a href=&quot;http://www.w3.org/WAI/intro/accessibility&quot;&gt;可访问性&lt;/a&gt;方面有了更多积极的尝试。对于我来讲，这次开发着实是一次奇妙的经历，也让我对可访问性、html5 和性能优化有了新的认识。&lt;/p&gt;
+
+&lt;p&gt;其实 &lt;a href=&quot;http://en.wikipedia.org/wiki/HTML5&quot;&gt;html5&lt;/a&gt; 并不是那么遥不可及，现在也有着不少针对 pc 终端的 &lt;a href=&quot;http://www.impressivewebs.com/demo-files/easy-html5-template/&quot;&gt;html5 template&lt;/a&gt;，如果不甚考虑 ie6/7/8 禁用脚本的情况，完全可以放手运用 html5 标签。那么针对那些 ie6/7/8 禁用脚本的用户，我们参照了 &lt;a href=&quot;http://www.facebook.com&quot;&gt;facebook&lt;/a&gt; 的做法，即引导用户进入带有noscript标识的 &lt;strong&gt;“/?_fb_noscript=1”&lt;/strong&gt;页面，用 html4 标签替换 html5 标签，这要比为了保持兼容性而写大量 hack 的做法更轻便一些。&lt;/p&gt;
+
+&lt;p&gt;如果你足够细心，就会发现新首页并未完全遵循“&lt;a href=&quot;http://www.w3.org/TR/css3-grid/&quot;&gt;栅格&lt;/a&gt;”，因为一个很纯粹的文档中，实现栅格效果所使用的层层 wrap 本身就缺乏语义，html5 带来了更多语义化的标签，这和缺乏语义的栅格实现是如此格格不入，摆脱栅格，容器用绝对定位，不用写那么多 hack，岂不多快好省～&lt;/p&gt;
+
+&lt;p&gt;另外，关于性能优化，之前我们的确过于依赖 &lt;a href=&quot;http://developer.yahoo.com/yslow/&quot;&gt;yslow&lt;/a&gt;、&lt;a href=&quot;http://code.google.com/intl/zh-CN/speed/page-speed/&quot;&gt;pagespeed&lt;/a&gt; 的评分，其实，这些条条框框才是真正阻碍我们作 &lt;a href=&quot;http://www.stevesouders.com/blog/2010/05/07/wpo-web-performance-optimization/&quot;&gt;WPO&lt;/a&gt; 的拦路虎，不是说这些指标不科学，而是他们限制住了我们的思维和视野，更何况，他们都缺少对“加载/渲染时间”这个最重要的因素的评估，当用户更快的看到并可用页面（尤其是首屏），才是真正的性能提升，因此，这次开发特意针对 First Rendering（首次渲染）的指标进行一些重构，重写了几乎所有的逻辑层 js 代码 （domready 之前，甚至 Render 出 UI 之前，js 已经在运行了），当 js 效率更高，CPU 损耗更少时，浏览器才会更多的将硬件资源投入到渲染 Dom 本身，First Rendering 自然会更加提前，后续的渲染也会提速。可以参照新旧淘宝首页的 CPU 耗能对比，以及其对 First Rendering（绿线）的影响。&lt;/p&gt;
+
+&lt;p&gt;2010（旧）首页加载 CPU 损耗&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;alignnone size-full wp-image-3441&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2011/01/ued-blog-wpo-1.png&quot; alt=&quot;&quot; width=&quot;600&quot; height=&quot;101&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;2011（新）首页加载 CPU 损耗：&lt;/p&gt;
+
+&lt;p&gt;&lt;img class=&quot;alignnone size-full wp-image-3442&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2011/01/ued-blog-wpo-2.png&quot; alt=&quot;&quot; width=&quot;600&quot; height=&quot;101&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;当然，延迟加载、延迟渲染等技术在这里依然适用，上次淘宝首页改版&lt;a href=&quot;http://www.chencheng.org/blog/2010/01/06/dev-share-for-taobao-new-homepage/&quot;&gt;云谦同学作了详尽的总结&lt;/a&gt;，这里就不再赘述了。更多内容大家可以到这里&lt;a href=&quot;http://www.slideshare.net/lijing00333/2011-6516501&quot;&gt;下载 ppt&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;此致，鸣谢&lt;a href=&quot;http://www.pushiming.com/blog/&quot;&gt;法海&lt;/a&gt;、&lt;a href=&quot;http://yiminghe.javaeye.com/blog/&quot;&gt;承玉&lt;/a&gt;、&lt;a href=&quot;http://www.songwa.org/&quot;&gt;王松&lt;/a&gt;、玉澧、&lt;a href=&quot;http://besteric.com/&quot;&gt;黑三&lt;/a&gt;，最后要特别感谢下玉澧童鞋，有了你的妙笔，这次首页才会如此闪亮。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>将你的 KISSY 程序移植到服务器端 – nodejs-kissy 项目简介</title>
+   <link href="http://lhzhang.comdata/2010/12/19/nodejskissy.html"/>
+   <updated>2010-12-19T00:00:00+08:00</updated>
+   <id>urn:uuid:73850b0d-7217-475b-b665-1034ca71b2dd</id>
+   <content type="html">&lt;p&gt;如果你还不了解 NodeJS，请参照 &lt;a href=&quot;http://nodejs.org/&quot; target=&quot;_blank&quot;&gt;NodeJS.org&lt;/a&gt;，简言之：&lt;/p&gt;
+
+&lt;blockquote&gt;Node.js 是服务器端的 JavaScript 运行环境，它具有&lt;a href=&quot;http://en.wikipedia.org/wiki/Non-blocking_algorithm&quot; target=&quot;_blank&quot;&gt;无阻塞&lt;/a&gt;(non-blocking)和&lt;a href=&quot;http://en.wikipedia.org/wiki/Event-driven_programming&quot; target=&quot;_blank&quot;&gt;事件驱动&lt;/a&gt;(event-driven)等的特色，Node.js 采用 &lt;a href=&quot;http://code.google.com/p/v8/&quot; target=&quot;_blank&quot;&gt;V8&lt;/a&gt; 引擎，同样，Node.js 实现了类似 &lt;a href=&quot;http://apache.org/&quot; target=&quot;_blank&quot;&gt;Apache&lt;/a&gt; 和 &lt;a href=&quot;http://nginx.org/&quot; target=&quot;_blank&quot;&gt;nginx&lt;/a&gt; 的web服务，让你可以通过它来搭建基于 JavaScript 的 Web App。&lt;/blockquote&gt;
+
+
+&lt;p&gt;你可以通过我们前些天 team 内的一个分享来了解下 NodeJS&lt;/p&gt;
+
+&lt;iframe src='http://www.slideshare.net/slideshow/embed_code/5576953' width='500' height='410' border=0&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;&lt;strong&gt;nodejs-kissy 项目&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://github.com/kissyteam/kissy&quot; target=&quot;_blank&quot;&gt;KISSY&lt;/a&gt; 是淘宝网开发的一款轻巧灵活的JS框架，如今已经是1.1.5版本，并在淘宝网广泛应用，在浏览器端给我们带来更加清新的体验，今天让我们更进一步，我们发起了&lt;a href=&quot;http://github.com/kissyteam/nodejs-kissy&quot; target=&quot;_blank&quot;&gt;nodejs-kissy&lt;/a&gt; 项目，你的 KISSY 程序可以无缝移植到服务器端了&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/nodejs-sombrero.png&quot;&gt;&lt;/a&gt;&lt;a href=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/未标题-1.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-2689&quot; src=&quot;http://ued.taobao.com/blog/wp-content/uploads/2010/11/未标题-1.png&quot; alt=&quot;&quot; width=&quot;323&quot; height=&quot;86&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;从这里开始 nodejs-kissy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;得益于 KISSY 轻巧的设计，核心模块可以很充分的解偶，所以对 KISSY 作简单hack就能够运行在 NodeJS 上。但开始之前应该首先准备好预装了 &lt;a href=&quot;http://npmjs.org/&quot; target=&quot;_blank&quot;&gt;npm&lt;/a&gt; 的服务器(linux/FreeBSD/MacOS/cygwin)，npm 是 NodeJS 软件包管理器，类似yum 和 apt-get，通过他来安装 NodeJS 的软件包会非常方便。&lt;/p&gt;
+
+&lt;p&gt;准备 npm：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl http://npmjs.org/install.sh | sh&amp;lt;/pre&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果你的账户没有权限则先准备好目录权限：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo chown -R $USER /usr/local&amp;lt;/pre&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装成功后就可以通过 &lt;code&gt;&quot;npm install package_name&quot;&lt;/code&gt; 命令来安装 NodeJS 软件包了&lt;/p&gt;
+
+&lt;p&gt;安装 Nodejs-KISSY 的依赖：服务器端没有浏览器环境，要运行js需要模拟真实的浏览器环境，因此 KISSY 需要依赖一些包：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install jsdom
+npm install htmlparser
+npm install express
+npm install connect
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装Nodejs-kissy：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;npm install kissy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行 “hello world”：&lt;/p&gt;
+
+&lt;p&gt;新建文件 helloworld.js&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var S = require('kissy').KISSY;
+S.ready(function(S){
+        S.log('hello world!');
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;运行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;node helloworld.js
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;更方便的移植?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;你可能会好奇，服务器端没有浏览器，为什么KISSY能如此轻松的运行在服务器端？这主要是因为KISSY的模块加载机制是脱离浏览器环境的，也就是说KISSY.use、KISSY.add、KISSY.app是和环境无关的，它只关系到你组织代码的方式和风格，另外，得益于足够原生态的KISSY-DOM实现，KISSY只调用到domjs（domjs的高层api是面向YUI3设计的）的基础方法，所以DOM相关操作依然可以无缝嫁接到服务器端，相对于YUI3核心模块的深层次耦合，KISSY的移植实在是太轻松了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;策略上的取舍&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;KISSY 基于“one for all”理念的core和粗粒度的widget，使得KISSY可以使用更少的&quot;引入文件&quot;来执行程序，而非必要一定采用combo(即使采用combo性能未必提高多少)，这样使得require的逻辑策略更简便。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;所见即所得&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;和YUI3一样，KISSY-Loader 也可以非常方便的引入外部脚本，不管脚本是存放在服务器上，还是通过http请求到，开发者只要require fullpath即可，非常低碳，比如我可以这样运行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var S = require('kissy').KISSY;
+S.add({
+    'menu':{
+        fullpath:'http://cdn/menu.js'
+    }
+}).use('menu',function(S){
+    new S.Menu('ID');
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;总之，你在浏览器端怎么用 KISSY，你就在服务器端怎么写，接下来，nodejs-kissy 项目的主要工作是更多的测试和提高其健壮性。nodejs-kissy 和 KISSY 一样基于 &lt;a href=&quot;http://github.com/kissyteam/kissy/blob/master/LICENSE.md&quot; target=&quot;_blank&quot;&gt;MIT&lt;/a&gt; 协议，你可以通过 &lt;a href=&quot;https://github.com/kissyteam/nodejs-kissy&quot; target=&quot;_blank&quot;&gt;fork github&lt;/a&gt; 上的项目来参与 nodejs-kissy 的开发。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>[翻译] Zakas 对 John 的回应 </title>
+   <link href="http://lhzhang.comdata/2010/12/18/zakas.html"/>
+   <updated>2010-12-18T00:00:00+08:00</updated>
+   <id>urn:uuid:063ad4ce-8844-4406-b213-85a54eb47f50</id>
+   <content type="html">&lt;ul&gt;
+&lt;li&gt;题目：回应 John Resig 关于 YUI 的评论&lt;/li&gt;
+&lt;li&gt;作者：Nicholas C. Zakas&lt;/li&gt;
+&lt;li&gt;译者：&lt;a href=&quot;http://jayli.github.com&quot; target=&quot;_blank&quot;&gt;拔赤&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;原文：&lt;a href=&quot;http://www.nczonline.net/blog/2010/11/03/response-to-john-resigs-comments-about-yui/&quot; target=&quot;_blank&quot;&gt;http://www.nczonline.net/blog/2010/11/03/response-to-john-resigs-comments-about-yui/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;就在今早，有人在 &lt;a href=&quot;http://www.quora.com/&quot; target=&quot;_blank&quot;&gt;Quora &lt;/a&gt;[注1]上提了一个问题：“YUI3 如何提升其影响力？”，这个问题很有意思，下面的回复也很有意思。我最感兴趣的一个回复来自于 jQuery 的作者 John Resig，他的解读非常独到，给出了创建 jQuery 庞大且充满活力的开源社区的路线图。只是其中很多观点我不敢苟同。&lt;/p&gt;
+
+&lt;p&gt;在讨论之前，应当说明的是，我在 YAHOO 工作，我一直都在为 YUI 贡献代码，尽管我不是 YUI 开发团队成员，因此我的观点不代表 YAHOO 公司和 YUI开发团队，仅仅是我个人针对 John Resig 回复来分享我的看法。再补充一点，我对 John 本人、jQuery 团队和 jQuery 社区开发者们十分敬重，所以，请不要将我的观点断章取义，做别有用心的理解。&lt;/p&gt;
+
+&lt;p&gt;首先，我承认，分散的站点的确是 YUI 的一个问题，不止一个人曾经纠结于到底应该访问 &lt;a href=&quot;http://developer.yahoo.com&quot; target=&quot;_blank&quot;&gt;YDN&lt;/a&gt; 呢还是访问 YUILibrary.com？这是 YUI 首先要解决的问题。同样，John 对于简化 YUI 文档首页上的引导信息的建议也相当不错，是个好主意。&lt;/p&gt;
+
+&lt;p&gt;John 的下一段落介绍了 YUI 如何与 jQuery 正面竞争，我在 &lt;a href=&quot;http://www.twitter.com&quot; target=&quot;_blank&quot;&gt;twitter&lt;/a&gt; 上有过一个简评：“我不认为他们之间存在你死我活的竞争关系”，我不想将 YUI 搞成另外一个 jQuery，这两个库各自都有优点，且重合度极小。jQuery 更适合小网站使用，毕竟它很简单、大众、人人都可以快速上手，因此 jQuery 有着庞大的设计师群体，但我不愿意拿 jQuery 来搭建 Yahoo 首页。对于可扩展的 web 应用，YUI 的确更胜一筹。我不相信仅凭一个单一的产品就能满足所有用户多样化的需求。jQuery 在其专注的方面的确富有想象力，而我宁愿将 YUI 的关注点放在解决复杂 web 应用方面的问题。&lt;/p&gt;
+
+&lt;p&gt;我对 John 的评论有如下观点不敢苟同：&lt;/p&gt;
+
+&lt;p&gt;“一直以来，YUI 项目都有着一个庞大的全职全薪的开发团队，这是 YUI 独有的优势，这让其他 JavaScript 库项目非常垂涎。我想说，这实在是不赖，正是因为此，才让 YUI 整体受益匪浅。不过它也带来一些很严重的后果，YUI 的命运掌控在 YAHOO 的手中。这不是我们希望看到的，因为 YUI 自身独立、开源的特性，YUI 应当从 YAHOO 剥离出来独闯江湖。”&lt;/p&gt;
+
+&lt;p&gt;这种观点我听的耳朵都起茧子了，这些观点是我始终不理解和不认同的，开源社区似乎始终流传着这种观点，认为只有“纯粹自治”，而非依赖于某个公司的项目才是真正的“开源”。让我摘录我之前的一段聊天记录：&lt;/p&gt;
+
+&lt;blockquote&gt;&lt;p&gt;某某：我非常喜欢 YUI，只是那个让人讨厌的 “Y” 让我很不爽
+我说：到底是什么让你很不爽？是那些拿着雅虎俸禄的全职工程师？还是你看不惯他们在拥有全球最高访问量之一的 YAHOO 网站上做 YUI 的各种测试？&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;我认为，正是得益于雅虎的庇佑，YUI 才如此价值连城。YUI 开发团队和 YAHOO 的其他研发团队并肩战斗，正是这种经历造就了如今的坚不可摧的 YUI 产品。就在不久前，我刚刚和 YUI 团队的工程师们一起，&lt;a href=&quot;http://yuiblog.com/blog/2008/11/11/frontpage-and-yui3/&quot; target=&quot;_blank&quot;&gt;将 YUI3 实验性的应用到 YAHOO 首页&lt;/a&gt;。有多少 JS 库敢说自己能有机会在全球 top5 的网站上进行测试？又有多少 JS 库敢说自己能持续从全球流量最大的网站获得测试数据，这些网站每天的访问量达亿次以上？&lt;/p&gt;
+
+&lt;p&gt;将 YUI 从 Yahoo 剥离出来，才真正剥夺了它的战略优势。当 YUI 专注于这些高端项目和某些私有项目的时候，就没办法同时顾及到那些开源社区了。而在 Yahoo 内部，我们可以与 YUI 团队协作无间、齐力断金，所有 YUI 的用户也都从中获益良多。所有雅虎工程师的辛勤劳作在这里汇聚，日积月累的向 YUI 注入能量。&lt;/p&gt;
+
+&lt;p&gt;有些人说 Yahoo 不应当“操纵” YUI 的命运，这种论调我就更不能认同了。同样，是 Yahoo 让 YUI 闪光。任何一个开源项目都有一个核心的开发团队，他们的工作除了维护项目源码之外，还负责培养开发者、并为他们提供学习路线图。雅虎为YUI的开发者们支付薪水，这并不能改变项目的本质。我们可以看看在类似机制下亦然如此成功的 &lt;a href=&quot;http://www.mozilla.com&quot; target=&quot;_blank&quot;&gt;Mozilla&lt;/a&gt; ，Mozilla 核心研发团队控制着 Firefox 的版本发布，Mozilla 给他们支付薪水，并不意味着他们的产品就应该有多糟糕。他们的产品 Firefox 是世界第二大浏览器，而正是这些甘于奉献的工程师对这个产品充满热情，他们的确渴望创造一个最好的产品。当你的本职工作就是在支持这个项目的时候，这是很容易做到的。谁说大公司无法支持开源项目？开源社区生态系统的形成，最终是由沟通、协作和不断超越的精神决定的，而不是所谓的“非盈利”。&lt;/p&gt;
+
+&lt;p&gt;再回过头来看 YUI，YUI 开发团队一直都在非常用心的开发第三方组件库，不错，这避免不了成长中的烦恼。时至今日 YUI 已经成果斐然，当然，在雅虎的之外，YUI 还未像 jQuery 那样广受关注，但 YUI 一直都在努力。去年的 &lt;a href=&quot;http://yuilibrary.com/yuiconf2009/&quot; target=&quot;_blank&quot;&gt;YUI 年会&lt;/a&gt; [注2]上，Matt Snider（曾供职于Mint.com）&lt;a href=&quot;http://www.yuiblog.com/blog/2009/11/05/video-snider-yuiconf2009/&quot; target=&quot;_blank&quot;&gt;介绍了由他主导开发的一个相当完备的基于YUI2的组件库&lt;/a&gt;。我觉得这实在是棒极了，因为他的行为传达了一个信号，任何人只要有自己的想法，都可以向 YUI 开发团队靠拢，而且可以得到 YUI 团队的绝对支持，并把你的组件打包入 YUI。Matt 为他的组件库付出了很多工作，希望 YUI 可以寻觅到更多像他那样的开发者，愿意花时间为 YUI 贡献高质量的代码。同样，YUI Gallery 也一个相当不错的东西：他为开发者打开一扇大门，开发者可以轻松的将他们的组件发布到 Gallery 列表中，并可以将它们推送到 YAHOO 的 CDN 上[注3]。至今，Gallery 已经有227个组件，让非雅虎系的开发者都受益良多。&lt;/p&gt;
+
+&lt;p&gt;那么，YUI 是否可以改进社区的形式和贡献代码的模式呢？当然可以。YUI 是不是必须切断和 Yahoo 的联系，才能开始这些改进？不用，YUI3 是一个高质量的产品，在不断壮大的开源社区中有着强劲的生命力，如果硬要指责 YUI 团队的不称职的话，也只是他们忽视了市场营销的重要性，和缺乏行之有效的推广手段，而这两方面正是  jQuery 的强项，这也是 YUI 需要向 jQuery 学习的地方。&lt;/p&gt;
+
+&lt;p&gt;总之，YUI 不是 jQuery，任何试图将 YUI jQuery 化的企图都是不对的。那是不是意味着他们二者就是方枘圆凿、不容水火？绝对不是，jQuery 拥有着全球最大的开发者群体，没有哪个开源项目敢说自己不想要一个 jQuery 那样的开发者群体。YUI 也是其中之一，只是 YUI 没必要一定要变成像 jQuery 那样让全球开发者趋之若鹜，更没必要一脚把雅虎踹开，jQuery 仅仅是一个案例，它给了我们如何经营开源社区的一个参照样本，就像我常对我同事说的，问题不只有一种解决方案，真正的挑战性来自于选择适当的策略(而非照抄)来解决特定场景下的问题。如果真的沿着 jQuery 走过的脚印一步一步走下去，对 YUI 来说，这将是一个严重的决策性错误，毕竟，他们二者殊途不同归，各有各的优势，各自都有特定的开发者群体。YUI将会坚持走自己的道路，尽管这离不开孕育滋养它的紫色土壤。但我相信，YUI 一定能做到。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;注1&lt;/strong&gt;：&lt;a href=&quot;http://www.Quora.com&quot; target=&quot;_blank&quot;&gt;Quora.com&lt;/a&gt; 是一款基于问答机制的 SNS，有着活跃的用户群，它和之前的问答网站的最大区别就是 Auora 是基于实名制。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注2&lt;/strong&gt;：&lt;a href=&quot;http://yuiconf2010.eventbrite.com/&quot; target=&quot;_blank&quot;&gt;YUIConf&lt;/a&gt; 是 YUI 开发者大会简称，一年一次，今年将在11月8日举办，可通过 YUIblog 获得更多信息。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注3&lt;/strong&gt;：我相信 zakas 的初衷是好的，但就我个人的经验来看，将组件发布到Gallery中的确很简单，但推送到 Yahoo CDN 上就有点费劲了，&lt;a href=&quot;http://yuilibrary.com/gallery/faq/developer&quot; target=&quot;_blank&quot;&gt;手续实在有点小麻烦&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>[翻译]jq之父回答“YUI3如何提升其影响力？</title>
+   <link href="http://lhzhang.comdata/2010/12/17/jquery.html"/>
+   <updated>2010-12-17T00:00:00+08:00</updated>
+   <id>urn:uuid:7c4ffede-fe04-4c3b-9f9d-782c5c91cf84</id>
+   <content type="html">&lt;blockquote&gt;&lt;p&gt;译者按：我们时常能看到不同JavaScript库/框架之间的各种比较，但这次 YUI3 架构师和 jQuery 之父的直接对话却非常难得，也是暗涌澎湃精彩至极，实在忍不住，翻译出来以飨各位读者，希望对那些有志于开发“库/框架”的同仁们有所启迪。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;ul&gt;
+&lt;li&gt;题目：和jQuery和Mootools相比，YUI3如何提升其影响力？&lt;/li&gt;
+&lt;li&gt;作者：John Resin(jQuery之父)&lt;/li&gt;
+&lt;li&gt;译者：&lt;a href=&quot;http://jayli.github.com&quot; target=&quot;_blank&quot;&gt;拔赤&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;原文：&lt;a href=&quot;http://www.quora.com/How-could-YUI3-improve-its-image-compared-to-jQuery-MooTools-etc/&quot; target=&quot;_blank&quot;&gt;http://www.quora.com/How-could-YUI3-improve-its-image-compared-to-jQuery-MooTools-etc/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;a href=&quot;http://developer.yahoo.com/yui/3/&quot; target=&quot;_blank&quot;&gt;YUI3&lt;/a&gt; 已经超越 &lt;a href=&quot;http://developer.yahoo.com/yui/2/&quot; target=&quot;_blank&quot;&gt;YUI2&lt;/a&gt;，并向&lt;a href=&quot;http://jquery.com/&quot; target=&quot;_blank&quot;&gt; jQuery&lt;/a&gt; 看齐了，那么 YUI3 如何提升其影响力呢？关于这个问题，有些回答似乎有些跑题，问题是“怎样提升 YUI 的影响力”（不错的问题），然而大部分的回答却在攻击 jQuery。&lt;/p&gt;
+
+&lt;p&gt;我从两方面来回答这个问题：1，YUI 应当如何改进，以便更多的人来使用，2，YUI 如何提升才能改善和  jQuery 的竞争力。&lt;/p&gt;
+
+&lt;p&gt;我不得不承认，和其他 JS 库相比，YUI 的确很赞，不管是代码级的工作、大量优秀的&lt;a href=&quot;http://developer.yahoo.com/yui/&quot; target=&quot;_blank&quot;&gt;文档&lt;/a&gt;、&lt;a href=&quot;http://developer.yahoo.com/yui/3/examples/&quot; target=&quot;_blank&quot;&gt;demos&lt;/a&gt;、&lt;a href=&quot;http://www.yuiblog.com&quot; target=&quot;_blank&quot;&gt;blog 文章&lt;/a&gt;、&lt;a href=&quot;http://yuiblog.com/blog/category/yui-theater/&quot; target=&quot;_blank&quot;&gt;视频教程&lt;/a&gt;等等，真的相当出色。而其他的 JS 库则对这些方面不太用心，而且我认为这些内容是一个成功开源项目最重要的组成部分，然而 YUI 却没有更成功的占领市场，对此我一直很不解。&lt;/p&gt;
+
+&lt;p&gt;在这里，为了便于各位理解，我暂作几个假设：1，目前的 YUI3 版本已经“足够优秀”，2，YUI 文档和论坛也已经足够完善，足以吸引更多的用户来使用 YUI3。&lt;/p&gt;
+
+&lt;p&gt;基于此，我做一些简短的评价：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;分散的域名应该合并成一个，正像别人指出的那样，维护太多站点往往会适得其反、吃力不讨好。&lt;/li&gt;
+&lt;li&gt;多代码库应当合并成一个代码库，不错，人们仍在使用 YUI2，YUI3 的 API 和 YUI2 却有着天壤之别，而 YUI 将来只会在 YUI3 上取得成功（YUI 团队固执的维护着 YUI2 不会帮助 YUI “更成功”的）&lt;/li&gt;
+&lt;li&gt;YUI 的引入方式太多，应当缩减至一种。人们应当从 YUI().use 开始接触 YUI（假设这些人真想深入使用 YUI）。首页只保留一个要点即可：应当这样来引入 YUI，&amp;lt;script src=&quot;http://yuilibrary.com/yui-min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;，这样就清晰了很多。&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;简单讲，YUI 项目应当保留一个整体的方向性，重点太分散，则会事与愿违。&lt;/p&gt;
+
+&lt;p&gt;如今，如果 YUI 直接和 jQuery 进行竞争，YUI 和它的子项目的运作方式都需要做出调整。因为现在的 YUI 项目运作方式与 &lt;a href=&quot;http://www.yahoo.com&quot; target=&quot;_blank&quot;&gt;YAHOO&lt;/a&gt; 的工作方法是背道而驰的。鉴于目前的管理方式的极差的操作性，YUI 项目着实是一个不幸的牺牲品。&lt;/p&gt;
+
+&lt;p&gt;本来，我们应该使用 &lt;a href=&quot;http://www.yuiblog.com/blog/2010/09/03/coming-inyui-3-2-0-simpleyui/&quot; target=&quot;_blank&quot;&gt;SimpleYUI&lt;/a&gt; 来启动我们的 YUI 程序。看看 jQuery 吧，它的 API 简洁实用，人们多冲着这些迷人的功能来构建大多数的站点。因此当我们访问 &lt;a href=&quot;http://yuilibrary.com&quot; target=&quot;_blank&quot;&gt;yuilibrary.com&lt;/a&gt; 的时候，本应期待只有一种方法来使用 YUI，就是 simpleYUI（这个名字应当换换，换一个更简洁自然的叫法）。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://developer.yahoo.com/yui/3/&quot; target=&quot;_blank&quot;&gt;YUI 主站&lt;/a&gt;上其实不应该提供 zip 文件，我甚至觉得根本不应当通过定制的方式来下载 YUI 文件。jQuery 官网只提供一份单独的  jQuery 文件，所有用户，包括手机用户都在使用这一个文件。这实在太简单了，&lt;a href=&quot;http://docs.jquery.com/Main_Page&quot; target=&quot;_blank&quot;&gt;文档&lt;/a&gt;也很简单，&lt;a href=&quot;http://blog.jquery.com/&quot; target=&quot;_blank&quot;&gt;blog 文章&lt;/a&gt;同样简单，每个人都可以非常方便无障碍的参与  jQuery 的讨论。&lt;/p&gt;
+
+&lt;p&gt;YUI().use 沙箱外加 异步加载脚本的方法很帅，我非常推荐这种方式。我宁愿将我的代码段都压进一个紧凑的 &quot;SimpleYUI&quot; 中，通过他按需从 YUI CDN 上加载脚本。&lt;/p&gt;
+
+&lt;p&gt;我特别希望能重构 YUI 官方网站，让人们更快的找到他们想要的组件，包括那些社区提供的组件。我会重新定制首页，让访问者一眼就能看到 SimpleYUI，再从 YUI 组件库中挑选一些很酷的组件放在首页下方，并直接引导用户能进入到 &lt;a href=&quot;http://yuilibrary.com/gallery/&quot; target=&quot;_blank&quot;&gt;YUI Gallery&lt;/a&gt;（或者不叫 YUI Gallery，YUI Gallery 听起来更像是专为 YUI 搞的插件库）。&lt;/p&gt;
+
+&lt;p&gt;所以我们可以看到，YUI 项目本身依然存在着诸多结构性问题。&lt;/p&gt;
+
+&lt;p&gt;一直以来，YUI 项目都有着一个庞大的全职全薪的开发团队，这是 YUI 独有的优势，这让其他 JavaScript 库项目非常垂涎。我想说，这实在是不赖，正是因为此，才让 YUI 整体受益匪浅。不过它也带来一些很严重的后果，YUI 的命运掌控在 YAHOO 的手中。这不是我们希望看到的，因为YUI自身独立、开源的特性，YUI 应当从 YAHOO 剥离出来独闯江湖。&lt;/p&gt;
+
+&lt;p&gt;据我所知，还没有非雅虎的 YUI 社区，很多非雅虎的开发者为 YUI 贡献了很多不错的代码，但他们都没有提交权限，这是一个严重的问题。反观 jQuery 的成功，则很大程度上得益于开发者的反馈和帮助，我们从社区中得到了大量的滋养。现在，让我们来看看我们的代码库和代码贡献模式吧。&lt;/p&gt;
+
+&lt;p&gt;将代码迁移到 &lt;a href=&quot;http://github.com&quot; target=&quot;_blank&quot;&gt;github&lt;/a&gt; 上是漂亮的第一步（因为没有版本控制，项目早晚会死），然而，人们贡献代码的方式十分零散而分散，显然Git作为开放灵活的开源版本控制工具是我们不二的选择（相比于 YAHOO 内部循规蹈矩的版本发布）。而在 yuilibrary.com 上，几乎不可能实际上发起一个类似 pull request 操作，因为他有自己的一套提交代码机制，而且非常容易起冲突。我们需要 Git 能侵入开发者 coding 的各个习惯，拥抱 Git，你才能游刃有余的使用他。&lt;/p&gt;
+
+&lt;p&gt;时至今日，YUI 社区最大的问题就是“YUI已经成型”，或者说仅仅是 YAHOO 在为 YUI 贡献代码，而一个真正开源的项目应当具有完整的社区生态系统，只有 Yahoo 停止支持 YUI，社区开发者才能开心放心的搭建 YUI 开发环境，为 YUI 贡献代码，如果这个坎过不去，瓶颈就无法消除，我们应当快刀斩乱麻，从底层结构上修复 YUI 问题的根源。&lt;/p&gt;
+
+&lt;p&gt;我们需要建立一个持有 YUI 100%版权的非营利组织，并让非官方的开发者来负责项目的运作，这对 YUI 的发展和提升其在社区的活力有着非同一般的意义。&lt;/p&gt;
+
+&lt;p&gt;如果要给出终极改进方案，我想应该是这两点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;简单就是美，简化你的代码、你的站点、你的文档、和你组织库文件的方式。更简洁的代码才能被更多人读懂、并使用他。&lt;/li&gt;
+&lt;li&gt;开源社区是 YUI 可持续发展的关键所在，它会带来更多的反馈和热情的开发者，YUI 的影响力也在开源社区中潜移默化的影响这其中的每个人，Yahoo 不应是其唯一的维护者，维护者应当来自于更广阔的开源社区。&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;另外，我注意到这里很多人的回复都很悲观，不要忘了，jQuery 的流行才刚刚开始，而 jQuery 和 YUI 几乎是同时面世（他们分别在06年1月和06年2月发布正式版），jQuery 一直保持着其简洁易用，所以也拥有数量远超其他JS框架的开发者群体。实际上，简单比复杂更具挑战，这也一直都是YUI 所不能理解，但最应当反思的问题。&lt;/p&gt;
 </content>
  </entry>
  

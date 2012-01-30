@@ -1,0 +1,77 @@
+---
+title: 'Kissy loader的设计'
+layout: post
+guid: urn:uuid:26929032-e45b-4de5-9d30-893ee81e5ef6
+tags:
+---
+什么是KISSY
+
+http://github.com/kissyteam/kissy
+
+什么是loader
+
+用过yui的人一定不会对yui-loader陌生，yui doc中对loader是如此描述的：
+
+> The YUI Loader Utility is a client-side JavaScript component that allows you to load specific YUI components and their dependencies into your page via script. YUI Loader can operate as a holistic solution by loading all of your necessary YUI components, or it can be used to add one or more components to a page on which some YUI content already exists.
+
+所以，简单讲，loader就是一个处理js脚本依赖关系的加载器，实现了按需加载、延迟加载、加载相关联的js等功能，其中按需加载大大简化了开发web app的复杂度，延时加载使得domReady的时刻大大提前，飞速提升UI渲染速度，加载关联的js则使开发者不必去关注脚本排序，简化库的使用。颗粒化设计的库则必然需要loader来控制库的易用性，从yui2到yui3，这种趋势更加明显。因此，当KISSY开始走颗粒化的道路时，loader则几乎成了必须组件。
+
+页面加载脚本的方式
+
+如果页面中以script标签引入外部脚本，是阻塞式的加载，不管脚本加载完成先后，页面总是从上到下依次执行script脚本。如果是异步加载脚本，脚本加载完成后则立即执行脚本内容。因此，异步脚本的载入顺序和执行顺序是无关的，是和脚本载入完成的时刻有关系。而如果要处理异步脚本的依赖关系，除了要对脚本载入开始时刻进行排序，也要对载入完成后的回调进行排序。因此，脚本中的逻辑要写入回调函数中，以便排序只用。KISSY提供的简单沙箱可以模拟这种回调的包装。
+
+多loader并存？
+
+如果页面很复杂，我们很自然的期望每个沙箱拥有一个loader，loader之间的加载可以并行，每个loader只处理各自的依赖，这种设计是为了解决页面逻辑的解耦，页面中的每个app之间的耦合降到最低，整个页面不会因为一个app的加载障碍而影响其他app的运行，yui即是这种设计，这种设计最常用的场景是用在门户首页，页面没有固定的维护者，每个人都可以随时添加删除模块，页面最终渲染结果不受某个app的影响。因此在越复杂越变化频繁的页面中，多loader是一种先进的设计，而在普通页面中，多loader机制形同鸡肋。KISSY的设计宗旨是简单易用，因此，单loader模式基本可以满足目前国内门户的所有要求，而在配置combo的前提下，单loader的性能要远超过多loader的场景的。
+
+沙箱之间的串接
+
+库的设计离不开沙箱，沙箱除了用来做逻辑解耦，在loader机制中还扮演包装回调并串接执行回调的协调者角色。上面讲到，异步脚本是需要以回调的形式给出的，这样，loader就需要对脚本依赖进行排序，这里所说的脚本依赖，实际上是各个脚本回调函数的执行顺序，并不是严格意义的脚本加载（完成）顺序，即，严格讲，脚本加载顺序先后是和loader没必然关系的。
+
+另外最重要的，KISSY被设计为弱沙箱，可以更清晰方便的管理回调的串接，但也正是因为弱沙箱，KISSY无法做到YUI沙箱中的独立实例设计所带来的灵活性。举个简单例子，YUI中的loader是可以嵌套的：
+
+	YUI().use(‘mod1′,function(Y){
+		YUI().use(‘mod2′,function(Y){
+			//your code
+		});
+	});
+
+沙箱之间的scope相互不干扰，非常安全。KISSY作为一个全局“对象”（非构造器），是无法做到这一点的，因为多个scope受同一的全局KISSY 对象的影响。但这也涉及到刚才说的多loader的利弊，而且，我在使用YUI的实践中也从未这样写过代码，使用弱沙箱本来就应当保持简单的逻辑和苗条的身材，所以，保持弱沙箱的简洁易读要比用强沙箱去hack原本混乱的逻辑更干脆一些。因此，KISSY在全局作可以作为loader使用，在纯粹的串行逻辑中，依然保持其弱沙箱的本质。比如，作为loader使用：
+
+	var S = KISSY;
+	S.add(‘mod1′,function(S){
+		//scope 1
+	},{requires:['mod2']});
+	S.add(‘mod2′,function(){
+		//scope 2
+	});
+	S.ready(function(S){
+		//scope 3
+	});
+
+作为简单沙箱使用：
+
+	S.ready(function(S){
+		S.add(‘mod1′,function(){
+			//scope 1
+		});
+		S.ready(function(S){
+			//scope 2
+		});
+	});
+
+这种代码很容易理解，而在YUI中，加载模块和引入回调是两个不同的概念，如果加载模块忘了引用，依赖关系实际上是断裂的，这种设计很容易导致初学者的思维混乱：为什么加载了脚本但脚本代码却不能用？比如：
+
+	YUI().use(‘core’,function(Y){
+		//Y.Node是不存在的，必须 use(‘node’)才可以
+	});
+
+作为开发者就不明白为什么我引入了node.js，还要use(‘node’)，为什么要多此一举？YUI如此设计主要为了面向复杂的业务逻辑，也就是说，当页面业务逻辑本身复杂度到达一个层次之后，更深层次的解耦则显得十分必要。因此，YUI将“加载模块”作为第一层的解耦，将“引入回调”作为第二层的解耦，在复杂业务逻辑场景中有着无与伦比的优越性，因为这已经脱离了纯粹“架构”所做的事情，向更语义化的业务逻辑迈进了一步，我在使用YUI的过程中，对此深有体会。而在KISSY简洁的设计原则下，完全可以省掉这种在简单场景中略显累赘的鸡肋设计，复杂的业务逻辑会遇到，但不会天天遇到。更何况，KISSY提供KISSY.app来专门对业务逻辑进行支持，已经足够了。因此，框架层面的沙箱应当保持所见即所得的简洁，是符合KISSY的设计理念的。
+
+页面渲染过程
+
+页面在使用loader的加载过程中，渲染过程会有一些状态的变化，其中异步加载的脚本是需要特殊处理的，而除此阶段之外的脚本的执行，依然保持KISSY本初设计的原汁原味。因此这里增加了一个afterReady的状态，执行过程大致如此：
+
+因此，KISSY loader的雏形也就差不多描述清楚了，简单沙箱、单loader、所见即所得的模块加载，另外，最终要的一点，不管是核心组件还是项目文件，一律当作模块处理，这是和YUI不同的地方。这样做combo会非常爽，任你颗粒化万千文件，页面中外加种子文件顶多只有三个http请求（css一个，js一个）。
+
+以上～

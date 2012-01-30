@@ -1,0 +1,36 @@
+
+---
+title: 'Zakas潇洒的自白'
+layout: post
+guid: urn:uuid:5f126bb7-4e3a-4582-bc70-7d9a5f392057
+tags:
+---
+
+每当年末总会有一些令人愉悦又苦恼的动荡不安，面对诱惑的时候，其实是很难保持镇定的，不过，还是摆正心态最为重要。每次看zakas的about，也总会一声叹息，自问自己什么时候才能混到人家那样啊，这时也总会想起zhuoqun的谆谆教诲，急啥，熬呗。。。
+
+把zakas的about摘过来，留个印先。
+
+关于Nicholas C. Zakas
+
+Nicholas C. Zakas是一名专攻UI设计和实现的web软件工程师，特长在于javascript、DHtml、css、XML和XSLT。他是目前雅虎首页项目的资深前端工程师，同时参与YUI的研发，是Cookie Utility、Profiler和YUI Test的开发者。
+
+Zakas曾著有JavaScript高级程序设计，并合著了ajax从入门到精通，以及其他一系列的著作。并是WebReference、 Ajax Experence和YUIblog的积极撰稿人。
+
+Zakas经常做关于web开发Javascript以及最佳实践之类的讲座，包括在yahoo、linkedin、google等公司以及ajax experience和Rich Web Experience等学术机构。
+
+通过他的著作和演讲，zakas不断的将工作中最流行最前沿的web开发实践分享给其他人。
+
+爱好特长:
+
+* JavaScript
+* Web应用程序研发
+* Web可访问性
+* 软件体系结构
+* 测试驱动的开发
+* 开发最佳实践
+
+关于工作:
+
+作为yahoo首页项目的资深前端工程师，我在这个岗位上干的很舒服，没有跳槽打算，除非有什么特别的理由，比如月薪四十万刀、或者去掌控整个公司。。。
+
+我一般不会回复猎头，特别是他们要我推荐一些人给他们的时候。如果你的公司对我感兴趣，我更希望通过朋友联系，而不是通过猎头、HR、高工、CTO或者CEO，即便要联系我也要先搞清楚我是谁、我是干什么的。只要你细心，就会发现我的网站里有很多有价值的信息。

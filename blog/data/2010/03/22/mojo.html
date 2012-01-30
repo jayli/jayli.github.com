@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>基于yui3如何写模块（一）</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>基于yui3如何写模块（一）</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>如今的前端开发越来越oo，也越来越注重重用，娴熟的用js写出oo的前端代码已然是一个前端工程师的基本素质之一。从js语言的角度来看，模块是一个单体，单体有三类，简单对象单体，函数单体，原型单体，简单单体是最简单的一种写法，仅仅用一个大的对象将内聚的变量和方法包住，但由于没有封装，因此这种单体并不安全，而且一个单体在一个运行时只能有一个。函数单体是oo的一种基本型，他包含了封装和构造，是否用构造则取决于对象的特性，如果会大量使用的话，建议使用构造。原型单体是最高效的单体，在生成对象的时候不会浪费内存空间。</p>
+
+<p>但有时候实现不像单体这么简单，比如在一个复杂的页面中包含有多个逻辑，多个逻辑中都有各自的命名空间，每个命名空间有自己实现的模块，每个模块依赖于其他子模块。这样一个页面的代码应当如何规划？其实类似这样复杂的页面代码的规划是一个很有渊源的话题，应当专门花时间来讨论，总言之，简单单体用作逻辑的命名空间，函数单体用作简单构造，比如实现模块中的一个内聚但不重用的子模块，原型单体用来专门封装一个高重用率的组件。</p>
+
+<p>在开发过程中，使用一个对象的时候，往往不是初始化一次就不管了，页面交互过程中也会有对这个对象的重新生成和调用。因此在yui3这样的闭包中应当注意将对象搞成全局的，可以通过hook抓得到。但最常用的是render 和init，init期望参数一次传递完，render期望能重新传递一些状态相关的参数。在构造对象的时候，传参和渲染应当分离，因为有时我们只会很粗暴的new sth(config)完事，那如果对象状态更改需要重新渲染难道要重新new一遍？所以在构造完成后建议返回对象本身，然后再执行render，例如：</p>
+
+<pre><code>var k = new sth(config).render();
+</code></pre>
+
+<p>当需要重新渲染这个对象的时候则只需render即可，render可以带去新的参数</p>
+
+<pre><code>k.render(new_config);
+</code></pre>
+
+<p>而有时我们则希望增加init，以便让代码更加语义，init意指初始化，render意指渲染。这里的初始化和渲染语义很接近，在实现上有一点差别，在 new的时候会执行init，init包含初始化参数和render，init中的初始化参数若有留空则需一些默认值替代，在render中的参数初始化则只是覆盖原有参数。为此用两个函数来负责两种参数的处理：buildParam和parseParam，buildParam中负责构造所有的必要参数。在tb的新项目中写的simpleditor模块用了这种结构：</p>
+
+<pre><code>YUI.namespace(‘T.tbwidget.simpleditor’);
+YUI.add(‘t-simpleditor’,function(Y){
+    T.tbwidget.simpleditor = function(){
+        this.init.apply(this,arguments);
+    };
+
+    //扩展prototype
+    Y.mix(T.tbwidget.simpleditor, {
+        buildParam:function(cfg){
+            var that = this;
+            //初始化时的必要字段
+            var id = that.id = cfg.id;
+            //初始化时的可选字段
+            var smtemplet = that.smtemplet = 
+                (typeof cfg.smtemplet == ‘undefined’)?
+                    ’[face{$n}]‘:cfg.smtemplet;
+            return {
+                id:id,
+                smtemplet:smtemplet
+            };
+
+        },
+        parseParam:function(cfg){
+            var that = this;
+            var cfg = cfg || {};
+            //处理临时参数
+            var id = typeof cfg.id == ‘undefined’?that.id:cfg.id;
+            var smtemplet = 
+                (typeof cfg.smtemplet == ‘undefined’)?
+                    that.smtemplet:cfg.smtemplet;
+            return {
+                id:id,
+                smtemplet:smtemplet
+            };
+        },
+        render:function(cfg){
+            var param = this.parseParam(cfg);
+            //初始化代码…
+
+        },
+        init:function(cfg){
+            this.buildParam(cfg);
+            this.render.call(this,cfg);
+        },
+        otherFoo:function(){
+
+        }
+
+    }, 0, null, 4);
+});
+</code></pre>
+
+<p>在构造的时候调用了一次init，就像这样</p>
+
+<pre><code>T.tbwidget.simpleditor = function(){
+    this.init.apply(this,arguments);
+};
+</code></pre>
+
+<p>这样有一个好处，就是若该模块用到一些依赖的时候，只需加一个loader，在loader完成之后执行init就可以了，在ebook项目中的评论组件就是用这种方法，执行init之前先加载皮肤。</p>
+
+<pre><code>T.tbwidget.tbrr = function(){
+    var that = this;
+    var args = arguments;
+    var skin = (typeof arguments[0].skin == ‘undefined’)?”:
+        arguments[0].skin;
+    YUI({modules:{
+        ‘tbrr-skin’:{
+            fullpath:skin,
+            type:’css’
+        }
+    }}).use(‘tbrr-skin’,function(Y){
+        that.init.apply(that,args);
+    });
+};
+</code></pre>
+
+<p>让我们在返璞归真一下，实现一个最简单的链式调用，在每次函数调用结束后都返回自己，像这样</p>
+
+<pre><code>var mojoClass = function(){
+    this.render = function(){
+        return this;
+    };
+    this.init = function(){
+        return this;
+    };
+    this.buildParam = function(){};
+    this.parseParam = function(){};
+};
+</code></pre>
+
+<p>what’s comming next?</p>
+
+<ul>
+<li>js设计模式之桥接</li>
+<li>js设计模式之单体</li>
+<li>页面逻辑和模块</li>
+<li>库(Library) or 框架(Framework)</li>
+</ul>
+
+
+<p>to be continue…</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-03-22">2010-03-22</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:849e468d-6a06-49bb-8bb6-dde1f8ed56de';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

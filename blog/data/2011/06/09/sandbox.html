@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>JavaScript Autoload 的实现</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>JavaScript Autoload 的实现</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<iframe src='http://www.slideshare.net/slideshow/embed_code/8590158' width='500' height='410' border=0></iframe>
+
+
+<p>熟悉PHP的同学一定对autoload不会陌生。我们知道，不管在任何语言和类库中，要使用某个类（或者方法）的前提是这个类必须存在，这个类或方法可能在类库的某个文件的某个角落中定义了，但当类库太过庞大时，初学者往往记不起某个方法属于哪个文件，或者不知道类库文件存放在哪里。另外，开发者不知道什么时候需要用到这个文件，特别是项目文件特别多时，不可能每个文件都在开始的部分写很长一串require。PHP5中提供了__autoload来解决这个问题。开发者将注意力完全放在程序逻辑上，大胆的使用基础类和方法，而不必考虑类和方法属于哪个模块、如何将模块require进来、何时require比较合适，是否有多余的require等等。PHP程序会对代码作分析，自动将程序中用到的“陌生的类和方法”所属的库文件引入进来，保证程序的正确执行。这就是autoload的基本机制，Ruby和Python中也实现了这种机制。</p>
+
+<p>autoload听起来不错，非常适于初学者，而且是动态语言必不可少的组成部分（我才不要像写Java或C++那样一本正经的纠结于程序定义了哪些变量、都是什么类型、作用域是什么、用了哪些类库、类库的引用关系是什么……）。</p>
+
+<p>现在我们在JavaScript中实现PHP的这种autoload机制，其中实现的难点在于对代码的静态分析，这里所指的静态分析只是伪分析（除非嵌入一个JavaScript解释器）。看下在<a href="http://github.com/jayli/sandbox">Sandbox</a>中实现的autoload：</p>
+
+<p>Demo：http://jayli.github.com/sandbox/examples/autoload/main.html</p>
+
+<p>首先像PHP一样定义一个全局函数__autoload，返回值是一个map，给出每个方法对应的文件：:</p>
+
+<pre><code>function __autoload() {
+    return {
+        'MyClass1':'MyClass1.js',
+        'A.B.C.D':'MyClass1.js',
+        'MyClass2':'MyClass2.js',
+        'X.Y.Z':'MyClass2.js'
+    };
+}
+</code></pre>
+
+<p>然后在沙箱中就可以随意使用定义好的类和方法了，和PHP的写法唯一的不同之处在于，PHP需要手写include方法来“阻塞式”引入文件，Sandbox只给出映射表即可，另外，Sandbox也不支持给__autoload传入参数，比如<code>__autoload($class_name)</code>。</p>
+
+<pre><code>Sandbox.ready(function(S){
+    MyClass1.init();
+    MyClass2.init();
+    A.B.C.D.init();
+});
+</code></pre>
+
+<p>具体实现可参见<a href="http://github.com/jayli/sandbox">sandbox-seed.js</a>源码</p>
+
+<p>另外需要注意的一点是，看起来这里载入文件是“阻塞式”的，没错，逻辑的执行总是在载入文件完成后再执行，后端语言几乎都是阻塞式的引入文件，比如php中：</p>
+
+<pre><code>//logic1...
+include('file.php')
+//logic2...
+</code></pre>
+
+<p>程序必然在file.php载入完成后再执行logic2，这就是所谓阻塞式载入外部文件，在服务器端的JavaScript中也是如此，比如CommonJS规范中定义的require方法，也是默认require的文件是“阻塞式”载入的，即requries时主程序“停止执行”，在载入文件结束后再继续执行。而在客户端JavaScript中是无法实现这种阻塞式载入外部文件的（有人提出可以用同步ajax来模拟载入外部脚本，但这涉及到跨域），在SeaJS中同样存在这个问题，玉伯给出的解决办法和Sandbox一样，都是对代码作过滤，都是一种“伪”阻塞，比如SeaJS中执行：</p>
+
+<pre><code>define(function(require) {
+    return;
+    require('./a');
+}); 
+</code></pre>
+
+<p>这段代码同样引入“./a.js”，而从逻辑上看是不应该引入这个文件的，Sandbox亦存在同样问题。</p>
+
+<p>还需要注意一点，“阻塞式”加载的缺点就是串行，当然这是符合逻辑的，上下两个外部文件的引用必定有依赖关系，所以他们的执行不得不串行，Sandbox中加载多个脚本的实现也是串行，比如：</p>
+
+<pre><code>Sandbox.loadScript(['a.js','b.js'],callback);
+</code></pre>
+
+<p>由于无法对a.js和b.js的内容作任何假设，因此串行一定是最安全的，也是唯一的策略，如果所有文件都有统一的约定，比如Sandbox中的Sandbox.add(callback)、YUI的YUI.add(‘name’,callback)、以及SeaJS中的define(callback)，则多脚本加载有太多可优化的空间，比如YUI提供的comboCDN、以及SeaJS提供的build工具。</p>
+
+<p>那么，JavaScript中什么时候适合使用autoload呢？应当是在做全站架构时最适合使用，由专人负责维护通用功能和组件，维护一份<strong>autoload函数即可，当然，子逻辑可以重写这个函数（函数劫持），只要在页面中引用了种子文件就会包含这个</strong>autoload函数，共用功能和组件就可以任意使用而不用刻意引入“包名”。也就是说，组件名称本身就是一个标识，这个标识和它所在的文件地址是一一对应的，根本不必再知晓组件名称属于哪个包名，这也符合autoload机制的本意。</p>
+
+<p>当然这种做法有一个不足就是性能问题，这也是YUI为什么一定要将“包名”以及包的依赖预先定义好的原因。尽管从纯粹程序逻辑的角度讲，这样做是多余的。由于前端代码的性能依赖于网速，不像后端代码，因此在JavaScript中也应当有节制的使用autoload，切不可滥用，寻找架构代码可维护性和性能之间的平衡点，这一点非常重要。</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2011-06-09">2011-06-09</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:ae17bef1-8663-43b0-9333-bbdf67130116';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

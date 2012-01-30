@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>canvas编程 & 碰撞检测</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>canvas编程 & 碰撞检测</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>浏览器天生不适合写游戏，因为浏览器运行效率实在太蜗牛，即便在canvas上作一些动画也非常吃力，CPU烧的厉害，js没办法编译成机器码再运行，图形编程也鲜有硬件加速，即使用hack手段兼容了一些老旧浏览器，效率始终是最大的瓶颈。在html5之中情况好一些，很多动画api已经内嵌在浏览器的骨肉之中，效率有了不少的提升，但离传统游戏的执行效率还有很大差距，不过前些日子网上盛传的基于html5的雷神之锤，让我们看到了希望，不是html5的希望，而是webGL的希望，似乎我们应该摈弃很多已经根深蒂固的观念…… 那么……</p>
+
+<p>对于传统dom层面的动画，已经可以使用transitions来做，KISSY和YUI已经实现了transition，写了一个<a href="http://jayli.github.com/about.html">放烟花的小demo</a>，webkit下会调用native transition api，速度明显快很多。</p>
+
+<p>同样，cavans层面的动画，webkit依然把其他浏览器甩在身后，这个<a href="http://jayli.github.com/gallery/canvas/g.html">小demo</a>是一个裸露的小游戏，看下100个方块以内你能命中多少。有几点需要记录下：</p>
+
+<ul>
+<li>目前对于复杂动画的要求不要太高，速度远达不到我们的要求</li>
+<li>canvas编程最好是基于库，我用的http://raphaeljs.com/</li>
+<li>写动画还是要温习一下一些数学公式的</li>
+<li>过程中要细心体会最纯粹的编程美感，没有dom的世界是如此之清静</li>
+</ul>
+
+
+<p>以上</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-12-15">2010-12-15</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:12facffe-8ad6-42c9-b451-301f9ea959a9';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

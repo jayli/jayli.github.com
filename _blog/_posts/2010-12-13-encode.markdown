@@ -1,0 +1,61 @@
+---
+title: '编码那些事'
+layout: post
+guid: urn:uuid:a64ac2af-7307-4429-bbe0-85de1bea2a4f
+tags:
+---
+前端开发中编码的问题一向是让人头疼的，尤其是在以gbk为基础页面编码的淘宝，情况更加复杂，除了常见的页面文件的编码之外，对不同编码js/css文件的引用、meta的charset设置、表单提交的URL编码等问题的处理稍微粗心就会出问题，特别是ajax中的编码转换，始终缺乏统一方便的解决方案，今天我们就分享两个js转码的常见案例的解决。首先，我们应当了解编码相关的一些基本概念：
+
+- gbk和utf-8是不兼容的两种编码，unicode是万国码码表的简称
+- utf-8编码是unicode的一种实现
+- js引擎的内码是unicode
+- URL编码是将字符裸码以16进制显示出来，每个字之前冠以“%”
+- 因此，URL编码的结果只唯一和字符当前存储的裸码有关，原则上转换过程不查任何码表
+- unicode码表中，中文字符的范围为4E00到9FA5
+- js所识别的unicode表示形式为“\uXXYY”
+- js中的encodeURI是对字符串进行URL编码，编码基于utf-8的裸码
+- js中的escape是对字符串进行unicode转码，转码基于unicode码表
+- form表单提交会对参数进行URL编码，编码所基于的裸码类型和页面编码有关
+
+基于以上知识点，可以初步得出：
+
+- js无法直接进行基于gbk裸码的url编码
+- js无法直接进行转换为’\uXXYY’形式的unicode编码
+
+而在ajax过程中，通过js传参经常会遇到需要gbk url编码和直接传输unicode编码的情况，尤其当通过json传数据的时候。在php中，对一个对象进行`json_encode`转换的时候，会自动将中文转换为unicode，这里的unicode可以直接被js识别，因此在js中是只要将json串转换为对象即可，不用解码，php代码为：
+
+	$a = array(‘a’=>11,’b'=>’淘宝’);//json
+	echo json_encode($a);//输出 {“a”:11,”b”:”\u6dd8\u5b9d”}
+
+而php中进行url编码默认是以utf8的方式
+
+	//输出 %E6%B7%98%E5%AE%9D ，这里是utf8方式的URL编码
+	echo urlencode(‘淘宝’);
+
+如果想进行gbk方式的URL编码，则可以
+
+	$s = ‘淘宝’;
+	$g = iconv(‘utf-8′, ‘gbk’,$s);//utf8字符串转换为gbk字符串
+	echo urlencode($g);//输出 %CC%D4%B1%A6 ，这里是gbk方式的URL编码
+
+php中对URL编码的解码是上面的逆操作
+
+	//gbk URL解码:输出 淘宝
+	echo urldecode(‘%CC%D4%B1%A6′);
+	//utf8 URL解码:输出 淘宝
+	echo iconv(‘utf-8′,’gbk’,urldecode(‘%E6%B7%98%E5%AE%9D’));
+
+这里，我们用模拟表单提交的方法来实现js中的gbk URL编码，因为，gbk编码的页面的form表单提交的URL编码是和页面编码一致的，我们模拟表单提交给一个隐藏的iframe，然后取得iframe的src中的提交结果，就得到了gbk URL编码
+
+gbk URL编码的demo。
+
+而如果要在js中模拟php中的`json_encode`只对中文进行unicode编码，则需要遍历字符串，用escape作转换，然后替换没用的字符
+
+	//js中只对中文进行unicode编码
+	var foo = function(s){
+		return s.replace(/[\u4E00-\u9FA5]/ig,function(w){
+			return escape(w).toLowerCase().replace(/%/ig,’\\’);
+		});
+	};
+
+若对所有字符进行unicode编码，则直接escape就可以了

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>从零开始写框架</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>从零开始写框架</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<h3>之初</h3>
+
+<p>出差的时候，有幸在懒懒交流会上听到爱民关于“架构”的分享，虽然抽象，但仍能体会到“架构”的很多道理在YUI3设计中延伸的种种实践。尤其在前端框架满天飞的今天，这种对设计基本原理的抽象依然能让人感触颇深，以至于让我有一种写框架的冲动，与其冲动，不如动手开始。其实，框架的重点在于设计，而不是实现，因为，不管哪个框架，对于浏览器兼容的hack和event的第一层封装都是大致相同的，而各框架对B端开发的理解和设计理念则是千差万别，由此产生的设计原理也大相径庭，不同的设计所派生的各自精妙的实现则带给人们完全不同的使用体验，从某种意义上讲，我们今天“这样”用框架也是被设计好的，不管是各种模式化的业务场景、api的模样、整洁的接口和链调用、还是规格统一的widget库以及各自提供的tools，我们在经历这些东西的时候，已经在不知不觉的按照设计师设计的套路在思考做事。因此，不管是dojo、mootools、还是jquery和yui，在研读他们源码的时候，我们都能清晰的感觉到他们的思想的差别、境界的不同、设计习惯的分歧和性格冲突，编程高手永远用最清晰的代码来表达思想，而代码丛中处处掺杂着精妙的修饰，则带给人无穷无尽的想象。</p>
+
+<p>话说每个简洁的接口背后总有一堆龌龊的实现，这条真理显然可以应用到现有流行的框架上。java的多态似乎想解决这个问题，使用方法重载达到接口的自适应能力，但在js中缺乏机制的支持，则不得不采用大量的hack来污染代码，这在动手写框架之前就应当明白，因为浏览器差异的存在，以及js对于多态的防疫，除非像zakas和john这样的天才，我这种普通人也只能遵守使用“龌龊的代码”去实现“整洁的接口”这条真理了。</p>
+
+<p>另外，需要时刻提醒自己，写框架，始终是一种冲动，仅仅是冲动而已，不要深陷其中，只有天才能绕进去再绕出来，我这样的如果真绕进去，就出不来了。。。需要特别注意的，开始之前一定要搞清楚框架的使用者，以及大概的业务场景，我当然搞清楚了，写好框架自己用，业务场景嘛，工作，不就这么多事情吗。更何况，这样更能促使自己去琢磨每个框架的细节实现，对自己也是一个提高。何乐而不为呢。</p>
+
+<h3>沙箱</h3>
+
+<p>前些日子写了一个模块的半自动加载，实现了一个最基础的沙箱逻辑，我理解的沙箱是处理模块依赖关系的闭包，闭包之间的串接、调用、依赖均由沙箱机制解决。yui3给我们开了一个好头，但它考虑的事情太多、以至于看起来不美，因为开发者coding的时候尽管可以指定该模块的依赖，脑海中依然有一个构建好的模块树，要不然他怎么知道我依赖什么。如果不考虑性能，开发者的视野可以进一步解耦，甲只知道模块A依赖B和C，B和C各自的依赖由各自作者去解决，所以，沙箱可以加强一些，至少在 loading script的时候，动态构建依赖树是完全可操作的。这样可以按照功能将模块颗粒化，yui team处于性能的考虑，很多module被强制添加到一起，也导致高层core实现并不简洁，比如Node和Event之间的解耦不清晰，“机制”和 “工具”的解耦不清晰等等，这让core中的各个模块之间层次感不强，功能强大但也略感臃肿，在比如yui.js中就包含了很多脱离了core语义的东西，除了YUI类的实现之外还参杂了很多不必要的Array、Object、和Queue。因为实际上，YUI()的Sandbox是yui3的”框架”，后续开发只是对Dom、Event等的实现并通过Sandbox排序并链接起来，所以，Sandbox的管理模块机制是完全可以独立出来的，像 Sizzle一样，就像这样：</p>
+
+<p>http://tbexample.googlecode.com/svn/tru … ndbox.html</p>
+
+<p>另外，Sizzle是可以直接拿过来用的，作为一个sub-module，sizzle是一个不错的选择器引擎，至少比yui的强多了。</p>
+
+<p>ok，框架的基本框架有了，就可以更进一步实现一些核心了，这里要尤为注意的，框架的core是分层次的，因为裸写Node和Event实在是有些吃力，因此，需要一些更加基础的策略上的东西来将Node和Event支撑起来，就好象盖房子要打地基，不是上去就盖的，这一点john做的很完美，因为这些本应属于框架服务性质的机制也被良好修饰，可以被普通开发者使用，所以jquery的利用率是比较高的，每一处细节都精心设计过，都不会过度浪费，反观yui就有些杯具了，因为为了对Dom、Node和Event的封装而做了大量复杂的基础性工作，包括widget-base的模型设计、代码重用的设计、 widget和Dom一致性的设计等等，这些设计一方面给yui3打造一个夯实的基础，保证了yui3在扩展性上的超级灵活，另一方面也带来了更多的资源浪费，因为多数开发者甚至不知道自定义事件、消息队列、插件机制、AOP、事件模型(EventFacade)和节点模型(NodeFacade)等等，多数开发者似乎也不会去关心自定义事件能干什么、插件是干嘛的、什么是AOP，用最高层的api就可以完成大多数工作，为什么还要费心巴力的去看这些？所以，除非做关键扩展、一般是不会用到这些框架“机制”性的东西的，对于普通开发者来说，显然是巨大的浪费。当然，也正因为基础扎实，yui3才能更加游刃有余的应对超级复杂多变的前端开发。</p>
+
+<p>在我看来，“机制”性的东西要有，但不要复杂，能搞定工作上的事情，就可以了。</p>
+
+<p>下一步，自定义事件。</p>
+
+<h3>自定义事件</h3>
+
+<p>上篇说到为了对Node和Event做统一封装，必然要做一些基础性工作，其中自定义事件是基础的基础，因为，他实在是太有用了，更重要的，Node需要他。在项目中，还没有用到复杂的模块继承，也没有用到widget事件的冒泡，所以，对于Node的事件发生策略保持和Dom一致即可，可以不考虑更多的冒泡的实现。所以，“事件机制”是完全独立的，和dom无关、和event无关，他只是一种机制，在读yui3的自定义事件的时候要注意到，不要将 event和event-custom混为一谈，event只不过是event-custom的一种实现。</p>
+
+<p>我们使用dom原生事件的经验是，直接使用node.onblur = new Function即可，只要知道浏览器在打开页面之初都会给每个dom节点发布事件、我们只要用，不需要知道事件是哪里来，将要到哪里去，因此，自定义事件也应当做到如此，需要开放出来的只是fire事件的时刻和事件的回调绑定，这样的话，为什么还需要“发布”事件呢？我至今都想不通为什么yui3的事件需要“发布”？我在埋藏fire点的时候自动注册完事件不就完了？另外，事件的集合是可以做成模板的，比如页面中所有的a标签事件都是一样的，所以这些a 都公用一个事件模板，这个事件模板被称之为“事件工厂”。而这个模板并不需要new的时候就固定下来，动态注册事件是不错的选择。毕竟，我给a绑定一个 click事件，根本不会去管a还有哪些事件，用哪个事件模板，基于此，demo在这里：</p>
+
+<p>http://tbexample.googlecode.com/svn/tru … event.html</p>
+
+<p>S.Event.Target就是一个事件工厂，本不需要用它再去做派生。这样事件模板就可以这样new出来</p>
+
+<pre><code>var EventCenter = new S.Event.Target();
+</code></pre>
+
+<p>绑定事件和埋藏fire和yui3的自定义事件策略一致，并省去了对Queue、Do和EvenType的依赖，看起来也轻巧许多。但在Node的扩展上，还需要实现代理和dom的冒泡等等，这些都交给Node去扩展好了。</p>
+
+<p>下一步，Node事件模型</p>
+
+<h3>事件模型</h3>
+
+<p>残酷的现实告诉我们，dom需要封装，更加残酷的现实告诉我们，dom不仅需要封装，还需要格式统一，毕竟，B端的开发无论如何是离不开dom、离不开 node的。统一规格的node模型能让我们减少很多思考时间，这一点jquery显然是考虑不周，因为，事件不仅需要“被操作”，“事件”中还包含很多有用的重要信息，因此，Node中的event，也是需要规格统一，虽然$方法可以很方便的wrap一个dom节点，但还是需要花上几秒钟想一想这个 dom是裸的还是封装过的。这些都是后话，这里要区分的，NodeFacade和DomEventFacade是不一样的，一个用来封装dom，一个用来封装裸的event。在yui3中，Node和Nodelist是不一样的，其实，既然选择了Sizzle，就不用再区分node和nodelist了，只需要在细节上稍作hack即可，比如node(list)下面的query等等，实现不是问题，要看如何设计node(list).query下的行为来解决歧义的问题。在Node的事件Facade上，做到尽量的简化，这里的Node只要包含常用的on、detach、detachAll，并hack 了一下浏览器。</p>
+
+<p>NodeFacade的事件相关的interface就是这样，另外，DomEventFacade我偷懒了下，直接使用yui3的DomEventFacade，简单hack下就可以用，还是不错的，事件冒泡和阻止都在这里了。demo在这里</p>
+
+<p>http://tbexample.googlecode.com/svn/tru … ent-1.html</p>
+
+<p>另外，要特别注意下Node和Event之间的关系，概念上，两者是应当分开的，实现上，两者是杂糅在一起的，但还是尽量将他们分开，并让Node依赖 Event，Event依赖Event-Custom，这样做可以让DomEventFacade的实现看起来像event核心的东西。不过这种拆分都不重要，仅是一种代码组织方式，完全解耦，似乎是不可能的，只要尽可能的解耦就好。</p>
+
+<p>搞到这里，似乎Node的基本“机制”性的东西都已经有了架子，剩下的，就是去做一些纯工作量的事情，比如addClass、removeClass、toggleClass、attr等等，看起来更像 tools了。其实，除此之外，框架还是应当包含必要的tools的，比如array和object的相关tools，当然，还有oop的一些东西，这些都应当脱离框架的“框架”，这些东西我们统一称之为SDK，其实到现在我没怎么思考框架的名字，反正也不重要，就叫Sandbox吧，Sandbox Developer ToolKit = SDK，Sandbox简称SB，也挺好的。</p>
+
+<p>下一步，SDK</p>
+
+<h3>SDK</h3>
+
+<p>不管怎样，总有一些常用的函数是要时时刻刻准备使用的，这些函数并不需要被继承和二次封装，他们只包含一些代码片段，而这些代码片段则很大程度上提高 core后续开发效率。这些东西被称之为SDK（Sandbox Developer ToolKit），比如oo中的mix、merge，array中的each和object中的traverse等等，但凡框架都会有一箩筐这种快捷函数，甚至于对Class的模拟、Queue的模拟。。。</p>
+
+<p>这种东西不必在开始就coding进去，因为这种代码片段实在太多了，我也不知道以后会用到哪些，粗糙分下类即可，在框架成型的时候在做统一规整，因为core写完的时候，大概也就知道自己常用那些代码片段了，比如jquery和 prototype中对Class的模拟就用不着，mix和原型派生就足够用了。除了sandbox-seed.js之外，基本上sdk处于最底层了，所以依赖关系要先在脑海中形成，sdk是脱离seed而高于seed的，应当属于core-base的base。</p>
+
+<p>想清楚了依赖关系，其实就是这样简单</p>
+
+<p>sandbox-seed > sdk > lang > oo > array|object > dom|node|event|ajax… > widgets(plugin?) > app…</p>
+
+<p>总之，SDK是必要的，参与“机制”的一部分组成，对高层的dom\node\event提供支持，ok，这些不是重点，重点是dom，万恶的dom</p>
+
+<p>下一步，万恶的dom</p>
+
+<h3>臃肿的Dom拷贝</h3>
+
+<p>看看jquery源码中dom部分的比重就知道dom有多么肮脏和臃肿了，说dom臃肿，到不是因为浏览器差异，而是因为dom本身就不优美，Qcon上老道也提到，天资优雅的javascript被dom污染坏了。因为标签属性类型太多，节点种类和行为又是如此多样，所以对dom的封装不是技术活，纯粹是体力活，过程中需要大量的测试，包括性能测试。所以，封装dom的时候，一定要有耐心。</p>
+
+<p>今天给sandbox的dom添加了一些常规方法，attr,css,style,empty,append,copy等等，行为大都依照jquery-dom的api来做，我删掉了那些性能上的 hack，想重写性能的部分，不过这都不是难点，这些方法中，麻烦的是节点的拷贝，因为要考虑事件的拷贝，节点复制一个新的，新节点的事件不能丢。在ie 中，原生的cloneNode就可以复制事件，但有点囧。jquery源码中是这样描述事件拷贝的</p>
+
+<pre><code>// IE copies events bound via attachEvent when
+// using cloneNode. Calling detachEvent on the
+// clone will also remove the events from the orignal
+// In order to get around this, we use innerHTML.
+// Unfortunately, this means some modifications to
+// attributes in IE that are actually only stored
+// as properties will not be copied (such as the
+// the name attribute on an input).
+</code></pre>
+
+<p>解决方法似乎是找出所有的问题种类一个一个hack，之前给Node的事件已经封装好，在非ie中，只需要给新生成的节点挂载一个新的”事件中心”，这个事件中心的事件依然指向旧有的节点，实际上两者公用一个回调，这个回调是存储在<code>Sandbox._ENV.Event</code>中的，并不会因为旧节点的删除而消失，因此，demo就是这样：</p>
+
+<p>http://tbexample.googlecode.com/svn/tru … -copy.html</p>
+
+<p>dom中有太多细节需要考究，并发现jquery内部各模块之间的耦合简直像胶水粘上一样，在模块组织这方面，john真的要向zakas学学了。</p>
+
+<p>下一步，继续杯具的Dom</p>
+
+<p>to be continue...</p>
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-12-11">2010-12-11</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:d2394afe-e5a2-47ac-88ec-4f6b47afd61f';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

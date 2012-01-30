@@ -1,0 +1,44 @@
+
+---
+title: '[翻译] Zakas 对 John 的回应 '
+layout: post
+guid: urn:uuid:063ad4ce-8844-4406-b213-85a54eb47f50
+tags:
+---
+- 题目：回应 John Resig 关于 YUI 的评论
+- 作者：Nicholas C. Zakas
+- 译者：<a href="http://jayli.github.com" target="_blank">拔赤</a>
+- 原文：<a href="http://www.nczonline.net/blog/2010/11/03/response-to-john-resigs-comments-about-yui/" target="_blank">http://www.nczonline.net/blog/2010/11/03/response-to-john-resigs-comments-about-yui/</a>
+
+就在今早，有人在 <a href="http://www.quora.com/" target="_blank">Quora </a>[注1]上提了一个问题：“YUI3 如何提升其影响力？”，这个问题很有意思，下面的回复也很有意思。我最感兴趣的一个回复来自于 jQuery 的作者 John Resig，他的解读非常独到，给出了创建 jQuery 庞大且充满活力的开源社区的路线图。只是其中很多观点我不敢苟同。
+
+在讨论之前，应当说明的是，我在 YAHOO 工作，我一直都在为 YUI 贡献代码，尽管我不是 YUI 开发团队成员，因此我的观点不代表 YAHOO 公司和 YUI开发团队，仅仅是我个人针对 John Resig 回复来分享我的看法。再补充一点，我对 John 本人、jQuery 团队和 jQuery 社区开发者们十分敬重，所以，请不要将我的观点断章取义，做别有用心的理解。
+
+首先，我承认，分散的站点的确是 YUI 的一个问题，不止一个人曾经纠结于到底应该访问 <a href="http://developer.yahoo.com" target="_blank">YDN</a> 呢还是访问 YUILibrary.com？这是 YUI 首先要解决的问题。同样，John 对于简化 YUI 文档首页上的引导信息的建议也相当不错，是个好主意。
+
+John 的下一段落介绍了 YUI 如何与 jQuery 正面竞争，我在 <a href="http://www.twitter.com" target="_blank">twitter</a> 上有过一个简评：“我不认为他们之间存在你死我活的竞争关系”，我不想将 YUI 搞成另外一个 jQuery，这两个库各自都有优点，且重合度极小。jQuery 更适合小网站使用，毕竟它很简单、大众、人人都可以快速上手，因此 jQuery 有着庞大的设计师群体，但我不愿意拿 jQuery 来搭建 Yahoo 首页。对于可扩展的 web 应用，YUI 的确更胜一筹。我不相信仅凭一个单一的产品就能满足所有用户多样化的需求。jQuery 在其专注的方面的确富有想象力，而我宁愿将 YUI 的关注点放在解决复杂 web 应用方面的问题。
+
+我对 John 的评论有如下观点不敢苟同：
+
+“一直以来，YUI 项目都有着一个庞大的全职全薪的开发团队，这是 YUI 独有的优势，这让其他 JavaScript 库项目非常垂涎。我想说，这实在是不赖，正是因为此，才让 YUI 整体受益匪浅。不过它也带来一些很严重的后果，YUI 的命运掌控在 YAHOO 的手中。这不是我们希望看到的，因为 YUI 自身独立、开源的特性，YUI 应当从 YAHOO 剥离出来独闯江湖。”
+
+这种观点我听的耳朵都起茧子了，这些观点是我始终不理解和不认同的，开源社区似乎始终流传着这种观点，认为只有“纯粹自治”，而非依赖于某个公司的项目才是真正的“开源”。让我摘录我之前的一段聊天记录：
+
+> 某某：我非常喜欢 YUI，只是那个让人讨厌的 “Y” 让我很不爽
+> 我说：到底是什么让你很不爽？是那些拿着雅虎俸禄的全职工程师？还是你看不惯他们在拥有全球最高访问量之一的 YAHOO 网站上做 YUI 的各种测试？
+
+我认为，正是得益于雅虎的庇佑，YUI 才如此价值连城。YUI 开发团队和 YAHOO 的其他研发团队并肩战斗，正是这种经历造就了如今的坚不可摧的 YUI 产品。就在不久前，我刚刚和 YUI 团队的工程师们一起，<a href="http://yuiblog.com/blog/2008/11/11/frontpage-and-yui3/" target="_blank">将 YUI3 实验性的应用到 YAHOO 首页</a>。有多少 JS 库敢说自己能有机会在全球 top5 的网站上进行测试？又有多少 JS 库敢说自己能持续从全球流量最大的网站获得测试数据，这些网站每天的访问量达亿次以上？
+
+将 YUI 从 Yahoo 剥离出来，才真正剥夺了它的战略优势。当 YUI 专注于这些高端项目和某些私有项目的时候，就没办法同时顾及到那些开源社区了。而在 Yahoo 内部，我们可以与 YUI 团队协作无间、齐力断金，所有 YUI 的用户也都从中获益良多。所有雅虎工程师的辛勤劳作在这里汇聚，日积月累的向 YUI 注入能量。
+
+有些人说 Yahoo 不应当“操纵” YUI 的命运，这种论调我就更不能认同了。同样，是 Yahoo 让 YUI 闪光。任何一个开源项目都有一个核心的开发团队，他们的工作除了维护项目源码之外，还负责培养开发者、并为他们提供学习路线图。雅虎为YUI的开发者们支付薪水，这并不能改变项目的本质。我们可以看看在类似机制下亦然如此成功的 <a href="http://www.mozilla.com" target="_blank">Mozilla</a> ，Mozilla 核心研发团队控制着 Firefox 的版本发布，Mozilla 给他们支付薪水，并不意味着他们的产品就应该有多糟糕。他们的产品 Firefox 是世界第二大浏览器，而正是这些甘于奉献的工程师对这个产品充满热情，他们的确渴望创造一个最好的产品。当你的本职工作就是在支持这个项目的时候，这是很容易做到的。谁说大公司无法支持开源项目？开源社区生态系统的形成，最终是由沟通、协作和不断超越的精神决定的，而不是所谓的“非盈利”。
+
+再回过头来看 YUI，YUI 开发团队一直都在非常用心的开发第三方组件库，不错，这避免不了成长中的烦恼。时至今日 YUI 已经成果斐然，当然，在雅虎的之外，YUI 还未像 jQuery 那样广受关注，但 YUI 一直都在努力。去年的 <a href="http://yuilibrary.com/yuiconf2009/" target="_blank">YUI 年会</a> [注2]上，Matt Snider（曾供职于Mint.com）<a href="http://www.yuiblog.com/blog/2009/11/05/video-snider-yuiconf2009/" target="_blank">介绍了由他主导开发的一个相当完备的基于YUI2的组件库</a>。我觉得这实在是棒极了，因为他的行为传达了一个信号，任何人只要有自己的想法，都可以向 YUI 开发团队靠拢，而且可以得到 YUI 团队的绝对支持，并把你的组件打包入 YUI。Matt 为他的组件库付出了很多工作，希望 YUI 可以寻觅到更多像他那样的开发者，愿意花时间为 YUI 贡献高质量的代码。同样，YUI Gallery 也一个相当不错的东西：他为开发者打开一扇大门，开发者可以轻松的将他们的组件发布到 Gallery 列表中，并可以将它们推送到 YAHOO 的 CDN 上[注3]。至今，Gallery 已经有227个组件，让非雅虎系的开发者都受益良多。
+
+那么，YUI 是否可以改进社区的形式和贡献代码的模式呢？当然可以。YUI 是不是必须切断和 Yahoo 的联系，才能开始这些改进？不用，YUI3 是一个高质量的产品，在不断壮大的开源社区中有着强劲的生命力，如果硬要指责 YUI 团队的不称职的话，也只是他们忽视了市场营销的重要性，和缺乏行之有效的推广手段，而这两方面正是  jQuery 的强项，这也是 YUI 需要向 jQuery 学习的地方。
+
+总之，YUI 不是 jQuery，任何试图将 YUI jQuery 化的企图都是不对的。那是不是意味着他们二者就是方枘圆凿、不容水火？绝对不是，jQuery 拥有着全球最大的开发者群体，没有哪个开源项目敢说自己不想要一个 jQuery 那样的开发者群体。YUI 也是其中之一，只是 YUI 没必要一定要变成像 jQuery 那样让全球开发者趋之若鹜，更没必要一脚把雅虎踹开，jQuery 仅仅是一个案例，它给了我们如何经营开源社区的一个参照样本，就像我常对我同事说的，问题不只有一种解决方案，真正的挑战性来自于选择适当的策略(而非照抄)来解决特定场景下的问题。如果真的沿着 jQuery 走过的脚印一步一步走下去，对 YUI 来说，这将是一个严重的决策性错误，毕竟，他们二者殊途不同归，各有各的优势，各自都有特定的开发者群体。YUI将会坚持走自己的道路，尽管这离不开孕育滋养它的紫色土壤。但我相信，YUI 一定能做到。
+
+- <strong>注1</strong>：<a href="http://www.Quora.com" target="_blank">Quora.com</a> 是一款基于问答机制的 SNS，有着活跃的用户群，它和之前的问答网站的最大区别就是 Auora 是基于实名制。
+- <strong>注2</strong>：<a href="http://yuiconf2010.eventbrite.com/" target="_blank">YUIConf</a> 是 YUI 开发者大会简称，一年一次，今年将在11月8日举办，可通过 YUIblog 获得更多信息。
+- <strong>注3</strong>：我相信 zakas 的初衷是好的，但就我个人的经验来看，将组件发布到Gallery中的确很简单，但推送到 Yahoo CDN 上就有点费劲了，<a href="http://yuilibrary.com/gallery/faq/developer" target="_blank">手续实在有点小麻烦</a>。

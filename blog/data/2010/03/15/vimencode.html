@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>linux下基于vim的文件编码</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>linux下基于vim的文件编码</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <!--span><a title="tags" class="" href="/blog/tags.html">tags</a></span-->
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>挣扎后，我们还是向gbk妥协了，三个项目都将基于gb编码，我想，将来我一定会非常怀念使用utf8的年代的。其实，如果熟悉这些编码之间的关系，多关注下开发时候的文件编码，大概也不会出现乱码和ajax前后编码解码的问题，只是总会有人某个时刻忘了将文件另存为gb编码的文件，也总会有人在开发的爽的时候忘了这个根本，既然统一编码，在winodw下的前端开发都要将文件存为gbk，在editplus或记事本中存为ANSI编码就可以，这些编辑器会根据码流去识别到底是gbk还是gb2312还是gb18030的编码，至少gb系的编码有一部分是相互兼容的，码流有很大重合的空间，所以 window下很多文本编辑器都没有强行采用某种特定的编码。在linux下就不这么简单了，使用vim的时候要很小心才行。</p>
+
+<p>先来说说这些编码，gb2312是在ascII基础上扩展得到的，后来又扩充了gbk和gb18030，其中最新版的gb18030是05年才release出来，在常用简体中文字上，三种编码是完全兼容的，只是新的标准增加了很多生僻字、偏旁部首和繁体字。unicode是和ascII完全不同的一套编码方案，utf8就是基于这种方案的一种编码，utf8包含有除中文外的其他多国语言，适合全球使用，所以utf8的体积要比gb系的字符集合大很多，但在中文字方面，和gb18030相当，其编码和gb系完全不兼容。在linux下，如果没有配置.vimrc中的fileencoding，vim将会采用系统默认编码来读写文件，还是应当在.vimrc中定义编码种类，我的vimrc是这样定义的：</p>
+
+<pre><code>set fileencodings=ucs-bom,utf-8,GB18030,gbk
+</code></pre>
+
+<p>ucs- bom是unicode编码的一种，类似utf8，将其和utf8放在最前面是因为，vim在试图用ucs-bom或utf-8来读文件的时候，如果发现错误则选用后续编码来读文件，而vim却不能根据gbk和gb18030进行错误识别。没有gb2312？因为在vimrc中设置gb2312根本没用。基于这个设置，来操作下；</p>
+
+<p>linux下vim一个空文件，这时肯定是utf8的编码，输入“中文”两个字，保存为11.utf8，用file命令查看这个文件，提示是utf8的unicode文件，没有问题。</p>
+
+<p>再 vim一个11.gb18030，也是输入“中文”两字，设置编码：set fileencoding=gb18030，保存文件名为22.gb18030退出，用file查看文件，提示是ISO-8859文件，并没有提示是 gb18030，实际上file命令只能根据码流判断编码方法，而gbk,gb2312和gb18030码流在简体中文范围是一致的，因此也判断不出是什么字符集，而utf8编码则属于确定的字符集，所以从码流的模样上看是看不出gbk、gb2312和gb18030文件的。同样，vim一个文件，输入 “中文”二字，set fileencoding=gbk,保存退出，也是一样，只是set命令执行后编辑器会显示文件编码为cp936，不用管它，cp936是gbk的别名。</p>
+
+<p>同样的，vim一个文件，set fileencoding=gb2312，编辑器会显示euc-cn，如图</p>
+
+<p>但当第二次打开<code>gb*</code>编码的文件的时候，vim所识别的字符集和当初设定的字符集却不一样，比如打开22.gb18030、33.gbk和 44.gb2312的时候，vim统统将其识别为gb18030。vim这样做大概是为了兼容考虑。那么一个设定了gb2312字符集编码的文件，能否往里写非gb2312的字符呢？例如我新建一个vim文件，set fileencoding=gb2312，然后输入“中文兀”这三个字，其中“兀”是非gb2312字符（gb2312所有字符在这里查找），再保存，出错：“写入错误，转换失败”，强制保存也不行，</p>
+
+<p>只有将set fileencoding=gbk或者gb18030，才能成功保存，但是保存之前会有提示，强制保存后会出现“已转换”字样，似乎中间有一个“编码转换”的过程。</p>
+
+<p>同样，在重新打开一个刚才set fileencoding=gb2312的文件，输入那个”兀”字再保存也会出现”已转换”，似乎也经过了一个“编码转换”的过程，只是和上个例子相比没有出现严重提示而已，如图：</p>
+
+<p>大概这就是vim统一用gb18030来识别gbk,gb2312和gb18030的好处。刚才说到gb系的编码方式大抵相同，只要三者同时包含的文字都会编码一致。用file命令查看三种格式的文件的时候，都会显示ISO-8859来表示这是gb系的编码，具体哪种字符集是未知，如图：</p>
+
+<p>再看看内容一致的四个文件的二进制存储，gb系的文件也是一致的。（所以，在vimrc中配置fileencoding中写gb2312也是没用的，甚至写gbk都是没用的，只要写fileencoding=gb18030就可以了。）</p>
+
+<p>另，有些人的vim配置没有识别当前文件编码，我的是这样配的，在状态栏中显示文件编码：</p>
+
+<pre><code>set statusline=%&lt;[%n]\
+%F\ %h%m%r%=%k[%{(&amp;fenc==\"\")?&amp;enc:&amp;fenc}%
+{(&amp;bomb?\",BOM\":\"\")}][%{&amp;ff}][ASCII=\%03.3b]
+\ %-10.(%l,%c%V%)\ %P
+</code></pre>
+
+<p>结论：</p>
+
+<ul>
+<li>linux下的开发应其实和系统默认编码无关</li>
+<li>linux下的开发应当配置vimrc的fileencoding，配置内容如上。</li>
+<li>如果vimrc中配置不首先使用gb18030来写文件，应当在vim创建文件时手动执行set fileencoding=gb18030.</li>
+<li>不建议在vimrc中将gb18030放在ucs-bom和utf-8前面，以避免linux中创建所有的文件都是gb编码。毕竟，忘记转换编码是常事。</li>
+</ul>
+
+
+</section>
+<section class="meta">
+
+<!--span class="tags">
+  tagged by 
+  
+</span-->
+
+<span class="time">
+  posted at <time datetime="2010-03-15">2010-03-15</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:a378777d-fe37-40bd-851b-3c8bfb6521ed';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
