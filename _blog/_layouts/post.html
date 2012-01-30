@@ -7,15 +7,15 @@ layout: default
 </section>
 <section class="meta">
 {% if page.tags %}
-<span class="tags">
+<!--span class="tags">
   tagged by 
   {% for tag in page.tags %}
   <a href="/tags.html#{{ tag }}" title="{{ tag }}">{{ tag }}</a>&nbsp;
   {% endfor %}
-</span>
+</span-->
 {% endif %}
 <span class="time">
-  <time datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date:"%Y-%m-%d" }}</time>
+  posted at <time datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date:"%Y-%m-%d" }}</time>
 </span>
 </section>
 {% if page.guid %}
