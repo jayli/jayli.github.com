@@ -3,24 +3,24 @@ title: projects
 layout: page
 ---
 
-## JavaScript
+### JavaScript
 
-[Cubee](http://cubee.github.com/doc/)
-[Sandbox](http://github.com/jayli/sandbox)
-[YUISlide](http://jayli.github.com/gallery/yuislide/)
+- [Cubee](http://cubee.github.com/doc/)
+- [Sandbox](http://github.com/jayli/sandbox)
+- [YUISlide](http://jayli.github.com/gallery/yuislide/)
 
-## PHP
+### PHP
 
-[php-combo](http://github.com/jayli/combo)
+- [php-combo](http://github.com/jayli/combo)
 
-## Tools
+### Tools
 
-[T-Packer-minifier](http://github.com/jayli/Tpacker)
-[jsdoc-packer](http://github.com/jayli/jsdoc-packer)
+- [T-Packer-minifier](http://github.com/jayli/Tpacker)
+- [jsdoc-packer](http://github.com/jayli/jsdoc-packer)
 
-## Translations
+### Translations
 
-[JavaScript Web Applications 中译本](http://jayli.github.com/jswebapps)
-[JavaScript 权威指南（第六版）](http://ued.taobao.com/javascript)
-[What is Node? 中译本](http://jayli.github.com/whatisnode/index.html)
+- [JavaScript Web Applications 中译本](http://jayli.github.com/jswebapps)
+- [JavaScript 权威指南（第六版）](http://ued.taobao.com/javascript)
+- [What is Node? 中译本](http://jayli.github.com/whatisnode/index.html)
 
