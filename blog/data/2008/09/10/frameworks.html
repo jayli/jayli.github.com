@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>jQuery、prototype、mootool、YUI框架比较</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>jQuery、prototype、mootool、YUI框架比较</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <span><a title="tags" class="" href="/blog/tags.html">tags</a></span>
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>现在常用的框架有Jquery,prototype,mootool,yui等，其他的框架都是非主流，有一个数据很有意思，就是这几种框架的市场占有率，我觉得这个数据没有太大意义，因为这几种前端框架都有各自的针对性和特点，每种框架都适合相应规模的web项目，比如prototype和 jquery适合中小网站开发，mootool适合中型网站开发，yui适合大规模的web项目开发，而小网站的数量要远大于门户或sns这种大网站的，因此，不论怎么比较，jquery和prototype的使用数量都要超过mootool和yui。</p>
+
+<p>在入门级开发者人群中，prototype是使用量最大的，因为他相对简单一些，这里的简单和jquery的简洁不一样，prototype也算“老”一点的框架，而且很多js高手入门都是从prototype开始的，因此也有很多wd对prototype有特殊的感情，毕竟，prototype改变了我们对js的看法。它的很多设计思想也被沿用致其他框架中。但一个框架是否优秀不应当只看一面，更重要的，框架对浏览器的支持、文档、扩展行、性能、编码风格这些因素也在影响框架的使用者。prototype太基础以至于对ie浏览器的版本判断很粗糙，它糟糕的文档和扩展性，都是阻碍其在那些想深入学习js 的人群中更加流行的因素。因此，如果想积累一些入门级的前端实践 ，用prototype非常合适。</p>
+
+<p>有人说jQuery是被设计用来改变你写JavaScript的方法的。在这一方面jquery的确作的很好，20行的Dom javascript语句在jquery里只需要2－3行就可以完成，语言的简洁简直太吸引人了，尤其对于前端开发工程师这群多少有些代码洁癖的人来说，简直美妙绝伦，甚至忽视了其粗糙的面向对象的结构这一致命的缺点。当我们过多的沉浸在代码简洁的乐趣中无法自拔的时候，对更高级抽象的忽视往往阻挡住了我们的视野。因此，jquery本身无法承担庞大的网站架构任务，也只能在中小网站中搞一搞动画特效而已。但这仍然无法阻止wd们对jquery的偏爱，只要你有洁癖，那么你一定会喜欢jquery的。</p>
+
+<p>在面向对象的方面，mootool的确作的不错，软件设计模式中的高内聚和低耦合在mootool中有良好的体现。文档也很完整，但mootool的占有率一直不高是一个很尴尬的现象，作底端太多余，无法和jquery竞争，作高端又有点吃力，无法和yui竞争，给人鸡肋的感觉，就这样。</p>
+
+<p>如果你想作门户、如果你想作sns、如果你想作大型电子商务和电子政务网站，你大概只有一个选择，那就是yui，yui抽象出了比其他框架更复杂的层次结构、把模块按照不同的层次划分，并定义层次之间模块依赖关系，这种设计使得yui对万行级代码的管理游刃有余，这种重设计轻开发的思想是yui的核心之一，此外，yui不仅仅是js框架，他是js＋css＋规范的集合，必要的约束在团队协作项目中可以降低成本。其实yui本身也是团队合作的产物。在扩展性方面，我觉得yui是所有前端框架作的最好的，ext就是选择基于yui进行扩展。相对来讲，prototype和jquery显然太小了。</p>
+
+<p>总结</p>
+
+<p>轻量级的选择主要是mootools和jquery，由于它们的设计思想的不同，jQuery是追求简洁和高效，Mootools除了追求这些目标以外，其核心在于面向对象，所以jQuery适合于快速开发，Mootools适合于稍大型和复杂的项目，其中需要面向对象的支持;另外，在Ajax的支持上，jQuery稍强一些;在Comet的支持上，jQuery有相关的插件，Mootools目前没有，但是Comet的核心在于服务器的支持，浏览器端的接口很简单，开发相关的插件很简单。在面向对象的Javascript Library中，mootools逐渐战胜了prototype(体积大，面向对象的设计不合理等)，也包括script.acul.ous(基于 prototype，实际上就是prototype上的UI库)。</p>
+
+<p>因此，特定的框架有特定的使用范围，在合适的项目上，相应的框架都会发挥其应有的优势，因此，过分比较前端框架并得出熟优熟劣来纯粹是吃包了撑的，这和比较编程语言那个好和操作系统那个好一样没有意义。总结至此只为加深对前端框架的印象和理解，无他。</p>
+
+</section>
+<section class="meta">
+
+<span class="tags">
+  tagged by 
+  
+</span>
+
+<span class="time">
+  <time datetime="2008-09-10">2008-09-10</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:c70c937d-23f0-4320-a3ab-d5c622068963';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>使用etag做缓存</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>使用etag做缓存</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <span><a title="tags" class="" href="/blog/tags.html">tags</a></span>
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>随着web项目规模的不断扩大，web页面早已不像从前那样看上去单薄简陋，门户和sns以及更加庞杂的web app使得web页面质量甚至以兆字节计算。因此web性能也越来越被重视起来，如今web性能优化的指导大都参考经典的yahoo 34条优化建议，在这34条优化原则中，对web性能提升最作用明显的有3条，1，cdn，2，减少http请求，3，缓存，cdn是服务器端的优化，减小http请求是前端优化，缓存则是协议优化，只从缓存的角度看，web页面本应当尽可能多的制造缓存，毕竟，不必要的占用请求等待时间是很多余的，不仅影响体验还浪费带宽。因此，缓存在web项目开发中应当放到比较重要的地位，即性能优化首先优化缓存。</p>
+
+<p>目前互联网使用最多的是 http1.1的协议版本，协议在设计上针对缓存方面留了很大空间，其中etag和last-modified两个字段和缓存直接挂钩，etag是指当前服务器文件的摘要，last-modified是指当前文件最后被修改的日期。其实etag是last-modified的一个补充，因为由于项目需要，某些文件会周期性的更改，但其内容并不改变，仅仅改变了修改时间，这个时候我们并不希望客户端认为这个文件被修改了，而重新 GET，另外，如果某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，则这种修改无法判断，在有的UNIX系统中记录的MTIME只能精确到秒，在者，有些服务器因为马虎疏忽或者配置错误导致服务器不能精确得到文件修改时间。这些情况下就不能只使用last-modified来判断文件是否被修改，因此，才需要etag作为其补充，上文提到etag是文件的指纹，协议并无规定etag是如何生成。这个不重要。可以根据具体项目情况实现etag。比如这样一段php：</p>
+
+<pre><code>cache();
+echo date(“Y-m-d H:i:s”);
+
+function cache()
+{
+    $etag = “added by jayli”; //标记字符串，可以任意修改
+    if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag)
+    {
+        header(‘Etag:’.$etag,true,304);
+        exit;
+    }
+    else header(‘Etag:’.$etag);
+}
+</code></pre>
+
+<p>在客户端curl一下看看返回的协议头是怎么样的：</p>
+
+<p>这里使用的是If-None-Match字段来判断文件是否修改过，请求一个文件的流程可能如下：</p>
+
+<p>第一次请求的时候：</p>
+
+<ul>
+<li>客户端发起一个GET请求，</li>
+<li>服务器端相应请求并生成一个etag，状态码是200，图中是第一次请求的http头</li>
+</ul>
+
+
+<p>第二次请求：</p>
+
+<ul>
+<li>客户端发起一个GET请求，客户端应当发起一个If-None-Match头，这个头的内容就是第一次服务器返回的etag</li>
+<li>服务器判断If-None-Match的值是否和之前生成etag向匹配，如果匹配则返回304，客户端从缓存取数据。图中是第二次请求的情况，看到请求字段中增加了一个If-None-Match字段。</li>
+</ul>
+
+
+<p>这时浏览器从缓存取数据，而且可以看到当前缓存的信息：</p>
+
+<p>因此，在不经常变化的web页面和css或img资源，应当应用这种缓存策略，而且配以过期头字段，这样的缓存机制相对完善，改天讨论下过期头以及过期头的设计，在web设计中缓存过期这方面是比较重要的。</p>
+
+</section>
+<section class="meta">
+
+<span class="tags">
+  tagged by 
+  
+</span>
+
+<span class="time">
+  <time datetime="2009-06-12">2009-06-12</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:167c8c84-8bdb-4b24-8828-00add90a65a8';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

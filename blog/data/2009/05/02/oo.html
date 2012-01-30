@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="Jayli" />
+    <title>yui3中的面向对象</title>
+    <link href="http://jayli.github.com/blog/atom.xml" rel="alternate" title="setImpl" type="application/atom+xml" />
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/style.css">
+    <link rel="stylesheet" href="http://jayli.github.com/blog/media/css/github.css">
+    <script type="text/javascript" src="http://jayli.github.com/blog/media/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+    </script>
+	<!--[if lte IE 8]>
+	<script src="http://a.tbcdn.cn/apps/lottery/00023/index-v3/js/html5.js"></script>
+	<![endif]-->
+  </head>
+  <body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>yui3中的面向对象</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/blog/index.html">home</a></span>
+        <span><a title="tags" class="" href="/blog/tags.html">tags</a></span>
+        <span><a title="about" class="" href="/blog/about.html">about me</a></span>
+        <span><a title="flickr" class="" href="http://www.flickr.com/photos/lijing00333">flickr</a></span>
+        <span><a title="weibo" class="" href="http://weibo.com/jayli">weibo</a></span>
+        <span><a title="github" class="" href="http://github.com/jayli">github</a></span>
+        <span><a title="slideshare" class="" href="http://www.slideshare.net/lijing00333/">slideshare</a></span>
+        <span><a title="flickr" class="" href="http://hi.baidu.com/lijing00333/blog/">baidu hi</a></span>
+        <span><a title="blogroll" class="" href="/blog/links.html">links</a></span>
+        <span><a title="projects" class="" href="/blog/projects.html">projects</a></span>
+        <span><a title="subscribe me" class="" href="/blog/atom.xml">feed</a></span>
+        </nav>
+        <article class="content">
+        <section class="post">
+<p>javascript 是一种面向原型的语言，其实现代码重用的机制和传统的“面向对象”机制有比较大的区别，传统的面向对象是以封装继承和多态为基础的，比如java中经典的 23中设计模式完全以oop的这三条严格的原则为基础。在js中的原型可以省去某些重用写法上的麻烦，另外，js灵活的语法也使得js中的重用机制比传统 oop更加丰富多彩。yui3更是将这js中丰富的oop理论进行实践，堪称教科书式的典范。今天简单介绍下yui3对oop的经典实践。</p>
+
+<p>概括来讲，js中的数据类型有两类，对象和函数，因此，js中的代码重用的操作对象也是这两者，分别来看看。</p>
+
+<h2>针对对象的oop：</h2>
+
+<p>简单克隆（Y.clone）：从传统的oop观点来将，对象的拷贝分为深拷贝和浅拷贝，深拷贝在oop中是比较常用的，但在yui2中并没有提供，在 yui3中则使用Y.clone实现，clone的源码写的相当仔细，对浏览器原生的date、regexp、function和array分别作了处理，clone一个对象使用var newO = Y.clone(o)即可。</p>
+
+<p>对象合并（Y.merge）：将多个对象合并成一个对象，使用Y.merge(o1,o2,o3..)即可</p>
+
+<p>聚合（Y.aggregate）：将一个对象的成员挂载到另一个对象上，和Y.merge很相似，Y.merge中的每个参数是并列关系，Y.aggregate的参数有主次之分，即要分清从谁挂载到谁身上。</p>
+
+<h2>针对函数的oop：</h2>
+
+<p>扩充（Y.augment）：从原型对目标类(函数)进行扩充。js中并不需要像java中这样严格的继承，在js中，可以实现一个包含通用方法的类，这个类不会被直接实力话或者直接调用，他存在的目的只是向其他类提供自己的方法，实现上类似“接口”，功能上类似“抽象类”，在js中被称为“掺元类”，是多亲继承的一种实现方法，前段时间写的一篇文章就使用到了“扩充“：“js观察者模式，以及自定义事件在yui3中的实现”，看下面这段代码，这里的“发布事件工厂“被Y.Event.Target扩充，这里的Y.Event.Target其实就是掺元类，他的作用仅仅是为了用来扩充，同样 Y.Event.Handle和Y.Event.Custom等等也是掺元类。</p>
+
+<pre><code>var tripleClickFactory = function(){};//发布者工厂
+Y.augment(tripleClickFactory,Y.Event.Target);//扩充
+var tripleClick = new tripleClickFactory();//实例化
+</code></pre>
+
+<p>继承（Y.extend）：继承，从但实现上比传统oop复杂一点，和扩充的不同是，Y.extend继承的子类和父类之间有上下级关系，是一种严格的继承，扩充则和对象聚合（aggregate）类似，只是简单的函数属性的转移拷贝。继承写法：</p>
+
+<pre><code>Y.extend(oldClass,newClass,{
+    //原型方法列表
+},{
+    //静态方法列表
+});
+</code></pre>
+
+<p>在newClass中还需要手动加上继承代码才可以</p>
+
+<pre><code>oldClass.superclass.constructor.apply(this, arguments);
+</code></pre>
+
+<p>绑定（Y.bind）：刚开始看到bind还以为是监听，简单监听使用before和after实现，以后在讨论，这里的bind其实是一个包装器，用来绑定上下文环境，看看用法：</p>
+
+<pre><code>var o1 = {
+    name:’o1′
+};
+var o2 = {
+    name:’o2′
+};
+var foo = function(){
+    Y.log(this.name);
+};
+
+var foo1 = Y.bind(foo,o1);//绑定o1
+var foo2 = Y.bind(foo,o2);//绑定o2
+
+foo1();//输出o1
+foo2();//输出o2
+</code></pre>
+
+<p>混淆（Y.mix）：这个是一个很基础的实现，有很多种定制参数，用来实现上文所述的克隆、合并或者扩充等方法，也可以直接拿来用，不过比前面一些方法更危险一些，建议不首先使用Y.mix。</p>
+
+<p>总之yui3的oop比yui2完善的多高效的多，还是比较爽的。</p>
+
+</section>
+<section class="meta">
+
+<span class="tags">
+  tagged by 
+  
+</span>
+
+<span class="time">
+  <time datetime="2009-05-02">2009-05-02</time>
+</span>
+</section>
+
+<section class="comment">
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'jayliblog'; // required: replace example with your forum shortname
+	var disqus_identifier = 'urn:uuid:1ab18107-2d93-4c78-b740-95482798c4b7';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+        </article>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

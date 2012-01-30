@@ -1,7 +1,7 @@
 /*
 github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 */
-pre code{display:block;padding:.7em 1.2em;color:#000;background:#f8f8f8;border-right:1px solid #eeeeee;border-bottom:1px solid #eeeeee;border-left:1px solid #dddddd;border-top:1px solid #dddddd;}
+pre code{display:block;padding:.7em 1.2em;color:#000;background:#f8f8f8;border:1px solid #dddddd;}
 pre .comment,
 pre .template_comment,
 pre .diff .header,

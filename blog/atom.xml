@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://lhzhang.com/atom.xml" rel="self"/>
  <link href="http://lhzhang.com/"/>
- <updated>2012-01-30T09:10:21+08:00</updated>
+ <updated>2012-01-30T09:48:56+08:00</updated>
  <id>http://lhzhang.com/</id>
  <author>
    <name>Linghua Zhang</name>
@@ -13,118 +13,422 @@
 
  
  <entry>
-   <title>完全Linux ---- 让kaffeine显示中文字幕</title>
-   <link href="http://lhzhang.comdata/2006/07/29/linux-kaffeine-with-subtitle.html"/>
-   <updated>2006-07-29T00:00:00+08:00</updated>
-   <id>urn:uuid:c6675166-6afd-4741-8ccd-d40517ff5231</id>
-   <content type="html">&lt;p&gt;Ubuntu 6.06已经的Kaffeine已经支持字幕的显示了，但是其默认安装还不能显示中文字幕。&lt;/p&gt;
+   <title>使用etag做缓存</title>
+   <link href="http://lhzhang.comdata/2009/06/12/etag.html"/>
+   <updated>2009-06-12T00:00:00+08:00</updated>
+   <id>urn:uuid:167c8c84-8bdb-4b24-8828-00add90a65a8</id>
+   <content type="html">&lt;p&gt;随着web项目规模的不断扩大，web页面早已不像从前那样看上去单薄简陋，门户和sns以及更加庞杂的web app使得web页面质量甚至以兆字节计算。因此web性能也越来越被重视起来，如今web性能优化的指导大都参考经典的yahoo 34条优化建议，在这34条优化原则中，对web性能提升最作用明显的有3条，1，cdn，2，减少http请求，3，缓存，cdn是服务器端的优化，减小http请求是前端优化，缓存则是协议优化，只从缓存的角度看，web页面本应当尽可能多的制造缓存，毕竟，不必要的占用请求等待时间是很多余的，不仅影响体验还浪费带宽。因此，缓存在web项目开发中应当放到比较重要的地位，即性能优化首先优化缓存。&lt;/p&gt;
 
-&lt;p&gt;Kaffeine作为Xine的前端，采用Xine引擎，当然字幕的显示也是以来Xine库了。Xine的字幕显示需要自己定义的一些特殊格式的字体，而其默认安装只带了几种英文字体，这就是Kaffine之所以无法显示中文字幕的原因，知道了原因，解决起来就很容易了。&lt;/p&gt;
+&lt;p&gt;目前互联网使用最多的是 http1.1的协议版本，协议在设计上针对缓存方面留了很大空间，其中etag和last-modified两个字段和缓存直接挂钩，etag是指当前服务器文件的摘要，last-modified是指当前文件最后被修改的日期。其实etag是last-modified的一个补充，因为由于项目需要，某些文件会周期性的更改，但其内容并不改变，仅仅改变了修改时间，这个时候我们并不希望客户端认为这个文件被修改了，而重新 GET，另外，如果某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，则这种修改无法判断，在有的UNIX系统中记录的MTIME只能精确到秒，在者，有些服务器因为马虎疏忽或者配置错误导致服务器不能精确得到文件修改时间。这些情况下就不能只使用last-modified来判断文件是否被修改，因此，才需要etag作为其补充，上文提到etag是文件的指纹，协议并无规定etag是如何生成。这个不重要。可以根据具体项目情况实现etag。比如这样一段php：&lt;/p&gt;
 
-&lt;p&gt;首先我们需要准备的是制作字体的工具，叫做xine-fontconv。源里的xine是没有这个工具的，有兴趣的话大家可以去SourceForge上下xine的源码，自己编译一下就可以了，比较懒的话......这里有一个编译好的版本，下来放到/usr/bin下面，其实放哪里无所谓，执行的时候找的到就行然后要找一个中文字体，不用多说了吧，/usr/share/fonts/truetype下找一个顺眼的中文自己就行了，注意一下编码是gbk &amp;amp; gb2312的还是big5的，这里以文鼎PL细上海宋Uni（AR PL ShanHeiSun Uni）为例，字体文件为/usr/share/fonts/truetype/arphic/uming.ttf&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cache();
+echo date(“Y-m-d H:i:s”);
 
-&lt;p&gt;&lt;del&gt;下载： xine-fontconv.bin&lt;/del&gt;&lt;/p&gt;
-
-&lt;p&gt;进入xine的字体目录：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;cd /usr/share/xine/libxine1/fonts
+function cache()
+{
+    $etag = “added by jayli”; //标记字符串，可以任意修改
+    if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag)
+    {
+        header(‘Etag:’.$etag,true,304);
+        exit;
+    }
+    else header(‘Etag:’.$etag);
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;制作字体，ming是最终生成的字体名，自选，gbk是编码，以实际情况为准：&lt;/p&gt;
+&lt;p&gt;在客户端curl一下看看返回的协议头是怎么样的：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;xine-fontconv /usr/share/fonts/truetype/arphic/uming.ttf ming gbk
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里使用的是If-None-Match字段来判断文件是否修改过，请求一个文件的流程可能如下：&lt;/p&gt;
 
-&lt;p&gt;等吧，很久的，去喝杯咖菲（晕，新换的雅黑字体居然没有咖fei的fei字，只好拿这个代替了%&lt;sup&gt;#$*&amp;amp;$&lt;sup&gt;&amp;amp;@$%#$@&lt;sup&gt;#@）好了，呵呵&lt;/sup&gt;&lt;/sup&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;第一次请求的时候：&lt;/p&gt;
 
-&lt;p&gt;之后我们会看到生成了ming-16-xinefont.gz这样的文件，就是新的字体了，16代表大小，一共会有16，20，24，32，48，64这几个，然后打开Kaffeine配置一下Xine：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户端发起一个GET请求，&lt;/li&gt;
+&lt;li&gt;服务器端相应请求并生成一个etag，状态码是200，图中是第一次请求的http头&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;设置－&gt;Xine引擎参数－&gt;Subtitles，在右边的新手选项中把最后一项（encoding of the subtitles）替换为我们的编码，这里是gbk，专家选项中的第一项（font for subtitles）替换为我们的字体名，这里为ming，确定。&lt;/p&gt;
 
-&lt;p&gt;现在可以找个电影试一下啦，把字幕文件名的.idx，.sub，.srt等等之前的部分改成和电影文件名一样就行了，在载入的时候会提示你选字幕的&lt;/p&gt;
+&lt;p&gt;第二次请求：&lt;/p&gt;
 
-&lt;p&gt;enjoy :)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;客户端发起一个GET请求，客户端应当发起一个If-None-Match头，这个头的内容就是第一次服务器返回的etag&lt;/li&gt;
+&lt;li&gt;服务器判断If-None-Match的值是否和之前生成etag向匹配，如果匹配则返回304，客户端从缓存取数据。图中是第二次请求的情况，看到请求字段中增加了一个If-None-Match字段。&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;这时浏览器从缓存取数据，而且可以看到当前缓存的信息：&lt;/p&gt;
+
+&lt;p&gt;因此，在不经常变化的web页面和css或img资源，应当应用这种缓存策略，而且配以过期头字段，这样的缓存机制相对完善，改天讨论下过期头以及过期头的设计，在web设计中缓存过期这方面是比较重要的。&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
-   <title>在 linux 下驱动 Compaq 万通宝</title>
-   <link href="http://lhzhang.comdata/2006/07/24/linux-with-compaq.html"/>
-   <updated>2006-07-24T00:00:00+08:00</updated>
-   <id>urn:uuid:b87da13a-a4dd-402f-b06a-cef7eeee2d80</id>
-   <content type="html">&lt;p&gt;近日完全转到 linux 了，不过 PocketPC 和万通宝的驱动是个大问题，Google 了好久，终于解决了万通宝的驱动，如下：&lt;/p&gt;
+   <title>yui3中的面向对象</title>
+   <link href="http://lhzhang.comdata/2009/05/02/oo.html"/>
+   <updated>2009-05-02T00:00:00+08:00</updated>
+   <id>urn:uuid:1ab18107-2d93-4c78-b740-95482798c4b7</id>
+   <content type="html">&lt;p&gt;javascript 是一种面向原型的语言，其实现代码重用的机制和传统的“面向对象”机制有比较大的区别，传统的面向对象是以封装继承和多态为基础的，比如java中经典的 23中设计模式完全以oop的这三条严格的原则为基础。在js中的原型可以省去某些重用写法上的麻烦，另外，js灵活的语法也使得js中的重用机制比传统 oop更加丰富多彩。yui3更是将这js中丰富的oop理论进行实践，堪称教科书式的典范。今天简单介绍下yui3对oop的经典实践。&lt;/p&gt;
 
-&lt;p&gt;万通宝的驱动要自己编译安装，所以我们必须先要安装一些必要的软件包，以ubuntu为例，debian及其它发行版会略有不同:&lt;/p&gt;
+&lt;p&gt;概括来讲，js中的数据类型有两类，对象和函数，因此，js中的代码重用的操作对象也是这两者，分别来看看。&lt;/p&gt;
 
-&lt;p&gt;我们需要的是 gcc，curl，cvs，以及与当前相对应的内核头文件&lt;/p&gt;
+&lt;h2&gt;针对对象的oop：&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential
+&lt;p&gt;简单克隆（Y.clone）：从传统的oop观点来将，对象的拷贝分为深拷贝和浅拷贝，深拷贝在oop中是比较常用的，但在yui2中并没有提供，在 yui3中则使用Y.clone实现，clone的源码写的相当仔细，对浏览器原生的date、regexp、function和array分别作了处理，clone一个对象使用var newO = Y.clone(o)即可。&lt;/p&gt;
+
+&lt;p&gt;对象合并（Y.merge）：将多个对象合并成一个对象，使用Y.merge(o1,o2,o3..)即可&lt;/p&gt;
+
+&lt;p&gt;聚合（Y.aggregate）：将一个对象的成员挂载到另一个对象上，和Y.merge很相似，Y.merge中的每个参数是并列关系，Y.aggregate的参数有主次之分，即要分清从谁挂载到谁身上。&lt;/p&gt;
+
+&lt;h2&gt;针对函数的oop：&lt;/h2&gt;
+
+&lt;p&gt;扩充（Y.augment）：从原型对目标类(函数)进行扩充。js中并不需要像java中这样严格的继承，在js中，可以实现一个包含通用方法的类，这个类不会被直接实力话或者直接调用，他存在的目的只是向其他类提供自己的方法，实现上类似“接口”，功能上类似“抽象类”，在js中被称为“掺元类”，是多亲继承的一种实现方法，前段时间写的一篇文章就使用到了“扩充“：“js观察者模式，以及自定义事件在yui3中的实现”，看下面这段代码，这里的“发布事件工厂“被Y.Event.Target扩充，这里的Y.Event.Target其实就是掺元类，他的作用仅仅是为了用来扩充，同样 Y.Event.Handle和Y.Event.Custom等等也是掺元类。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var tripleClickFactory = function(){};//发布者工厂
+Y.augment(tripleClickFactory,Y.Event.Target);//扩充
+var tripleClick = new tripleClickFactory();//实例化
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;以上命令可安装编译所需要的软件包如 gcc，cpp等，然后是安装 cvs&lt;/p&gt;
+&lt;p&gt;继承（Y.extend）：继承，从但实现上比传统oop复杂一点，和扩充的不同是，Y.extend继承的子类和父类之间有上下级关系，是一种严格的继承，扩充则和对象聚合（aggregate）类似，只是简单的函数属性的转移拷贝。继承写法：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get install cvs
+&lt;pre&gt;&lt;code&gt;Y.extend(oldClass,newClass,{
+    //原型方法列表
+},{
+    //静态方法列表
+});
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;以及当前版本的内核头文件&lt;/p&gt;
+&lt;p&gt;在newClass中还需要手动加上继承代码才可以&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get install linux-headers-`uname -r`
+&lt;pre&gt;&lt;code&gt;oldClass.superclass.constructor.apply(this, arguments);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;注意：` 符号是 tab 键上面数字 1 键左边那个，不是单引号&lt;/p&gt;
+&lt;p&gt;绑定（Y.bind）：刚开始看到bind还以为是监听，简单监听使用before和after实现，以后在讨论，这里的bind其实是一个包装器，用来绑定上下文环境，看看用法：&lt;/p&gt;
 
-&lt;p&gt;然后是 curl&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;var o1 = {
+    name:’o1′
+};
+var o2 = {
+    name:’o2′
+};
+var foo = function(){
+    Y.log(this.name);
+};
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get install curl
+var foo1 = Y.bind(foo,o1);//绑定o1
+var foo2 = Y.bind(foo,o2);//绑定o2
+
+foo1();//输出o1
+foo2();//输出o2
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;以上是为了说明清楚一些，当然也可以一次性安装：&lt;/p&gt;
+&lt;p&gt;混淆（Y.mix）：这个是一个很基础的实现，有很多种定制参数，用来实现上文所述的克隆、合并或者扩充等方法，也可以直接拿来用，不过比前面一些方法更危险一些，建议不首先使用Y.mix。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo apt-get install build-essential cvs linux-headers-`uname -r` curl
+&lt;p&gt;总之yui3的oop比yui2完善的多高效的多，还是比较爽的。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>雅虎工作一年记</title>
+   <link href="http://lhzhang.comdata/2009/04/11/yahoo.html"/>
+   <updated>2009-04-11T00:00:00+08:00</updated>
+   <id>urn:uuid:dd9f2601-2b93-4b9a-9f13-dc6f56eb1380</id>
+   <content type="html">&lt;p&gt;难得有心情去写一些旧事，想起来在学校的时候，那时还在混论坛，纪念文集板不时的会有各种论坛的追忆文章。时间过的很快，不知不觉竟然已经工作一年多了，离自己上一次写某篇追忆的文章也有好几年时间，时间久不写东西自己大概又要失忆，或者现在已经处于失忆状态了，确实应当赶紧总结经验教训，以备将来图谋不轨。&lt;/p&gt;
+
+&lt;p&gt;说实话，当初在学校找工作的时候，从没有想过要作web，web只是一种爱好，只是茶余饭后的聊天消遣，我觉得我应当和其他同班一样，去金蝶东软华信去作erp外包，或者去华为中兴作通信，或者去百度网易作蜘蛛，或者去松下索尼作自主化，或者去腾讯作c++或者java，或者去甲骨文作数据库……web？真的没想过，似乎当初和同龄的大多数一样对web持有一种傲慢和偏见：技术单一简单，入门门槛奇低，对初学没什么基础的要求，简单讲，是个人都能学会。但在本职专业和业余爱好之间的复杂抉择中，还是选择了web这条路，并企望能在这条道路上有所斩获。&lt;/p&gt;
+
+&lt;p&gt;其实接下来的一年，在雅虎的经历改变了我对web的肤浅看法，特别是web前端。在雅虎，web前端是yahoo技术栈中的上层建筑，前端技术的感性与抽象，其实和诸多底层技术有着一脉相承的联系，因此前端工程师是最需要思维发散，最需要知识面广，最需要基础牢稳的一个门类。什么js、css还有 html、as之类，和其他编程语言没什么两样，其背后的设计模式和数据结构的思想都能在学校教科书上都能找到渊源。现在我才理解在学校的时候，为什么费力巴劲去学那些软件工程、数据结构、关系数据库、离散数学、网络、操作系统、编译原理这些抽象的甚至感觉没一点用的东西，现在发现这些东西不但有用，而且离了他们都没法干活，以至于现在还会不时去翻这些老旧的书本去寻找某些真理，并坚定的认为，这些东西才是js、css、html和as的灵魂所在。所以自己提高的瓶颈，是对计算机科学本质的理解，而非过渡追求语言本身的表象。纯粹的前端技术本身确实简单，但其精要却不是那么容易把握的，因为web前端技术并非孤立的存在，从这个角度讲，web前端技术更像博大精深的九阴真经，但我们不能像梅超风那样只抱着一本九阴真经不放，没有九阳真经的铺垫，练出来的就因白骨爪也只是徒具其行、根基甚浅，急于求成才会误入邪道，自乱本性。&lt;/p&gt;
+
+&lt;p&gt;因此，所谓职业技能，一定要高低兼备，前后通吃，融会贯通，重点突破，最终得到的不是对一门技术的熟练掌握，而是对解决行业疑难杂症的能力。&lt;/p&gt;
+
+&lt;p&gt;另外，这一年体会最深的是，调试技巧比技能本身更重要，找到bug不是什么难事，难的是找到bug产生的原因并给出解决方法。&lt;/p&gt;
+
+&lt;p&gt;最后就是价值观方面的改观，并对团队有了更深的认识，以及基于团队的前后端开发和配合，如何保证开发的高质量并秩序井然，这些都是学问。&lt;/p&gt;
+
+&lt;p&gt;恩，好久不切页面了，不过下周貌似有新任务是切页面的，久不用windows，突然启动老旧的xp还真有点不习惯。谁让这是工作呢。上周末来加班了，给自己工位留个念，哈哈。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>基于YUI3的方法链式调用</title>
+   <link href="http://lhzhang.comdata/2009/02/01/yuidev.html"/>
+   <updated>2009-02-01T00:00:00+08:00</updated>
+   <id>urn:uuid:92001fdd-008c-4523-8e79-d67cb8ecf3e4</id>
+   <content type="html">&lt;p&gt;yui3.0.0beta终于千呼万唤使出来，鼓掌！！！下载在这里：http://developer.yahoo.com/yui/3/&lt;/p&gt;
+
+&lt;p&gt;说到js的方法链式调用，的确，jquery确实给了wd们很多美好的回忆；所谓链式调用是一种语法上的小hack，也仅仅停留在代码级别，不过这种方法确实能使工程师用少量的代码达到复杂的操作目的，是一种很值得推广的技巧。不过yui2在这方面没作多少工作，yui3开始大量的使用这种技巧，让人猛然感觉语法风格和yui2的迥异。&lt;/p&gt;
+
+&lt;p&gt;在yui2中，我要对某个dom元素执行一系列的操作必须要这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var el = YAHOO.util.Dom.get(‘id’);
+YAHOO.util.Dom.addClass(el,’className’);
+YAHOO.util.Dom.setStyle(el,’display’,'block’);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;安装好必要的软件包后，我们需要从 cvs 上去 checkout 最新的驱动源码&lt;/p&gt;
+&lt;p&gt;在yui3中可以这样：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cvs -z3 -d:pserver:anonymous@cvs.savannah.gnu.org:/cvsroot/orinoco co orinoco
+&lt;pre&gt;&lt;code&gt;Y.get(‘#id’).addClass(‘className’).setStyle(‘display’,'block’);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;然后编译驱动&lt;/p&gt;
+&lt;p&gt;语法上简洁了很多，这种写法就是所谓的链式调用。yui3的链式调用如何实现的、扩展行好不好呢？上篇介绍yui3的装饰者的时候涉及到一点这方面的内容：方法的声明＋定义。比如，要对dom节点扩展一个fuck行为，则需要：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cd orinoco
-
-make
+&lt;pre&gt;&lt;code&gt;Y.mix(Y.DOM,{
+    fuck:function(o){
+        alert(o.innerHTML);//定义
+    }
+});
+Y.Node.addDOMMethods([
+    'fuck'//声明
+]);
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;编译正确完成后需要安装&lt;/p&gt;
+&lt;p&gt;为什么不直接定义，而要加一个“声明“出来，这种做法是为了降低库模块之间的耦合，即我在定义这个fuck的时候不必知晓DOM内部的逻辑，DOM 在调用fuck的时候则会自动返回一个包装好的Node，这种做法增加了库的可扩展性。再来看一个例子，我要模拟一个‘人’的行为，分别用yui3和不用库来作，看两者的区别，基于yui3：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo make install
+&lt;pre&gt;&lt;code&gt;YUI().use(‘node’, function(Y){
+    Y.mix(Y.DOM,{
+        eat:function(o){
+            o.innerHTML += ‘吃！’;
+        },
+        drink:function(o){
+            o.innerHTML += ‘喝！’;
+        },
+        shit:function(o){
+            o.innerHTML += ‘拉！’;
+        },
+        pee:function(o){
+            o.innerHTML += ‘撒！’;
+        },
+        fuck:function(o){
+            o.innerHTML += ‘o！’;
+        }
+    });
+
+    Y.Node.addDOMMethods(['eat','drink','shit','pee','fuck']);
+
+    //runtime
+    Y.get(‘#aperson’).eat().drink().shit().pee().fuck();
+});
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;之后我们需要去下载 windows 的 firmware，当然这个不用我们动手，已经有写好的脚本来完成了&lt;/p&gt;
+&lt;p&gt;“Y.get(’#aperson’).eat().drink().shit().pee().fuck()“这句即是这个person一溜烟的执行了吃喝拉撒干的动作，连隔都不带打的。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;cd firmware
+&lt;p&gt;在来看看不用任何库作的方法链式调用：&lt;/p&gt;
 
-./get_ezusb_fw
+&lt;pre&gt;&lt;code&gt;var $ = function(id){
+    var _$ = function(id){
+        this.el = document.getElementById(id);
+    };
+    _$.prototype.eat = function(){
+        this.el.innerHTML+=’吃！’;
+        return this;
+    };
+    _$.prototype.drink= function(){
+        this.el.innerHTML+=’喝！’;
+        return this;
+    };
+    _$.prototype.shit = function(){
+        this.el.innerHTML+=’拉！’;
+        return this;
+    };
+    _$.prototype.pee = function(){
+        this.el.innerHTML+=’撒！’;
+        return this;
+    };
+    _$.prototype.fuck = function(){
+        this.el.innerHTML+=’o！’;
+        return this;
+    };
+    return new _$(id);
+};
+
+//runtime
+$(‘aperson’).eat().drink().shit().pee().fuck();
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;将得到的 firmware 拷贝到 linux 内核的 firmware 目录中，在 dapper （ubuntu 6.06）中为 /lib/firmware/linux-kernel-xxx （xxx为内核版本）目录中，其它发行版视实际情况而定&lt;/p&gt;
+&lt;p&gt;这里的$(’aperson’).eat().drink().shit().pee().fuck()也是一溜烟的吃喝拉撒睡，但在实现具体方法的时候，每个方法都要return this，而真正灵活的扩展则不希望这样作。在js库流行的今天，这种降低耦合增加扩展性的小技巧显的尤为重要。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>YUI3中的“装饰者”，以及其基于“装饰者”的继承</title>
+   <link href="http://lhzhang.comdata/2009/01/03/zhuangshizhe.html"/>
+   <updated>2009-01-03T00:00:00+08:00</updated>
+   <id>urn:uuid:1f0a0059-5d04-4930-b492-5e3c3269a864</id>
+   <content type="html">&lt;p&gt;和 YUI2相比，YUI3的模块粒度远远高于YUI2，高粒度可以使得基于yui的程序按需加载yui文件。比如yui2的connection组件在 yui3中就变成io组件，和yui2中单独一个12k的connection.js相比，yui3中的ajax组件被拆分成了io-base.js、 io-form.js、io-queue.js、io-upload-iframe.js和io-xdr.js每个文件平均3k多，那么如果开发者只要实现简单的ajax只使用io-base.js就够了，相比YUI2，页面所需要的js文件体积从12k降低到3.43K。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo cp ./orinoco_ezusb_fw /lib/firmware/`uname -r`
+&lt;p&gt;在这些&lt;code&gt;io-*.js&lt;/code&gt;功能极其相似有用处不同的文件中，YUI3使用一种极其简单的方法来管理这些相互依赖又功能不同的文件：妆饰者。装饰者模式是经典23 种设计模式中最常用的模式之一，其作用是降低相似模块之间的耦合，典型做法是在已有的功能性代码基础上，在不修改基础代码的前提下，有效扩展原有功能并继续保持原有类的高内聚。是替代“修改基础类”的一种高效的方法。类似yui2中的extend。yui3的装饰者是使用Y.mix来实现的，比如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var A = {
+    a:1,b:2
+};
+Y.mix(A,{
+    c:0
+});
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;现在我们可以尝试激活万通宝了&lt;/p&gt;
+&lt;p&gt;这里的A就被增加了c的属性，而A原有的属性没有被改变。在yui3中大量使用了这种简单的装饰，是一种简化的继承和扩展。这样的话，io- form.js就可以基于io-base.js使用这种方式进行扩展，因此，io-form.js就可以包含io-base.js的所有功能，同时扩展出了form的功能，此外，io-base.js还可以被xdr、upload等进行功能性的扩展，使得代码具有很高的灵活性。在sns产品模块化的过程中，这种方法是很有启发的。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sudo modprobe -v orinoco_usb
+&lt;p&gt;外一篇：&lt;/p&gt;
+
+&lt;p&gt;我在blueidea上发表的一篇：“js设计模式之装饰者模式”&lt;/p&gt;
+
+&lt;p&gt;http://bbs.blueidea.com/thread-2906913-1-1.html&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>基于yui的前端“团队开发”模式</title>
+   <link href="http://lhzhang.comdata/2008/10/14/yuiteamdev.html"/>
+   <updated>2008-10-14T00:00:00+08:00</updated>
+   <id>urn:uuid:3095e00d-d56c-46d7-99b0-4d336472e357</id>
+   <content type="html">&lt;p&gt;如今web项目也越来越大，单人开发一个网站已经不是什么新鲜事了，这种web项目规模扩大的速度似乎超过我们的想象，对代码的管理，对项目的控制，对分工的把握，对进度的高效推进……一系列的问题开始在web开发中显现出来，其实团队开发不是什么新东西，就像当年炒作ajax的概念一样，只是新瓶装旧酒罢了，只因互联网的丰富应用给了web工程师很多“创意”的空间，包括功能上、也包括技术上：比如google wave将10年前的聊天室技术做了包装，将长联接大胆应用于ajax中，再比如yui用面向团队面向对象的开发方法对web站点重新包装，使得web项目也具备类似erp的项目特点，在java风靡的年代大概还有些新意，再比如web开发中的迭代和极限编程则是10年前软件工程教科书上的东西……，因此 web行业本身没有太多新元素值得推崇，我们所做的，仅仅是在web高速发展的时候，将很多古老的方法应用其中而已。&lt;/p&gt;
+
+&lt;p&gt;刚才提到，web开发越来越依赖于团队，web项目也越来越具有完整、典型的生命周期：需求，设计，开发，测试，上线。这个过程会周而复始，并且会有多个周期的重叠或迭代。这使得我们越来越依赖传统软件工程学的方法，使用它来规范web项目的开发。&lt;/p&gt;
+
+&lt;p&gt;在大型web项目开发中，比较常用的是迭代模型。迭代是在一个主题项目中作类似增量开发的开发模式，它建立在主干代码相对稳定的基础上，适合项目革命性的版本升级不频繁的情况下使用。通常稳定的线上版本作为主干代码，如果在a时刻有新需求提出，则从此时从主干打出分支，在分支上针对a时刻的需求进行开发，开发完成并测试通过后将代码合并至主干。图中分支b在合并代码的时候和其母主干已经有区别，红色的部分就是新的“区别”，分支b在d时刻合并代码的时候，用 svn merge很方便，有冲突解决冲突，无冲突合并代码。&lt;/p&gt;
+
+&lt;p&gt;还有一种常用的开发模式：极限编程。极限编程是对团队成员要求很高的一种开发模式，每个成员负责的是一个方面而不是单独某个模块，比如一名php程序员负责项目中所有的后端程序，一名wd负责页面展示，一名项目经理，如果前端工作量很大的话顶多外加一名前端脚本工程师。整个项目的开发由这四人完成，而且完成既定需求的同时保持代码良好的结构、性能和可扩展。这种开发模式很精简也很快速，但这种项目往往不是孤立的，经常是一个大项目的子项目，或者仅仅是从主干拉出来的分支而已，每次快速开发后都会多少产生冗余，比如css、js或img文件不能被并行开发的其他分支共享，自然也无法重用，因此这种开发模式也仅仅适合工期短的项目开发。比如下图中的b分支。&lt;/p&gt;
+
+&lt;p&gt;然而在这两种典型的开发模式中，前端的开发一直处于一种尴尬境地，前端文件是一种资源文件，除了html页面之外，js、css和img文件是作为资源被 php文件使用的，因此js、css或img不像php文件那样，新功能开发完后可以直接覆盖掉原有文件，除了在svn中作备份以便回滚之外，并无版本的概念。而css、js和img在增加新功能后则不能覆盖原有文件，必须在文件名后缀上一个新的版本号另存一份，供新的php文件访问，而老版本的 css、js和img仍然被其他不确定的php文件引用着。&lt;/p&gt;
+
+&lt;p&gt;那么如果并发的多个分支项目中同时修改相同的js或css，问题就出现了，php代码可以合并到主干中，同一份js或css代码如何合并两个同时开发的版本呢？svn能解决部分问题，但解决不了根本问题，因此我们只有期望两个并发项目不会同时升级同一份js文件，也只有将js或css的粒度做到很细很细，即每个js或css文件都很小，只有一丁点的功能，这样小的功能被同时两个项目修改的概率自然会很低。可将js文件瓜分成众多小文件而且管理方便是何等不易。&lt;/p&gt;
+
+&lt;p&gt;yui很好的解决了这个问题，yui给出了一个高效拆分并管理js和css的思路：模块化。从yui2到yui3的过渡可以看到这种趋势，未来的 web项目但凡有点规模都需要模块化，在yui中，模块是分层次的，每个模块都有其依赖的子模块，子模块也有其依赖的孙模块，最后发现复杂的模块是由简单的模块拼装而成的。而每个模块都可以单独做成一个文件，这样就可以在项目开始之初，在前端架构阶段就规定好模块的粒度，这个粒度是取决于项目变化的程度的，变化越频繁，粒度就应当更高，以免并行项目对同一份js或css文件作更新。&lt;/p&gt;
+
+&lt;p&gt;这样的话，一个功能性的页面需要引用的只是一个页面逻辑的js文件，这个js文件去load其需要的模块，模块再去load各自需要的子模块以及孙模块，模块文件的递归load和去重由yui完成，我们只需要关注页面的js文件即可，每个模块都会自动去引用所需的css，不用我们操心。&lt;/p&gt;
+
+&lt;p&gt;如此高粒度的js文件和css文件在页面装载的时候是个大麻烦，下图是现在雅虎关系load的js文件，这还是在没有瓜分js模块的情况下，每个js文件占用一个请求，会大大降低页面的装载速度。&lt;/p&gt;
+
+&lt;p&gt;yui 给我们提供了combo的方法，但也仅仅针对yui的模块提供，对于项目中的js和css文件则没有combo的支持，yui3虽然是 beta版，至今也没有要支持的迹象，只要硬生生的去改yui源代码了。combo后的结果就是这样，yui2的资源和基于yui2的js文件以及 yui3的资源和基于yui3的js文件各一个请求，外加一个yuiloader.js和yui.js各一，这样yui2和yui3并存的情况下的js请求顶多也只有这4个了。&lt;/p&gt;
+
+&lt;p&gt;改 yui的代码也不费劲，在yui2中combo的处理是在的yuiloader.js中的&lt;em&gt;combine函数中，在yui3中则是yui.js 中的&lt;/em&gt;combine中，可以根据自己的项目资源存储情况修改。这样，修改后的yui可以更广泛的支持combo，项目js文件就会和yui文件一并 combo输出，页面展示也会一下子从D上升到B或者A，哈哈。&lt;/p&gt;
+
+&lt;p&gt;在yui的框架下的前端开发变的如此高效率也更加轻松，这样的话，高粒度的js模块代替了功能性的js开发，更加有利于代码的抽象和重用，也大大降低了并行开发中升级同一个js文件的苦恼。项目迭代前进的效率也会越来越高，而前端页面的性能却丝毫不受影响。&lt;/p&gt;
+
+&lt;p&gt;你看看自己是否还在辛苦的压缩合并js呢？是否在苦恼的频繁累赘的升级js文件版本？如果是，那么很遗憾，你已经落伍了。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>js观察者模式以及基于YUI中的实现</title>
+   <link href="http://lhzhang.comdata/2008/10/10/guanchazhe.html"/>
+   <updated>2008-10-10T00:00:00+08:00</updated>
+   <id>urn:uuid:6ec83167-c315-41de-aca2-aa89a7b355e7</id>
+   <content type="html">&lt;p&gt;观察者模式是一种典型的设计模式，不论基于什么语言研讲的设计模式都包含它。概括讲，观察者模式就是“当A事件发生的时候自动执行B事件”，这是我们所期望的结果，但这句话是如此之概括以至于很多关键细节被忽略掉了，更进一步讲，观察者模式是对“事件联动性”行为的模拟，这种模拟是如此之抽象，以至于我们在类似js这种事件满天飞的语言中忽视“事件”的细节。从这个角度讲，的确不利于我们理解js中的事件。&lt;/p&gt;
+
+&lt;p&gt;js依赖于浏览器，浏览器在启动的时候会为我们做很多事情，因此我们才可以通过一个简单的a.onclick = function(e){…}来实现当点击事件发生时要做的事情。但从设计模式的角度讲，这只是浏览器对click事件实现了观察者模式，即当用鼠标左键单击某个元素并致使元素状态改变时发生“点击”事件。之所以如此罗嗦的使用“用鼠标点击左键单击某个元素并致使元素状态改变”这种晦涩的语言来描述这，是因为这样才能比较准确完整的描述一个“事件”所应具备的特征，从而方便我们能模仿这个过程来做自定义事件。而‘单击左键’或‘元素状态改变’这些逻辑是被浏览器”捕捉”并”处理”，我们是看不到这些细节的。也就是说，浏览器将它认为常用的事件的定义、注册、监听行为都捆绑在浏览器运行时之中，只有事件需要绑定的句柄需要在js中给出。但如果我想使用浏览器没有默认提供的事件，比如元素尺寸改变、或者左键三击事件，又该如何做呢?&lt;/p&gt;
+
+&lt;p&gt;先让我们分析一下简单的点击事件：
+通常，绑定点击事件我们使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;el.onclick = function(e){
+    //dosth here
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;看看万通宝的绿灯有没有亮，不亮的话则需要重启一下&lt;/p&gt;
+&lt;p&gt;el 表示要点击的对象，我们称之为宿主，onclick表示事件类型，与此同时，浏览器在无时无刻的监听元素上发生的事情，并判断el状态是否发生改变，以此判断是否发生了某类事件，比如点击事件，进而开始执行用户为该元素的onclick句柄所指向的函数。由此看出，是否触发用户给 el.onclick绑定的函数是由浏览器判断完成的，浏览器承担了甄别事件类型和宿主并触发绑定函数的角色。而所谓“甄别事件类型和宿主”则是对一个 “事件”的抽象理解，自定义事件则需要实现这个抽象的“事件”逻辑。&lt;/p&gt;
 
-&lt;p&gt;最后，保证系统在启动的时候自动加载万通宝模块，需要修改一下 /etc/modules 文件，在文件的末尾加一行&lt;/p&gt;
+&lt;p&gt;以上，可以得出，一个事件的发生依赖与2个重要属性，宿主和状态，宿主用来判断事件发生地，状态用来判断是否fire用户绑定的事件。所有的事件都包含这两者。只是在浏览器原生事件的宿主和状态只被浏览器捕捉，对开发者不可见。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;orinoco_usb
+&lt;p&gt;有了抽象的事件逻辑，有了事件的状态和宿主，还需要”事件注册”，只有“注册过”的事件才可以被识别和使用，或者说被大规模使用而不用重写代码，事件逻辑是固定的，不固定的只是宿主和事件发生后fire的函数。对于宿主的“状态”的监听，有两种方式，每个固定的时间间隔进行判断，或者手动给出需要判断状态的位置。出于性能考虑，常用第二种方法。&lt;/p&gt;
+
+&lt;p&gt;因此，一个完整的事件的发生是由“事件”、“宿主”、“宿主状态”、“事件发生”（也就是事件发生的位置）、“判断宿主状态”（也就是判断是否 fire绑定的函数）、和“事件绑定函数”这几部分组成。任何一个完整的事件都是由这些内容组成，包括浏览器原生事件和自定义事件。&lt;/p&gt;
+
+&lt;p&gt;在 YUI2.x中既是按照如上思路模拟了事件的全过程，并封装为customEvent（自定义）事件类，可以很方便的实现自定义事件，YUI2.x中的这种对观察者模式精炼的实践在复杂的web application中应用很广而且比较高效。在YUI3中，每类自定义事件都被抽象出来，形成“事件工厂”，事件工厂生成事件对象，事件对象注册事件类型，并绑定fire的函数，这种更深层次的抽象对自定义事件的管理是大有裨益的。最牛X的，YUI3的自定义事件居然可以冒泡，这些都是后话，先来实践下YUI3下的自定义事件，我们来作一个鼠标三击事件。&lt;/p&gt;
+
+&lt;p&gt;首先要注意的是，鼠标点击事件在ie和firefox里的表现是有区别的。两次快速的连续点击在ie中被当作双击事件，而在firefox中触发了两次单击事件和一次双击事件。因此这里需要针对ie作简单hack。&lt;/p&gt;
+
+&lt;p&gt;js代码:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;YUI().use(‘dump’,'node’,function(Y){
+
+    //发布者工厂
+    var tripleClickFactory = function(id,interval){
+        this.el = Y.get(id);
+        this.status = false;
+        this.trp = [];//三次点击的时间
+        this.interval = interval||100;//毫秒
+    };
+
+    //包装发布者
+    Y.augment(tripleClickFactory, Y.Event.Target);
+
+    //tripleClick事件对象
+    var tripleClick = new tripleClickFactory(‘#iid’,800);
+
+    //绑定函数
+    tripleClick.subscribe(‘tpClick’, function(a){
+        //a,时间间隔数组
+        alert(‘三击事件,三次点击的两个间隔分别为:’+a[0]+’和’+a[1]+’毫秒’);
+    });
+
+    //事件
+    var tripleClickEvent = function(e){
+        //var el = e.target;
+        tripleClick.trp.push((new Date()).getTime());
+        if(tripleClick.trp.length 3){
+            var a = [];
+            for(var i = 1;i&amp;lt;= 3;i++){
+                a[i-1] = tripleClick.trp[ i ];
+            }
+            delete tripleClick.trp;
+            tripleClick.trp = a;
+        }
+        var s1 = tripleClick.trp[2] – tripleClick.trp[1];
+        var s2 = tripleClick.trp[1] – tripleClick.trp[0];
+
+        if(Number(s1)&amp;lt;=tripleClick.interval &amp;amp;&amp;amp; 
+                Number(s2) &amp;lt;=tripleClick.interval){
+            tripleClick.fire('tpClick',[s1,s2]);
+            tripleClick.trp = [];
+        }
+    };
+
+    ///////////////runtime///////////////////
+
+    Y.on('click',function(e){
+        tripleClickEvent(e);
+    },'#iid');
+
+    if(Y.UA.ie != 0){//hack for ie
+        Y.on('dblclick',function(e){
+            tripleClickEvent(e);
+        },'#iid');
+    }
+
+});
 &lt;/code&gt;&lt;/pre&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>jQuery、prototype、mootool、YUI框架比较</title>
+   <link href="http://lhzhang.comdata/2008/09/10/frameworks.html"/>
+   <updated>2008-09-10T00:00:00+08:00</updated>
+   <id>urn:uuid:c70c937d-23f0-4320-a3ab-d5c622068963</id>
+   <content type="html">&lt;p&gt;现在常用的框架有Jquery,prototype,mootool,yui等，其他的框架都是非主流，有一个数据很有意思，就是这几种框架的市场占有率，我觉得这个数据没有太大意义，因为这几种前端框架都有各自的针对性和特点，每种框架都适合相应规模的web项目，比如prototype和 jquery适合中小网站开发，mootool适合中型网站开发，yui适合大规模的web项目开发，而小网站的数量要远大于门户或sns这种大网站的，因此，不论怎么比较，jquery和prototype的使用数量都要超过mootool和yui。&lt;/p&gt;
 
-&lt;p&gt;重启，进入桌面后看看，绿灯还不亮的话试下 Fn + F2，这样子应该差不多正常工作了，enjoy～&lt;/p&gt;
+&lt;p&gt;在入门级开发者人群中，prototype是使用量最大的，因为他相对简单一些，这里的简单和jquery的简洁不一样，prototype也算“老”一点的框架，而且很多js高手入门都是从prototype开始的，因此也有很多wd对prototype有特殊的感情，毕竟，prototype改变了我们对js的看法。它的很多设计思想也被沿用致其他框架中。但一个框架是否优秀不应当只看一面，更重要的，框架对浏览器的支持、文档、扩展行、性能、编码风格这些因素也在影响框架的使用者。prototype太基础以至于对ie浏览器的版本判断很粗糙，它糟糕的文档和扩展性，都是阻碍其在那些想深入学习js 的人群中更加流行的因素。因此，如果想积累一些入门级的前端实践 ，用prototype非常合适。&lt;/p&gt;
+
+&lt;p&gt;有人说jQuery是被设计用来改变你写JavaScript的方法的。在这一方面jquery的确作的很好，20行的Dom javascript语句在jquery里只需要2－3行就可以完成，语言的简洁简直太吸引人了，尤其对于前端开发工程师这群多少有些代码洁癖的人来说，简直美妙绝伦，甚至忽视了其粗糙的面向对象的结构这一致命的缺点。当我们过多的沉浸在代码简洁的乐趣中无法自拔的时候，对更高级抽象的忽视往往阻挡住了我们的视野。因此，jquery本身无法承担庞大的网站架构任务，也只能在中小网站中搞一搞动画特效而已。但这仍然无法阻止wd们对jquery的偏爱，只要你有洁癖，那么你一定会喜欢jquery的。&lt;/p&gt;
+
+&lt;p&gt;在面向对象的方面，mootool的确作的不错，软件设计模式中的高内聚和低耦合在mootool中有良好的体现。文档也很完整，但mootool的占有率一直不高是一个很尴尬的现象，作底端太多余，无法和jquery竞争，作高端又有点吃力，无法和yui竞争，给人鸡肋的感觉，就这样。&lt;/p&gt;
+
+&lt;p&gt;如果你想作门户、如果你想作sns、如果你想作大型电子商务和电子政务网站，你大概只有一个选择，那就是yui，yui抽象出了比其他框架更复杂的层次结构、把模块按照不同的层次划分，并定义层次之间模块依赖关系，这种设计使得yui对万行级代码的管理游刃有余，这种重设计轻开发的思想是yui的核心之一，此外，yui不仅仅是js框架，他是js＋css＋规范的集合，必要的约束在团队协作项目中可以降低成本。其实yui本身也是团队合作的产物。在扩展性方面，我觉得yui是所有前端框架作的最好的，ext就是选择基于yui进行扩展。相对来讲，prototype和jquery显然太小了。&lt;/p&gt;
+
+&lt;p&gt;总结&lt;/p&gt;
+
+&lt;p&gt;轻量级的选择主要是mootools和jquery，由于它们的设计思想的不同，jQuery是追求简洁和高效，Mootools除了追求这些目标以外，其核心在于面向对象，所以jQuery适合于快速开发，Mootools适合于稍大型和复杂的项目，其中需要面向对象的支持;另外，在Ajax的支持上，jQuery稍强一些;在Comet的支持上，jQuery有相关的插件，Mootools目前没有，但是Comet的核心在于服务器的支持，浏览器端的接口很简单，开发相关的插件很简单。在面向对象的Javascript Library中，mootools逐渐战胜了prototype(体积大，面向对象的设计不合理等)，也包括script.acul.ous(基于 prototype，实际上就是prototype上的UI库)。&lt;/p&gt;
+
+&lt;p&gt;因此，特定的框架有特定的使用范围，在合适的项目上，相应的框架都会发挥其应有的优势，因此，过分比较前端框架并得出熟优熟劣来纯粹是吃包了撑的，这和比较编程语言那个好和操作系统那个好一样没有意义。总结至此只为加深对前端框架的印象和理解，无他。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Hello World</title>
+   <link href="http://lhzhang.comdata/2008/09/01/helloworld.html"/>
+   <updated>2008-09-01T00:00:00+08:00</updated>
+   <id>urn:uuid:e9869195-1c21-41d8-8db4-d4f76af8ee90</id>
+   <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://wordpress.com/&quot;&gt;WordPress.com&lt;/a&gt;. This is your first post. Edit or delete it and start blogging!&lt;/p&gt;
 </content>
  </entry>
  
