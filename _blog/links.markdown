@@ -14,5 +14,6 @@ layout: page
 - [N.C.Zakas](http://www.nczonline.net/)
 - [John Resig](http://ejohn.org/)
 - [Mobile Web Design Res](http://www.webapptrend.com/2012/01/1606.html)
+- [Backbone](http://documentcloud.github.com/backbone/)
 
 *# sort -f*
