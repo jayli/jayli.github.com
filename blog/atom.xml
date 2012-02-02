@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://lhzhang.com/atom.xml" rel="self"/>
  <link href="http://lhzhang.com/"/>
- <updated>2012-02-02T18:21:25+08:00</updated>
+ <updated>2012-02-02T18:23:11+08:00</updated>
  <id>http://lhzhang.com/</id>
  <author>
    <name>Linghua Zhang</name>
@@ -17,7 +17,7 @@
    <link href="http://lhzhang.comdata/2012/02/02/jswebapps.html"/>
    <updated>2012-02-02T00:00:00+08:00</updated>
    <id>urn:uuid:e9869195-1c21-41d8-8db4-d4f76af8ee90</id>
-   <content type="html">&lt;blockquote&gt;&lt;p&gt;经过将近半年的努力，JavaScript Web Applications 这本书终于快要出版了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。&lt;/p&gt;&lt;/blockquote&gt;
+   <content type="html">&lt;blockquote&gt;&lt;p&gt;经过将近半年的努力，&lt;a href=&quot;http://jayli.github.com/jswebapps&quot;&gt;JavaScript Web Applications&lt;/a&gt; 这本书终于快要出版了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。&lt;/p&gt;&lt;/blockquote&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 

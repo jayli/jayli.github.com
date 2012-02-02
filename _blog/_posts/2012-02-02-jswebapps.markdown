@@ -5,7 +5,7 @@ guid: urn:uuid:e9869195-1c21-41d8-8db4-d4f76af8ee90
 tags:
     - javascript web applications
 ---
-> 经过将近半年的努力，JavaScript Web Applications 这本书终于快要出版了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。
+> 经过将近半年的努力，[JavaScript Web Applications](http://jayli.github.com/jswebapps) 这本书终于快要出版了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。
 
 ![](http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png)
 
