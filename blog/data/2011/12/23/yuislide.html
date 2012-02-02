@@ -36,8 +36,6 @@
         </nav>
         <article class="content">
         <section class="post">
-<p><img src="http://lijing00333.files.wordpress.com/2012/01/screenshot-4.jpg?w=400" alt="" /></p>
-
 <p><a href="http://jayli.github.com/gallery/yuislide">YUISlide</a>这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在<a href="http://wt.taobao.com/">网厅</a>项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。</p>
 
 <p>在普通的PC平台里，动画的实现大都是通过setInterval函数来完成，jQuery和YUI以及Kissy中亦是如此，只不过帧频有所差异。后来都各自添加了对内置css3 transition的检测，优先使用css3 animation，动画在现代浏览器中的性能又上升了一个台阶。Slide使用了YUI的Anim，在iphone/ipad/android平台中使用的是css3 animation，却依然不流畅，更流畅的动画则需要开启webkit的硬件加速。可以参照之前的一个<a href="http://www.slideshare.net/lijing00333/graphic-programming-in-js">ppt</a>来了解js动画编程的一些背景知识。</p>

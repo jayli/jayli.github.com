@@ -5,7 +5,6 @@ layout: post
 guid: urn:uuid:c16ed91c-567b-4700-9398-2dc2834b1fee
 tags:
 ---
-![](http://lijing00333.files.wordpress.com/2012/01/screenshot-4.jpg?w=400)
 
 [YUISlide](http://jayli.github.com/gallery/yuislide)这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在[网厅](http://wt.taobao.com/)项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。
 

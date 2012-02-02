@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://lhzhang.com/atom.xml" rel="self"/>
  <link href="http://lhzhang.com/"/>
- <updated>2012-02-02T15:36:43+08:00</updated>
+ <updated>2012-02-02T18:21:25+08:00</updated>
  <id>http://lhzhang.com/</id>
  <author>
    <name>Linghua Zhang</name>
@@ -13,13 +13,38 @@
 
  
  <entry>
+   <title>“JavaScript Web Applications” 译者序</title>
+   <link href="http://lhzhang.comdata/2012/02/02/jswebapps.html"/>
+   <updated>2012-02-02T00:00:00+08:00</updated>
+   <id>urn:uuid:e9869195-1c21-41d8-8db4-d4f76af8ee90</id>
+   <content type="html">&lt;blockquote&gt;&lt;p&gt;经过将近半年的努力，JavaScript Web Applications 这本书终于快要出版了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3&gt;译者序&lt;/h3&gt;
+
+&lt;p&gt;从第一眼看到封面这只憨憨的猫头鹰开始，就深深的喜欢上了这本“JavaScript Web Applications“，读了简介和目录之后就已经不能自拔了。这几年鲜有深入讲架构级web app的好书，这让这本“JavaScript Web Applications“更加难得，作为O'rielly第一本专注于讲纯高端JavaScript架构思想的书，凡是有一点“架构情节“的工程师都不应当错过此书。&lt;/p&gt;
+
+&lt;p&gt;如今Web应用程序的开发已经越来越向传统应用软件开发靠拢了，Web和应用之间的界限也进一步模糊。传统编程语言中的设计模式、MVC、应用架构等理论也在慢慢的融入Web前端开发。随着服务器端JavaScript和移动终端的兴起，作为一名前端工程师，也深知自己正处在一个深刻变革的年代，面对眼花缭乱的新概念和新技术更应当把握本质认清方向，勇于创新和实践，而这本“JavaScript Web Applications”的出现更是一阵及时雨，为我们工作中遇到的很多难题提供了解决方案和最佳实践。同时，这本书所涵盖的知识点非常全面，从MVC 的基本理论到网络协议、从模块解偶到异步编程模型、从HTML5/CSS3到NodeJS、从软件测试到部署调试，对于很多前端工程师来说，这些知识正是突破自己的瓶颈所亟需的。&lt;/p&gt;
+
+&lt;p&gt;这本书将专注于讲述如何构建“优雅又不失高水准”（state of the art）的JavaScript应用，包括软件架构、模板引擎、框架和库、同服务器的消息通信等内容。书中同样提供了大量的示例代码，可以帮助你更深入的理解很多重要的概念。除此之外，作者在MVC和架构方面的很多观点都很有启发性，即使你不是一名JavaScript程序员，读完本书后也会受益匪浅的。&lt;/p&gt;
+
+&lt;p&gt;本书作者 Alex MacCaw 是一名Ruby/JavaScript 程序员，是Spine框架的开发者。在翻译本书的过程中，我深深体会到他作为一名优秀工程师所具备的扎实的计算机专业功底和让人敬佩的开源精神。尽管这本书包含大量的专业术语，但作者文笔轻松流畅，即使直接读原文也丝毫不会感觉枯燥，所以我们在翻译过程中也是非常小心，生怕丢掉这种轻松流畅的阅读感觉，尽力为大家原汁原味的呈现本书。当然由于专业知识所限，翻译过程难免疏漏，还希望各位高手批评指正。&lt;/p&gt;
+
+&lt;p&gt;最后，我要感谢博文视点的张春雨在译书过程中给予我们的帮助和信任。感谢我的好友王保平（玉伯）对很多关键的技术性问题提出的宝贵意见，还要感谢可爱的同事杨振楠（栋寒）、杨翰文（地极）、李燕青（霸先）、车思慧（灵玉）、陈良（舒克）的细心校对，他们给译文提了很多中肯的建议。当然，最最需要感谢的家中的领导，已经记不得多少次赶译稿加班太晚，得到的不是你的抱怨，而是你的鼓励，心里已经觉得很满足。&lt;/p&gt;
+
+&lt;p&gt;李晶（拔赤），张散集（一舟）&lt;/p&gt;
+
+&lt;p&gt;2012年02月 北京&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>YUISlide,针对移动设备的动画性能优化</title>
    <link href="http://lhzhang.comdata/2011/12/23/yuislide.html"/>
    <updated>2011-12-23T00:00:00+08:00</updated>
    <id>urn:uuid:c16ed91c-567b-4700-9398-2dc2834b1fee</id>
-   <content type="html">&lt;p&gt;&lt;img src=&quot;http://lijing00333.files.wordpress.com/2012/01/screenshot-4.jpg?w=400&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://jayli.github.com/gallery/yuislide&quot;&gt;YUISlide&lt;/a&gt;这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在&lt;a href=&quot;http://wt.taobao.com/&quot;&gt;网厅&lt;/a&gt;项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。&lt;/p&gt;
+   <content type="html">&lt;p&gt;&lt;a href=&quot;http://jayli.github.com/gallery/yuislide&quot;&gt;YUISlide&lt;/a&gt;这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在&lt;a href=&quot;http://wt.taobao.com/&quot;&gt;网厅&lt;/a&gt;项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。&lt;/p&gt;
 
 &lt;p&gt;在普通的PC平台里，动画的实现大都是通过setInterval函数来完成，jQuery和YUI以及Kissy中亦是如此，只不过帧频有所差异。后来都各自添加了对内置css3 transition的检测，优先使用css3 animation，动画在现代浏览器中的性能又上升了一个台阶。Slide使用了YUI的Anim，在iphone/ipad/android平台中使用的是css3 animation，却依然不流畅，更流畅的动画则需要开启webkit的硬件加速。可以参照之前的一个&lt;a href=&quot;http://www.slideshare.net/lijing00333/graphic-programming-in-js&quot;&gt;ppt&lt;/a&gt;来了解js动画编程的一些背景知识。&lt;/p&gt;
 
@@ -629,74 +654,6 @@ S.add({
 &lt;li&gt;&lt;strong&gt;注3&lt;/strong&gt;：我相信 zakas 的初衷是好的，但就我个人的经验来看，将组件发布到Gallery中的确很简单，但推送到 Yahoo CDN 上就有点费劲了，&lt;a href=&quot;http://yuilibrary.com/gallery/faq/developer&quot; target=&quot;_blank&quot;&gt;手续实在有点小麻烦&lt;/a&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 
-</content>
- </entry>
- 
- <entry>
-   <title>[翻译]jq之父回答“YUI3如何提升其影响力？</title>
-   <link href="http://lhzhang.comdata/2010/12/17/jquery.html"/>
-   <updated>2010-12-17T00:00:00+08:00</updated>
-   <id>urn:uuid:7c4ffede-fe04-4c3b-9f9d-782c5c91cf84</id>
-   <content type="html">&lt;blockquote&gt;&lt;p&gt;译者按：我们时常能看到不同JavaScript库/框架之间的各种比较，但这次 YUI3 架构师和 jQuery 之父的直接对话却非常难得，也是暗涌澎湃精彩至极，实在忍不住，翻译出来以飨各位读者，希望对那些有志于开发“库/框架”的同仁们有所启迪。&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;ul&gt;
-&lt;li&gt;题目：和jQuery和Mootools相比，YUI3如何提升其影响力？&lt;/li&gt;
-&lt;li&gt;作者：John Resin(jQuery之父)&lt;/li&gt;
-&lt;li&gt;译者：&lt;a href=&quot;http://jayli.github.com&quot; target=&quot;_blank&quot;&gt;拔赤&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;原文：&lt;a href=&quot;http://www.quora.com/How-could-YUI3-improve-its-image-compared-to-jQuery-MooTools-etc/&quot; target=&quot;_blank&quot;&gt;http://www.quora.com/How-could-YUI3-improve-its-image-compared-to-jQuery-MooTools-etc/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;&lt;a href=&quot;http://developer.yahoo.com/yui/3/&quot; target=&quot;_blank&quot;&gt;YUI3&lt;/a&gt; 已经超越 &lt;a href=&quot;http://developer.yahoo.com/yui/2/&quot; target=&quot;_blank&quot;&gt;YUI2&lt;/a&gt;，并向&lt;a href=&quot;http://jquery.com/&quot; target=&quot;_blank&quot;&gt; jQuery&lt;/a&gt; 看齐了，那么 YUI3 如何提升其影响力呢？关于这个问题，有些回答似乎有些跑题，问题是“怎样提升 YUI 的影响力”（不错的问题），然而大部分的回答却在攻击 jQuery。&lt;/p&gt;
-
-&lt;p&gt;我从两方面来回答这个问题：1，YUI 应当如何改进，以便更多的人来使用，2，YUI 如何提升才能改善和  jQuery 的竞争力。&lt;/p&gt;
-
-&lt;p&gt;我不得不承认，和其他 JS 库相比，YUI 的确很赞，不管是代码级的工作、大量优秀的&lt;a href=&quot;http://developer.yahoo.com/yui/&quot; target=&quot;_blank&quot;&gt;文档&lt;/a&gt;、&lt;a href=&quot;http://developer.yahoo.com/yui/3/examples/&quot; target=&quot;_blank&quot;&gt;demos&lt;/a&gt;、&lt;a href=&quot;http://www.yuiblog.com&quot; target=&quot;_blank&quot;&gt;blog 文章&lt;/a&gt;、&lt;a href=&quot;http://yuiblog.com/blog/category/yui-theater/&quot; target=&quot;_blank&quot;&gt;视频教程&lt;/a&gt;等等，真的相当出色。而其他的 JS 库则对这些方面不太用心，而且我认为这些内容是一个成功开源项目最重要的组成部分，然而 YUI 却没有更成功的占领市场，对此我一直很不解。&lt;/p&gt;
-
-&lt;p&gt;在这里，为了便于各位理解，我暂作几个假设：1，目前的 YUI3 版本已经“足够优秀”，2，YUI 文档和论坛也已经足够完善，足以吸引更多的用户来使用 YUI3。&lt;/p&gt;
-
-&lt;p&gt;基于此，我做一些简短的评价：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;分散的域名应该合并成一个，正像别人指出的那样，维护太多站点往往会适得其反、吃力不讨好。&lt;/li&gt;
-&lt;li&gt;多代码库应当合并成一个代码库，不错，人们仍在使用 YUI2，YUI3 的 API 和 YUI2 却有着天壤之别，而 YUI 将来只会在 YUI3 上取得成功（YUI 团队固执的维护着 YUI2 不会帮助 YUI “更成功”的）&lt;/li&gt;
-&lt;li&gt;YUI 的引入方式太多，应当缩减至一种。人们应当从 YUI().use 开始接触 YUI（假设这些人真想深入使用 YUI）。首页只保留一个要点即可：应当这样来引入 YUI，&amp;lt;script src=&quot;http://yuilibrary.com/yui-min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;，这样就清晰了很多。&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;简单讲，YUI 项目应当保留一个整体的方向性，重点太分散，则会事与愿违。&lt;/p&gt;
-
-&lt;p&gt;如今，如果 YUI 直接和 jQuery 进行竞争，YUI 和它的子项目的运作方式都需要做出调整。因为现在的 YUI 项目运作方式与 &lt;a href=&quot;http://www.yahoo.com&quot; target=&quot;_blank&quot;&gt;YAHOO&lt;/a&gt; 的工作方法是背道而驰的。鉴于目前的管理方式的极差的操作性，YUI 项目着实是一个不幸的牺牲品。&lt;/p&gt;
-
-&lt;p&gt;本来，我们应该使用 &lt;a href=&quot;http://www.yuiblog.com/blog/2010/09/03/coming-inyui-3-2-0-simpleyui/&quot; target=&quot;_blank&quot;&gt;SimpleYUI&lt;/a&gt; 来启动我们的 YUI 程序。看看 jQuery 吧，它的 API 简洁实用，人们多冲着这些迷人的功能来构建大多数的站点。因此当我们访问 &lt;a href=&quot;http://yuilibrary.com&quot; target=&quot;_blank&quot;&gt;yuilibrary.com&lt;/a&gt; 的时候，本应期待只有一种方法来使用 YUI，就是 simpleYUI（这个名字应当换换，换一个更简洁自然的叫法）。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://developer.yahoo.com/yui/3/&quot; target=&quot;_blank&quot;&gt;YUI 主站&lt;/a&gt;上其实不应该提供 zip 文件，我甚至觉得根本不应当通过定制的方式来下载 YUI 文件。jQuery 官网只提供一份单独的  jQuery 文件，所有用户，包括手机用户都在使用这一个文件。这实在太简单了，&lt;a href=&quot;http://docs.jquery.com/Main_Page&quot; target=&quot;_blank&quot;&gt;文档&lt;/a&gt;也很简单，&lt;a href=&quot;http://blog.jquery.com/&quot; target=&quot;_blank&quot;&gt;blog 文章&lt;/a&gt;同样简单，每个人都可以非常方便无障碍的参与  jQuery 的讨论。&lt;/p&gt;
-
-&lt;p&gt;YUI().use 沙箱外加 异步加载脚本的方法很帅，我非常推荐这种方式。我宁愿将我的代码段都压进一个紧凑的 &quot;SimpleYUI&quot; 中，通过他按需从 YUI CDN 上加载脚本。&lt;/p&gt;
-
-&lt;p&gt;我特别希望能重构 YUI 官方网站，让人们更快的找到他们想要的组件，包括那些社区提供的组件。我会重新定制首页，让访问者一眼就能看到 SimpleYUI，再从 YUI 组件库中挑选一些很酷的组件放在首页下方，并直接引导用户能进入到 &lt;a href=&quot;http://yuilibrary.com/gallery/&quot; target=&quot;_blank&quot;&gt;YUI Gallery&lt;/a&gt;（或者不叫 YUI Gallery，YUI Gallery 听起来更像是专为 YUI 搞的插件库）。&lt;/p&gt;
-
-&lt;p&gt;所以我们可以看到，YUI 项目本身依然存在着诸多结构性问题。&lt;/p&gt;
-
-&lt;p&gt;一直以来，YUI 项目都有着一个庞大的全职全薪的开发团队，这是 YUI 独有的优势，这让其他 JavaScript 库项目非常垂涎。我想说，这实在是不赖，正是因为此，才让 YUI 整体受益匪浅。不过它也带来一些很严重的后果，YUI 的命运掌控在 YAHOO 的手中。这不是我们希望看到的，因为YUI自身独立、开源的特性，YUI 应当从 YAHOO 剥离出来独闯江湖。&lt;/p&gt;
-
-&lt;p&gt;据我所知，还没有非雅虎的 YUI 社区，很多非雅虎的开发者为 YUI 贡献了很多不错的代码，但他们都没有提交权限，这是一个严重的问题。反观 jQuery 的成功，则很大程度上得益于开发者的反馈和帮助，我们从社区中得到了大量的滋养。现在，让我们来看看我们的代码库和代码贡献模式吧。&lt;/p&gt;
-
-&lt;p&gt;将代码迁移到 &lt;a href=&quot;http://github.com&quot; target=&quot;_blank&quot;&gt;github&lt;/a&gt; 上是漂亮的第一步（因为没有版本控制，项目早晚会死），然而，人们贡献代码的方式十分零散而分散，显然Git作为开放灵活的开源版本控制工具是我们不二的选择（相比于 YAHOO 内部循规蹈矩的版本发布）。而在 yuilibrary.com 上，几乎不可能实际上发起一个类似 pull request 操作，因为他有自己的一套提交代码机制，而且非常容易起冲突。我们需要 Git 能侵入开发者 coding 的各个习惯，拥抱 Git，你才能游刃有余的使用他。&lt;/p&gt;
-
-&lt;p&gt;时至今日，YUI 社区最大的问题就是“YUI已经成型”，或者说仅仅是 YAHOO 在为 YUI 贡献代码，而一个真正开源的项目应当具有完整的社区生态系统，只有 Yahoo 停止支持 YUI，社区开发者才能开心放心的搭建 YUI 开发环境，为 YUI 贡献代码，如果这个坎过不去，瓶颈就无法消除，我们应当快刀斩乱麻，从底层结构上修复 YUI 问题的根源。&lt;/p&gt;
-
-&lt;p&gt;我们需要建立一个持有 YUI 100%版权的非营利组织，并让非官方的开发者来负责项目的运作，这对 YUI 的发展和提升其在社区的活力有着非同一般的意义。&lt;/p&gt;
-
-&lt;p&gt;如果要给出终极改进方案，我想应该是这两点：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;简单就是美，简化你的代码、你的站点、你的文档、和你组织库文件的方式。更简洁的代码才能被更多人读懂、并使用他。&lt;/li&gt;
-&lt;li&gt;开源社区是 YUI 可持续发展的关键所在，它会带来更多的反馈和热情的开发者，YUI 的影响力也在开源社区中潜移默化的影响这其中的每个人，Yahoo 不应是其唯一的维护者，维护者应当来自于更广阔的开源社区。&lt;/li&gt;
-&lt;/ul&gt;
-
-
-&lt;p&gt;另外，我注意到这里很多人的回复都很悲观，不要忘了，jQuery 的流行才刚刚开始，而 jQuery 和 YUI 几乎是同时面世（他们分别在06年1月和06年2月发布正式版），jQuery 一直保持着其简洁易用，所以也拥有数量远超其他JS框架的开发者群体。实际上，简单比复杂更具挑战，这也一直都是YUI 所不能理解，但最应当反思的问题。&lt;/p&gt;
 </content>
  </entry>
  
