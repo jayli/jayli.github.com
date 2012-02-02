@@ -14,14 +14,14 @@
 @import url(http://fonts.googleapis.com/css?family=Cuprum);
 body{font-size:14px;font-family:Georgia, "Microsoft YaHei", serif;color:#000000;background-color:#ffffff;}
 *{padding:0;margin: 0;border:none;outline:none;}
-a{color:#dd0000;text-decoration:none;}
-a:hover{color:#333333;text-decoration:underline;}
+a{/*color:#dd0000;*/color:#1863A1;text-decoration:none;}
+a:hover{/*color:#333333;*/color:#0181EB;text-decoration:underline;}
 hr{margin:.7em 0;border-top:1px dashed #d0d0d0;border-bottom:1px dashed #f9f9f9;}
 p{padding:.7em 0;}
 li{padding:.2em 0;}
 ol,ul{list-style-position:inside;}
 pre code{margin:1em 0;font-size:13px;font-family:Monaco,monospace;line-height:1.6;display:block;overflow:auto;}
-blockquote{display:block;text-align:justify;border-left:4px solid #eeeeee;}
+blockquote{display:block;text-align:justify;border-left:4px solid #ddd;}
 blockquote{margin:1em 0em;padding-left:1.5em;}
 blockquote p{margin:0;padding:0;}
 #container{width:600px;margin:2em auto;display:block;padding:0 2em;}
@@ -37,7 +37,7 @@ blockquote p{margin:0;padding:0;}
 header{padding:.5em 0;border-bottom: 1px solid #cccccc;}
 nav{font-family:Georgia,serif,"Microsoft YaHei";font-size:1.1em;text-transform:uppercase;float:left;margin-left:-12em; width:9em;}
 nav a{display:block;padding:.7em 1em;color:#000000;}
-nav a:hover{background-color:#ff0000;text-decoration:none;color:#f9f9f9;-webkit-transition:color .2s linear;}
+nav a:hover{/*background-color:#ff0000;*/background-color:#0181EB;text-decoration:none;color:#f9f9f9;-webkit-transition:color .2s linear;-moz-transition:color .2s linear;}
 .post{padding:1em 0em;}
 h1{font-family:Georgia,serif,"Microsoft YaHei";font-size:2em;color:#000;}
 h2{font-family:Georgia,serif,"Microsoft YaHei";font-size:1.6em;color:#111;}
