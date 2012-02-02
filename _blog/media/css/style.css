@@ -17,7 +17,7 @@ body{font-size:14px;font-family:Georgia, "Microsoft YaHei", serif;color:#000000;
 a{/*color:#dd0000;*/color:#1863A1;text-decoration:none;}
 a:hover{/*color:#333333;*/color:#0181EB;text-decoration:underline;}
 hr{margin:.7em 0;border-top:1px dashed #d0d0d0;border-bottom:1px dashed #f9f9f9;}
-p{padding:.7em 0;}
+p{padding:.5em 0;*padding:.4em 0;}
 li{padding:.2em 0;}
 ol,ul{list-style-position:inside;}
 pre code{margin:1em 0;font-size:13px;font-family:Monaco,monospace;line-height:1.6;display:block;overflow:auto;}
