@@ -2,19 +2,19 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
  
  <title>setImpl</title>
- <link href="http://lhzhang.com/atom.xml" rel="self"/>
- <link href="http://lhzhang.com/"/>
- <updated>2012-02-03T09:48:09+08:00</updated>
- <id>http://lhzhang.com/</id>
+ <link href="http://jayli.github.com/blog/atom.xml" rel="self"/>
+ <link href="http://jayli.github.com/"/>
+ <updated>2012-02-03T16:25:21+08:00</updated>
+ <id>http://jayli.github.com/</id>
  <author>
-   <name>Linghua Zhang</name>
-   <email>linghua.zhang@me.com</email>
+   <name>Jayli</name>
+   <email>bachi@taobao.com</email>
  </author>
 
  
  <entry>
    <title>“JavaScript Web Applications” 译者序</title>
-   <link href="http://lhzhang.comdata/2012/02/02/jswebapps.html"/>
+   <link href="http://jayli.github.com/blog/data/2012/02/02/jswebapps.html"/>
    <updated>2012-02-02T00:00:00+08:00</updated>
    <id>urn:uuid:60d35626-d0a1-441f-9815-5a38142eeb3c</id>
    <content type="html">&lt;p&gt;&lt;img src=&quot;http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
@@ -41,7 +41,7 @@
  
  <entry>
    <title>YUISlide,针对移动设备的动画性能优化</title>
-   <link href="http://lhzhang.comdata/2011/12/23/yuislide.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/12/23/yuislide.html"/>
    <updated>2011-12-23T00:00:00+08:00</updated>
    <id>urn:uuid:c16ed91c-567b-4700-9398-2dc2834b1fee</id>
    <content type="html">&lt;p&gt;&lt;a href=&quot;http://jayli.github.com/gallery/yuislide&quot;&gt;YUISlide&lt;/a&gt;这是一个集选项卡切换和幻灯切换功能于一体的小插件，基于YUI3实现，之前主要用在普通的PC终端里，在&lt;a href=&quot;http://wt.taobao.com/&quot;&gt;网厅&lt;/a&gt;项目中灵玉同学对Slide进行了改进，增加了手持设备里的小功能，比如手指滑动事件。但Slide的动画在移动端的表现出人意外的糟糕。&lt;/p&gt;
@@ -88,7 +88,7 @@ var nativeTransition =
  
  <entry>
    <title>JavaScript Autoload 的实现</title>
-   <link href="http://lhzhang.comdata/2011/06/09/sandbox.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/06/09/sandbox.html"/>
    <updated>2011-06-09T00:00:00+08:00</updated>
    <id>urn:uuid:ae17bef1-8663-43b0-9333-bbdf67130116</id>
    <content type="html">&lt;iframe src='http://www.slideshare.net/slideshow/embed_code/8590158' width='500' height='410' border=0&gt;&lt;/iframe&gt;
@@ -157,7 +157,7 @@ include('file.php')
  
  <entry>
    <title>[翻译]F2E大会上关于@font-face的分享</title>
-   <link href="http://lhzhang.comdata/2011/05/01/fontface.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/05/01/fontface.html"/>
    <updated>2011-05-01T00:00:00+08:00</updated>
    <id>urn:uuid:b9234a49-4d30-421e-95b3-1d9c9ffe6aac</id>
    <content type="html">&lt;ul&gt;
@@ -221,7 +221,7 @@ Wretch New Front Page），在这里我只是将他们的分享做了摘录。&l
  
  <entry>
    <title>QCon 2011 后记</title>
-   <link href="http://lhzhang.comdata/2011/04/17/qcon.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/04/17/qcon.html"/>
    <updated>2011-04-17T00:00:00+08:00</updated>
    <id>urn:uuid:b9a827a7-cff0-46ea-8f34-ef665fee15b5</id>
    <content type="html">&lt;p&gt;关于Qcon 2011&lt;/p&gt;
@@ -257,7 +257,7 @@ Wretch New Front Page），在这里我只是将他们的分享做了摘录。&l
  
  <entry>
    <title>[翻译]YUI3.4.0 中对 Seed 和 Loader 的改造</title>
-   <link href="http://lhzhang.comdata/2011/03/11/yuidev.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/03/11/yuidev.html"/>
    <updated>2011-03-11T00:00:00+08:00</updated>
    <id>urn:uuid:cc706484-0a98-4403-bb96-6fca169c37c9</id>
    <content type="html">&lt;ul&gt;
@@ -393,7 +393,7 @@ dd-drop,dd-scroll,dd-drop-plugin&quot;
  
  <entry>
    <title>JavaScript语法检查插件 jsLint for Vim</title>
-   <link href="http://lhzhang.comdata/2011/01/04/vim.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/01/04/vim.html"/>
    <updated>2011-01-04T00:00:00+08:00</updated>
    <id>urn:uuid:7fb56684-2ad6-4932-a87a-a3005117b46f</id>
    <content type="html">&lt;p&gt;工欲善其事，必先利其器。作为更专业的前端工程师，我们需要强劲的IDE协助我们写出规范、美观、漂亮的JavaScript代码，首先要作的就是对代码进行合法性检查，而通过 &lt;a href=&quot;www.jslint.com&quot; target=&quot;_blank&quot;&gt;www.jslint.com&lt;/a&gt; 进行手工操作又显得碍手碍脚。为了提高效率，这里推荐使用 &lt;a href=&quot;http://www.vim.org/scripts/script.php?script_id=2729&quot; target=&quot;_blank&quot;&gt;jsLint + Vim(gVim)&lt;/a&gt;，能够协助你达到事半功倍的效果。&lt;/p&gt;
@@ -485,7 +485,7 @@ dd-drop,dd-scroll,dd-drop-plugin&quot;
  
  <entry>
    <title>淘宝2011新版首页开发实践</title>
-   <link href="http://lhzhang.comdata/2011/01/01/taobaoindex.html"/>
+   <link href="http://jayli.github.com/blog/data/2011/01/01/taobaoindex.html"/>
    <updated>2011-01-01T00:00:00+08:00</updated>
    <id>urn:uuid:d5ea4ee2-7adf-4354-b697-3f60201f1b0f</id>
    <content type="html">&lt;p&gt;本文同期发表于 &lt;a href=&quot;http://ued.taobao.com&quot;&gt;http://ued.taobao.com&lt;/a&gt;&lt;/p&gt;
@@ -517,7 +517,7 @@ dd-drop,dd-scroll,dd-drop-plugin&quot;
  
  <entry>
    <title>将你的 KISSY 程序移植到服务器端 – nodejs-kissy 项目简介</title>
-   <link href="http://lhzhang.comdata/2010/12/19/nodejskissy.html"/>
+   <link href="http://jayli.github.com/blog/data/2010/12/19/nodejskissy.html"/>
    <updated>2010-12-19T00:00:00+08:00</updated>
    <id>urn:uuid:73850b0d-7217-475b-b665-1034ca71b2dd</id>
    <content type="html">&lt;p&gt;如果你还不了解 NodeJS，请参照 &lt;a href=&quot;http://nodejs.org/&quot; target=&quot;_blank&quot;&gt;NodeJS.org&lt;/a&gt;，简言之：&lt;/p&gt;
@@ -608,7 +608,7 @@ S.add({
  
  <entry>
    <title>[翻译] Zakas 对 John 的回应 </title>
-   <link href="http://lhzhang.comdata/2010/12/18/zakas.html"/>
+   <link href="http://jayli.github.com/blog/data/2010/12/18/zakas.html"/>
    <updated>2010-12-18T00:00:00+08:00</updated>
    <id>urn:uuid:063ad4ce-8844-4406-b213-85a54eb47f50</id>
    <content type="html">&lt;ul&gt;
