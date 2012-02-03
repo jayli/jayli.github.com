@@ -7,7 +7,7 @@ tags:
 ---
 ![](http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png)
 
-> 经过将近半年的努力，我和好友一舟共同翻译的 [JavaScript Web Applications](http://jayli.github.com/jswebapps) 这本书终于快要出版了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。
+> 经过将近半年的努力，我和好友一舟共同翻译的 [JavaScript Web Applications](http://jayli.github.com/jswebapps) 这本书终于快要和大家见面了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。
 
 ### 译者序
 
