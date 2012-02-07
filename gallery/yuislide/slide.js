@@ -274,6 +274,28 @@ YUI.add('slide',function(Y){
 			return this;
 		},
 
+		//当当前帧的位置不正确时，重新定位当前帧到正确的位置,无动画
+		relocateCurrentTab:function(){
+			var that = this;
+			var index = that.current_tab;
+			if(that.effect != 'h-slide'){
+				return;
+			}
+
+			if(that.transitions){
+				that.animwrap.setStyles({
+					'-webkit-transition-duration': '0s',
+					'-webkit-transform':'translate3d('+(-1 * index * that.animcon.get('region').width)+'px,0,0)'
+				});
+			}else{
+				that.animwrap.setStyles({
+					left: -1 * index * that.animcon.get('region').width
+					
+				});
+			}
+			return this;
+		},
+
 		//根据配置条件修正控件尺寸
 		// 重新渲染slide的尺寸，
 		// 根据goto到的index索引值渲染当前需要的长度和宽度
@@ -324,6 +346,7 @@ YUI.add('slide',function(Y){
 				width:width+'px',
 				display:'block'
 			});
+			that.relocateCurrentTab();
 			return this;
 		},
 
