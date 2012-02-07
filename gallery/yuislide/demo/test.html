@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="Responsive design testing for the masses">
+	<title>Responsive Design Testing</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">   
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="apple-touch-icon" sizes="57x57" href="icon1.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="icon2.png" />
+
+<link rel="stylesheet" type="text/css" href="http://a.tbcdn.cn/app/dp/css/global.css">
+<script type="text/javascript" src="http://a.tbcdn.cn/s/yui/3.4.1/build/yui/yui-min.js"></script>
+
+<style>
+html {
+	 -webkit-text-size-adjust: 100%;
+ }
+/*--标准--*/
+.t-tabview {position:relative;text-align:left;width:100%;}
+.t-tabview .tab-nav {width:auto;*width:100%;border-color:#2647A0;border-style:solid;border-width:0 0 5px 0;}
+.t-tabview .tab-nav li {float:left;border:1px solid #999999;color:black;padding:5px;margin:0 0.16em 0 0}
+.t-tabview .tab-nav li a,
+.t-tabview .tab-nav li a:link,
+.t-tabview .tab-nav li a:visited,
+.t-tabview .tab-nav li a:hover {color:black;text-decoration:none;}
+.t-tabview .tab-nav li.selected a,
+.t-tabview .tab-nav li.selected a:link,
+.t-tabview .tab-nav li.selected a:visited,
+.t-tabview .tab-nav li.selected a:hover {color:white;text-decoration:none;}
+.t-tabview .tab-nav li.selected {background-color:#2647A0;border:1px solid #2647A0;font-weight:bold;}
+.t-tabview .tab-content {height:auto;width:100%;overflow:hidden;position:relative;}
+.t-tabview .tab-content .tab-pannel {
+	float:left;
+}
+.hidden {
+	display:none
+}
+
+
+.bb {
+	background:gray;
+}
+
+body {
+	font-size:16px;
+}
+
+
+
+</style>
+</head>
+<body id="container">
+	<div id="J_tab_1" class="t-tabview my-hack">
+	  <ul class="tab-nav clearfix">
+		<li class="selected"><a href="#tab1"><em>Tab One</em></a></li>
+		<li><a href="#tab2"><em>Tab Two</em></a></li>
+		<li><a href="#tab3"><em>Tab Three</em></a></li>
+	  </ul>
+	  <div class="tab-content">
+		<div class="tab-pannel"><p>Tab One ContentTab One ContentTab One ContentTab One Content</p></div>
+		<div class="tab-pannel hidden"><p>Tab Two ContentTab Two ContentTab Two ContentTab Two ContentTab Two Content</p></div>
+		<div class="tab-pannel hidden"><p>Tab Three ContentTab Three ContentTab Three ContentTab Three Contentaoi asdfo asjfo asjdflaskjfl;ask jfasl;fj alsfj asl;kfj asl;fj asl;fj asaldfjalkfjaslkfj asdfja slkfjasdlf jl</p></div>
+	  </div>
+	</div>
+
+	<div><span id="desp"></span>
+	</div>
+
+	<script>
+	YUI({
+		modules:{
+			'slide':{
+				fullpath:'../slide.js',
+				requires:['node','anim']
+			}
+		}
+	}).use('slide','dump',function(Y){
+		new Y.Slide('J_tab_1',{
+			autoSlide:false,
+			eventype:'click',
+			ease:'easeOut',
+			effect:'h-slide',
+			speed:0.5,
+			touchmove:true,
+			adaptive_width:function(){
+				return document.body.offsetWidth;
+			}
+			
+		});
+	});
+	var getWidth = function(){
+		document.getElementById('desp').innerHTML = document.body.offsetWidth;
+
+	};
+	getWidth();
+	window.onresize = window.onload = getWidth;
+	</script>
+	<p class="bb">下边界位置</p>
+</body>
+</html>

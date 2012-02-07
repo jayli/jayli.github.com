@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>slidetab demo</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<link media="screen" type="text/css" href="http://a.tbcdn.cn/app/dp/vd/css/common.css" rel="stylesheet">
+	<link media="screen" type="text/css" href="http://a.tbcdn.cn/app/dp/vd/css/index.css" rel="stylesheet">
+<script type="text/javascript" src="http://cn.yimg.com/i/yui/3.0.0/build/yui/yui-min.js"></script>
+<style>
+body{background:none;}
+.hidden {display:none;}
+#tbv-imgscroll{width:750px;margin:30px auto;}
+</style>
+
+</head>
+<body>
+<div class="fixfloat t-slide" id="tbv-imgscroll">				
+	<ul class="imglist dpd-slidetab tab-nav">
+		<li class="fixfloat on"><a title="我的青春谁做主" rel="http://taobao.joy.cn/play.html?vid=12245" href="http://img02.taobaocdn.com/tps/i2/T1Gk8nXaJkXXXXXXXX-505-320.jpg"><img title="我的青春谁做主" alt="我的青春谁做主" src="http://img03.taobaocdn.com/tps/i3/T1zA8nXetkXXXXXXXX-73-48.jpg"></a><div><h2>我的青春谁做主</h2><p>未来充满希望，我的青春由我、也由你做主！</p></div></li>
+
+		<li class="fixfloat"><a title="非常主播" rel="http://taobao.joy.cn/play.html?vid=11371" href="http://img07.taobaocdn.com/tps/i7/T1UA4nXeVlXXXXXXXX-505-320.jpg"><img title="非常主播" alt="非常主播" src="http://img04.taobaocdn.com/tps/i4/T1lA4nXcpmXXXXXXXX-73-48.jpg"></a><div><h2>非常主播</h2><p>超人气偶像南贤诛是当下最紅的电台主持人</p></div></li>
+		<li class="fixfloat"><a title="十三省" rel="http://taobao.joy.cn/play.html?vid=12534" href="http://img01.taobaocdn.com/tps/i1/T1sk8nXhlkXXXXXXXX-505-320.jpg"><img title="十三省" alt="十三省" src="http://img01.taobaocdn.com/tps/i1/T1jQ8nXkXkXXXXXXXX-73-48.jpg"></a><div><h2>十三省</h2><p>这是一段真实的，不为人知的抗战秘史</p></div></li>
+
+		<li class="fixfloat"><a title="游龙戏凤" rel="http://taobao.joy.cn/play.html?vid=11362" href="http://img02.taobaocdn.com/tps/i2/T1ik4nXd8mXXXXXXXX-505-320.jpg"><img title="游龙戏凤" alt="游龙戏凤" src="http://img06.taobaocdn.com/tps/i6/T11A8nXjXjXXXXXXXX-73-48.jpg"></a><div><h2>游龙戏凤</h2><p>世上，每个人都在寻找一颗属于自己的星星</p></div></li>
+		<li class="fixfloat"><a title="我的机器人女友" rel="http://taobao.joy.cn/play.html?vid=11312" href="http://img06.taobaocdn.com/tps/i6/T1RA8nXmFjXXXXXXXX-505-320.jpg"><img title="我的机器人女友外" alt="我的机器人女友" src="http://img03.taobaocdn.com/tps/i3/T1pk8nXjpkXXXXXXXX-73-48.jpg"></a><div><h2>我的机器人女友</h2><p>次郎渐渐爱上了她，爱上了这个没有情感的机器人</p></div></li>								
+	</ul>
+	<div class="showbox dpd-slidecontent tab-content">
+		<div class="tab-pannel">
+			<a href="http://taobao.joy.cn/play.html?vid=11371">
+				<img src="http://img02.taobaocdn.com/tps/i2/T1Gk8nXaJkXXXXXXXX-505-320.jpg">
+			</a>
+		</div>
+		<div class="tab-pannel hidden">
+			<a href="http://taobao.joy.cn/play.html?vid=11371">
+
+				<img src="http://img07.taobaocdn.com/tps/i7/T1UA4nXeVlXXXXXXXX-505-320.jpg">
+			</a>
+		</div>
+		<div class="tab-pannel hidden">
+			<a href="http://taobao.joy.cn/play.html?vid=11371">
+				<img src="http://img01.taobaocdn.com/tps/i1/T1sk8nXhlkXXXXXXXX-505-320.jpg">
+			</a>
+		</div>
+		<div class="tab-pannel hidden">
+			<a href="http://taobao.joy.cn/play.html?vid=11371">
+				<img src="http://img02.taobaocdn.com/tps/i2/T1ik4nXd8mXXXXXXXX-505-320.jpg">
+			</a>
+		</div>
+		<div class="tab-pannel hidden">
+			<a href="http://taobao.joy.cn/play.html?vid=11371">
+				<img src="http://img06.taobaocdn.com/tps/i6/T1RA8nXmFjXXXXXXXX-505-320.jpg">
+			</a>
+		</div>
+
+	</div>
+
+</div>
+<hr size=1 />
+<script>
+YUI({
+	modules:{
+		'slide':{
+			fullpath:'../slide.js',
+			requires:['node','anim']
+		}
+	}
+}).use('slide','dump',function(Y){
+	new Y.Slide('tbv-imgscroll',{
+		autoSlide:false,
+		eventype:'click',
+		effect:'none',
+		selectedClass:'on'
+	});
+});
+</script>
+</body>
+</html>
+

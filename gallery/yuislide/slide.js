@@ -27,9 +27,10 @@
  * <li>ready:(function) 初始化完成后的回调，参数同switch事件的参数，当前index为0</li>
  * <li>carousel:(boolean) 是否以旋转木马形式播放，默认为false</li>
  * <li>touchmove:(boolean) 是否支持手指滑动，默认为false</li>
- * <li>adaptive_width:(boolean) 屏幕是否根据控件的宽度改变重新渲染尺寸，默认为false</li>
- * <li>adaptive_height:(boolean) 屏幕是否根据控件的高度改变重新渲染尺寸，默认为false</li>
- * <li>adaptive_size:(boolean) 屏幕是否根据控件的宽度和高度改变重新渲染尺寸，默认为false</li>
+ * <li>adaptive_fixed_width:(boolean) 屏幕是否根据控件的宽度改变重新渲染尺寸，默认为false，主要在组件定宽高的场景中，保证resize时tab-pannel尺寸正确</li>
+ * <li>adaptive_fixed_height:(boolean) 屏幕是否根据控件的高度改变重新渲染尺寸，默认为false,主要在组件定宽高的场景中，保证resize时tab-pannel尺寸正确</li>
+ * <li>adaptive_fixed_size:(boolean) 屏幕是否根据控件的宽度和高度改变重新渲染尺寸，默认为false,主要在组件定宽高的场景中，保证resize时tab-pannel尺寸正确</li>
+ * <li>adaptive_width:(function)，如果是百分比设置容器的宽度的话，需要指定这个函数，动态的得到可变化的宽度,默认为false
  * <li>reverse:(boolean) "播放下一个"和"播放上一个"对调，默认为false</li>
  * </ul>
  */
@@ -71,6 +72,8 @@ YUI.add('slide',function(Y){
 			if(that.carousel){
 				that.fix_for_transition_when_carousel();
 			}
+
+			that.fixSlideSize();
 
 			return this;
 		},
@@ -135,7 +138,9 @@ YUI.add('slide',function(Y){
 		buildEventCenter:function(){
 			var that = this;
 			var EventFactory = function(){
-				this.publish("switch");
+				this.publish("switch");//实际上就是before_switch
+				this.publish("after_switch");//未实现
+				this.publish("before_switch");//未实现
 			};
 			Y.augment(EventFactory, Y.Event.Target);
 			that.EventCenter = new EventFactory();
@@ -172,8 +177,14 @@ YUI.add('slide',function(Y){
             that.animwrap = null;
             if (that.effect == 'none') {
                 that.pannels = con.all('.' + that.contentClass + ' div.' + that.pannelClass);
-				that.pannels.addClass('hidden');
-				that.pannels.item(that.defaultTab).removeClass('hidden');
+				//that.pannels.addClass('hidden');
+				that.pannels.setStyles({
+					display:'none'	
+				});
+				//that.pannels.item(that.defaultTab).removeClass('hidden');
+				that.pannels.item(that.defaultTab).setStyles({
+					'display':'block'	
+				});
             } else if (that.effect == 'v-slide') {
                 that.animwrap = Y.Node.create('<div style="position:absolute;"></div>');
                 that.animwrap.set('innerHTML', that.animcon.get('innerHTML'));
@@ -191,7 +202,6 @@ YUI.add('slide',function(Y){
                     'overflow': 'hidden',
                     'top': -1 * that.defaultTab * animconRegion.height + 'px'
                 });
-				that.renderSize();
             } else if (that.effect == 'h-slide') {
                 that.animwrap = Y.Node.create('<div style="position:absolute;"></div>');
                 that.animwrap.set('innerHTML', that.animcon.get('innerHTML'));
@@ -209,7 +219,6 @@ YUI.add('slide',function(Y){
                     'overflow': 'hidden',
                     'left': -1 * that.defaultTab * animconRegion.width + 'px'
                 });
-				that.renderSize();
             } else if (that.effect == 'fade') {
                 that.pannels = con.all('.' + that.contentClass + ' div.' + that.pannelClass);
                 that.pannels.setStyles({
@@ -218,14 +227,21 @@ YUI.add('slide',function(Y){
                 });
                 that.pannels.each(function(node, i){
                     if (i == that.defaultTab) {
-                        node.removeClass('hidden');
-                        node.setStyle('opacity', 1);
+                        //node.removeClass('hidden');
+                        node.setStyles({
+							'opacity': 1,
+							'display': 'block'
+						});
                     } else {
-                        node.addClass('hidden');
-                        node.setStyle('opacity', 0);
+                        //node.addClass('hidden');
+                        node.setStyles({
+							'opacity':0,
+							'diaplay':'none'	
+						});
                     }
                 });
             }
+			that.fixSlideSize(that.current_tab);
             //添加选中的class
 			that.hightlightNav(that.getWrappedIndex(that.current_tab));
             //是否自动播放
@@ -235,44 +251,79 @@ YUI.add('slide',function(Y){
             return this;
         },
 
-		// 重新渲染slide的尺寸
-		renderSize:function(){
-			var that = this;
-			//根据父容器的长宽，渲染子容器的长宽
-			that.renderHeight().renderWidth();
-			return this;
-		},
 
-		// 重新渲染slide的宽度
+		// 重新渲染slide内页(pannels)的宽度
 		renderWidth:function(){
 			var that = this;
+			//有可能animcon没有定义宽度
+			var width = that.animcon.get('region').width;
 			that.pannels.setStyles({
-				width:that.animcon.get('region').width + 'px'
+				width:width + 'px'
 			});
 			return this;
 		},
 		
-		//重新渲染slide的高度
+		//重新渲染slide内页(pannels)的高度
 		renderHeight :function(){
 			var that = this;
+			//有可能animcon没有定义高度
+			var height = that.animcon.get('region').height;
 			that.pannels.setStyles({
-				height:that.animcon.get('region').height + 'px'
+				height:height + 'px'
 			});
 			return this;
 		},
 
 		//根据配置条件修正控件尺寸
-		fixSlideSize:function(){
+		// 重新渲染slide的尺寸，
+		// 根据goto到的index索引值渲染当前需要的长度和宽度
+		fixSlideSize:function(index){
 			var that = this;
-			if(that.adaptive_width){
+			if(that.adaptive_fixed_width){
 				that.renderWidth();
 			}
-			if(that.adaptive_height){
+			if(that.adaptive_fixed_height){
 				that.renderHeight();
 			}
-			if(that.adaptive_size){
-				that.renderSize();
+			if(that.adaptive_fixed_size){
+				that.renderHeight().renderWidth();
 			}
+			that.resetSlideSize(index);
+			return this;
+		},
+
+		//在before_switch和windowResize的时候执行，根据spec_width是否指定，来决定是否重置页面中的适配出来的宽度和高度并赋值
+		// index是goto的目标tab-pannel的索引
+		// 这个函数主要针对横向滚动时各个pannel高度不定的情况
+		resetSlideSize:function(index){
+			var that = this;
+			if(typeof index == 'undefined' || index == null){
+				index = that.current_tab;
+			}
+			// 如果没有开关，或者没有滑动特效，则退出函数，不支持垂直滑动的情况
+			if(that.effect != 'h-slide'){
+				return;
+			}
+			//var width = that.spec_width();
+			
+			var width = that.adaptive_width ? 
+									that.adaptive_width():
+									that.animcon.get('region').width;
+
+
+			var height = that.pannels.item(index).get('region').height;
+			that.animcon.setStyles({
+				width:width+'px',
+				height:height+'px',
+				//强制pannel的内容不超过动画容器的范围
+				overflow:'hidden'
+			});
+			// pannels的高度是不定的，高度是根据内容
+			// 来撑开的因此不能设置高度，而宽度则需要设置
+			that.pannels.setStyles({
+				width:width+'px',
+				display:'block'
+			});
 			return this;
 		},
 
@@ -325,6 +376,11 @@ YUI.add('slide',function(Y){
 				},'.'+that.contentClass+' div.'+that.pannelClass);
 			}
 
+			// 绑定窗口resize事件 
+			Y.on('resize',function(e){
+				that.fixSlideSize(that.current_tab);
+			},window);
+
 			//终端事件触屏事件绑定
 			if ('ontouchstart' in document.documentElement) {
 
@@ -350,37 +406,64 @@ YUI.add('slide',function(Y){
 					that.deltaX = Math.abs(endX - that.startX);//滑过的距离
 					var swipeleft = (Math.abs(endX) < Math.abs(that.startX));//是否是向左滑动
 					var swiperight = !swipeleft;
-					var anti = ( that.is_last() && swipeleft || that.is_first() && swiperight );//判断是否在边界反滑动，true，出现了反滑动，false，正常滑动
+					//判断是否在边界反滑动，true，出现了反滑动，false，正常滑动
+					var anti = that.carousel ? false : ( that.is_last() && swipeleft || that.is_first() && swiperight );
 
-					if(
-							// 支持touchmove，跑马灯效果，任意帧，touchmove足够的距离
-							( that.touchmove && that.carousel && (that.deltaX > width / 3) ) ||
-							// 不支持touchmove，跑马灯
-							( !that.touchmove && that.carousel ) ||
-							// 正常tab，支持touchmove，横向切换
-							( !that.carousel && that.touchmove && that.effect == 'h-slide' && !anti ) || 
-							// 不支持touchmove，不支持跑马灯
-							( !that.touchmove && !that.carousel && !anti) ||
-							//快速手滑
-							( Number(new Date()) - that.startT < 550 )
-						
-						
-						){
 
-							if(swipeleft){//下一帧
-								that.next();
-							}else{//上一帧
-								that.previous();
-							}
-
-					}else{
-						//复位
+					//复位
+					var reset = function(){
 						that.animwrap.setStyles({
 							'-webkit-transition-duration': (Number(that.speed) / 2) + 's',
 							'-webkit-transform':'translate3d('+(-1 * that.current_tab * that.animcon.get('region').width)+'px,0,0)'
 						});
+					};
 
+					//根据手势走向上一个或下一个
+					var goswipe = function(){
+						if(swipeleft){//下一帧
+							that.next();
+						}else{//上一帧
+							that.previous();
+						}
+					};
+
+					//如果检测到是上下滑动，则复位并return
+					if(that.isScrolling){
+						reset();
+						return;
 					}
+
+					//如果滑动物理距离太小，则复位并return
+					//这个是避免将不精确的点击误认为是滑动
+					if(that.touchmove && that.deltaX < 20){
+						reset();
+						return;
+					}
+
+
+					if(		!anti && (
+								// 支持touchmove，跑马灯效果，任意帧，touchmove足够的距离
+								( that.touchmove && (that.deltaX > width / 3) ) ||
+								// 不支持touchmove，跑马灯
+								( !that.touchmove && that.carousel ) ||
+								// 正常tab，支持touchmove，横向切换
+								( !that.carousel && that.touchmove && that.effect == 'h-slide' ) || 
+								// 不支持touchmove，不支持跑马灯
+								( !that.touchmove && !that.carousel) ||
+								//快速手滑
+								( Number(new Date()) - that.startT < 550 )
+							)
+						
+						){
+
+							//根据根据手滑方向翻到上一页和下一页
+							goswipe();
+
+					}else{
+						//复位
+						reset();
+					}
+
 					if(that.autoSlide){
 						that.play();
 					}
@@ -432,6 +515,11 @@ YUI.add('slide',function(Y){
 			return this;
 
 		},
+		//正交运动
+		quadraturemotion:function(){
+
+
+		},
 		// 构建参数列表
 		buildParam:function(o){
 			var that = this;
@@ -454,9 +542,10 @@ YUI.add('slide',function(Y){
 			that.carousel = (typeof o.carousel == 'undefined' || o.carousel == null)?false:o.carousel;
 			that.reverse = (typeof o.reverse == 'undefined' || o.reverse == null)?false:o.reverse;
 			that.touchmove = (typeof o.touchmove == 'undefined' || o.touchmove == null)?false:o.touchmove;
+			that.adaptive_fixed_width = (typeof o.adaptive_fixed_width == 'undefined' || o.adaptive_fixed_width == null)?false:o.adaptive_fixed_width;
+			that.adaptive_fixed_height = (typeof o.adaptive_fixed_height == 'undefined' || o.adaptive_fixed_height == null)?false:o.adaptive_fixed_height;
+			that.adaptive_fixed_size = (typeof o.adaptive_fixed_size == 'undefined' || o.adaptive_fixed_size == null)?false:o.adaptive_fixed_size;
 			that.adaptive_width = (typeof o.adaptive_width == 'undefined' || o.adaptive_width == null)?false:o.adaptive_width;
-			that.adaptive_height = (typeof o.adaptive_height == 'undefined' || o.adaptive_height == null)?false:o.adaptive_height;
-			that.adaptive_size = (typeof o.adaptive_size == 'undefined' || o.adaptive_size == null)?false:o.adaptive_size;
 			that.id = that.id;
 			//构造参数
 			that.tabs = [];
@@ -656,7 +745,7 @@ YUI.add('slide',function(Y){
 			var that = this;
 			//首先高亮显示tab
 			that.hightlightNav(that.getWrappedIndex(index));
-			that.fixSlideSize();
+			that.fixSlideSize(index);
 			if(that.autoSlide){
 				that.stop().play();
 			}
@@ -667,8 +756,14 @@ YUI.add('slide',function(Y){
                 return this;
             }
             if (that.effect == 'none') {
-                that.pannels.addClass('hidden');
-                that.pannels.item(index).removeClass('hidden');
+                //that.pannels.addClass('hidden');
+				that.pannels.setStyles({
+					'display':'none'	
+				});
+                //that.pannels.item(index).removeClass('hidden');
+                that.pannels.item(index).setStyles({
+					'display':'block'	
+				});
             }
             else if (that.effect == 'v-slide') {
                 if (that.anim) {
@@ -745,7 +840,10 @@ YUI.add('slide',function(Y){
                     duration: that.speed
                 });
                 that.anim.on('start', function(){
-                    that.pannels.item(index).removeClass('hidden');
+                    //that.pannels.item(index).removeClass('hidden');
+                    that.pannels.item(index).setStyles({
+						'display':'block'	
+					});
                     that.pannels.item(index).setStyle('opacity', 0);
                     that.pannels.item(_curr).setStyle('zIndex', 1);
                     that.pannels.item(index).setStyle('zIndex', 2);
@@ -754,7 +852,10 @@ YUI.add('slide',function(Y){
                     that.pannels.item(_curr).setStyle('zIndex', 0);
                     that.pannels.item(index).setStyle('zIndex', 1);
                     that.pannels.item(_curr).setStyle('opacity', 0);
-                    that.pannels.item(_curr).addClass('hidden');
+                    //that.pannels.item(_curr).addClass('hidden');
+                    that.pannels.item(_curr).setStyles({
+						'display':'none'	
+					});
                 });
                 that.anim.run();
             }
@@ -784,6 +885,8 @@ YUI.add('slide',function(Y){
 			}) == false){
 				return;
 			}
+			//发生goto的时候首先判断是否需要整理空间的长宽尺寸
+			//that.renderSize(index);
 			that.switch_to(index);
 		},
 		//自动播放
@@ -808,3 +911,9 @@ YUI.add('slide',function(Y){
 	Y.Slide = Slide;
 	
 },'',{requires:['node','anim']});
+
+/*
+ * TODO
+ * 	1，测试各个情况的工装状况
+ *
+ * */

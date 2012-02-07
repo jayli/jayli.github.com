@@ -113,15 +113,15 @@
 			<h2>Demos</h2>
 			<small>演示例子</small>
 			<ul class="examples">
-				<li><a href="http://taobao-wd.github.com/slide/demo/tab.html">Tab Demo</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/slide.html">Slide Demo</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-none.html">none-effect DEMO</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-fade.html">fade-effect DEMO</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-v-scroll.html">v-slide DEMO</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/tb-slide-scroll.html">h-slide DEMO</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/tb-carousel.html">carsousel DEMO</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/le.taobao.com.html">le.taobao.com DEMO</a></li>
-				<li><a href="http://taobao-wd.github.com/slide/demo/mojo-slide.html">mojo DEMO</a></li>
+				<li><a href="demo/tab.html">Tab Demo</a></li>
+				<li><a href="demo/slide.html">Slide Demo</a></li>
+				<li><a href="demo/tb-slide-none.html">none-effect DEMO</a></li>
+				<li><a href="demo/tb-slide-fade.html">fade-effect DEMO</a></li>
+				<li><a href="demo/tb-slide-v-scroll.html">v-slide DEMO</a></li>
+				<li><a href="demo/tb-slide-scroll.html">h-slide DEMO</a></li>
+				<li><a href="demo/tb-carousel.html">carsousel DEMO</a></li>
+				<li><a href="demo/le.taobao.com.html">le.taobao.com DEMO</a></li>
+				<li><a href="demo/mojo-slide.html">mojo DEMO</a></li>
 				<li><a href="http://taobao-wd.github.com/lazy-mojo/demo.html">lazyload Demo</a></li>
 			</ul>
 		</div>
@@ -344,20 +344,34 @@ new Y.Slide('J_tab',{
 				<!--}}-->
 				<!--{{-->
 				<div class="expand">
-					<h4>adaptive_height (boolean)</h4>
+					<h4>adaptive_fixed_height (boolean)</h4>
 					<p>当控件尺寸高度变化时，是否修Slide控件的tab尺寸以保证子容器尺寸正确，默认为false</p>
 				</div>
 				<!--}}-->
 				<!--{{-->
 				<div class="expand">
-					<h4>adaptive_width (boolean)</h4>
+					<h4>adaptive_fixed_width (boolean)</h4>
 					<p>当控件尺寸宽度变化时，是否修Slide控件的tab尺寸以保证子容器尺寸正确，默认为false</p>
 				</div>
 				<!--}}-->
 				<!--{{-->
 				<div class="expand">
-					<h4>adaptive_size (boolean)</h4>
+					<h4>adaptive_fixed_size (boolean)</h4>
 					<p>当控件尺寸高度和宽度变化时，是否修Slide控件的tab尺寸以保证子容器尺寸正确，默认为false</p>
+				</div>
+				<!--}}-->
+				<!--{{-->
+				<div class="expand">
+					<h4>adaptive_width (function)</h4>
+					<p>当组件的宽度为百分比或者不固定时，在window resize的时候重新修正容器的宽度，是一个函数，返回一个数字，默认值为false</p>
+<pre class="js">
+var slide = new Y.Slide('J_tab',{
+	adaptive_width:function(){
+		return document.body.offsetWidth;
+	}
+});
+
+</pre>
 				</div>
 				<!--}}-->
 				<!--{{-->
