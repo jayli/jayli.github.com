@@ -333,6 +333,12 @@ YUI.add('slide',function(Y){
 									that.animcon.get('region').width;
 
 
+			// pannels的高度是不定的，高度是根据内容
+			// 来撑开的因此不能设置高度，而宽度则需要设置
+			that.pannels.setStyles({
+				width:width+'px',
+				display:'block'
+			});
 			var height = that.pannels.item(index).get('region').height;
 			that.animcon.setStyles({
 				width:width+'px',
@@ -340,13 +346,6 @@ YUI.add('slide',function(Y){
 				//强制pannel的内容不超过动画容器的范围
 				overflow:'hidden'
 			});
-			// pannels的高度是不定的，高度是根据内容
-			// 来撑开的因此不能设置高度，而宽度则需要设置
-			that.pannels.setStyles({
-				width:width+'px',
-				display:'block'
-			});
-			that.relocateCurrentTab();
 			return this;
 		},
 
@@ -402,6 +401,7 @@ YUI.add('slide',function(Y){
 			// 绑定窗口resize事件 
 			Y.on('resize',function(e){
 				that.fixSlideSize(that.current_tab);
+				that.relocateCurrentTab();
 			},window);
 
 			//终端事件触屏事件绑定
@@ -409,6 +409,7 @@ YUI.add('slide',function(Y){
 
 				that.con.delegate('touchstart',function(e){
 					that.stop();
+					that.touching = true;
 					if(that.is_last() && that.carousel){
 						that.fix_next_carousel();
 					}
@@ -424,6 +425,7 @@ YUI.add('slide',function(Y){
 				},'.tab-content'); 
 
 				that.con.delegate('touchend',function(e){
+					that.touching = false;
 					var endX  = e._event.changedTouches[0].clientX;
 					var width = Number(that.animcon.get('region').width);
 					that.deltaX = Math.abs(endX - that.startX);//滑过的距离
@@ -575,6 +577,7 @@ YUI.add('slide',function(Y){
 			that.animcon = null;
 			that.pannels = [];
 			that.timer = null;
+			that.touching = false;
 			//默认选中的tab，默认值为0，添加默认选中的功能
 			//modified by huya
             that.defaultTab = (typeof o.defaultTab == 'undefined' || o.defaultTab == null) ? 0 : Number(o.defaultTab) - 1;//隐藏所有pannel
