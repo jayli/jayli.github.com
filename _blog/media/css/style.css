@@ -59,7 +59,7 @@ li[id*='dsq-like-']{display: none;}
 /* 仅iPad 竖版，以及所有小于（不等于）标准960宽度的平板电脑的竖版 */
 @media only screen and (min-width: 768px) and (max-width: 959px) {
 	#main nav {
-		float:none;margin-left:-2em;width:115%;margin-top:1em;margin-bottom:1em;
+		float:none;margin-left:-1em;width:115%;margin-top:1em;margin-bottom:1em;
 	}
 	#main nav span {
 		display:inline-block;_display:inline;_zoom:1;
