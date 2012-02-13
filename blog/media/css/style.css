@@ -8,6 +8,9 @@
 * |/ | (~ (~
 * |\.|._)._)
 * --------------------------------- */
+html {
+	 -webkit-text-size-adjust: 100%;
+ }
 
 @import url(http://fonts.googleapis.com/css?family=Galdeano);
 @import url(http://fonts.googleapis.com/css?family=Electrolize);
@@ -48,3 +51,47 @@ h4{font-family:Georgia,serif,"Microsoft YaHei";font-size:1em;color:#333;}
 #dsq-footer{display:none;}
 li[id*='dsq-like-']{display: none;} 
 .gist{font-size: 12px;line-height:1.6;}
+/* 正常PC液晶屏样式 */
+ 
+/* iPad 及以下，以及所有小于（不等于）960宽度的平板电脑 */
+@media only screen and (max-width: 959px) {}
+ 
+/* 仅iPad 竖版，以及所有小于（不等于）标准960宽度的平板电脑的竖版 */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+	#main nav {
+		float:none;margin-left:-2em;width:115%;margin-top:1em;margin-bottom:1em;
+	}
+	#main nav span {
+		display:inline-block;_display:inline;_zoom:1;
+	}
+	.content {
+		border-top:1px solid #ccc;
+	}
+}
+ 
+/* iPhone 及以下 */
+@media only screen and (max-width: 767px) {
+
+	 #container {
+		width:100%;padding:0 0;
+	 }
+	 header {
+		margin-left:1em;margin-right:1em;
+	 }
+	 .content{
+		margin-left:1em;margin-right:1em;
+		border-top:1px solid #ccc;
+	 }
+	 #main nav {
+		float:none;margin:1em auto;width:100%;
+	 }
+	 #main nav a {
+		display:inline-block;
+	 }
+}
+ 
+/* 仅iPhone 横版，包括某些平板电脑的竖版 */
+@media only screen and (min-width: 480px) and (max-width: 767px) {}
+ 
+/* 仅iphone4 竖版 */
+@media only screen and (max-width: 479px) {}
