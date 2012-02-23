@@ -419,7 +419,7 @@ YUI.add('slide',function(Y){
 					that.startX = e._event.changedTouches[0].clientX;
 					that.startY = e._event.changedTouches[0].clientY;
 					that.animwrap.setStyles({
-						'-webkit-transition-duration': '0s',
+						'-webkit-transition-duration': '0s'
 					});
 					that.startT = Number(new Date());//如果快速手滑，则掠过touchmove，因此需要计算时间
 				},'.tab-content'); 
