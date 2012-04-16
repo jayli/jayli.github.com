@@ -5,7 +5,7 @@ guid: urn:uuid:60d35626-d0a1-441f-9815-5a38142eeb3c
 tags:
     - javascript web applications
 ---
-![](http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png)
+![](http://img01.taobaocdn.com/tps/i1/T1YBC9XjJwXXXXXXXX-275-364.png)
 
 > 经过将近半年的努力，我和好友一舟共同翻译的 [JavaScript Web Applications](http://jayli.github.com/jswebapps) 这本书终于快要和大家见面了，近年来鲜有讲JavaScriptMVC的中文资料，这本书正好填补了这方面的空白，推荐大家一读。
 
