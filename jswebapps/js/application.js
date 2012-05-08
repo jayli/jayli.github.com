@@ -41,3 +41,20 @@ $(function(){
 });
 
 })(jQuery);
+
+// added by jayli
+(function($){
+
+	if(window.location.host !== 'ued.taobao.com'){
+		return;
+	}
+
+	var str = '<p>特别贡献奖：<b>杨明明，朱琦，孙博</b></p> \
+				<p>积极参与奖项：<b>江栋科，李任之，杨振楠，陈良，杨翰文，车思慧，Eric（网名）</b></p> \
+				<p>恭喜以上获奖者!~</p>';
+
+	$('.sub-section').html(str);
+	$('.sub-section').removeClass('sub-section');
+
+
+})(jQuery);
