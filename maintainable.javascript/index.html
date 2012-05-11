@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8>
+    <title>O'Reilly: Maintainable JavaScript 中译本</title>
+    <link rel="stylesheet" href="css/application.css" type="text/css" charset="utf-8">
+    <script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/application.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+  <body>    
+    <h1>O'Reilly: Maintainable JavaScript 中译本</h1>
+    <div id="west">
+      
+      <!--img src="http://img03.taobaocdn.com/tps/i3/T1rNWhXfdsXXXXXXXX-270-355.png" /!-->
+	  <img src="http://img01.taobaocdn.com/tps/i1/T16L_cXa0bXXXOMVz6-275-361.jpg" style="/*border:1px solid #d0d0d0*/" />
+      
+      <p><strong>Update!</strong> 官网图书介绍：<a href="http://shop.oreilly.com/product/0636920025245.do" target=_blank>O'Reilly: Maintainable JavaScript </a>.</p>
+
+	  <p>每个人都有固定的一套编码习惯，但在团队协作过程中，则需要每个人都遵守统一的编码约定和编程方法。而本书内容正是讲述如何在团队协作中保持高效的编码，这些最佳实践包括代码风格、编程技巧以及自动化。你将学习到如何写出具有高可维护性的代码，团队任何人都可以轻松的理解、适应和对你的代码做扩展。</p>
+
+	  <p>本书作者是大名鼎鼎的Nicholas Zakas。他曾是Yahoo!的首席前端开发工程师，在完成了从一名独行侠到团队精英的蜕变后，他站在前端工程师的角度为我们提炼出一打最佳编程实践，其中包括很多来自工业生产的最佳法则。应用这些技巧和技术，可以使你的团队编程从侠义的个人偏好的阴霾走出来，走向真正的高效和高水准。</p>
+
+	  <ul>
+		  <li>为你的团队开发建立特定的编程约定</li>
+		  <li>使用工具（诸如JSLint和JSHint）将你的团队开发推向正轨</li>
+		  <li>构建编码风格手册（比如基本的格式化），帮助你的团队开发从游击队走向正规军</li>
+		  <li>应用许多编程实践来解决常见问题提高编码质量</li>
+		  <li>使用多种工具创建JavaScript自动化打包系统</li>
+		  <li>使用诸如YUITest Selenium引擎来集成基于浏览器的JavaScript测试</li>
+	  </ul>
+
+	  <p>作者简介：Nicholas C.Zakas是一名前端开发顾问、作者、演讲家。在Yahoo!供职超过5年时间，在这期间他曾是Yahoo首页首席前端工程师和YUI代码贡献者。他著有“JavaScript高级程序设计”、“Ajax高级程序设计”和“高性能JavaScript”。Zakas 倡导了很多最佳实践，包括渐进增强、可访问性、性能、扩展性和可维护性等等。他的博客地址是：http://www.nczonline.net/。他的Twitter是：@slicknet。</p>
+
+	  <p>原版图书信息：</p>
+
+	  <p>书名：Maintainable JavaScript<br />
+	  出版：O'Reilly Media <br />
+	  作者：Nicholas C.Zakas<br />
+	  出版日期：2012-5<br />
+	  页数：240<br />
+	  ISBN：978-1-4493-2768-2</p>
+
+	  <!--added by jayli-->
+	  <div id="disqus_thread"></div>
+		<script type="text/javascript">
+		/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+		var disqus_shortname = 'maintainablejavascript'; // required: replace example with your forum shortname
+
+		// The following are highly recommended additional parameters. Remove the slashes in front to use.
+		// var disqus_identifier = 'unique_dynamic_id_1234';
+		// var disqus_url = 'http://example.com/permalink-to-page.html';
+
+		/* * * DON'T EDIT BELOW THIS LINE * * */
+		(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+		</script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+    </div>
+    
+    <div id="east">
+      
+      <!--form action="http://jswebapps.heroku.com/signup" method="post" accept-charset="utf-8">
+        <p>Sign up to receive an email when the book is released!</p>
+        <label><input type="text" name="email" placeholder="Email address"></label>
+        <button>Signup &raquo;</button>
+      </form-->
+
+		<style>
+		h2 {
+			margin-top:0;padding-top:0;
+		}
+		</style>
+      <h2>Table of Contents</h2>
+    
+      <ol id="toc">
+		  <li>编程风格</li>
+		  <li>基本的格式化
+			<ol>
+			  <li>缩进层级</li>
+			  <li>语句终止</li>
+			  <li>行的长度</li>
+			  <li>行的分隔</li>
+			  <li>命名</li>
+			  <li>直接量</li>
+				</ol>
+			</li>
+<li>注释
+	<ol>
+	<li>单行注释</li>
+	<li>多行注释</li>
+	<li>书写注释</li>
+	<li>文档注释</li>
+	</ol>
+</li>
+<li>语句和表达式
+	<ol>
+	<li>括号对齐</li>
+	<li>语句块间距</li>
+	<li>switch语句</li>
+	<li>with语句</li>
+	<li>for循环</li>
+	<li>for in 循环</li>
+	</ol>
+</li>
+<li>变量、函数和操作符
+	<ol>	
+	<li>变量声明</li>
+	<li>函数声明</li>
+	<li>函数调用间距</li>
+	<li>立即调用的函数</li>
+	<li>相等比较</li>
+	<li>eval()</li>
+	<li>原始值的包装类型</li>
+	</ol>
+</li>
+<li>编程实践</li>
+<li>UI层的松耦合
+	<ol>	
+	<li>什么是松耦合</li>
+	<li>将JavaScript从CSS中抽离</li>
+	<li>将CSS从JavaScript中抽离</li>
+	<li>将JavaScript从HTML中抽离</li>
+	<li>将HTML从JavaScript中抽离</li>
+	</ol>	
+</li>
+<li>避免全局变量
+	<ol>
+	<li>全局变量带来的问题</li>
+	<li>意外的全局变量</li>
+	<li>单全局变量</li>
+	<li>零全局变量</li>
+	</ol>
+</li>
+<li>事件处理
+	<ol>
+	<li>典型用法</li>
+	<li>规则1：隔离应用逻辑</li>
+	<li>规则2：不要分发事件对象</li>
+	</ol>
+</li>
+<li>避免“空比较“
+	<ol>
+	<li>检测原始值</li>
+	<li>检测引用值</li>
+	<li>检测属性</li>
+	</ol>
+</li>
+<li>将配置数据从代码中抽离
+	<ol>
+	<li>什么是配置数据</li>
+	<li>外化配置数据</li>
+	<li>保存配置数据</li>
+	</ol>
+</li>
+<li>抛出自定义错误
+	<ol>
+	<li>错误的本质</li>
+	<li>在JavaScript中抛出错误</li>
+	<li>抛出错误的优点</li>
+	<li>何时抛出错误</li>
+	<li>try-catch语句</li>
+	<li>错误类型</li>
+	</ol>
+</li>
+<li>不是你的对象不要动
+	<ol>
+	<li>什么是你的？</li>
+	<li>原则</li>
+	<li>更好的方法</li>
+	<li>关于Polyfills</li>
+	<li>阻止修改</li>
+	</ol>
+</li>
+<li>浏览器嗅探
+	<ol>
+	<li>UserAgent嗅探</li>
+	<li>特性检测</li>
+	<li>避免特性推断</li>
+	<li>避免浏览器推断</li>
+	<li>到底该怎么办？</li>
+	</ol>
+</li>
+<li>自动化</li>
+<li>文件和目录结构
+	<ol>	
+	<li>最佳实践</li>
+	<li>基本结构</li>
+	</ol>
+</li>
+<li>Ant
+	<ol>	
+	<li>安装</li>
+	<li>打包文件</li>
+	<li>运行打包</li>
+	<li>目标操作的依赖</li>
+	<li>属性</li>
+	<li>Buildr程序</li>
+	</ol>
+</li>
+<li>校验
+	<ol>
+	<li>寻找文件</li>
+	<li>任务</li>
+	<li>增强的目标操作</li>
+	<li>其他方面的增强</li>
+	<li>Buildr任务</li>
+	</ol>
+</li>
+<li>连接和加工
+	<ol>
+	<li>任务分解</li>
+	<li>行结束符</li>
+	<li>头和尾</li>
+	<li>文件加工</li>
+	</ol>
+</li>
+<li>文件精简和压缩
+	<ol>
+	<li>精简（Minification）</li>
+	<li>压缩（Compression）</li>
+	</ol>
+</li>
+<li>文档化
+	<ol>
+	<li>JSDoc Toolkit</li>
+	<li>YUI Doc</li>
+	</ol>
+</li>
+<li>自动化测试
+	<ol>
+	<li>YUI Test Selenium引擎</li>
+	<li>Yeti</li>
+	<li>PhantomJS</li>
+	<li>JsTestDriver</li>
+	</ol>
+</li>
+<li>组装到一起
+	<ol>
+	<li>被忽略的细节</li>
+	<li>编制打包计划</li>
+	<li>使用CI系统</li>
+	</ol>
+</li>
+<li>附录：JavaScript编程风格</li>
+<li>附录：JavaScript工具</li>
+
+</ol>
+			  
+			
+
+
+
+
+
+
+
+      
+    </div>
+    
+  </body>
+</html>
