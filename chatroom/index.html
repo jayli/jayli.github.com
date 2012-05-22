@@ -1,0 +1,189 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <script src="jquery-1.2.6.min.js" type="text/javascript"></script>
+    <script src="client.js" type="text/javascript"></script>
+    <title>node chat</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="connect">
+        <form action="#">
+          <fieldset> 
+            <p>
+              This is a chat room. Both the client-side and server-side are
+              written in javascript. The source code is
+              <a href="http://github.com/ry/node_chat/tree/master">here</a>.
+            </p>
+
+            <label for="nick">Name</label>
+            <input id="nickInput" class="text"type="text" name="nick" value=""/>
+            <input id="connectButton" class="button" type="submit" name="" value="Join"/>
+
+          </fieldset>
+        </form>
+      </div>
+      <div id="loading"><p>loading</p></div>
+      <div id="log">
+        <table class="message"><tr><td class="date">18:58</td><td valign="top" class="nick">TTilus</td>
+         <td class="msg-text">x6a616e: i think you can, there was some weird #send trick to do that</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">18:58</td><td valign="top" class="nick">TTilus</td>
+         <td class="msg-text">(or i could just be terribly wrong)</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:02</td><td valign="top" class="nick">x6a616e</td>
+         <td class="msg-text">TTilus: with #send you can invoke private methods</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:03</td><td valign="top" class="nick">x6a616e</td>
+         <td class="msg-text">dunno how to leverage it to access instance var :-/</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:05</td><td valign="top" class="nick">x6a616e</td>
+         <td class="msg-text">i3d: usually I use rspec::mocks</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:05</td><td valign="top" class="nick">dlisboa</td>
+         <td class="msg-text">x6a616e: #instance_variable_get ?</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:06</td><td valign="top" class="nick">x6a616e</td>
+         <td class="msg-text">dlisboa: phew I forgot that ..</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:19</td><td valign="top" class="nick">UrbanVegan</td>
+         <td class="msg-text">How can I use "%" in a string as just another character (meaning "percent")?</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:20</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">"%"</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:20</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">:)</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:20</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">no need to escape it</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:20</td><td valign="top" class="nick">dominikh</td>
+         <td class="msg-text">%%</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">dominikh</td>
+         <td class="msg-text">ddfreyne: if you use something like "%string" % 1</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">dominikh</td>
+         <td class="msg-text">eh</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">dominikh</td>
+         <td class="msg-text">you get the idea</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">"foo %s bar" % [ 'hello' ] # =&gt; "foo hello bar"</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">dominikh</td>
+         <td class="msg-text">lets assume he has some other % stuff he wants to be replaced</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">"foo %% %s bar" % [ 'hello' ] # =&gt; "foo % hello bar"</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">19:21</td><td valign="top" class="nick">dominikh</td>
+         <td class="msg-text">and some he doesnt want to</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:07</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">docs should be in /usr/share, not /usr/lib/ruby/gems/1.8/doc, too</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:07</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">FHS is OS agnostic.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:08</td><td valign="top" class="nick">drbrain</td>
+         <td class="msg-text">bougyman: FreeBSD doesn't follow the FHS</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:08</td><td valign="top" class="nick">drbrain</td>
+         <td class="msg-text">Apple doesn't follow the FHS, and windows doesn't follow the FHS</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:08</td><td valign="top" class="nick">drbrain</td>
+         <td class="msg-text">I really don't care about people who say "you don't X, Y or Z!" and won't pony up patches</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:11</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">the fbsd list seems split over FHS compliance</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:11</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">some of em want it, some give it the finger.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:11</td><td valign="top" class="nick">drbrain</td>
+         <td class="msg-text">that's because they already have the heir man page</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:12</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">looks like they gave in on mounts to FHS 2.2 (freebsd did)</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:12</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">winFS was said to be FHS compliant.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:12</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">maybe we'll see that in the next MS product.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:13</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">it was supposed to be in Vista, but got scrapped.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:13</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">stuff in /bin should have config stuff in /etc, stuff in /usr/bin should have their configs in 
+                            /usr/etc, ... IMO
+                            </td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:13</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">stuff in ~/bin should have their configs in ~/etc</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:13</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">that would make a lot more sense than it does now</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:13</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">... what kind of names are "etc" and "var" anyway?</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:13</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">"config" and "data" would have made more sense</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:14</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">they make sense to me.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:14</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">even 'etc'? etcetera? "all the rest of the stuff goes here"?</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:14</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">etc. and variable are how I read them.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:14</td><td valign="top" class="nick">catalystmediastu</td>
+         <td class="msg-text">Does anyone know of a gem or Rails plugin that converts rtf documents to HTML? I've </td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:15</td><td valign="top" class="nick">wmoxam</td>
+         <td class="msg-text">catalystmediastu: I doubt it, you'll probably have to find a tool that does it, and call the tool</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:15</td><td valign="top" class="nick">ddfreyne</td>
+         <td class="msg-text">bougyman: you can't really say that 'etc' is a better name than 'config'</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:16</td><td valign="top" class="nick">catalystmediastu</td>
+         <td class="msg-text">wmoxam: I'll start looking for a generic tool for linux then. Thanks!</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:16</td><td valign="top" class="nick">wmoxam</td>
+         <td class="msg-text">catalystmediastu: http://sourceforge.net/projects/rtf2html/  &lt;-- might work</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:17</td><td valign="top" class="nick">catalystmediastu</td>
+         <td class="msg-text">wmoxam: Ahh that looks like it might. Thank you!</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:17</td><td valign="top" class="nick">wmoxam</td>
+         <td class="msg-text">np</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:17</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">catalystmediastu: unrtf works well for that.</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:17</td><td valign="top" class="nick">bougyman</td>
+         <td class="msg-text">http://www.gnu.org/software/unrtf/unrtf.html</td>
+        </tr></table>
+        <table class="message"><tr><td class="date">20:20</td><td valign="top" class="nick">catalystmediastu</td>
+         <td class="msg-text">bougyman: Thanks, that looks like a good tool too. I'll look into them both a little 
+                                  more.
+         </td>
+        </tr></table>
+      </div>
+      <div id="toolbar">
+        <ul id="status">
+          <li><a id="usersLink" href="#">5 users</a></li>
+          <li>uptime: <span id="uptime">?</span></li>
+          <li>memory: <span id="rss">?</span>mb RSS</li>
+        </ul>
+        <input tabindex="1" type="text" id="entry"/>
+      </div>
+  </body>
+</html>
