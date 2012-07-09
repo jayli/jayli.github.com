@@ -4,7 +4,7 @@
  <title>setImpl</title>
  <link href="http://jayli.github.com/blog/atom.xml" rel="self"/>
  <link href="http://jayli.github.com/"/>
- <updated>2012-07-09T14:06:58+08:00</updated>
+ <updated>2012-07-09T14:08:35+08:00</updated>
  <id>http://jayli.github.com/</id>
  <author>
    <name>Jayli</name>
@@ -17,7 +17,10 @@
    <link href="http://jayli.github.com/blog/data/2012/07/09/d2.html"/>
    <updated>2012-07-09T00:00:00+08:00</updated>
    <id>urn:uuid:0597dfb0-02c0-40e1-82f8-176b6dc31c8a</id>
-   <content type="html">&lt;p&gt;非常感谢圆心的盛情邀请，今年7月有幸参加了第七届D2前端技术论坛，和完颜一起做了这次'移动web开发最佳实践'的分享，今年前端的新话题有不少，除了'基础设施建设'、'第三方广告脚本'等话题之外，就是'移动终端开发'了，半年来淘宝在移动终端开发上有不少的项目和沉淀，一直在积极探索新模式新思路，有了一些经验和教训，总结下来分享给大家。&lt;/p&gt;
+   <content type="html">&lt;div style=&quot;width:510px&quot; id=&quot;__ss_13546648&quot;&gt; &lt;strong style=&quot;display:block;margin:12px 0 4px&quot;&gt;&lt;a href=&quot;http://www.slideshare.net/lijing00333/web-13546648&quot; title=&quot;淘宝移动端Web开发最佳实践&quot; target=&quot;_blank&quot;&gt;淘宝移动端Web开发最佳实践&lt;/a&gt;&lt;/strong&gt; &lt;object id=&quot;__sse13546648&quot; width=&quot;510&quot; height=&quot;420&quot;&gt; &lt;param name=&quot;movie&quot; value=&quot;http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=webv2-0-120704231324-phpapp01&amp;rel=0&amp;stripped_title=web-13546648&amp;userName=lijing00333&quot; /&gt; &lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot;/&gt; &lt;param name=&quot;allowScriptAccess&quot; value=&quot;always&quot;/&gt; &lt;param name=&quot;wmode&quot; value=&quot;transparent&quot;/&gt; &lt;embed name=&quot;__sse13546648&quot; src=&quot;http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=webv2-0-120704231324-phpapp01&amp;rel=0&amp;stripped_title=web-13546648&amp;userName=lijing00333&quot; type=&quot;application/x-shockwave-flash&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot; wmode=&quot;transparent&quot; width=&quot;510&quot; height=&quot;420&quot;&gt;&lt;/embed&gt; &lt;/object&gt; &lt;div style=&quot;padding:5px 0 12px&quot;&gt; View more presentations from &lt;a href=&quot;http://www.slideshare.net/lijing00333&quot; target=&quot;_blank&quot;&gt;jay li&lt;/a&gt; &lt;/div&gt; &lt;/div&gt;
+
+
+&lt;p&gt;非常感谢圆心的盛情邀请，今年7月有幸参加了第七届D2前端技术论坛，和完颜一起做了这次'移动web开发最佳实践'的分享，今年前端的新话题有不少，除了'基础设施建设'、'第三方广告脚本'等话题之外，就是'移动终端开发'了，半年来淘宝在移动终端开发上有不少的项目和沉淀，一直在积极探索新模式新思路，有了一些经验和教训，总结下来分享给大家。&lt;/p&gt;
 
 &lt;p&gt;移动终端越来越火，呈现出一种井喷的态势，看下我们身边多少人在学习移动app的开发就知道火爆程度了。而且几乎是瞬间，书架就摆满了ios和android的应用开发的书籍。而我们的关注点则有所不同，当前互联网成千上万的页面，能否稍加改动就能优雅的运行于移动设备？在我们基于浏览器的项目开发中，有没有可能将PC终端的产品略作调整，就适应移动设备？我们这次分享的主题即是聚焦在这一方面，&quot;让我们的网页更优雅的展现于移动终端&quot;。&lt;/p&gt;
 
