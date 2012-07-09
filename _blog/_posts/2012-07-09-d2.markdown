@@ -1,5 +1,5 @@
 ---
-title: '第七届D2-移动Web开发最佳实践'
+title: '第七届D2-移动设备Web开发最佳实践'
 layout: post
 guid: urn:uuid:0597dfb0-02c0-40e1-82f8-176b6dc31c8a
 tags:
