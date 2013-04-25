@@ -1,0 +1,194 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="zh">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="Keywords" content="简单的XHTML页面" />
+	<meta name="Description" content="这是一个简单的XHTML页面" />
+	<title>万花筒H5</title>
+<link rel="stylesheet" type="text/css" href="http://a.tbcdn.cn/s/kissy/1.3.0rc/css/base.css">
+<link rel="stylesheet" type="text/css" href="http://a.tbcdn.cn/app/dp/css/global.css">
+<script type="text/javascript" src="http://a.tbcdn.cn/??s/kissy/1.3.0/seed-min.js" data-config="{combine:true}"></script>
+<link rel="stylesheet" href="http://a.tbcdn.cn/s/kissy/1.3.0/css/dpl/base.css" />
+<script src="http://a.tbcdn.cn/s/kissy/mobile/jquery/index.js"></script>
+</head>
+<body>
+
+<style>
+/*--标准--*/
+.t-tabview {position:relative;text-align:left;width:100%;}
+.t-tabview .tab-nav {width:auto;*width:100%;border-color:#2647A0;border-style:solid;border-width:0 0 5px 0;}
+.t-tabview .tab-nav li {float:left;border:1px solid #999999;color:black;padding:5px;margin:0 0.16em 0 0}
+.t-tabview .tab-nav li a,
+.t-tabview .tab-nav li a:link,
+.t-tabview .tab-nav li a:visited,
+.t-tabview .tab-nav li a:hover {color:black;text-decoration:none;}
+.t-tabview .tab-nav li.selected a,
+.t-tabview .tab-nav li.selected a:link,
+.t-tabview .tab-nav li.selected a:visited,
+.t-tabview .tab-nav li.selected a:hover {color:white;text-decoration:none;}
+.t-tabview .tab-nav li.selected {background-color:#2647A0;border:1px solid #2647A0;font-weight:bold;}
+.t-tabview .tab-content {border:1px solid gray;}
+
+
+/*--标准--*/
+.t-slide {position:relative;text-align:left;width:600px;overflow:hidden;}
+.t-slide .tab-nav {position:absolute;right:10px;bottom:10px;border-color:#2647A0;z-index:2;}
+.t-slide .tab-nav li {float:left;}
+.t-slide .tab-nav li a {color:white;background-color:red;color:white;margin:5px;padding:2px 5px;}
+.t-slide .tab-nav li.selected a{background-color:#2647A0;font-weight:bold;}
+.t-slide .tab-content {width:600px;height:200px;overflow:hidden;z-index:1;}
+.t-slide .tab-content img {width:600px;height:200px;}
+
+/*--标准2-*/
+.t-slide-2 {position:relative;text-align:left;width:600px;overflow:hidden;}
+.t-slide-2 .tab-nav {position:absolute;right:10px;bottom:10px;border-color:#2647A0;z-index:2;}
+.t-slide-2 .tab-nav li {float:left;}
+.t-slide-2 .tab-nav li a {color:white;background-color:red;color:white;margin:5px;padding:2px 5px;}
+.t-slide-2 .tab-nav li.selected a{background-color:#2647A0;font-weight:bold;}
+.t-slide-2 .tab-content {width:100%;height:400px;overflow:hidden;z-index:1;}
+.t-slide-2 .tab-content img {width:600px;height:100%;}
+
+
+
+.tab-nav {
+	display:none;
+}
+.tab-content {
+	position:fixed;
+	width:100%;
+	height:100%;
+}
+.tab-content p {
+	display:block;
+	width:100%;
+	height:100%;
+}
+.tab-content p img {
+	margin:0 auto;
+	display:block;
+}
+</style>
+<div id="J_tab_1" class="t-tabview my-hack">
+  <ul class="tab-nav clearfix">
+    <li class="selected"><a href="#tab1"><em>Tab One Label</em></a></li>
+    <li><a href="#tab2"><em>Tab Two Label</em></a></li>
+    <li><a href="#tab3"><em>Tab Three Label</em></a></li>
+  </ul>
+  <div class="tab-content">
+	<div class="tab-pannel"><p><img src="幻灯片1.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片2.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片3.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片4.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片5.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片6.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片7.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片8.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片9.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片10.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片11.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片12.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片13.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片14.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片15.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片16.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片17.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片18.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片19.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片20.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片21.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片22.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片23.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片24.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片25.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片26.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片27.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片28.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片29.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片30.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片31.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片32.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片33.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片34.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片35.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片36.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片37.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片38.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片39.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片40.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片41.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片42.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片43.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片44.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片45.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片46.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片47.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片48.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片49.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片50.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片51.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片52.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片53.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片54.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片55.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片56.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片57.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片58.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片59.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片60.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片61.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片62.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片63.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片64.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片65.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片66.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片67.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片68.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片69.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片70.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片71.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片72.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片73.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片74.P7NG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片75.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片76.PNG" /></p></div>
+	<div class="tab-pannel"><p><img src="幻灯片77.PNG" /></p></div>
+
+  </div>
+</div>
+
+
+
+
+</body>
+<script>
+
+	KISSY.use('gallery/slide/1.0/',function(S,Slide){
+
+		window.s = new Slide('J_tab_1',{
+			autoSlide:true,
+			eventype:'click',
+			effect:'hSlide',
+			touchmove:true
+		});
+
+		S.Event.on(document,'keydown',function(e){
+			S.log(e);
+		});
+
+		$(function(){
+			$(document).keydown(function(e){
+				if(e.keyCode==39 || e.keyCode==40 || e.keyCode==32){
+					s.next();
+				}else if(e.keyCode==38 || e.keyCode==37){
+					s.previous();
+				}
+			});
+		});
+		
+	});
+
+</script>
+</html>
+
