@@ -8,3 +8,4 @@ npm install grunt-text-replace
 npm install grunt-contrib-cssmin --save-dev
 npm install grunt-contrib-copy --save-dev
 wget http://jayli.github.com/Gruntfile.js
+wget http://jayli.github.com/.gitignore
