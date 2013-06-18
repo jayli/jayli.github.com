@@ -27,6 +27,7 @@ Tmall.getCats=function(){
 			},function (resp){
 				//alert("OK");
 
+				debugger;
 				if(resp.error_response){
 					alert('系统错误!'+resp.error_response.msg);
 					return false;

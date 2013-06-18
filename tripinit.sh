@@ -1,6 +1,6 @@
 echo "init node_modules...";
 
-npm install grunt-contrib-concat --save-dev
+npm install grunt-contrib-concat
 #npm install grunt-concat-css --save-dev
 npm install grunt-contrib-uglify
 npm install grunt-kmc --save-dev
