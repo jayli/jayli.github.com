@@ -79,7 +79,10 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                banner: ''
+                banner: '',
+				beautify: {
+					ascii_only: true
+				}
             },
             base: {
                 files: {
