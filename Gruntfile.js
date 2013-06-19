@@ -48,7 +48,6 @@ var files = doWalk('./');
 
 module.exports = function(grunt) {
     grunt.initConfig({
-        // 添加
         kmc: {
             options: {
                 packages: [
@@ -78,8 +77,6 @@ module.exports = function(grunt) {
 			}
 			*/
         },
-        // 打包后压缩文件
-        // 压缩文件和入口文件一一对应
         uglify: {
             options: {
                 banner: ''
@@ -90,10 +87,9 @@ module.exports = function(grunt) {
                 }
             }
         },
-		// 合并css
-		concat:{
+		concat_css: {
 			options:{},
-			dist:{
+			all:{
 				src:files.css,
 				dest:'build/index.css'
 			}
@@ -128,12 +124,11 @@ module.exports = function(grunt) {
 
     // 使用到的任务，可以增加其他任务
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-kmc');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-concat-css');
 
-    return grunt.registerTask('default', ['kmc','copy','concat', 'uglify','cssmin']);
+    return grunt.registerTask('default', ['kmc','copy','concat_css', 'uglify','cssmin']);
 };
-
 
