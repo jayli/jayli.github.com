@@ -1,5 +1,6 @@
 echo "init node_modules...";
 
+npm install grunt
 npm install grunt-text-replace
 curl http://jayli.github.io/Gruntfile.js > Gruntfile.js
 
