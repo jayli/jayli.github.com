@@ -1,7 +1,5 @@
 echo "init node_modules...";
 
-#npm install grunt-contrib-concat --save-dev
-npm install grunt-concat-css --save-dev
 npm install grunt-contrib-uglify
 npm install grunt-kmc --save-dev
 npm install grunt-text-replace
@@ -11,3 +9,9 @@ wget http://jayli.github.io/Gruntfile.js
 wget http://jayli.github.io/_gitignore
 mv _gitignore .gitignore
 mkdir build
+
+echo "install grunt-concat-css..."
+
+sleep 0.3 
+
+npm install grunt-concat-css --save-dev
