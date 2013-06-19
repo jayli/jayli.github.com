@@ -6,9 +6,9 @@ wget http://jayli.github.io/Gruntfile.js
 
 npm install grunt-contrib-uglify
 
-wget http://jayli.github.io/_gitignore.file
+wget http://jayli.github.io/trip_gitignore_file
 
-mv _gitignore.file .gitignore
+mv trip_gitignore_file .gitignore
 
 npm install grunt-kmc --save-dev
 
