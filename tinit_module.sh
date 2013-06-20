@@ -10,8 +10,6 @@ curl http://jayli.github.io/trip_gitignore_file > txa
 
 npm install grunt-kmc --save-dev
 
-mkdir build
-
 echo "install grunt-concat-css..."
 
 npm install grunt-concat-css --save-dev
