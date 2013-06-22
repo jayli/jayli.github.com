@@ -25,3 +25,4 @@ curl http://jayli.github.io/Gruntfile.js > Gruntfile.js
 npm install grunt-contrib-copy --save-dev
 npm install grunt-contrib-uglify
 
+npm install grunt-contrib-jshint --save-dev
