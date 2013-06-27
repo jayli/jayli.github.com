@@ -131,6 +131,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-concat-css');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 
     return grunt.registerTask('default', ['kmc','copy','concat_css', 'uglify','cssmin']);
 };
