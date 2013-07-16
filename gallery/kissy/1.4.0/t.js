@@ -145,7 +145,7 @@ typeof e&&(c=parseFloat(c));c==e&&setTimeout(function(){b._onTransitionEnd({orig
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 11:30
+build time: Jul 16 11:39
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -4158,7 +4158,7 @@ KISSY.use('dom/base',{
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 11:30
+build time: Jul 16 11:39
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -4991,9 +4991,11 @@ KISSY.add('node', function (S, Node) {
     ]
 });
 // debug for jayli
+/*
 KISSY.use('node',{
 	sync:true	
 });
+*/
 
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
