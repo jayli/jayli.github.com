@@ -179,7 +179,7 @@ typeof e&&(c=parseFloat(c));c==e&&setTimeout(function(){b._onTransitionEnd({orig
 /*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 11:18
+build time: Jul 16 11:23
 */
 KISSY.add("dom/base/api",function(b){var a=b.Env.host||{},g=a.document,s=b.UA,l={ELEMENT_NODE:1,ATTRIBUTE_NODE:2,TEXT_NODE:3,CDATA_SECTION_NODE:4,ENTITY_REFERENCE_NODE:5,ENTITY_NODE:6,PROCESSING_INSTRUCTION_NODE:7,COMMENT_NODE:8,DOCUMENT_NODE:9,DOCUMENT_TYPE_NODE:10,DOCUMENT_FRAGMENT_NODE:11,NOTATION_NODE:12},q={isCustomDomain:function(b){var b=b||a,b=q.get(b),f=b.document.domain,b=b.location.hostname;return f!=b&&f!="["+b+"]"},getEmptyIframeSrc:function(b){b=b||a;b=q.get(b);return s.ie&&q.isCustomDomain(b)?
 "javascript:void(function(){"+encodeURIComponent("document.open();document.domain='"+b.document.domain+"';document.close();")+"}())":""},NodeType:l,getWindow:function(g){if(!g)return a;g=q.get(g);if(b.isWindow(g))return g;var f=g;f.nodeType!==l.DOCUMENT_NODE&&(f=g.ownerDocument);return f.defaultView||f.parentWindow},getDocument:function(a){if(!a)return g;a=q.get(a);return b.isWindow(a)?a.document:a.nodeType==l.DOCUMENT_NODE?a:a.ownerDocument},isDomNodeList:function(a){return a&&!a.nodeType&&a.item&&
@@ -245,7 +245,7 @@ KISSY.add("dom/base",function(b,a){b.mix(b,{DOM:a,get:a.get,query:a.query});retu
 /*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 11:19
+build time: Jul 16 11:24
 */
 KISSY.add("node/base",function(b,h,i,j){function f(c,m,g){if(!(this instanceof f))return new f(c,m,g);if(c)if("string"==typeof c){if(c=h.create(c,m,g),c.nodeType===l.DOCUMENT_FRAGMENT_NODE)return d.apply(this,a(c.childNodes)),this}else{if(b.isArray(c)||e(c))return d.apply(this,a(c)),this}else return this;this[0]=c;this.length=1;return this}var g=Array.prototype,k=g.slice,l=h.NodeType,d=g.push,a=b.makeArray,e=h.isDomNodeList;f.prototype={constructor:f,isNodeList:!0,length:0,item:function(c){return b.isNumber(c)?
 c>=this.length?null:new f(this[c]):new f(c)},add:function(c,a,e){b.isNumber(a)&&(e=a,a=j);c=f.all(c,a).getDOMNodes();a=new f(this);e===j?d.apply(a,c):(e=[e,0],e.push.apply(e,c),g.splice.apply(a,e));return a},slice:function(c,a){return new f(k.apply(this,arguments))},getDOMNodes:function(){return k.call(this)},each:function(c,a){var e=this;b.each(e,function(d,b){d=new f(d);return c.call(a||d,d,b,e)});return e},getDOMNode:function(){return this[0]},end:function(){return this.__parent||this},filter:function(c){return new f(h.filter(this,
