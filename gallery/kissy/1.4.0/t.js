@@ -174,7 +174,7 @@ typeof e&&(c=parseFloat(c));c==e&&setTimeout(function(){b._onTransitionEnd({orig
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 12:03
+build time: Jul 16 12:06
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -4187,7 +4187,7 @@ KISSY.use('dom/base',{
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 12:03
+build time: Jul 16 12:06
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -4230,6 +4230,9 @@ KISSY.add('node/base', function (S, Dom, Event, undefined) {
     function NodeList(html, props, ownerDocument) {
         var self = this,
             domNode;
+
+            push.apply(self, makeArray(html));
+            return self;
 
         if (!(self instanceof NodeList)) {
             return new NodeList(html, props, ownerDocument);
