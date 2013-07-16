@@ -174,7 +174,7 @@ typeof e&&(c=parseFloat(c));c==e&&setTimeout(function(){b._onTransitionEnd({orig
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 12:02
+build time: Jul 16 12:03
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -4187,7 +4187,7 @@ KISSY.use('dom/base',{
 ﻿/*
 Copyright 2013, KISSY UI Library v1.40dev
 MIT Licensed
-build time: Jul 16 12:02
+build time: Jul 16 12:03
 */
 /*
  Combined processedModules by KISSY Module Compiler: 
@@ -4444,7 +4444,7 @@ KISSY.add('node/base', function (S, Dom, Event, undefined) {
                 }
                 return new NodeList(selector, undefined, context);
             }
-            return Dom.query(selector, context);
+            return new NodeList(Dom.query(selector, context));
         },
 
         /**
