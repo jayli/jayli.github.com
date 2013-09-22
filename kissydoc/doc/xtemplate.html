@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>xtemplate</h1>
+<p>XTemplate 是富逻辑的 KISSY 模板引擎，和<a href="http://mustache.github.io/">Mustache</a>以及<a href="http://juicer.name/">juicer</a>类似，Xtemplate 面向更复杂的业务逻辑场景，同时保持高性能和丰富的配置方法，是易学易懂的模板语言。</p>
+<p>一个典型的XTemplate模板实例：</p>
+<pre><code>Hello {{name}}
+You have just won ${{value}}!
+{{#if data}}
+    {{#each data}}
+        {{name}}-{{xindex}}/{{xcount}}
+    {{/each}}
+{{/if}}</code></pre>
+<p>对应要填充的JSON：</p>
+<pre><code>{
+    name:&#39;Kissy&#39;,
+    value:&#39;10000&#39;,
+    data:[
+        {name:1},
+        {name:2}
+    ]
+}</code></pre>
+<p>拼装结果：</p>
+<pre><code>Hello Kissy You have just won $10000! 1-0/2 2-1/2 </code></pre>
+<p>XTemplate 可以放置于HTML、配置文件、程序代码中，核心机制就是把模板中的标签替换为JSON对象给定的值，并同时具有一定的模板语言逻辑。模板中除了提供最简单的变量替换，还提供if、else和foreach等常见功能。所谓标签，指的是双花括号包含的一个标记，<code>{{name}}</code>就是一个标签，<code>{{#name}}</code>也是一个标签。XTemplate模板语言是抽象的，可以有多种编程语言的实现，KISSY 的<code>xtemplate</code>模块实现了 XTemplate 标记语言。</p>
+<p>这样来引入xtemplate模块：</p>
+<pre><code>KISSY.use(&#39;xtemplate&#39;,function(S,XTemplate){
+    // use XTemplate
+});</code></pre>
+<p>如何通过KISSY来解析XTemplate模板？先看一个简单的例子，实现变量替换：</p>
+<pre><code>KISSY.use(&#39;xtemplate&#39;, function (S, XTemplate) {
+
+    var tpl = &#39;this is {{title}}!&#39;;
+
+    var data = {
+        title: &#39;o&#39;
+    };
+    var render = new XTemplate(tpl).render(data);
+
+    alert(render);// =&gt; &quot;this is o!&quot;
+});</code></pre>
+<p>更多例子：<a href="http://docs.kissyui.com/docs/html/demo/component/xtemplate/index.html">KISSY XTemplate Demos</a></p>
+<hr>
+<h2>KISSY XTemplate 语法</h2>
+<h3><code>{{key}}</code>变量替换</h3>
+<p>使用<code>{{key}}</code>输出变量值，<code>key</code>表示要替换的JSON中的key，替换为JSON中key对应的value。比如XTemplate：</p>
+<pre><code>this is {{title}}!</code></pre>
+<p>要填充的JSON对象：</p>
+<pre><code>{
+    title:&#39;Kissy&#39;
+}</code></pre>
+<p>拼装结果为：</p>
+<pre><code>this is Kissy!</code></pre>
+<h3><code>{{if condition}}</code>条件语句</h3>
+<p>使用<code>{{if condition}}</code>来实现条件判断，<code>condition</code>表示要判断的值，判断是否存在、为空、是否为falsy。比如模板为：</p>
+<pre><code>{{#if title}}
+    has title
+{{/if}}
+{{@if title2}}
+    has title2
+{{else}}
+    not has title2
+{{/if}}</code></pre>
+<p>要填充的JSON对象：</p>
+<pre><code>{
+    title:&#39;kissy&#39;,
+    title2:&#39;&#39;
+}</code></pre>
+<p>填充结果为：</p>
+<pre><code>has title 
+not has title2 </code></pre>
+<p>其中<code>{{#if}}</code>和<code>{{@if}}</code>完全等价，在某些环境中（比如velocity）里<code>#</code>有特殊语义，这时可以用<code>@</code>作为<code>if</code>前缀。</p>
+<p>此外，<code>title</code>的取值不为这些值时被认为是真值：<code>0</code>，<code>null</code>，<code>&#39;&#39;</code>，<code>false</code>，<code>NaN</code>，<code>undefined</code>。当取值为空数组<code>[]</code>或空对象&#39;{}&#39;时，则认为是真值。</p>
+<h3><code>{{^if condition}}</code>条件非语句</h3>
+<p>使用<code>{{^if condition}}</code>来实现条件非，如果<code>condition</code>值为空或者假值（<code>0</code>， <code>null</code>， <code>&#39;&#39;</code>， <code>false</code>， <code>NaN</code>， <code>undefined</code>），则此语句为 true。如果<code>condition</code>有值且是真值，语句为 false。比如这段 XTemplate 模板：</p>
+<pre><code>{{^if title}}
+    do not has title
+{{/if}}
+{{^if title2}}
+    do not has title2
+{{else}}
+    has title2
+{{/if}}</code></pre>
+<p>填充的JSON为：</p>
+<pre><code>{
+    title:undefined,
+    title2:&#39;&#39;
+}</code></pre>
+<p>填充结果为：</p>
+<pre><code>do not has title 
+do not has title2 </code></pre>
+<h3><code>{{#each}}</code>循环语句</h3>
+<h4>循环对象数组</h4>
+<p>使用<code>{{#each data}}</code>表示循环，<code>data</code>表示循环的对象，数组类型，每个item为一个对象，比如这段 XTemplate：</p>
+<pre><code>{{#each data}}
+    {{name}}-{{xindex}}/{{xcount}}
+{{/each}}</code></pre>
+<p>如果填充的JSON为数组类型：</p>
+<pre><code>{
+    data:[
+        {name:1},
+        {name:2}
+    ]
+}</code></pre>
+<p>渲染结果为：</p>
+<pre><code>1-0/2
+2-1/2</code></pre>
+<p>这时循环内的<code>{{xindex}}</code>表示循环的索引值，<code>{{xcount}}</code>表示循环的总次数，<code>{{name}}</code>是数组中每个对象的属性<code>name</code>，替换为属性的值</p>
+<h4>循环单数组</h4>
+<p>循环的<code>data</code>为数组类型，每个item为一个值，而非对象，比如这段XTemplate：</p>
+<pre><code>{{#each data}}
+    {{this}}-{{xindex}}/{{xcount}}
+{{/each}}</code></pre>
+<p>要填充的JSON对象为：</p>
+<pre><code>{
+    data:[&#39;jayli&#39;,&#39;yiminghe&#39;]
+}</code></pre>
+<p>渲染结果为：</p>
+<pre><code>jayli-0/2
+yiminghe-1/2</code></pre>
+<p>其中循环内的<code>{{this}}</code>表示当前循环的item值，<code>{{xindex}}</code>和<code>{{xcount}}</code>含义同上</p>
+<h4>each中数据层次相对位置的访问</h4>
+<p>循环体内可以获取JSON对象上的其他属性，同过相对位置写法获得，比如这段XTemplate：</p>
+<pre><code>{{#each data}}
+    {{this}}-{{../total}}
+{{/each}}</code></pre>
+<p>要填充的JSON对象为：</p>
+<pre><code>{
+    data: [1, 2],
+    total: 3
+}</code></pre>
+<p>填充结果为：</p>
+<pre><code>1-3
+2-3</code></pre>
+<p>其中，<code>{{../total}}</code>表示从循环体内跳出到<code>data</code>属性所在的层级，去查找<code>data</code>属性的兄弟属性<code>total</code>的值。同样，<code>{{#each}}</code>可以被<code>{{@each}}</code>代替。</p>
+<h3><code>{{#with}}</code>语句</h3>
+<p>类似 JavaScript 中的<code>with</code>语法，with 语句是为逐级的对象访问提供命名空间式的速写方式。我们在 XTemplate 中增加了类似的功能。比如<code>{{#with data}}...{{/with}}</code>,中间可以直接调用对象<code>data</code>里的属性，输出对应的值。</p>
+<p>比如这段 XTemplate</p>
+<pre><code>{{#with data}}
+    {{name}}-{{age}}
+{{/with}}</code></pre>
+<p>要填充的JSON为：</p>
+<pre><code>{
+    data:{
+        name:&#39;jayli&#39;,
+        age:&#39;2&#39;
+    }
+}</code></pre>
+<p>填充结果为：</p>
+<pre><code>jayli-2</code></pre>
+<p>其中<code>{{#with}}</code>可以用<code>{{@with}}</code>代替</p>
+<h4>支持 with 中数据层次间的相对位置访问</h4>
+<p>同<code>{{#each}}</code>一样，with 语句中也可以用相对路径写法来访问对象其他层级的属性，比如这段模板：</p>
+<pre><code>{{#with data}}
+    {{#with p}}
+        {{name}}-{{age}}-{{../l2}}-{{../../l1}}
+    {{/with}}
+{{/with}}</code></pre>
+<p>要填充的JSON为：</p>
+<pre><code>{
+    l1: 1,
+    data: {
+        l2: 2,
+        p: {
+            name: &#39;h&#39;,
+            age: 2
+        }
+    }
+}</code></pre>
+<p>填充结果为：</p>
+<pre><code>h-2-2-1</code></pre>
+<h3><code>{{!comment}}</code> 注释</h3>
+<p>XTemplate的注释写法为<code>{{!comment}}</code>，其中comment为注释内容，注释将会被忽略。</p>
+<h3><code>\\{{prop}}</code> 标签的转义</h3>
+<p>如果想直接输出<code>{{prop}}</code>的内容，而不想被解析为标签，则用转义写法<code>\\{{prop}}</code>，比如模板：</p>
+<pre><code>output \\{{name}} as {{name}}</code></pre>
+<p>要填充的JSON为：</p>
+<pre><code>{name:&#39;jay&#39;}</code></pre>
+<p>输出结果为：</p>
+<pre><code>output {{name}} as jay</code></pre>
+<h3><code>{{{prop}}}</code> html 标签转义</h3>
+<p>如果输出的内容中包含字符<code>&lt;</code>和<code>&gt;</code>，在普通标签<code>{{prpp}}</code>中会被转义为<code>&amp;lt;</code>和<code>&amp;gt;</code>，如果不想被转义，需使用<code>{{{prop}}}</code>，比如这段模板：</p>
+<pre><code>my {{title}} is {{{title}}}</code></pre>
+<p>要填充的JSON为：</p>
+<pre><code>{
+    title:&#39;&lt;a&gt;&#39;
+}</code></pre>
+<p>输出结果为：</p>
+<pre><code>my &amp;lt;a&amp;gt; is &lt;a&gt;</code></pre>
+<h3>用表达式作为变量</h3>
+<p>目前支持的表达式为<code>+</code>，<code>-</code>，<code>*</code>，<code>/</code>，<code>%</code>。比如这段模板：</p>
+<pre><code>{{n+3*4/2}}</code></pre>
+<p>填充JSON为</p>
+<pre><code>{n:1}</code></pre>
+<p>输出结果为：</p>
+<pre><code>7</code></pre>
+<h3>关系表达式</h3>
+<p>目前支持目前支持 <code>===</code> <code>!==</code> <code>&gt;</code> <code>&gt;=</code> <code>&lt;</code> <code>&lt;=</code>，比如这段模板：</p>
+<pre><code>{{#if n &gt; n2+4/2}}
+    {{n+1}}
+{{else}}
+    {{n2+1}}
+{{/if}}</code></pre>
+<p>要填充的JSON：</p>
+<pre><code>{
+    n:5,
+    n2:2
+}</code></pre>
+<p>输出结果为：</p>
+<pre><code>6</code></pre>
+<h3>each 循环中的关系表达式</h3>
+<p>直接看例子，看这段模板：</p>
+<pre><code>{{#each data}}
+    {{#if this &gt; ../limit+1}}
+        {{this+1}}-{{xindex+1}}-{{xcount}}
+    {{/if}}
+{{/each}}</code></pre>
+<p>要填充的JSON</p>
+<pre><code>{
+    data: [11, 5, 12, 6, 19, 0],
+    limit: 10
+}</code></pre>
+<p>填充结果：</p>
+<pre><code>13-3-6
+20-5-6</code></pre>
+<h3>with 中的关系表达式</h3>
+<p>直接看例子，看这段模板：</p>
+<pre><code>{{#with data}}
+    {{#if n &gt; ../limit/5}}
+        {{n+1}}
+    {{/if}}
+{{/with}}</code></pre>
+<p>填充JSON为：</p>
+<pre><code>{
+    data: {
+        n: 5
+    },
+    limit: 10
+}</code></pre>
+<p>输出结果为：</p>
+<pre><code>6</code></pre>
+<h3><code>{{set}}</code>设置变量</h3>
+<p>通过<code>{{set expression}}</code>来设置变量的值，可以设置多个，赋值表达式之间用空格分隔，比如这段模板：</p>
+<pre><code>{{#each data}}
+    {{set n2=this*2 n3=this*3}}
+    {{n2}}-{{n3}}
+{{/each}}</code></pre>
+<p>填充JSON：</p>
+<pre><code>{
+    data: [1, 2]
+}</code></pre>
+<p>结果为：</p>
+<pre><code>2-3
+4-6</code></pre>
+<h3>对 mustache 对象的兼容</h3>
+<p>XTemplate 支持对 <a href="http://mustache.github.io/">mustache</a> 形式的对象的兼容，比如这段模板：</p>
+<pre><code>{{#data}}{{name}}-{{age}}{{/data}}</code></pre>
+<p>填充JSON为：</p>
+<pre><code>{
+    data: {
+        name: &#39;h&#39;,
+        age: 2
+    }
+}</code></pre>
+<p>输出结果为</p>
+<pre><code>h-2</code></pre>
+<h3>对 mustache 数组的兼容</h3>
+<p>XTemplate 支持对 <a href="http://mustache.github.io/">mustache</a> 形式的数组的兼容，比如这段模板：</p>
+<pre><code>{{#data}}
+    {{name}}-{{xindex}}/{{xcount}}
+{{/data}}</code></pre>
+<p>填充JSON：</p>
+<pre><code>{
+    data: [
+        {name: 1},
+        {name: 2}
+    ]
+}</code></pre>
+<p>输出结果为：</p>
+<pre><code>1-0/2
+2-1/2</code></pre>
+<hr>
+<h2>KISSY XTemplate 附加功能</h2>
+<p>以上语法可以在不同语言中实现，在 JavaScript 环境中得益于 JS 语言的动态性，KISSY 为 XTemplate 提供了更多的浏览器端的渲染策略和工具。这些功能只在 JavaScript 的实现中可用，如果你的模板可同时被JavaScript渲染也会被其他语言渲染（比如在后台被Java渲染），请尽可能避免这种用法。</p>
+<h3>函数模板</h3>
+<p>支持 JavaScript 函数作为模板，XTemplate模板为：</p>
+<pre><code>var tpl = function (scopes) {
+    return &#39;this is &#39; + scopes[0].title + &#39;!&#39;;
+};</code></pre>
+<p>对应的JSON如下</p>
+<pre><code>var data = {
+    title:&#39;kissy&#39;
+};</code></pre>
+<p>拼装结果为：</p>
+<pre><code>this is kissy!</code></pre>
+<p>完整的代码为：</p>
+<pre><code>var tpl = function (scopes) {
+    return &#39;this is &#39; + scopes[0].title + &#39;!&#39;;
+};
+
+var data = {
+    title: &#39;kissy&#39;
+};
+
+var render = new XTemplate(tpl).render(data);
+
+alert(render);// =&gt; this is kissy!</code></pre>
+<h3>全局行内单个标签扩展</h3>
+<p>如果我想扩展 XTemplate 中的标签个数，需要自定义扩展标签，使用<code>XTemplate.addCommand()</code>实现全局行内命令扩展，比如这样一段扩展（自定义一个单个标签，无配对出现）：</p>
+<pre><code>XTemplate.addCommand(&#39;global&#39;, function (scopes, option) {
+    return &#39;global-&#39; + option.params[0];
+});</code></pre>
+<p>这样这段模板就可以渲染出来：</p>
+<pre><code>my {{global title}}</code></pre>
+<p>如果JSON为<code>{title:&#39;1&#39;}</code>，那么渲染结果为：</p>
+<pre><code>my global-1</code></pre>
+<h3>全局块状标签扩展</h3>
+<p>除了扩展单个标签，还可以扩展块状标签，例子：</p>
+<pre><code> XTemplate.addCommand(&#39;global&#39;, function (scopes, option) {
+    return &#39;global-&#39; + option.fn(scopes);
+});</code></pre>
+<p>对于这段模板就可以被识别：</p>
+<pre><code>{{#global}}
+    {{title}}
+{{/global}}</code></pre>
+<p>如果JSON对象为<code>{title:1}</code>，渲染结果为：</p>
+<pre><code>global-1</code></pre>
+<h3>删除全局标签的定义</h3>
+<p>用<code>removeCommand()</code>方法来删除自定义的全局标签，调用格式为：<code>XTemplate.removeCommand(commandName,fn)</code>。</p>
+<h3>局部行内标签扩展</h3>
+<p>如果要把标签扩展不做成全局，可以临时定义针对一段模板的标签扩展，做法是在<code>XTemplage()</code>函数中传入第二个配置参数：</p>
+<pre><code>var render = new XTemplate(tpl, {
+    commands: {
+        &#39;global&#39;: function (scopes, option) {
+            return &#39;global-&#39; + option.params[0];
+        }
+    }
+}).render(data);</code></pre>
+<h3>局部块状标签扩展</h3>
+<p>类似行内标签扩展，块状标签扩展需要用<code>option.fn(scopes)</code>来激活，参照上文，做法是：</p>
+<pre><code>var render = new XTemplate(tpl, {
+    commands: {
+        &#39;global&#39;: function (scopes, option) {
+            return &#39;global-&#39; + option.fn(scopes);
+        }
+    }
+}).render(data);</code></pre>
+<h3>局部后缀名判断标签扩展</h3>
+<p>参照标签的扩展规则，再来看一个更复杂的例子，我们可以自定义条件判断的规则：</p>
+<pre><code>var render = new XTemplate(tpl, {
+    commands: {
+        &#39;endsWith&#39;: function (scopes, option) {
+            return S.endsWith(option.params[0], 
+                        option.params[1]) ? option.fn(scopes) : &#39;&#39;;
+        }
+    }
+}).render(data);</code></pre>
+<p>这里扩展了自定义标签<code>endsWith</code>，对于这段模板：</p>
+<pre><code>{{d}} ends with {{#endsWith d &quot;jpg&quot;}}jpg{{/endsWith}}
+{{#endsWith d &quot;gif&quot;}}gif{{/endsWith}}</code></pre>
+<p>JSON对象为<code>{d:&#39;x.jpg&#39;}</code>，输出结果为：</p>
+<pre><code>x.jpg ends with jpg</code></pre>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

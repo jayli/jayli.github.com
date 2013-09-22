@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>Base</h1>
+<p>阅读之前先通读<a href="oo.html">KISSY 中的面向对象</a>。</p>
+<p>有了 S.augment，我们可以很方便得扩展类的原型；有了 S.extend，我们可以很方便地继承；那么 KISSY 对属性 getter、setter 的实现，是基于Base完成的。</p>
+<p>顾名思义，Base 是个基础类；他包含除了getter和setter之外，还包含自定义事件和插件机制。因此Base包括：</p>
+<ol>
+<li><code>getter</code>和<code>setter</code>方法实现：Attribute</li>
+<li>自定义事件机制：CustomEvent</li>
+<li>代码插拔机制：Plugin</li>
+</ol>
+<p><img src="http://gtms04.alicdn.com/tps/i4/T1a55UFbtaXXbsDJoj-389-190.png" alt=""></p>
+<p>这三类功能被封装在<code>base</code>模块中，这样来载入base；</p>
+<pre><code>KISSY.use(&#39;base&#39;,function(S,Base){
+    // Your Code...
+});</code></pre>
+<blockquote>
+<p>在KISSY 1.3.x 中有一个别名RichBase，1.4.0 及以后版本将统一为Base，在实现上，Base 使用了自定义事件掺元对象<code>CustomEvent.Target</code>和内置的掺元对象<code>Attribute</code>。</p>
+</blockquote>
+<p>我们来分别看下Base的这几个特性</p>
+<h2>1，属性管理：Attribute</h2>
+<p>Base 的属性配置来自 Attribute 模块，它提供如下方法：</p>
+<ul>
+<li>addAttr()</li>
+<li>addAttrs()</li>
+<li>hasAttr()</li>
+<li>get()</li>
+<li>getAttrVals()</li>
+<li>set()</li>
+<li>reset()</li>
+</ul>
+<p>通过 get() 与 set() 这一层包装，Base 允许类在定义自己时，配置 getter、setter 方法，用法如下：</p>
+<pre><code>// 生成一个类Dog
+var Dog = Base.extend({
+    initializer:function(){
+        var self = this;
+
+        // Your Code
+        alert(&#39;ok&#39;);
+    }
+},{
+    ATTRS: {
+        name:{
+            value:&#39;abc&#39;
+        }
+    }
+});</code></pre>
+<p>这时Dog的实例具有Attr特性</p>
+<pre><code>var dog1 = new Dog(); //new Dog的时候自动调用initializer方法
+dog1.set(&#39;name&#39;,&#39;dommy&#39;);// 设置这只小狗的名字
+alert(dog1.get(&#39;name&#39;));</code></pre>
+<p>Attr的好处是，可以检查存入值的合法性，同时可以触发&#39;值改变&#39;的自定义事件。方便对值的状态进行监听。</p>
+<p>上段代码提到，初始化一个实例的时候，会自动调用一个初始化函数来构造实例。通常是在定义这个类的时候就设定构造函数：</p>
+<pre><code>var Dog = Base.extend({
+    initializer:function(){
+        // 构造函数
+    },
+    destructor: function() {
+        // 析构函数
+    }
+},{/*ATTRS*/});</code></pre>
+<p>其中析构函数是实例对象在调用<code>.destroy()</code>时触发的。</p>
+<p>可以用关联矩阵(associative array)的方式定义类的属性和配置参数,</p>
+<pre><code>var Dog = Base.extend({
+    _onSetName:function(){
+        // name 属性发生改变时的回调
+    }
+},{
+    ATTRS: {
+        name: {
+            value:&#39;value&#39;,
+            valueFn:function(){
+            },
+            setter:function(){
+                // 这里可以对值进行校验
+            },
+            getter: function(s) {
+            }
+        }
+    }
+});</code></pre>
+<p>实例化Dog类并设置attr属性值</p>
+<pre><code>var dog = new Dog({name:1});
+dog.set(&#39;name&#39;,2);</code></pre>
+<p>Base提供了对属性值初始化的同步以及变化的事件监听。上面的实例化和设置属性值，都会同步调用到类中定义的<code>_onSet{驼峰写法的属性名}</code>函数。但这里的<code>_onSetAttr</code>看上去是个内部方法，我们可以使用绑定事件的形式来监听值的变化，事件有：</p>
+<ul>
+<li>beforeAttrNameChange</li>
+<li>afterAttrNameChange</li>
+<li>*Change</li>
+</ul>
+<p>注意此处的 AttrName 是个示例名称，例如 breed 的相应事件名称是：</p>
+<ul>
+<li>beforeBreedChange</li>
+<li>afterBreedChange</li>
+</ul>
+<pre><code>dog.on(&#39;afterBreedChange&#39;, function(e) {
+    console.log(&#39;我要从&#39; + e.prevVal + &#39;变成&#39; + e.newVal + &#39;啦！&#39;)
+})</code></pre>
+<p>如何让一个已有的类获得Attr特性？</p>
+<pre><code>// Dog 是一个已有的类
+S.extend(Dog, Base, {
+    bark: function() {
+        this.fire(&#39;bark&#39;, {
+            message: &#39;Woof! I just barked!&#39;
+        })
+    }
+})
+
+// 这时Dog类就具有了Base特性
+var dog = new Dog();
+
+dog.on(&#39;bark&#39;, function(e) {
+    console.log(e.message)      // ==&gt; &#39;Woof! I just barked!&#39;
+});</code></pre>
+<p>如果Dog没有被定义过，我想直接定义一个类，这样做（是上一段代码的另一种写法）：</p>
+<pre><code>// 直接定义一个类 Dog 
+var Dog = S.Base.extend({
+    initializer:function(){
+        var self = this;
+    },
+    bark:function(){
+        this.fire(&#39;bark&#39;, {
+            message: &#39;Woof! I just barked!&#39;
+        });
+    }
+},{/*ATTRS*/});
+
+var dog = new Dog();</code></pre>
+<h2>2，自定义事件 CustomEvent</h2>
+<p>继承自Base的对象可以分发自定义事件，即实例上有<code>fire()</code>方法。比如上一段代码，bark() 函数中触发了一个自定义事件<code>bark</code>，绑定这个事件即可收到这个事件。具体用法可参照<a href="event.html">Event自定义事件部分</a>。</p>
+<h2>3，插件机制：Plugin</h2>
+<p>ATTR 的作用是给类本身新增特性，完成类与类之间的代码共享。对于要给实例动态增加新特性，就需要新的机制，插件机制。Base提供了一个配置（plugins）和三个函数（plug、unplug和getPlugin）用来管理插件。在正式讲解之前，读者一定要明白，插件的本质是&quot;代码注入&quot;，即安装和卸载的行为分别执行一段外部脚本。</p>
+<p>插件实际上是一个简单对象，在类实例化的时候可以实例化plugin，也可以在实例化后插入plugin，当载入插件时，调用 plugin 的 pluginInitializer 初始化函数。在销毁插件的时候调用 pluginDestructor 析构函数。用法是调用实例的<code>plug(plugin)</code>方法。</p>
+<p>参数plugin可以是类，也可以是实例，如果是类则无参实例化plugin。 两者都会调用plugin的pluginInitializer初始化函数。推荐以实例的形式写插件。</p>
+<p>一个插件对象：</p>
+<pre><code>var PluginA = {    
+    pluginInitializer:function(){},
+    pluginDestructor:function(){}
+};</code></pre>
+<p>直接传实例化的示例代码：</p>
+<pre><code>new Editor().plug({
+    pluginInitializer:function(){},
+    pluginDestructor:function(){}
+})</code></pre>
+<p>与之对应的方法是<code>unplug(plugin)</code>，从plugins数组中移除plugin，并调用pluginDestructor析构函数。</p>
+<p>第三个方法<code>getPlugin(id)</code>是通过类plugin定义的的<code>p.get(&#39;pluginIn&#39;) || p.pluginId</code>来拿到plugin的实例。</p>
+<p>实现一个简单的plugin：</p>
+<pre><code>// 实现一个简单的插件
+var PluginA = {
+    pluginInitializer:function(){
+        alert(&#39;插件运行&#39;);
+        // 插入插件时调用
+    },
+    pluginDestructor:function(){
+        // 拔出插件时调用
+    }
+};
+
+var Dog = Base.extend({
+    initializer:function(){
+        //  Dog构造函数 
+    }
+},{});
+
+// 实例化一个Dog
+var dog = new Dog();
+
+dog.plug(PluginA);// 弹出&#39;插件运行&#39;</code></pre>
+<p>也可以直接在初始化的时候传入plugin.</p>
+<pre><code>var dog = new Dog({
+    plugins:[PluginA]    
+});    </code></pre>
+<p>卸载插件的方法：</p>
+<pre><code>dog.unplug(PluginA);</code></pre>
+<p>如果定义插件时指定了插件id，可以通过插件id来卸载插件</p>
+<pre><code>var PluginA = {
+    // 定义插件id
+    pluginId:&#39;myname&#39;,
+    pluginInitializer:function(){
+        alert(&#39;插件运行&#39;);
+        // 插入插件时调用
+    },
+    pluginDestructor:function(){
+        // 拔出插件时调用
+    }
+};
+
+dog.plug(PluginA);// 装载插件
+dog.unplug(&#39;myname&#39;);// 通过插件id来卸载插件</code></pre>
+<p>插件是一种注入代码的方法，利用好插件特性，可以让你的代码架构更加清晰，比如editor就大量使用了插件机制。</p>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

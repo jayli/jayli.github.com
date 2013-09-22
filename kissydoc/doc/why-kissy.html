@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>Why KISSY?</h1>
+<h2>KISSY 是什么？</h2>
+<p>KISSY 是一款跨终端、模块化、使用简单的 JavaScript 框架。除了完备的工具集合诸如 DOM、Event、Ajax、Anim 等，KISSY 还面向团队协作做了独特设计，提供了经典的面向对象、动态加载、性能优化解决方案。作为一款全终端支持的 JavaScript 框架，KISSY 为移动终端做了大量适配和优化，让你的程序在全终端均能流畅运行。</p>
+<h2>为什么选择 KISSY ?</h2>
+<p>KISSY 作为国内一个完全自底向上开发起来的框架，经历过淘系各种复杂项目的考研，在以下方面具有优势:</p>
+<h3>跨终端</h3>
+<p>作为生长于淘宝/天猫的前端 JavaScript 类库，在全网数以万计全终端的硬件设备中运行测试，KISSY 在我国互联网环境下各色终端、浏览器、移动设备中具备一流的健壮性和兼容性。</p>
+<h3>模块化</h3>
+<p>KISSY 采用高度的模块化设计，通过加载器按需加载。模块高度解耦，并具有极强的扩展性。核心组件完整齐全，接口一致。适合多种应用场景，尤其适用团队协作的大型项目开发。</p>
+<h3>高性能</h3>
+<p>库的实现的基本要求就是兼容性和性能，KISSY 在核心模块比如 Node、Event、Base 上做了极致的性能优化，特别是选择器性的读写效率，在各种终端里都达到很高的性能体验。KISSY 在面向对象的设计上秉承一贯的轻量级，保持轻巧高速的性能。</p>
+<h3>使用简单</h3>
+<p>KISSY 核心功能的设计遵循二八原则，保持最常用 API 的精简子集，自动探测终端主动适配，可以非常方便开始你的项目。清晰的面向对象功能以及轻松的架构性，更增强了 KISSY 的易用性。</p>
+<h2>KISSY 还提供什么？</h2>
+<ul>
+<li>稳定的核心代码</li>
+<li>强大易用的脚本加载器</li>
+<li>丰富的 UI 组件</li>
+<li>优质的代码，阅读她的代码，我敢保证你能学到更多</li>
+<li>自动化脚本测试，保证代码的稳定性</li>
+</ul>
+<p>此外，KISSY 还具备一定的社区：通过旺旺群（群号：29676575），<a href="http://groups.google.com/group/kissy-ui">google group</a>，<a href="http://weibo.com/kissyteam">微博</a>，<a href="http://docs.kissyui.com">官方网站</a>等用户随时可以和开发人员快速交流。</p>
+<h2>KISSY 的设备普适性</h2>
+<p>KISSY 支持 PC、读屏器、NodeJS、移动端浏览器以及各种外壳、Win8等。特别是 KISSY 组件的无障碍支持（遵循 WAI-ARAI 规范），使得盲人用户也可以轻松使用 KISSY 组件提供的功能。</p>
+<p>KISSY 支持触屏设备的手势操作，手势操作在 ios 和 android 中表现不一致。KISSY 对此做了封装，在底层多点触摸 touch 事件的基础上模拟出了 tap rotate pinch 等触屏设备上独有的事件，这对于用户则是透明，用户完全可以把这些事件当做原生事件来使用，例如</p>
+<pre><code>KISSY.use(&#39;event&#39;,function(S,Event){
+    // 监听 div 上的 tap 事件
+    Event.on(&#39;#div&#39;,&#39;tap&#39;,function(e){
+        // Your Code
+    });
+});</code></pre>
+<h2>一点历史</h2>
+<p>KISSY 诞生于 2009 年 10 月 26 日，当初只是玉伯写的一个结构精巧的<a href="http://ued.taobao.com/blog/2009/10/kissy-editor/">编辑器组件</a>。但随着淘宝网业务的增长，开始出现越来越多这种组件，包括 Switchable、Overlay、Calendar、Slide、Waterfall。自然的，游离于功能代码之外，基础的 DOM、Event、Anim 和 Ajax 被抽象出来，形成了 KISSY 首批宝贵的基础代码，此时 KISSY 为 1.1.0 版本。并且切合当时淘宝网的日常需求，制定当年的 <a href="http://ued.taobao.com/blog/2010/08/release-kissy-1-1-0/">KISSY Road Map</a>。至此，KISSY 项目正式步入正轨，并形成了首届开发团队。</p>
+<p>有了团队的护航，KISSY 代码量激增，并很快<a href="http://ued.taobao.com/blog/2010/09/release-kissy-1-1-5/">发布了 1.1.5 版本</a>。最大的改进在于从<code>core</code>中独立出了<code>seed</code>模块，并增加了<code>loader</code>。至此 KISSY 确立了其基本的模块化原则和方向。在当年，还不存在 AMD 和 CMD 规范，YUI3 的模块规范也步履蹒跚，在淘宝网业务激增的情况下，KISSY 开始探索实践适用于电商网站类高速迭代、快速变化、团队协作的模块规范。同时，KISSY 还与时俱进，<a href="http://ued.taobao.com/blog/2010/11/nodejs-kissy/">发布了 node 版本（nodejs-kissy）</a>。</p>
+<p>经历了 2010 年底双十二的疯狂，KISSY 启动了 1.2 分支，模块化实践更进一步，组件数量和质量都在迅速提升。1.2 版本提供了健壮的<code>core</code>部分，并且开始尝试<a href="http://gallery.kissyui.com">社区化运作</a>，至此，KISSY 作为一个完备的 Web 前端框架，已经具备“类库”的基本形态：</p>
+<ul>
+<li>底层基础：语言层面的特性和核心的工具集</li>
+<li>上层建筑：第三方组件代码库</li>
+<li>社区互动：参与共建的机制</li>
+</ul>
+<p>同时，KISSY 在淘宝网各个角落的运行测试和不断修正，为淘宝网各条产品提供了统一的、完备的性能优化和团队协作最佳实践，带领淘宝网在用户体验、效率、性能上不断追求卓越。</p>
+<p>在 2012 年之后，<a href="http://ued.taobao.com/blog/2012/12/kissy-1-3-0-released/">KISSY 1.3.x</a> 已在酝酿之中。并且 1.3rc 版很早就参与到了卖家店铺装修、搜索系统和商品详情的重构改造，经过这些复杂业务场景的锤炼，1.3.0 发布，至此<a href="http://ued.taobao.com/blog/2013/03/modular-scalable-kissy/">基础架构已经稳定</a>，并且在第三方安全、构建工具上有了不少新的产品。</p>
+<p>由于业务和 KISSY 源码增长过快，KISSY 文档的更新很难追平代码的更新，一定程度影响 KISSY 传播的精度。KISSY 核心小组在 1.4.0 版本发布之时重构了文档，即是大家看到的这一版文档。</p>
+<p>同时，随着移动终端的兴起，KISSY 1.4.0 也在面向多终端兼容和性能上做了大量的优化，尤其是 CSS3 选择器速度超越 zeptojs。在跨终端特性上主动探测，保持最简单的使用方法，同时兼顾性能最优。所以，KISSY 没有专门的 Mobile 版本，KISSY 本身就高效的适配 Mobile。至此，KISSY 在跨终端、模块化和易用性方面都在努力做到极致。这就是你现在看到的 KISSY：<strong>Keep it Simple &amp; Stupid! Yeah!</strong></p>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

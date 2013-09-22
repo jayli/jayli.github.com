@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>快速开始</h1>
+<blockquote>
+<p><a href="http://demo.kissyui.com/tutorial/demo.html" class="btn btn-primary btn-lg">Try This Demo!</a> &nbsp;</p>
+</blockquote>
+<h2>1，复制 &amp; 粘贴</h2>
+<pre><code>&lt;script src=&quot;http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>种子文件是一个<strong>非常小</strong>的 JS 文件，通过他可以动态加载 KISSY 的模块文件，因为体积很小，推荐将种子文件至于<code>&lt;head&gt;</code>标签内。</p>
+<h2>2，开始使用 KISSY</h2>
+<pre><code>// 创建一个 KISSY 沙箱
+KISSY.use(&#39;node&#39;,function(S,Node){
+    // 装载了 Node 模块，并处于可用状态
+    // Your Code here...
+});</code></pre>
+<p>页面生命周期内始终存在全局对象<code>KISSY</code>。KISSY 采用弱沙箱的设计，多个沙箱共享同一份 KISSY 对象，即沙箱A对KISSY的修改会影响到沙箱B，因此，不通过API就对KISSY作任何修改将会非常危险。回调函数传入的第一个参数永远是<code>KISSY</code>全局对象，紧跟着的参数将会传回模块对象。形如<code>use(&#39;a,b,c&#39;,function(S,A,B,C){})</code>。被依赖的模块实现会返回一个对象（或类），都可以通过这种方式带入当前沙箱中，KISSY 的沙箱之间通过这种方法相互传递信息，避免全局对象的污染。沙箱内定义的变量亦不会污染全局命名空间。</p>
+<p>创建 KISSY 沙箱时你需要指定要载入的模块，KISSY 的功能是模块化的，包括<code>node</code>，<code>event</code>，<code>ajax</code>（在1.4.x中被<code>io</code>取代）等。这个例子中载入了<code>node</code>模块，在沙箱中可以通过回调参数来使用<code>node</code>的 API。<strong>特别的</strong>，<code>node</code>模块中最常用的 API 被挂载在 KISSY 对象上，作为快捷调用方式。比如<code>S.all</code>和<code>S.one</code>。</p>
+<p>KISSY 会自动计算模块依赖和模块去重，将所需模块的最小子集载入到页面中。一旦 node 模块加载完成，就会执行沙箱的回调逻辑。<strong>注意</strong>：沙箱回调为异步执行，不管是否已经预先载入了 node。所以两个并列的沙箱的执行时机是不确定的。开发者不应当去关心沙箱的先后顺序。</p>
+<blockquote>
+<p>注意，这种使用方法是<strong>错误的</strong>：<code>var Node = KISSY.use(&#39;node&#39;);</code></p>
+</blockquote>
+<h2>3，DOM 操作：查找/操作/绑定事件</h2>
+<p>node 模块对 DOM 节点底层 API 做了封装和扩展，你可以方便查找、创建、删除、修改元素。</p>
+<pre><code>KISSY.use(&#39;node&#39;, function (S) {
+    // 查找 DOM 节点.
+    var oneElementById     = S.one(&#39;#foo&#39;),
+        oneElementByName   = S.one(&#39;body&#39;),
+        allElementsByClass = S.all(&#39;.bar&#39;);
+
+    // 创建 DOM 节点.
+    var contentNode = S.Node(&#39;&lt;div&gt;&#39;),
+        listNode    = S.Node(&#39;&lt;ul&gt;&#39;),
+        footerNode  = S.Node(&#39;&lt;footer&gt;&#39;);
+
+    // 操作节点，支持链式调用
+    contentNode.html(&#39;Hello Kissy!&#39;)
+                .append(&#39;&lt;p&gt;touch me&lt;/p&gt;&#39;)
+                .addClass(&#39;highlight&#39;)
+                .appendTo(&#39;body&#39;);
+
+    // 绑定事件
+    S.one(&#39;#close-button&#39;).on(&#39;click&#39;, function (e) {
+        contentNode.hide();
+    });
+});</code></pre>
+<h2>4，使用动画</h2>
+<p>KISSY 提供 anim 模块，完成 DOM 元素的动画，模块将自动探测硬件对 CSS3 的支持，优先使用 CSS3 动画，但上层接口保持统一。</p>
+<pre><code>KISSY.use(&quot;anim&quot;,function(S,Anim){
+    // 初始化动画实例
+    var anim = Anim(&#39;#anim-el&#39;,
+        // 动画目标样式
+        {
+            &#39;background-color&#39;:&#39;#fcc&#39;,
+            &#39;border-wdith&#39;:&#39;5px&#39;
+        },
+        // 动画时长，秒
+        5,
+        // 动画特效
+        &#39;bounceOut&#39;,
+        // 动画结束的回调
+        function(){
+            alert(&#39;动画结束&#39;);
+        });
+
+    // 开始执行动画
+    anim.run();
+});</code></pre>
+<h2>5，通过 Ajax 装载内容</h2>
+<p>在 1.4.0 中，Ajax 功能被命名为 io 模块，使用方法：</p>
+<pre><code>KISSY.use(&#39;io,node&#39;,function(S,IO,Node){
+    // 获取content.html的内容，替换到#content元素内
+    IO({
+        url:&#39;content.html&#39;,
+        data:{
+            user_name:10010
+        },
+        success:function(data){
+            S.one(&#39;#content&#39;).html(data);
+        }
+    });
+});</code></pre>
+<h2>6，核心模块的快捷调用方式</h2>
+<p>尽管模块内容可以通过沙箱回调参数形式带入，核心模块也将最常用的功能挂载到了<code>KISSY</code>全局对象上。可以通过<code>KISSY.ModeName</code>来调用，比如</p>
+<pre><code>KISSY.use(&#39;node,anim,io,json&#39;,function(S){
+    // 通过 S 来调用
+    /*
+        S.Ajax
+        S.IO
+        S.Node
+        S.DOM
+        S.Cookie
+        S.Event
+        S.Anim
+        S.JSON
+        S.Cookie
+        ...
+    */
+});</code></pre>
+<h2>7，自定义模块</h2>
+<blockquote>
+<p><a href="http://demo.kissyui.com/tutorial/demo1.html" class="btn btn-primary btn-lg">Try This Demo!</a> &nbsp;</p>
+</blockquote>
+<p>这个Demo和上一个的不同之处在于，我们将它改造成了一个独立的模块。</p>
+<p>创建一个新模块：</p>
+<pre><code>KISSY.add(function(S, N, E, A, IO){
+    var $ = S.all;
+    var opLotto = {
+        init: function(){
+            ...
+        },
+        ...
+    }
+    return opLotto;
+}, {requires: [&#39;node&#39;, &#39;event&#39;, &#39;anim&#39;, &#39;ajax&#39;]});</code></pre>
+<p>模块其实就是一个对象，模块名可以忽略，我们会返回这个对象以便在使用模块时方便调用，最后是依赖配置。Demo中我们把这个模块保存为 <code>opLotto.js</code>。同时，我们需要指定这个模块所属的包：</p>
+<pre><code>KISSY.config({
+    packages: [
+        {
+            name: &quot;module&quot;,
+            tag: &quot;20130618&quot;,
+            path: &quot;./&quot;, 
+            charset: &quot;gbk&quot;
+        }
+    ]
+});</code></pre>
+<p>这样来调用模块逻辑：</p>
+<pre><code>KISSY.use(&#39;module/opLotto, node, event&#39;, function(S, OP, N, E){
+    S.ready(function(S){
+        var $ = S.all;
+        OP.init();
+        ...
+    });
+})</code></pre>
+<blockquote>
+<p>包配置相关信息请移步<a href="kmd.html">KISSY模块规范</a></p>
+</blockquote>
+<h2>8，调用官方组件</h2>
+<p>KISSY 内置了很多有用的组件比如 button，calendar，datalazyload等，这些组件的用法非常简单，比如要用到 button 组件，只需要：</p>
+<pre><code>KISSY.use(&quot;button&quot;, function(S, Button) {
+    var btn = new Button({
+        content: &quot;我是按钮1&quot;,
+        render: &quot;#button_container&quot;,
+        tooltip: &quot;hover时显示&quot;
+    });
+    btn.render();
+})</code></pre>
+<h2>9，调用 Gallery 中的组件</h2>
+<p>gallery 是社区贡献的组件集合，汇集了各种各样的功能，比如 kcharts，imgcrop，waterfallx，slide，uploader。</p>
+<p>gallery 鼓励分享，任何人都可以为 gallery 提交自己的组件。在 KISSY 1.4.x 中内置了 gallery package，使用 gallery 组件非常方便：</p>
+<pre><code>KISSY.use(&#39;gallery/offline/1.0/index&#39;, function (S, Offline) {
+    var offline = new Offline();
+    ...
+});</code></pre>
+<h2>10，开启模块的Combo</h2>
+<p>由于 KISSY 的模块非常颗粒化，会不会页面中载入的 JavaScript 文件过多，导致 HTTP 请求数太多呢？有两种方法来减少请求数：</p>
+<ul>
+<li>CDN 动态合并（Combo）</li>
+<li>静态编译，本地合并，使用工具 <a href="kmc.html">KISSY Module Compiler</a></li>
+</ul>
+<p>动态合并，比如<code>KISSY.use(&#39;overlay&#39;)</code>会带来13个请求：</p>
+<p><img src="http://gtms02.alicdn.com/tps/i2/T1IuezFfBdXXaC5N70-657-280.png" alt=""></p>
+<p>要想开启动态Combo，在全局配置中增加一项<code>开启动态合并</code>：</p>
+<pre><code>KISSY.config(&#39;combine&#39;,true);</code></pre>
+<p>或者这样开启：</p>
+<pre><code>&lt;script src=&quot;seed-min.js&quot; data-config=&quot;{combine:true}&quot;&gt;&lt;/script&gt;</code></pre>
+<p>页面额外请求数变为1个：</p>
+<p><img src="http://gtms03.alicdn.com/tps/i3/T12iCAFmlaXXa2La3m-575-80.png" alt=""></p>
+<p>Combo 后的链接为：</p>
+<pre><code>http://g.tbcdn.cn/kissy/k/1.4.0/??node-min.js,dom/base-min.js,event/dom/base-min.js,event/base-min.js,event/dom/shake-min.js,event/dom/focusin-min.js,anim-min.js,anim/base-min.js,event/custom-min.js,anim/timer-min.js,event-min.js,anim/transition-min.js</code></pre>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

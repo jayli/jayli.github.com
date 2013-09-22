@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<p><style>
+h3 {
+    color:blue;
+}
+</style></p>
+<h1>loader</h1>
+<blockquote>
+<p>loader 是脚本加载器的实现， 弥补了 javascript 语言机制的不足, 提供类似其他语言原生的模块化机制。KISSY loader 实现了 <a href="kmd.html">KISSY 模块规范</a>。</p>
+</blockquote>
+<h3>add()  <code>&lt;static&gt;</code></h3>
+<p><code>add(name,fn[,config]) ⇒ void</code></p>
+<h4>parameters</h4>
+<ul>
+<li>name (string) – 模块名。可选。</li>
+<li>fn (function) – 模块定义函数</li>
+<li>config (object) – 模块的一些格外属性, 是JSON对象，包含属性：<ul>
+<li>requires (Array<String>) – 模块的一些依赖项, 如果需要载入 css 则, 数组项为 <code>.css</code> 结尾名字</li>
+</ul>
+</li>
+</ul>
+<p>KISSY 添加模块/逻辑片段的函数，config为配置对象，包括<code>config.requries</code>，给出当前模块的依赖模块。模块返回一个对象，通过引用它的时候来调用到。</p>
+<p>当模块名称 name 为<a href="#config">包内模块</a>时, 则requires的模块名称可使用相对路径来引用包内其他模块，比如<code>package/a</code>来引用<code>package/a.js</code>，也可以用<code>./a</code>来引用<code>package/a.js</code></p>
+<pre><code>// package/a.js
+KISSY.add(&#39;package/a&#39;,function(S){
+    return ObjA;
+},{
+    // 当前逻辑依赖一个包内的文件b，一个全局模块node，一个同目录下的css文件
+    requries:[&#39;package/b&#39;,&#39;node&#39;,&#39;./mod.css&#39;]    
+});</code></pre>
+<p>使用该模块</p>
+<pre><code>KISSY.use(&#39;package/a&#39;,function(S,ObjA){
+    // 可引用ObjA
+});</code></pre>
+<p>本地开发时，模块名称可留空，不过在部署阶段需要使用<a href="https://github.com/daxingplay/ModuleCompiler">Kissy Mobule Compiler</a> 生成模块依赖关系表，或者直接生成合并后的文件。</p>
+<pre><code>// package/a.js
+KISSY.add(function(S){
+    return ObjA;
+},{
+    requries:[&#39;./b&#39;,&#39;./mod.css&#39;]    
+});</code></pre>
+<p><code>add()</code>中的函数回调可以调用它依赖的模块所返回的对象</p>
+<pre><code>// package/a.js
+KISSY.add(function(S,Node,ObjB){
+    // 使用 Node 和 ObjB
+},{
+    requries:[&#39;node&#39;,&#39;./b&#39;]    
+});</code></pre>
+<p>当模块名称 name 为包内模块&lt; 参见 下文包配置 &gt;时, 则requires的模块名称可使用相对路径 refer 包内其他模块</p>
+<pre><code>// tc/mods/mod1 依赖于 tc/mods/mod2
+KISSY.add(&quot;tc/mods/mod1&quot;,function(){
+    // Your code...
+},{requires:[&#39;./mod2&#39;]});</code></pre>
+<blockquote>
+<p><em>Changed in version 1.3+</em>: KISSY.add 表示模块定义, fn 并不会执行, 只有在 use 时才执行, 懒加载原则.</p>
+</blockquote>
+<h3>config()  <code>&lt;static&gt;</code></h3>
+<ul>
+<li><code>config(config) ⇒ void</code></li>
+<li><code>config(name,value) ⇒ void</code>，name：参数名，value：参数值</li>
+<li><code>config(name) ⇒ data</code>，返回参数名的值</li>
+</ul>
+<h4>parameters</h4>
+<p>全局配置函数，用以读写全局配置项，包括注册包、预注册模块名称，模块文件的引用规则等等。其中配置项包括这些字段，<code>modules</code>和<code>packages</code>是JSON对象：</p>
+<ul>
+<li><strong>modules</strong>，JSON 对象，预注册的模块关系依赖</li>
+<li><strong>packages</strong>，JSON 对象，包配置</li>
+<li>combine，Boolean值，是否开启动态合并</li>
+<li>comboMaxFileNum，数字类型，最动态合并文件最大个数</li>
+<li>tag，字符串，异步加载文件时所带的时间戳</li>
+<li>debug，Boolean值，是否开启debug模式，不开启，将默认加载&#39;-min&#39;文件</li>
+<li>charset，字符串，指示所有模块文件编码格式，默认为utf-8</li>
+<li>base，字符串，类库所在的URL</li>
+<li>comboMaxUrlLength，Number，Combo url 的最长长度，默认 1024</li>
+<li>comboPrefix，String，Combo 前缀，默认 ”??”</li>
+<li>comboSep，String， Combo 分隔符，默认 ”,”</li>
+</ul>
+<p><strong>modules</strong>：</p>
+<p>以单个模块为键，单个模块配置对象为值的键值对对象。单个模块配置对象包括：</p>
+<ul>
+<li>requries，字符串组成的数组<code>String[]</code>，该模块的依赖模块名数组。当设置 combine 为 true 时需要配置，否则不建议配置.</li>
+<li>tag，类型 String，单个模块的时间戳。仅在 combine 为 false 时生效。 combine:true 时取对应包的 tag.</li>
+</ul>
+<p><strong>packages</strong>：</p>
+<p>以单个包名为键，单个包配置对象为值的键值对对象。单个包配置对象包括：</p>
+<ul>
+<li>name，字符串, 表示包名</li>
+<li>group，字符串, 表示包所属的组名。</li>
+<li>debug， Boolean, 包内的脚本请求是是否加 -min 后缀，默认和 <code>KISSY.config(“debug”)</code> 相同.</li>
+<li>tag，字符串, 最好为时间戳, 用于刷新客户端本包的模块文件缓存</li>
+<li>combine，Boolean, 如果总和 combine 设置为 true，但是单个包 combine 设置为 false，则该包内文件不进行自动 combo</li>
+<li>ignorePackageNameInUri，Boolean, 默认 false. 是否在请求的模块路径中省去包名. 例如 <code>use(&#39;xx/a&#39;)</code> 配置 <code>xx</code> package 的 base 为 <code>http://test.com/</code> 则设置 <code>ignorePackageNameInUri</code> 后请求地址为： <code>http://test.com/a.js</code>。</li>
+<li>base，字符串, 表示包所在的 url 路径, 相对路径表示相对于当前页面路径, 如果需要相对于当前执行脚本路径, 则需要自己处理：<br /><code>var scripts=document.getElementsByTagName(&quot;script&quot;);</code><br /><code>alert(scripts[scripts.length-1].src);</code></li>
+<li>charset，字符串, 表示宝贝所有模块定义文件的编码格式, 默认 utf-8</li>
+</ul>
+<h4>Example</h4>
+<p>配置项可以在脚本引用时带入，比如：</p>
+<pre><code>&lt;script src=&#39;seed.js&#39; data-config=&#39;{combine:true}&#39;&gt;&lt;/script&gt;</code></pre>
+<p>完整的配置样例：</p>
+<pre><code>KISSY.config({
+    // 开启自动 combo 模式
+    combine:true,
+    // kissy 库内置模块的时间戳
+    tag:&#39;2012&#39;,
+    // kissy 的基准路径
+    base:&#39;http://x.com/a&#39;,
+    packages:{
+        x:{
+            // x 包的基准路径
+            base:&#39;http://x.com/biz/&#39;,
+            // x 包的时间戳
+            tag:&#39;x&#39;,
+            // 开启 x 包 debug 模式
+            debug:true
+        },
+        y:{
+           // y 包的基准路径
+           base:&#39;http://x.com/biz/&#39;,
+           // y 包不开启自动 combo
+           combine:false
+           // 不配置 tag，则取 kissy 内置模块的时间戳
+        }
+    },
+    modules:{
+        &quot;x/b1&quot;:{
+            // &quot;x/b1&quot; 模块的依赖信息
+            requires:[&quot;x/b2&quot;,&quot;x/b3&quot;]
+        },
+        &quot;y/b2&quot;:{
+            // y/b2 模块单独的时间戳
+            tag:&#39;234&#39;
+        }
+    }
+});</code></pre>
+<p>packages 范例: 包配置</p>
+<pre><code>KISSY.config({
+    packages:[
+        {
+            name:&quot;tc&quot;, // 包名
+            tag:&quot;20110323&quot;, // 动态加载包内的模块js文件时,
+                            // 自动加上 ?t=20110323, 用于文件更新
+            path:&quot;../&quot;, // 包对应路径, 相对路径指相对于当前页面路径
+            charset:&quot;gbk&quot; // 包里模块文件编码格式
+        }
+    ]
+});</code></pre>
+<p>当要在包内添加模块时, 必须遵守一些约定：</p>
+<ul>
+<li>一个模块的文件必须放在以包名命名的目录中</li>
+<li>一个包下的所有目录的代码都应属于这个包，即包之间不能有重合目录。例如下面这样的包配置是错误的（在 ie 下会有包名不确定问题）：<ul>
+<li>tc 的 <code>path</code> 为 <code>http://x.com/y/</code></li>
+<li>tm 的 <code>path</code> 为 <code>http://x.com/</code></li>
+</ul>
+</li>
+<li>模块的名字必须取名从包目录开始到当前模块文件的文件路径名称, 例如 <code>mod1.js</code> 位于 <code>tc/mods</code> 下, 则 <code>mod1.js</code> 的模块取名：</li>
+</ul>
+<pre><code>KISSY.add(&quot;tc/mods/mod1&quot;,function(){
+    // 模块代码
+});</code></pre>
+<blockquote>
+<p>模块名也可以省略, 不过部署阶段需要使用 <a href="https://github.com/daxingplay/ModuleCompiler">KISSY Module Compiler</a> 静态打包。</p>
+</blockquote>
+<h3>getScript()  <code>&lt;static&gt;</code></h3>
+<ul>
+<li><code>getScript(url,config) ⇒ HTMLElement</code></li>
+<li><code>getScript(url,success,charset) ⇒ HTMLElement</code>，简写写法</li>
+</ul>
+<p>动态加载目标地址的资源文件，config 为JSON对象，返回值为HTMLElement，为创建的link或者script节点，参数如下：</p>
+<h4>parameters</h4>
+<ul>
+<li>url（string），js/css 资源地址</li>
+<li>config，JSON 对象，包含属性有：<ul>
+<li>charset（string），资源文件的字符编码</li>
+<li>success（function），资源加载成功后回调函数.</li>
+<li>error（function），超时或发生错误时回调函数. 当资源文件为 css 文件时不支持</li>
+<li>timeout（Number），单位为秒, 默认无限大. 超时后触发 error 回调. 当资源文件为 css 文件是不支持</li>
+</ul>
+</li>
+</ul>
+<h4>return</h4>
+<p><code>HTMLElement</code> 返回创建的link或者script节点</p>
+<h4>Example</h4>
+<p>简写写法<code>getScript(url,success,charset)</code>中，<code>success</code>为回调函数，<code>charset</code>为编码类型。相当于：</p>
+<pre><code> KISSY.getScript(url , { 
+     success : success , 
+     charset : charset 
+});</code></pre>
+<h3>use()  <code>&lt;static&gt;</code></h3>
+<p><code>use (modNames[,callback]) ⇒  void</code></p>
+<p>载入并运行模块,和<code>add</code>一起使用，详细用法参照<a href="../kmd.html">KISSY 模块规范</a>，<code>callback</code>类型可以是function也可以是object。参数说明：</p>
+<h4>parameters</h4>
+<ul>
+<li>modNames (String|String[]) – 以逗号（<code>,</code>）分割的模块名称,例如 <code>KISSY.use(&quot;custommod,custommod2&quot;)</code></li>
+<li>callback (function|Object) – 当 <code>modNames</code> 中所有模块载入并执行完毕后执行的函数或者对象描述，当callback类型为Object时，可传入两个属性：<ul>
+<li>success (function) – 当 <code>modNames</code> 中所有模块加载完毕后执行的函数</li>
+<li>error (function) – 当前 use 失败时调用的函数，参数为失败的模块对象</li>
+</ul>
+</li>
+</ul>
+<h4>Example</h4>
+<p>callback为函数时</p>
+<pre><code>KISSY.use(&quot;depMod1,depMod2&quot;,function(S,DepMod1,DepMod2){
+    // Your code...
+});</code></pre>
+<p>callback为对象时</p>
+<pre><code>KISSY.use(&quot;depMod1,depMod2&quot;,{
+    success:function(S,DepMod1,DepMod2){
+        // Your code
+    },
+    error:function(){
+        var errorMods = KISSY.makeArray(arguments);
+    }
+});</code></pre>
+<blockquote>
+<p>如果使用经过配置的包内的模块, 则这些包内模块不需要事先注册, 直接 use 即可, 如果模块名以 <code>/</code> 结尾, 则自动加后缀 <code>index</code> , 例如 <code>use(&quot;mods/m1/&quot;)</code> 相当于 <code>use(&quot;mods/m1/index&quot;)</code> , 即自动加载 <code>m1</code> 目录下的 <code>index.js</code></p>
+</blockquote>
+<h3>importStyle()  <code>&lt;static&gt;</code></h3>
+<p><code>importStyle (modNames) =&gt; void</code></p>
+<p>阻塞加载 css 模块或 js 模块依赖的 css 模块, 和 KISSY.add 中的 require 配置一起使用.</p>
+<h4>parameter</h4>
+<p>modNames (String|String[]) – 以<code>,</code>分割的 js 模块或 css 模块名称集合字符串,例如 <code>KISSY.use(&quot;mod1,mod2/xx.css&quot;)</code>;</p>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>KISSY 浏览器测试基准</h1>
+<p>KISSY 被设计为运行于绝大多数浏览器、设备环境。这些硬件环境包括：</p>
+<p><img src="http://gtms01.alicdn.com/tps/i1/T1vNSDFmhXXXbBMKPF-610-248.png" alt=""></p>
+<h3>说明</h3>
+<ul>
+<li>匕首标识（†）是指当前最新正式版（非Beta版）</li>
+<li>测试基准无优先级，为统一标准</li>
+<li>NodeJS 版本实现和 PC 端在 DOM 部分有偏差。</li>
+</ul>
+<hr>
+<h2>如何定义“通过测试“?</h2>
+<p>KISSY 源码均提供测试用例，测试用例在这些环境中跑通即为通过测试，但测试用例是否反映真实场景和所有情形？应当辩证来对待。毕竟，测试用例只关注核心功能，且遵循等价类和边界值的原则进行用例抽取。但考虑到具体终端硬件配置、带宽、网速以及浏览器插件、杀毒软件等，这些都会影响 KISSY 代码的运行，这些因素，我们不考虑在测试因素之内。</p>
+<h2>浏览器分级支持</h2>
+<p>有必要对“浏览器支持”作一个完整的定义，这个定义应当包括视觉设计、开发和测试。而且要清楚的知道在什么条件下会有用户体验上的损失，这就是浏览器分级支持，大家在早先几年在 <a href="http://yuilibrary.com/yui/docs/tutorials/gbs/">YUI GBS</a> 上看到过这种分级，这种分级更多面向具体的项目、业务和工程，但对于底层 JS 库来说是不必分级，所有流行的浏览器都应当同时支持。</p>
+<h2>浏览器外壳和内核</h2>
+<p>这里是淘宝全网的浏览器使用情况，可以看到内核和外壳的占有情况，内环为内核，外环为外壳，这也是接下来要提到的浏览器同类项的数据基础： </p>
+<p><img src="http://gtms04.alicdn.com/tps/i4/T1ugCBFltdXXbsk2DF-577-351.png" alt=""></p>
+<p>不同的浏览器可能会采用相同的内核（渲染引擎），而外壳实现的差异性会影响整个网站功能。这也是为什么内核无法完全代表所有浏览器的原因。</p>
+<p>另一方面，某些浏览器具有相同的血统，是可以归为同一类的，同一类中，如果测试通过其中一个，那么其他与之同类的浏览器也“基本上”可以通过测试。我们根据相同的内核或对W3C标准有类似的支持程度将浏览器进行归类。之所以这样做，是因为测试基准除了要基本反映浏览器的市场占有率，还要考虑到开发测试成本。因此，测试基准中的浏览器应当具有“代表性”。</p>
+<p>浏览器的不同版本的内核也不一样，因此通常要针对不同版本的浏览器作测试，开发者要了解内核对标准的支持，比如IE的渲染引擎Trident的不同版本差别较大，因此IE需要测试6-10，然而由于Firefox和Chrome升级覆盖面广，因此基准中只保留他们的最新版本。 </p>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>KISSY Mobile 最佳实践</h1>
+<h2>去除不必要的模块加载</h2>
+<p>Seed 种子文件体积（seed-min.js）：<strong>15k</strong>（gzip）。Mobile 中原生支持<code>querySelector</code>和<code>querySelectorAll</code>，在 Webkit 内核浏览器中只会载入包装器，即在移动终端会自行加载最小子集，比如这段代码：</p>
+<pre><code>// 在 Mobile 中运行
+KISSY.use(&#39;node&#39;);</code></pre>
+<p>只会载入<code>node-min.js</code>：<strong>2k</strong>（gzip），即可在 Mobile 中拥有DOM操作的全部功能。</p>
+<p><img src="http://gtms04.alicdn.com/tps/i4/T1khi2FfFdXXXKwN2U-393-61.png" alt=""></p>
+<blockquote>
+<p>最佳实践，在Mobile中要保留有用的模块，尽管KISSY会主动探测设备并选择性加载，但多余的手动引入模块还是会造成不必要的带宽浪费。</p>
+</blockquote>
+<h2>开启 Combo</h2>
+<p>KISSY Loader 可以开启Combo功能，将多JS文件进行合并输出，以减少HTTP请求数，在移动终端中<strong>更要如此</strong>，开启方法参照<a href="loader.html">Loader</a>。</p>
+<p>对于本地文件，使用<a href="kmc.html">KMC</a>进行静态合并。</p>
+<h2>KISSY DOM 的 CSS3 选择器加速</h2>
+<p>Zepto 由于充分利用了浏览器原生<code>querySelector</code>和<code>querySelectorAll</code>两个函数来查找DOM，因此DOM查找效率很不错，但并非所有的选择器用这两个函数都能达到速度最快。<a href="https://speakerdeck.com/lijing00333/css-selector-performance">通过测试发现</a>，<code>#id</code>、<code>#ClassName</code>、<code>tags</code>、<code>#id .cls</code>、<code>级联查找</code>等场景下，<code>querySelector</code>性能并非最优。我们在 DOM 模块中重构了 CSS3 选择器引擎，有选择的调用原生函数，在90%的场景中让DOM查找速度加倍：</p>
+<p><img src="http://gtms04.alicdn.com/tps/i4/T19b5yFkdXXXXvDWMq-529-511.png" alt=""></p>
+<blockquote>
+<p>最佳实践：在对选择器查找性能要求苛刻的场景中，使用 KISSY DOM 代替 Zepto。</p>
+</blockquote>
+<h2>触屏事件</h2>
+<p><a href="event.html">KISSY Event</a> 包含对触屏事件的封装，这样载入<code>event</code>模块：</p>
+<pre><code>// 在触屏设备中运行
+KISSY.use(&#39;event&#39;);</code></pre>
+<p>在触屏设备中将会加载<code>event-min.js</code>：214B（gzip）。事件用法和普通的浏览器事件一样：</p>
+<pre><code>Event.on(&#39;#t&#39;, &quot;swipe&quot;, function (e) {
+    if(e.direction==&#39;left&#39;){
+        e.preventDefault();
+    }
+});</code></pre>
+<blockquote>
+<p>最佳实践，使用 KISSY Event 封装后的触屏事件，触屏行为更统一、精确。事件种类参照<a href="event.html">Event</a>。</p>
+</blockquote>
+<h2>组件的触屏兼容</h2>
+<p>KISSY Gallery 提供大量兼容 Mobile 的组件，尽可能的使用这些跨终端的组件，比如<a href="http://gallery.kissyui.com/slide/1.1/guide/index.html">Slide</a>，支持CSS3动画的加速和手势事件触发切换。</p>
+<hr>
+<h2>其他重要的优化手段</h2>
+<h3>图片体积优化</h3>
+<p>性能分为两类：</p>
+<ul>
+<li>载入性能</li>
+<li>渲染性能</li>
+</ul>
+<p>KISSY 只能保证在 JavaScript 层面优化性能，根据<a href="http://developer.yahoo.com/performance/rules.html">34军规</a>的原则，影响载入性能最大的因素在于HTTP请求数和资源体积，一般情况下占用页面体积80%的是图片，因此优化图片的效果比优化 JavaScript 体积要更显著更重要。</p>
+<h4>根据不同DPI载入不同尺寸图片</h4>
+<pre><code>/* 高 dpi */
+@media only screen and (min-resolution: 300dpi),
+    only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+        #header { background-image: url(header-300dpi.png); }
+}
+
+/* 低 dpi */
+@media only screen and (max-resolution: 299dpi),
+    only screen and (-webkit-max-device-pixel-ratio: 1.5) {
+        #header { background-image: url(header-72dpi.png); }
+}</code></pre>
+<h4>使用带有alpha通道的PNG8图片</h4>
+<p>带有半透明效果的图片可以以PNG8形式保存，通过工具<a href="http://tinypng.org/">tinypng</a>来优化。这类图片体积将会减少一倍。</p>
+<h2>两篇H5开发最佳实践的 PPT</h2>
+<ul>
+<li><a href="https://speakerdeck.com/ningzbruc/mobile-h5-xing-neng-you-hua">H5 开发性能优化实战</a></li>
+<li><a href="https://speakerdeck.com/paulguo/h5-mobile-kai-fa-diao-shi-shi-jian">H5 项目开发调试技巧</a></li>
+</ul>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

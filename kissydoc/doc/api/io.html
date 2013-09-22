@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <title>KISSY: 模块化、接口一致、全终端适配的JS类库</title>
+  
+  <meta name=description content="The aerogel-weight jQuery-compatible JavaScript library
+">
+  
+  <link rel=stylesheet href=assets/style.css />
+  <link rel=stylesheet href=assets/tomorrow-night-bright.css />
+
+  <meta name=apple-mobile-web-app-capable content=yes>
+  <meta name=apple-mobile-web-app-status-bar-style content=white>
+  <meta name=format-detection content="telephone=no">
+	<script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed-min.js"></script>
+	<script src="assets/highlight.pack.js"></script>
+
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+  <div id="menu_icon">≣</div>
+
+<aside id="sidebar" class="interface">
+
+<h3>Introduction</h3>
+
+  <a class="toc_title" href="#">
+    seed.js <span class="version">(1.4.0)</span>
+  </a>
+  <ul class=toc_section>
+    <li><a href="#guide">Hello World</a></li>
+	<li><a href="#download">KISSY 模块依赖表</a></li>
+  </ul>
+
+  <hr>
+
+<h3>Seed</h3>
+
+  <a class=toc_title href="loader.html#loader">loader</a>
+  
+	<ul class=toc_section>
+		<li><a href="loader.html#config">config()</a></li>
+		<li><a href="loader.html#getScript">getScript()</a></li>
+		<li><a href="loader.html#add">add()</a></li>
+		<li><a href="loader.html#use">use()</a></li>
+		<li><a href="loader.html#importStyle">importStyle()</a></li>
+	</ul>
+
+	<a class=toc_title href="path.html">path</a>
+
+	 <ul class=toc_section>
+		<li><a href="path.html#basename">basename()</a></li>
+		<li><a href="path.html#dirname">dirname()</a></li>
+		<li><a href="path.html#extname">extname()</a></li>
+		<li><a href="path.html#join">join()</a></li>
+		<li><a href="path.html#normalize">normalize()</a></li>
+		<li><a href="path.html#relative">relative()</a></li>
+		<li><a href="path.html#resolve">resolve()</a></li>
+	</ul>
+
+	 <a class=toc_title href="uri.html">uri</a>
+
+	 <ul class=toc_section>
+		<li><a href="uri.html#clone">clone()</a></li>
+		<li><a href="uri.html#resolve">resolve()</a></li>
+		<li><a href="uri.html#getScheme">getScheme()</a></li>
+		<li><a href="uri.html#setScheme">setScheme()</a></li>
+		<li><a href="uri.html#getHostname">getHostname()</a></li>
+		<li><a href="uri.html#setHostname">setHostname()</a></li>
+		<li><a href="uri.html#getUserInfo">getUserInfo()</a></li>
+		<li><a href="uri.html#setUserInfo">setUserInfo()</a></li>
+		<li><a href="uri.html#getPort">getPort()</a></li>
+		<li><a href="uri.html#setPort">setPort()</a></li>
+		<li><a href="uri.html#getPath">getPath()</a></li>
+		<li><a href="uri.html#setPath">setPath()</a></li>
+		<li><a href="uri.html#getQuery">getQuery()</a></li>
+		<li><a href="uri.html#setQuery">setQuery()</a></li>
+		<li><a href="uri.html#getFragment">getFragment()</a></li>
+		<li><a href="uri.html#setFragment">setFragment()</a></li>
+		<li><a href="uri.html#isSameOriginAs">isSameOriginAs()</a></li>
+		<li><a href="uri.html#toString">toString()</a></li>
+	</ul>
+
+	 <a class=toc_title href="promise.html">promise</a>
+
+	 <ul class=toc_section>
+		<li><a href="promise.html#then">then()</a></li>
+		<li><a href="promise.html#fail">fail()</a></li>
+		<li><a href="promise.html#fin">fin()</a></li>
+		<li><a href="promise.html#isResolved">isResolved()</a></li>
+		<li><a href="promise.html#isRejected"> isRejected()</a></li>
+		<li><a href="promise.html#when">when() （static）</a></li>
+		<li><a href="promise.html#isPromise">isPromise()（static）</a></li>
+		<li><a href="promise.html#isRejected">isRejected()（static）</a></li>
+		<li><a href="promise.html#all">all()（static）</a></li>
+	</ul>
+
+  <a class=toc_title href="ua.html">ua</a>
+  
+	<ul class=toc_section>
+		<li><a href="ua.html#trident">trident</a></li>
+		<li><a href="ua.html#webkit">webkit</a></li>
+		<li><a href="ua.html#gecko">gecko</a></li>
+		<li><a href="ua.html#presto">presto</a></li>
+		<li><a href="ua.html#chrome">chrome</a></li>
+		<li><a href="ua.html#safari">safari</a></li>
+		<li><a href="ua.html#firefox">firefox</a></li>
+		<li><a href="ua.html#ie">ie</a></li>
+		<li><a href="ua.html#opera>opera</a></li>
+		<li><a href="ua.html#mobile>mobile</a></li>
+		<li><a href="ua.html#core">core</a></li>
+		<li><a href="ua.html#shell">shell</a></li>
+		<li><a href="ua.html#os">os</a></li>
+		<li><a href="ua.html#ipad">ipad</a></li>
+		<li><a href="ua.html#iphone">iphone</a></li>
+		<li><a href="ua.html#ipod">ipod</a></li>
+		<li><a href="ua.html#ios">ios</a></li>
+		<li><a href="ua.html#android">android</a></li>
+	</ul>
+
+
+  <a class=toc_title href="#core">lang</a>
+  
+	<ul class=toc_section>
+		<li><a href="lang.html#augment">augment()</a></li>
+		<li><a href="lang.html#available">available()</a></li>
+		<li><a href="lang.html#bind">bind()</a></li>
+		<li><a href="lang.html#buffer">buffer()</a></li>
+		<li><a href="lang.html#clone">clone()</a></li>
+		<li><a href="lang.html#each">each()</a></li>
+		<li><a href="lang.html#endsWith">endsWith()</a></li>
+		<li><a href="lang.html#error">error()</a></li>
+		<li><a href="lang.html#escapeHTML">escapeHTML()</a></li>
+		<li><a href="lang.html#extend">extend()</a></li>
+		<li><a href="lang.html#filter">filter()</a></li>
+		<li><a href="lang.html#fromUnicode">fromUnicode()</a></li>
+		<li><a href="lang.html#globalEval">globalEval()</a></li>
+		<li><a href="lang.html#guid">guid()</a></li>
+		<li><a href="lang.html#inArray">inArray()</a></li>
+		<li><a href="lang.html#indexOf">indexOf()</a></li>
+		<li><a href="lang.html#isArray">isArray()</a></li>
+		<li><a href="lang.html#isBoolean">isBoolean()</a></li>
+		<li><a href="lang.html#isDate">isDate()</a></li>
+		<li><a href="lang.html#isEmptyObject">isEmptyObject()</a></li>
+		<li><a href="lang.html#isFunction">isFunction()</a></li>
+		<li><a href="lang.html#isNull">isNull()</a></li>
+		<li><a href="lang.html#isNumber">isNumber()</a></li>
+		<li><a href="lang.html#isObject">isObject()</a></li>
+		<li><a href="lang.html#isPlainObject">isPlainObject()</a></li>
+		<li><a href="lang.html#isRegExp">isRegExp()</a></li>
+		<li><a href="lang.html#isString">isString()</a></li>
+		<li><a href="lang.html#isUndefined">isUndefined()</a></li>
+		<li><a href="lang.html#isWindow">isWindow()</a></li>
+		<li><a href="lang.html#keys">keys()</a></li>
+		<li><a href="lang.html#lastIndexOf">lastIndexOf()</a></li>
+		<li><a href="lang.html#later">later()</a></li>
+		<li><a href="lang.html#log">log()</a></li>
+		<li><a href="lang.html#makeArray">makeArray()</a></li>
+		<li><a href="lang.html#map">map()</a></li>
+		<li><a href="lang.html#merge">merge()</a></li>
+		<li><a href="lang.html#mix">mix()</a></li>
+		<li><a href="lang.html#namespace">namespace()</a></li>
+		<li><a href="lang.html#now">now()</a></li>
+		<li><a href="lang.html#param">param()</a></li>
+		<li><a href="lang.html#parseXML">parseXML()</a></li>
+		<li><a href="lang.html#ready">ready()</a></li>
+		<li><a href="lang.html#reduce">reduce()</a></li>
+		<li><a href="lang.html#startsWith">startsWith()</a></li>
+		<li><a href="lang.html#substitute">substitute()</a></li>
+		<li><a href="lang.html#throttle">throttle()</a></li>
+		<li><a href="lang.html#trim">trim()</a></li>
+		<li><a href="lang.html#type">type()</a></li>
+		<li><a href="lang.html#unEscapeHTML">unEscapeHTML()</a></li>
+		<li><a href="lang.html#unique">unique()</a></li>
+		<li><a href="lang.html#unparam">unparam()</a></li>
+		<li><a href="lang.html#version">version()</a></li>
+	</ul>
+
+  <a class=toc_title href="features.html">features</a>
+	<ul class=toc_section>
+		<li><a href="features.html#isDeviceMotionSupported">isDeviceMotionSupported()</a></li>
+		<li><a href="features.html#isMsPointerSupported">isMsPointerSupported()</a></li>
+		<li><a href="features.html#isTouchEventSupported">isTouchEventSupported()</a></li>
+		<li><a href="features.html#isHashChangeSupported">isHashChangeSupported()</a></li>
+		<li><a href="features.html#isTransitionSupported">isTransitionSupported()</a></li>
+		<li><a href="features.html#isTransformSupported">isTransformSupported()</a></li>
+		<li><a href="features.html#isClassListSupported">isClassListSupported()</a></li>
+		<li><a href="features.html#isQuerySelectorSupported">isQuerySelectorSupported()</a></li>
+		<li><a href="features.html#getTransitionPrefix">getTransitionPrefix()</a></li>
+		<li><a href="features.html#getTransformPrefix">getTransformPrefix()</a></li>
+	</ul>
+
+
+  <hr>
+
+<h3>Core</h3>
+
+  <a class=toc_title href="io.html">io（ajax）</a>
+  
+	<ul class=toc_section>
+		<li><a href="io.html#IO ">Ajax</a></li>
+		<li><a href="io.html#IO">IO</a></li>
+		<li><a href="io.html#getResponseHeader">getResponseHeader()</a></li>
+		<li><a href="io.html#getNativeXhr">getNativeXhr</a></li>
+		<li><a href="io.html#abort">abort()</a></li>
+		<li><a href="io.html#then">then()</a></li>
+		<li><a href="io.html#setupConfig">setupConfig()</a></li>
+		<li><a href="io.html#get">get()</a></li>
+		<li><a href="io.html#post">post()</a></li>
+		<li><a href="io.html#getJSON">getJSON()</a></li>
+		<li><a href="io.html#jsonp">jsonp()</a></li>
+		<li><a href="io.html#upload">upload()</a></li>
+		<li><a href="io.html#serialize">serialize()</a></li>
+		<li><a href="io.html#start">start</a></li>
+		<li><a href="io.html#send">send </a></li>
+		<li><a href="io.html#success">success </a></li>
+		<li><a href="io.html#error">error </a></li>
+		<li><a href="io.html#complete">complete </a></li>
+	</ul>
+
+  <a class=toc_title href="#core">anim</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">S.Anim</a></li>
+		<li><a href="#">run()</a></li>
+		<li><a href="#">stop()</a></li>
+		<li><a href="#">pause()</a></li>
+		<li><a href="#">resume()</a></li>
+		<li><a href="#">isRunning()</a></li>
+		<li><a href="#">isPaused()</a></li>
+		<li><a href="#">beforeStart</a></li>
+		<li><a href="#">complete</a></li>
+		<li><a href="#">step</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">base</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">S.Base</a><font color="blue">(Base参元类)</font></li>
+	</ul>
+
+  <a class=toc_title href="#core">cookie</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">get()</a></li>
+		<li><a href="#">set()</a></li>
+		<li><a href="#">remove()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">dom</a>
+  
+	<ul class=toc_section>
+		<li><a href="selector.html">selector()</a></li>
+		<li><a href="query.html">query()</a></li>
+		<li><a href="get.html">get()</a></li>
+		<li><a href="filter.html">filter()</a></li>
+		<li><a href="test.html">test()</a></li>
+		<li><a href="clone.html">clone()</a></li>
+		<li><a href="hasClass.html">hasClass()</a></li>
+		<li><a href="addClass.html">addClass()</a></li>
+		<li><a href="removeClass.html">removeClass()</a></li>
+		<li><a href="replaceClass.html">replaceClass()</a></li>
+		<li><a href="toggleClass.html">toggleClass()</a></li>
+		<li><a href="removeAttr.html">removeAttr()</a></li>
+		<li><a href="attr.html">attr()</a></li>
+		<li><a href="hasAttr.html">hasAttr()</a></li>
+		<li><a href="prop.html">prop()</a></li>
+		<li><a href="hasProp.html">hasProp()</a></li>
+		<li><a href="val.html">val()</a></li>
+		<li><a href="text.html">text()</a></li>
+		<li><a href="css.html">css()</a></li>
+		<li><a href="style.html">style()</a></li>
+		<li><a href="width.html">width()</a></li>
+		<li><a href="height.html">height()</a></li>
+		<li><a href="innerWidth.html">innerWidth()</a></li>
+		<li><a href="innerHeight.html">innerHeight()</a></li>
+		<li><a href="outerWidth.html">outerWidth()</a></li>
+		<li><a href="outerHeight.html">outerHeight()</a></li>
+		<li><a href="addStyleSheet.html">addStyleSheet()</a></li>
+		<li><a href="show.html">show()</a></li>
+		<li><a href="hide.html">hide()</a></li>
+		<li><a href="toggle.html">toggle()</a></li>
+		<li><a href="offset.html">offset()</a></li>
+		<li><a href="scrollTop.html">scrollTop()</a></li>
+		<li><a href="scrollLeft.html">scrollLeft()</a></li>
+		<li><a href="docHeight.html">docHeight()</a></li>
+		<li><a href="docWidth.html">docWidth()</a></li>
+		<li><a href="viewportHeight.html">viewportHeight()</a></li>
+		<li><a href="viewportWidth.html">viewportWidth()</a></li>
+		<li><a href="scrollIntoView.html">scrollIntoView()</a></li>
+		<li><a href="dom-index.html">index()</a></li>
+		<li><a href="parent.html">parent()</a></li>
+		<li><a href="next.html">next()</a></li>
+		<li><a href="prev.html">prev()</a></li>
+		<li><a href="first.html">first()</a></li>
+		<li><a href="last.html">last()</a></li>
+		<li><a href="siblings.html">siblings()</a></li>
+		<li><a href="children.html">children()</a></li>
+		<li><a href="contains.html">contains()</a></li>
+		<li><a href="create.html">create()</a></li>
+		<li><a href="html.html">html()</a></li>
+		<li><a href="remove.html">remove()</a></li>
+		<li><a href="empty.html">empty()</a></li>
+		<li><a href="insertBefore.html">insertBefore()</a></li>
+		<li><a href="insertAfter.html">insertAfter()</a></li>
+		<li><a href="append.html">append()</a></li>
+		<li><a href="prepend.html">prepend()</a></li>
+		<li><a href="replaceWith.html">replaceWith()</a></li>
+		<li><a href="data.html">data()</a></li>
+		<li><a href="removeData.html">removeData()</a></li>
+		<li><a href="hasData.html">hasData()</a></li>
+		<li><a href="unselectable.html">unselectable()</a></li>
+		<li><a href="contents.html">contents()</a></li>
+		<li><a href="wrap.html">wrap()</a></li>
+		<li><a href="wrapAll.html">wrapAll()</a></li>
+		<li><a href="unwrap.html">unwrap()</a></li>
+		<li><a href="wrapInner.html">wrapInner()</a></li>
+		<li><a href="nodeName.html">nodeName()</a></li>
+		<li><a href="outerHTML.html">outerHTML()</a></li>
+
+	</ul>
+
+
+  <a class=toc_title href="#core">event</a>
+  
+	<ul class=toc_section>
+		<li><a href="#"><b>EventTarget</b></a><font color="blue">(事件参元类)</font></li>
+		<li><a href="#"><b>EventObject</b></a><font color="blue">(事件门面对象)</font></li>
+		<li><a href="#">on()</a></li>
+		<li><a href="#">delegate()</a></li>
+		<li><a href="#">detach()</a></li>
+		<li><a href="#">undelegate()</a></li>
+		<li><a href="#">fire()</a></li>
+		<li><a href="#">fireHandler()</a></li>
+	</ul>
+
+
+  <a class=toc_title href="#core">json</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">parse()</a></li>
+		<li><a href="#">stringify()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">node</a>
+  
+	<ul class=toc_section>
+		<li><a href="instance_all.html">all()</a></li>
+		<li><a href="instance_one.html">one()</a></li>
+		<li><a href="getDOMNodes.html">getDOMNodes()</a></li>
+		<li><a href="getDOMNode.html">getDOMNode()</a></li>
+		<li><a href="end.html">end()</a></li>
+		<li><a href="equals.html">equals()</a></li>
+		<li><a href="add.html">add()</a></li>
+		<li><a href="item.html">item()</a></li>
+		<li><a href="slice.html">slice()</a></li>
+		<li><a href="scrollTop.html">scrollTop()</a></li>
+		<li><a href="scrollLeft.html">scrollLeft()</a></li>
+		<li><a href="height.html">height()</a></li>
+		<li><a href="width.html">width()</a></li>
+		<li><a href="addStyleSheet.html">addStyleSheet()</a></li>
+		<li><a href="append.html">append()</a></li>
+		<li><a href="appendTo.html">appendTo()</a></li>
+		<li><a href="prepend.html">prepend()</a></li>
+		<li><a href="prependTo.html">prependTo()</a></li>
+		<li><a href="insertBefore.html">insertBefore()</a></li>
+		<li><a href="before.html">before()</a></li>
+		<li><a href="after.html">after()</a></li>
+		<li><a href="insertAfter.html">insertAfter()</a></li>
+		<li><a href="animate.html">animate()</a></li>
+		<li><a href="stop.html">stop()</a></li>
+		<li><a href="pause.html">pause()</a></li>
+		<li><a href="resume.html">resume()</a></li>
+		<li><a href="isRunning.html">isRunning()</a></li>
+		<li><a href="isPaused.html">isPaused()</a></li>
+		<li><a href="show.html">show()</a></li>
+		<li><a href="hide.html">hide()</a></li>
+		<li><a href="toggle.html">toggle()</a></li>
+		<li><a href="fadeIn.html">fadeIn()</a></li>
+		<li><a href="fadeOut.html">fadeOut()</a></li>
+		<li><a href="fadeToggle.html">fadeToggle()</a></li>
+		<li><a href="slideDown.html">slideDown()</a></li>
+		<li><a href="slideUp.html">slideUp()</a></li>
+		<li><a href="slideToggle.html">slideToggle()</a></li>
+		<li><a href="">继承自dom/event的方法</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">uri</a>
+
+	<ul class=toc_section>
+		<li><a href="#">S.Uri</a></li>
+		<li><a href="#">every()</a></li>
+		<li><a href="#">some()</a></li>
+		<li><a href="#">stamp()</a></li>
+		<li><a href="#">clone()</a></li>
+		<li><a href="#">resolve()</a></li>
+		<li><a href="#">getScheme()</a></li>
+		<li><a href="#">setScheme()</a></li>
+		<li><a href="#">getHostname()</a></li>
+		<li><a href="#">setHostname()</a></li>
+		<li><a href="#">getUserInfo()</a></li>
+		<li><a href="#">setUserInfo()</a></li>
+		<li><a href="#">setPort()</a></li>
+		<li><a href="#">getPort()</a></li>
+		<li><a href="#">setPath()</a></li>
+		<li><a href="#">getPath()</a></li>
+		<li><a href="#">setQuery()</a></li>
+		<li><a href="#">getQuery()</a></li>
+		<li><a href="#">getFragment()</a></li>
+		<li><a href="#">setFragment()</a></li>
+		<li><a href="#">isSameOriginAs()</a></li>
+		<li><a href="#">toString()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">promise</a>
+	<ul class=toc_section>
+		<li><a href="#">S.Promise</a><font color=blue>(内部调用)</font></li>
+		<li><a href="#">S.Defer</a><font color=blue>(内部调用)</font></li>
+	</ul>
+
+  <a class=toc_title href="#core">path</a> 
+	<ul class=toc_section>
+		<li><a href="">basename()</a></li>
+		<li><a href="">dirname()</a></li>
+		<li><a href="">extname()</a></li>
+		<li><a href="">join()</a></li>
+		<li><a href="">normalize()</a></li>
+		<li><a href="">relative()</a></li>
+		<li><a href="">resolve()</a></li>
+	</ul>
+
+<hr />
+
+<h3>Mobile 支持</h3>
+
+  <a class=toc_title href="#core">Mobile Events</a>
+	<ul class=toc_section>
+		<li><a href="#">Touch Events</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">UA 探测</a>
+	<ul class=toc_section>
+		<li><a href="#">Mobile UA</a></li>
+	</ul>
+
+</aside>
+
+<div class="container">
+	<h1>io</h1>
+<blockquote>
+<p>Ajax 别名 io，注意，KISSY中不存在名为&quot;ajax&quot;的模块，必须使用名字‘io’。</p>
+</blockquote>
+<pre><code>KISSY.use(&#39;io&#39;,function(S,IO){
+    // use IO
+});</code></pre>
+<p>方便起见，你仍可以用<code>S.Ajax</code>，<code>S.Ajax === S.IO</code>。</p>
+<h3>IO <code>&lt;class&gt;</code></h3>
+<p> <code>IO(cfg) =&gt; Promise</code></p>
+<p>IO 全局方法，构建 io 请求并发送，传入一个JSON对象，返回一个<a href="promise.html">Promise</a>实例。</p>
+<h4>parameter</h4>
+<p>cfg (Object) – 用来配置请求的键值对对象. 所有的配置项都是可选的,可以通过 io.setupConfig() 来设置默认配置.</p>
+<p>cfg属性列表包括：</p>
+<ul>
+<li>url:{String} - 类型 String. 本次请求发送的地址.</li>
+<li>accepts:{Object} - 该配置和 dataType 一起确定当前发送给服务器的 Accept 头. 默认包括<ul>
+<li>xml: &quot;application/xml, text/xml&quot;,</li>
+<li>html: &quot;text/html&quot;,</li>
+<li>text: &quot;text/plain&quot;,</li>
+<li>json: &quot;application/json, text/javascript&quot;</li>
+</ul>
+</li>
+<li>dataType：{String} - 期望能够从服务器返回的数据类型。如果没有指定，kissy 将尽量从返回的 <code>mimeType</code> |<code>Content-type</code> 相应头中推导出来 (‘text/xml’ 将推导出 xml , ‘text/json’ 将推导出 json)。默认支持的类型（该类型的响应信息会作为第一个参数传到 success complete 回调中）有:<ul>
+<li>“xml” : 返回响应信息代表的 xml 文档.<ul>
+<li>“text” : 返回响应信息串</li>
+<li>“html” : 同 “text”</li>
+<li>“script” : 将响应信息作为脚本执行。</li>
+<li>“json” : 返回响应信息代表的 json 对象.</li>
+<li>“jsonp” : 返回 jsonp 的响应信息代表的 json 对象.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>processData：{Boolean} - 默认 true . 当 data 为对象时是否用 param() 序列化. 例如当需要传送一个 xml 或 formdata 到服务器时就不需要 param data， 并且最好同时设置 contentType 为合适的值.</li>
+<li>async：{Boolean} - 默认 true.本次 xhr 请求是否异步发送，如果你需要同步发送，设置该配置为 false,注意同步请求在完成前会锁死浏览器.</li>
+<li>cache：{Boolean} - dataType 为 script 或 jsonp 时默认 false，其他默认为 true. false 时则会自动给请求 url 加上时间戳.</li>
+<li>contentType：{String} - 设置请求头 Content-type, 默认 “application/x-www-form-urlencoded”. 设置 false 则不设置 Content-type 头 (例如传输 <a href="http://www.w3.org/TR/XMLHttpRequest/#interface-formdata">formdata</a> 时需要设置 false).注意：“application/x-www-form-urlencoded” 时的数据总是以 utf-8 的编码传往服务器端.</li>
+<li>context：{Object} - 设置回调函数中的 this 值,默认为当前配置项.例如可以把一个 dom 节点作为 complete 回调函数的上下文:</li>
+</ul>
+<pre><code>new IO({
+    url:&#39;test.html&#39;,
+    context:document.body,
+    complete:function(){
+        this.className=&quot;complete&quot;;
+    }
+});</code></pre>
+<ul>
+<li>crossDomain: {Boolean} - 默认同域请求为 false,不同域间为 true。设置该值为 true，则强制 script 以及 jsonp 请求通过 script 节点发送，用于服务器重定向到其他域脚本的场景.</li>
+<li>data： {String|Object} - 如果为 Object 类型则会通过 param() 格式化为字符串。注意：data 不能为嵌套 object 等复杂类型，例如:</li>
+</ul>
+<pre><code>{data:[{x:1}]} // 错误
+{data:[1]} // 正确</code></pre>
+<ul>
+<li>serializeArray：{Boolean} - 默认 true。表示序列化 data 时是否给数组值对应的键名加 [] ，例如</li>
+</ul>
+<pre><code>true 时 {x:[1,2]} //=&gt; x[]=1&amp;x[]=2
+false 时 {x:[1,2]} //=&gt; x=1&amp;x=2</code></pre>
+<ul>
+<li>error：{Function} - error (null, textStatus, io) 请求失败时的回调函数.这个函数接受 2 个参数：<ul>
+<li>textStatus 表示错误信息，包括 “timeout” , “error” , “abort” 等</li>
+<li>io 表示这次请求代表的 io 实例.</li>
+</ul>
+</li>
+<li>success：{Function} - success ( data , textStatus , io) 请求成功时的回调函数.该函数传入三个参数.<ul>
+<li>data : 根据 dataType 格式化服务器响应信息的响应对象</li>
+<li>textStatus : 描述成功的状态，一般是 “success”</li>
+<li>io : 本次请求的 io 实例.</li>
+</ul>
+</li>
+<li>complete：{Function} - complete ( data , textStatus , io) 请求完成时的回调函数,无论成功或失败都会触发该回调..该函数传入三个参数.<ul>
+<li>data : 根据 dataType 格式化服务器响应信息的响应对象，失败触发时为 null</li>
+<li>textStatus : 描述成功的状态，一般是 “success”</li>
+<li>io : 本次请求的 io 实例.</li>
+</ul>
+</li>
+<li>headers：{Object} - 设置这次请求 xhr 的请求头.</li>
+<li>jsonp：{String} - 覆盖这次 jsonp 请求的 callback 函数名. 这个值可以取代请求 url 中 callback=? 的 callback.例如 {jsonp:’onJsonLoad’} 会导致 ‘onJsonLoad=?’ 发送给服务器端.</li>
+<li>jsonpCallback：{String|Function} - 覆盖这次 jsonp 请求 callback 函数对应的值 (callback={jsonpCallback}). 这个值将取代 kissy 默认生成的 UUID 值。当传入函数时，该函数需要返回字符串，每次请求都会调用该函数得到用于替换的字符串.</li>
+<li>mimeType：{String} - 跨平台设置 xhr 的 <a href="https://developer.mozilla.org/en/XmlHttpRequest#overrideMimeType%28%29">mimeType</a></li>
+<li>password：{String} - 对于需要验证的 http 请求设置密码.</li>
+<li>username：{String} - 对于需要验证的 http 请求设置用户名.</li>
+<li>scriptCharset：{String} - 用于 dataType jsonp 和 script ，设定传输用的 script 节点的 charset 属性。只有当返回编码和当前页面编码不一致时使用.</li>
+<li>timeout：{Number} - 对这次请求设个超时时间，单位秒. 当超时后会触发 error 以及 complete 回调 , 状态字符串为 “timeout”.</li>
+<li>type：{String} - 可取值 “get” 或者 “post”.</li>
+<li>xhrFields：{Object} - 设置到原生 xhr 对象的键值对.例如为了在标准浏览器进行跨域请求时携带cookie你可以设置 <a href="https://developer.mozilla.org/en/http_access_control#Requests_with_credentials">withCredentials</a> 为 true。比如下面的代码，这样 x.com 发送请求 y.com 会携带 y.com 的 cookie 信息.</li>
+</ul>
+<pre><code>new IO({
+    url:&quot;http://y.com/ping.php&quot;,
+    xhrFields:{
+        withCredentials: true
+    }
+});</code></pre>
+<ul>
+<li>xdr：{Object} - 设置跨域的具体方式和细节，包括以下配置    <ul>
+<li>src：{String} 完全跨域请求的 flash 发送程序地址。当完全跨域时,KISSY io 在ie 中将采用 flash 发请求，默认采用 KISSY 自带 flash 发请求，也可将 kissy 自带的 flash 部署到其他地方，在 src 中指定。而在标准浏览器将采用原生机制.</li>
+<li>subDomain：{Object} 跨子域时的一些请求配置，包括<ul>
+<li>proxy：{String} 指定代理页面的地址。默认 “/sub_domain_proxy.html” . 例如 x.taobao.com 要发送请求给 y.taobao.com ，那么需要设置 x.taobao.com 的页面 document.domain=’taobao.com’ ，然后提供 y.taobao.com/sub_domain_proxy.html ，该页面内容为<code>&lt;script&gt;document.domain=&#39;taobao.com&#39;&lt;/script&gt;</code>，然后 x.taobao.com 的页面就可以和 y.taobao.com 通信了。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>form：{String} - 选择器字符串 KISSY selector，如果 form 的 enctype 为 “multipart/form-data` 则会采用 iframe 的方式进行无刷新文件上传，否则将 form 内的输入域和值序列化后通过 xhr 发送到服务器.</li>
+<li>beforeSend：{Function} - 发送请求前的拦截函数，传入参数 （xhrObject, config），xhrObject 为 io.XhrObj 类型，例如可以通过该函数实现上传进度监控</li>
+</ul>
+<pre><code>var xhr = new IO({
+    url:&#39;./upload.php&#39;,
+    type:&quot;post&quot;,
+    processData:false,
+    data:formData,
+    dataType:&#39;json&#39;,
+    contentType:false,
+    beforeSend:function (xhr) {
+        // 上传监听 upload
+        xhr.getNativeXhr().upload.addEventListener(&#39;progress&#39;, function (ev) {
+            S.log({ &#39;loaded&#39;:ev.loaded, &#39;total&#39;:ev.total });
+        });
+    },
+    success:function (d) {
+        S.log(d);
+    }
+});</code></pre>
+<h4>IO 实例的属性</h4>
+<ul>
+<li>readyState：{Number} - 表示请求完成状态。可用于判断当前请求是否完成. 4 表示完成，否则表示正在进行中.(xhr 会有更多取值，jsonp script 只有 0(初始化) 1(发送中) 4(完成))</li>
+<li>status：{Number} - 响应状态码. xhr 会有更多取值。jsonp script 只有 200(成功) , 500(出错)</li>
+<li>statusText：{String} - 响应状态字符串. 最终同回调 complete 中的 textStatus 一致.</li>
+<li>responseText：{String} - 返回响应对应的 text 和 xml（如果需要）.</li>
+</ul>
+<h4>IO 实例的方法</h4>
+<ul>
+<li><a href="#getResponseHeader">getResponseHeader()</a></li>
+<li><a href="#getNativeXhr">getNativeXhr()</a></li>
+<li><a href="#abort">abort()</a></li>
+<li><a href="#then">then()</a></li>
+</ul>
+<h4>IO 全局事件</h4>
+<p>所有 io 请求都会在 io 模块上触发事件，可通过 IO.on 来捕获所有的 io 请求，例如</p>
+<pre><code>var indicator=KISSY.one(&quot;#indicator&quot;),
+        num;
+
+//发送前显示 loading 状态
+IO.on(&quot;send&quot;,function(){
+    num++;
+    indicator.show();
+});
+
+//发送后隐藏 loading 状态
+IO.on(&quot;complete&quot;,function(){
+    num--;
+    if(!num)
+        indicator.hide();
+});</code></pre>
+<p>全局事件包括：</p>
+<ul>
+<li><a href="#start">start</a></li>
+<li><a href="#send">send</a></li>
+<li><a href="#success">success</a></li>
+<li><a href="#error">error</a></li>
+<li><a href="#complete">complete</a></li>
+</ul>
+<h4>example</h4>
+<p>载入并执行一段脚本</p>
+<pre><code>new IO({
+   type: &quot;GET&quot;,
+   url: &quot;test.js&quot;,
+   dataType: &quot;script&quot;
+ });</code></pre>
+<p>发送数据给服务器，服务器返回后通知用户</p>
+<pre><code>new IO({
+   type: &quot;POST&quot;,
+   url: &quot;some.php&quot;,
+   data: {
+    x:&#39;y&#39;
+   },
+   success: function(msg){
+     alert( &quot;Data Saved: &quot; + msg );
+   }
+ });</code></pre>
+<p>取得最新的 html 并显示</p>
+<pre><code>new IO({
+  url: &quot;test.html&quot;,
+  cache: false,
+  success: function(html){
+    KISSY.one(&quot;#results&quot;).html(html);
+  }
+});</code></pre>
+<p>发送 xml 文档给服务器</p>
+<pre><code>var xmlDocument=S.parseXML(&quot;&lt;a&gt;h&lt;/a&gt;&quot;);
+
+new IO({
+   url: &quot;page.php&quot;,
+   processData: false,
+   contentType:&#39;text/xml&#39;,
+   data: xmlDocument,
+   type:&#39;post&#39;
+ });</code></pre>
+<p>通过 xhr 发送 form 内容，自动序列化 form 为查询串通过 xhr 发送给服务器端</p>
+<pre><code>&lt;form&gt;
+    &lt;input name=&#39;test&#39; value=&#39;v&#39; /&gt;
+&lt;/form&gt;
+
+&lt;script&gt;
+    new IO({
+        url:&#39;send.php&#39;,
+        form:&#39;#test&#39;,
+        type:&#39;post&#39;,
+        dataType:&#39;json&#39;,
+        success:function(d,s,xhr){
+            alert(&#39;success&#39;);
+        }
+    });
+&lt;/script&gt;</code></pre>
+<h3>getResponseHeader()  <code>&lt;IO 实例方法&gt;</code></h3>
+<p><code>getResponseHeader (key) =&gt; String</code></p>
+<p>IO 实例方法，获得对应的响应头值.仅对于 xhr 请求有效.</p>
+<h4>parameter</h4>
+<p>key (String) – 响应头名</p>
+<h3>getNativeXhr()  <code>&lt;IO 实例方法&gt;</code></h3>
+<p><code>getNativeXhr () =&gt; Xhr</code></p>
+<p>获得内置原生的 io 实例</p>
+<h3>abort()  <code>&lt;IO 实例方法&gt;</code></h3>
+<p><code>abort() =&gt; void</code></p>
+<p>如果当前请求还没完成（进行中状态）则中断当前的请求，否则什么也不做.</p>
+<blockquote>
+<p>不仅可以中断 xhr 请求，还可以中断 jsonp 以及 script 请求，如果中断前该请求正在进行中则中断后会触发 error ( textStatus == “abort” ) 以及 complete 回调.</p>
+</blockquote>
+<h3>then()  <code>&lt;IO 实例方法&gt;</code></h3>
+<p><code>then (success, error) =&gt; Promise</code></p>
+<p>监听当前请求的成功和失败，并返回新的 promise 实例</p>
+<h4>parameter</h4>
+<ul>
+<li>success (Function) – 成功回调，参数只有一个，为数组 [data,textStatus,io]. 其中 data 为服务器返回数据， textStatus 为当前请求状态， io 为当前请求实例.</li>
+<li>error (Function) – 失败回调，参数只有一个，为数组 [null,textStatus,io]</li>
+</ul>
+<h4>return</h4>
+<p>{Promise} - 新的 promise 对象</p>
+<h3>setupConfig() <code>&lt;static&gt;</code></h3>
+<p><code>setupConfig ( cfg ) =&gt; void</code></p>
+<p>为所有的 ajax 请求(包括未来)设定默认配置</p>
+<h4>parameter</h4>
+<p>cfg (Object) – 用来配置默认请求配置的键值对对象。其中的每个配置都是可选的.</p>
+<p>所有可配置的项参见 <a href="#IO">IO</a> .通过 setupConfig 设置后，除非单个请求设置了对应的配置值，否则后续所有的 ajax 请求都使用该设置.例如，下面代码在连续访问 ping.php 前，设置了 url 的默认值.</p>
+<pre><code>IO.setupConfig({
+    url:&#39;ping.php&#39;
+});</code></pre>
+<p>那么接下来的请求如果没有指定 url 配置，就会使用 ping.php</p>
+<pre><code>IO({
+    // url 没设置，就为 ping.php
+    data : {name:&#39;dan&#39;}
+});</code></pre>
+<h4>example</h4>
+<p>设置默认的请求地址为 <code>/xmlhttp/</code> ，并使用 POST 方式。那么接下来的请求都会往<code>/xmlhttp/</code> 发送请求.</p>
+<pre><code>IO.setupConfig({
+    url:&#39;/xmlhttp/&#39;,
+    type:&#39;post&#39;
+});
+
+IO({
+    data:{x:&#39;mydata&#39;}
+});</code></pre>
+<h3>get() <code>&lt;static&gt;</code></h3>
+<p><code>get ( url , [ data , callback , dataType ] ) =&gt; XHR</code></p>
+<p>发送 http get 请求</p>
+<h4>parameter</h4>
+<ul>
+<li>url (string) – 请求地址</li>
+<li>data (Object|string) – 请求附带的参数，参见<a href="#IO">IO</a> data部分 .</li>
+<li>callback (function) – 请求成功后的回调，参见<a href="#IO">IO</a> success 部分.</li>
+<li>dataType (string) – 传到回调函数作为参数的数据类型，参见 <a href="#IO">IO</a>dataType部分。</li>
+</ul>
+<h4>return</h4>
+<p>代表本次请求的 xhrObj</p>
+<p>第二种调用方式：</p>
+<p><code>get( url , [ callback , dataType ] ) =&gt; XHR</code></p>
+<p>data 可忽略，同上个函数描述.</p>
+<p>实际上该函数是 <a href="#IO">IO</a> 的快捷方式</p>
+<pre><code>IO.get = function(url, data, callback, dataType) {
+    // data 参数可省略
+    if (S.isFunction(data)) {
+        dataType = callback;
+        callback = data;
+        data = undefined;
+    }
+
+    return new IO({
+        type:&quot;get&quot;,
+        url: url,
+        data: data,
+        success: callback,
+        dataType: dataType
+    });
+};</code></pre>
+<h4>example</h4>
+<p>请求页面 test.php , 但是忽略返回结果</p>
+<pre><code>IO.get(&quot;test.php&quot;);</code></pre>
+<p>请求页面 test.php , 并附带一些参数传递给后端</p>
+<pre><code>IO.get(&quot;test.php&quot;,{
+    name:&quot;john&quot;.
+    time:&quot;2pm&quot;
+});</code></pre>
+<p>alert 请求成功后返回的结果，数据类型由响应的 content-type 决定</p>
+<pre><code>IO.get(&quot;test.php&quot;,function(d){
+    alert(d);
+});</code></pre>
+<p>alert 请求成功后返回的 json 数据，和响应的 content-type 无关</p>
+<pre><code>IO.get(&quot;test.php&quot;,function(d){
+    alert(d);
+},&quot;json&quot;);</code></pre>
+<h3>post() <code>&lt;static&gt;</code></h3>
+<p><code>post ( url , [ data , callback , dataType ] ) =&gt; XHRObj</code></p>
+<p>发送 http post 请求</p>
+<h4>parameter</h4>
+<ul>
+<li>url (string) – 请求地址</li>
+<li>data (Object|string) – 请求附带的参数，参见<a href="#IO">IO</a> data部分 .</li>
+<li>callback (function) – 请求成功后的回调，参见<a href="#IO">IO</a> success 部分.</li>
+<li>dataType (string) – 传到回调函数作为参数的数据类型，参见 <a href="#IO">IO</a>dataType部分。</li>
+</ul>
+<h4>return</h4>
+<p>代表本次请求的 xhrObj</p>
+<p>第二种调用方式：</p>
+<p><code>post( url , [ callback , dataType ] ) =&gt; XHR</code></p>
+<p>data 可忽略，同上个函数描述，同样，post也是IO的快捷调用方式</p>
+<pre><code>IO.post = function(url, data, callback, dataType) {
+    // data 参数可省略
+    if (S.isFunction(data)) {
+        dataType = callback;
+        callback = data;
+        data = undefined;
+    }
+
+    return new IO({
+        type:&quot;post&quot;,
+        url: url,
+        data: data,
+        success: callback,
+        dataType: dataType
+    });
+};</code></pre>
+<blockquote>
+<p>post 请求从来不会被缓存，因此 io.cfg.cache 配置可以不用配置.</p>
+</blockquote>
+<h4>example</h4>
+<p>请求页面 test.php , 但是忽略返回结果</p>
+<pre><code>IO.post(&quot;test.php&quot;);</code></pre>
+<p>请求页面 test.php , 并附带一些参数传递给后端</p>
+<pre><code>IO.post(&quot;test.php&quot;,{
+    name:&quot;john&quot;.
+    time:&quot;2pm&quot;
+});</code></pre>
+<p>alert 请求成功后返回的结果，数据类型由响应的 content-type 决定</p>
+<pre><code>IO.post(&quot;test.php&quot;,function(d){
+    alert(d);
+});</code></pre>
+<p>alert 请求成功后返回的 json 数据，和响应的 content-type 无关</p>
+<pre><code>IO.post(&quot;test.php&quot;,function(d){
+    alert(d);
+},&quot;json&quot;);</code></pre>
+<h3>getJSON <code>&lt;static&gt;</code></h3>
+<p><code>getJSON ( url , [ data , callback ] ) =&gt; XHR</code></p>
+<p>发送 http get 请求，无视请求响应的 Content-type，将返回信息解析为 json 作为第一个参数调用 callback 回调.</p>
+<h4>parameter</h4>
+<ul>
+<li>url (string) – 请求地址</li>
+<li>data (Object|string) – 请求附带的参数，参见<a href="#IO">IO</a> data部分 .</li>
+<li>callback (function) – 请求成功后的回调，参见<a href="#IO">IO</a> success 部分.</li>
+</ul>
+<h4>return</h4>
+<p>代表本次请求的 xhrObj</p>
+<p>另外一种调用方式</p>
+<p><code>getJSON ( url , [ callback ] ) =&gt; XHR</code></p>
+<p>data 可忽略，同上个函数描述。相当于这样调用IO：</p>
+<pre><code>IO.getJSON = function(url, data, callback) {
+    // data 参数可省略
+    if (S.isFunction(data)) {
+        dataType = callback;
+        callback = data;
+        data = undefined;
+    }
+
+    return new IO({
+        type:&quot;get&quot;,
+        url: url,
+        data: data,
+        success: callback,
+        dataType: &quot;json&quot;
+    });
+};</code></pre>
+<h4>example</h4>
+<p>查看<a href="http://docs.kissyui.com/source/raw/api/core/ajax/getJSON.html">demo</a> :从 test.js 中加载 json 数据并访问</p>
+<h3>jsonp() <code>&lt;static&gt;</code></h3>
+<p><code>jsonp ( url , [ data , callback ] ) =&gt; void</code></p>
+<p>发送 jsonp 请求，将返回 json 信息作为第一个参数调用 callback 回调.</p>
+<h4>parameter</h4>
+<ul>
+<li>url (string) – 请求地址</li>
+<li>data (Object|string) – 请求附带的参数，参见<a href="#IO">IO</a> data部分 .</li>
+<li>callback (function) – 请求成功后的回调，参见<a href="#IO">IO</a> success 部分.</li>
+</ul>
+<p>另外一种调用方式</p>
+<p><code>jsonp ( url , [ callback ] ) =&gt; void</code></p>
+<p>data 可忽略，同上个函数描述，具体实现为：</p>
+<pre><code>IO.jsonp = function(url, data, callback) {
+    // data 参数可省略
+    if (S.isFunction(data)) {
+        callback = data;
+        data = undefined;
+    }
+
+    return new IO({
+        type:&quot;get&quot;,
+        url: url,
+        data: data,
+        success: callback,
+        dataType: &quot;jsonp&quot;
+    });
+};</code></pre>
+<h4>example</h4>
+<p>从 flickr 中动态获取图片信息：<a href="http://docs.kissyui.com/source/raw/api/core/ajax/jsonp.html">demo</a></p>
+<h3>upload() <code>&lt;static&gt;</code></h3>
+<p><code>upload ( url , form , [ data , callback , dataType ] ) =&gt; XHR</code></p>
+<p>上传文件</p>
+<h4>parameter</h4>
+<ul>
+<li>url (string) – 请求地址</li>
+<li>form (HTMLElement|string) – 表单元素，可以用选择器表示</li>
+<li>data (Object|string) – 请求附带的参数，参见<a href="#IO">IO</a> data部分 .</li>
+<li>callback (function) – 请求成功后的回调，参见<a href="#IO">IO</a> success 部分.</li>
+<li>dataType (string) – 传到回调函数作为参数的数据类型，参见 <a href="#IO">IO</a>dataType部分。</li>
+</ul>
+<h4>return</h4>
+<p>代表本次请求的 xhrObj</p>
+<p>第二种调用方式：</p>
+<p><code>upload ( url , form,[ callback , dataType ] ) =&gt; XHR</code></p>
+<p>对应的IO的实现为：</p>
+<pre><code>IO.upload = function(url, form, data, callback, dataType) {
+    if (S.isFunction(data)) {
+        dataType = callback;
+        callback = data;
+        data = null;
+    }
+    return new IO({
+        url:url,
+        type:&#39;post&#39;,
+        dataType:dataType,
+        form:form,
+        data:data,
+        success:callback
+    });
+};</code></pre>
+<h4>example</h4>
+<p>向 doUpload.html 上传文件并读取 json 响应：<a href="http://docs.kissyui.com/source/raw/api/core/ajax/upload.html">Demo</a></p>
+<blockquote>
+<p>使用自定义按钮模拟 file input 时，注意请将 file input 设置透明覆盖在自定义按钮上面。</p>
+</blockquote>
+<pre><code>// &lt;button id=&#39;myFileUploadButton&#39;&gt;
+// &lt;input type=&#39;file&#39; id=&#39;nativeFile&#39;&gt;
+// 不要这样做
+KISSY.all(&#39;#myFileUploadButton&#39;).on(&#39;click&#39;,function(){
+    KISSY.get(&#39;#nativeFile&#39;).click();
+});</code></pre>
+<h3>serialize() <code>&lt;static&gt;</code></h3>
+<p><code>serialize ( elements ) =&gt; String</code></p>
+<p>序列化一系列表单元素为可提交的字符串</p>
+<h4>parameter</h4>
+<p>elements (string|Array<code>&lt;HTMLElement&gt;</code>|HTMLElement|KISSY.NodeList) – 代表表单元素（input form select ...）的集合，参数为字符串时，需是选择器格式。</p>
+<h4>return</h4>
+<p>序列化后的字符串</p>
+<blockquote>
+<p>是否真的要使用该方法？ ajax 提交的话可以直接设置 form 参数</p>
+</blockquote>
+<p>该方法返回一个将表单元素 url 编码过的字符串，表单元素通常包括 <code>&lt;input&gt; &lt;textarea&gt; &lt;select&gt;</code> ，或者直接对整个 <code>&lt;form&gt;</code>元素的所有表单子孙元素进行序列化</p>
+<h4>example</h4>
+<p>下面这段html</p>
+<pre><code>&lt;form id=&#39;f&#39;&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; name=&quot;a&quot; value=&quot;1&quot; id=&quot;a&quot; /&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;text&quot; name=&quot;b&quot; value=&quot;2&quot; id=&quot;b&quot; /&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;input type=&quot;hidden&quot; name=&quot;c&quot; value=&quot;3&quot; id=&quot;c&quot; /&gt;&lt;/div&gt;
+    &lt;div&gt;
+        &lt;textarea name=&quot;d&quot; rows=&quot;8&quot; cols=&quot;40&quot;&gt;4&lt;/textarea&gt;
+    &lt;/div&gt;
+    &lt;div&gt;&lt;select name=&quot;e&quot;&gt;
+        &lt;option value=&quot;5&quot; selected=&quot;selected&quot;&gt;5&lt;/option&gt;
+        &lt;option value=&quot;6&quot;&gt;6&lt;/option&gt;
+        &lt;option value=&quot;7&quot;&gt;7&lt;/option&gt;
+    &lt;/select&gt;&lt;/div&gt;
+    &lt;div&gt;
+        &lt;input type=&quot;checkbox&quot; name=&quot;f&quot; value=&quot;8&quot; id=&quot;f&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;input type=&quot;submit&quot; name=&quot;g&quot; value=&quot;Submit&quot; id=&quot;g&quot; /&gt;
+    &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+<p>运行</p>
+<pre><code>S.log(IO.serialize(&quot;#f&quot;)); //=&gt; a=1&amp;b=2&amp;c=3&amp;d=4&amp;e=5</code></pre>
+<p>也可以只序列化一部分</p>
+<pre><code>S.log(IO.serialize(S.all(&quot;#f&quot;).all(&quot;input&quot;)));
+// =&gt; a=1&amp;b=2&amp;c=3</code></pre>
+<blockquote>
+<p>该方法不会自动去重，重复的元素会产生具有重复部分的产生串。
+只有 <a href="http://www.w3.org/TR/html401/interact/forms.html#h-17.13.2">successful controls</a> 会被序列化为字符串. 因为表单不是用提交按钮提交的，那么提交按钮不会被序列化。只有具备 name 属性的元素才可能被序列化。文件上传元素不会被序列化</p>
+</blockquote>
+<h3>start <code>&lt;event&gt;</code></h3>
+<p>当配置初始化后，获取传输对象前触发。事件对象包括一下属性，事件对象包括这些属性</p>
+<ul>
+<li>ajaxConfig (Object) – 当前的配置项</li>
+<li>io (Object) – 当前的请求关联的 IO 对象</li>
+</ul>
+<h3>send <code>&lt;event&gt;</code></h3>
+<p>请求发送前触发。可用于 loading indicator 显示时机。事件对象同 start 事件.</p>
+<h3>success <code>&lt;event&gt;</code></h3>
+<p>服务器返回成功后触发.事件对象同 start 事件.</p>
+<h3>error <code>&lt;event&gt;</code></h3>
+<p>服务器返回失败后触发.事件对象同 start 事件.</p>
+<h3>complete <code>&lt;event&gt;</code></h3>
+<p>服务器返回（无论成功或失败）后触发.事件对象同 start 事件.</p>
+
+</div>
+
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+			
+			
+		});
+	})();
+
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			str = str.match(/\w+/)[0];
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+
+</body>
+</html>
+

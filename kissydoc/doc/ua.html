@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<style>
+h3 {
+    color:blue;
+}
+</style>
+
+<h1>UA</h1>
+<blockquote>
+<p>判断浏览器类型、版本、外壳等信息，引入种子文件后，通过<code>KISSY.UA</code>来访问<code>UserAgent</code>相关属性</p>
+</blockquote>
+<p>此处的外壳表示广义的外壳，即 IE, Firefox, Chrome, Opera, Safari 等浏览器都属于外壳。可以利用此标识符直接识别浏览器类型。 可以首先使用 UA.shell 返回的标识符判断当前浏览器类型，若需浏览器具体版本信息，可以再通过 <code>UA[UA.shell]</code> 取出版本号。 </p>
+<ul>
+<li>UA.core 返回字符串，目前支持 trident, webkit, gecko, presto 四大浏览器内核. </li>
+<li>UA.shell 返回字符串，比如 firefox, opera, chrome, ie, safari </li>
+<li>UA.mobile 返回字符串，目前支持 apple, nokia, android, opera mini/mobile 等设备/浏览器的探测.</li>
+</ul>
+<p>通过 KISSY.UA, 你可以获取浏览器等用户代理信息. 属性值遵循以下规则：</p>
+<ul>
+<li>表示当前引擎或浏览器的版本. 版本号 1.2.3.4 会转换为数值 1.234 </li>
+<li>如果不是当前引擎或浏览器, 返回 0 </li>
+<li>如果当前引擎或浏览器的版本号无法准确判定, 返回 0.1</li>
+</ul>
+<p>通过 KISSY.UA 的属性，你可以获取浏览器等用户代理的信息。属性值遵循以下规则：</p>
+<ul>
+<li>表示当前引擎或浏览器的版本。版本号 1.2.3.4 会转换为数值 1.234</li>
+<li>如果不是当前引擎或浏览器，返回 0 或者 undefined</li>
+<li>如果当前浏览器版本号无法准确判定，均返回 0.1</li>
+</ul>
+<pre><code>KISSY.use(&#39;ua&#39;,function(S,UA){
+    alert(UA); // UA可以使用了
+});</code></pre>
+<hr>
+<h3>trident  <code>&lt;static&gt;</code></h3>
+<p>{Number} - trident 的版本号。IE 浏览器 8 系列以下都无法准确探测 Trident 内核的版本号。</p>
+<h3>webkit  <code>&lt;static&gt;</code></h3>
+<p>{Number} - webkit 的版本号。</p>
+<h3>gecko  <code>&lt;static&gt;</code></h3>
+<p>{Number} - gecko 的版本号。</p>
+<h3>presto  <code>&lt;static&gt;</code></h3>
+<p>{Number} - presto 的版本号。</p>
+<h3>chrome  <code>&lt;static&gt;</code></h3>
+<p>{Number} - chrome 的版本号。</p>
+<h3>safari  <code>&lt;static&gt;</code></h3>
+<p>{Number} - safari 的版本号。</p>
+<h3>firefox  <code>&lt;static&gt;</code></h3>
+<p>{Number} - firefox 的版本号。</p>
+<h3>ie  <code>&lt;static&gt;</code></h3>
+<p>{Number} - ie 的版本号。</p>
+<h3>opera  <code>&lt;static&gt;</code></h3>
+<p>{Number} - opera 的版本号。</p>
+<h3>mobile  <code>&lt;static&gt;</code></h3>
+<p>{String} - mobile 的标志符。 若无法探测或非移动设备浏览器，将返回空字符串。</p>
+<h3>core  <code>&lt;static&gt;</code></h3>
+<p>{String} - core 的标志符。此标识符表示浏览器的内核标识。若浏览器内核不是 trident, webkit, gecko, presto 将返回空字符串。</p>
+<h3>shell  <code>&lt;static&gt;</code></h3>
+<p>{String} - shell 的标志符。此标识符表示用户所用浏览器的外壳标识。</p>
+<h3>os  <code>&lt;static&gt;</code></h3>
+<p>{String} - 操作系统标志符。例如 windows android ios linux</p>
+<h3>ipad  <code>&lt;static&gt;</code></h3>
+<p>{Number} - ipad ios 版本号。例如 5.0</p>
+<h3>iphone  <code>&lt;static&gt;</code></h3>
+<p>{Number} - iphone ios 版本号。例如 5.0</p>
+<h3>ipod  <code>&lt;static&gt;</code></h3>
+<p>{Number} - ipod ios 版本号。例如 5.0</p>
+<h3>ios  <code>&lt;static&gt;</code></h3>
+<p>{Number} - ios 版本号。例如 5.0</p>
+<h3>android  <code>&lt;static&gt;</code></h3>
+<p>{Number} - android 版本号。例如 5.0</p>
+<hr>
+<h2>examples</h2>
+<h3>判断浏览器类型</h3>
+<pre><code>KISSY.use(&#39;ua&#39;,function(S,UA){
+    if(UA.chrome &gt; 0){
+        alert(&#39;Your browser is chrome&#39;);
+    }else if(UA.safari &gt; 0){
+        alert(&#39;Your browser is safari&#39;);
+    }else if(UA.opera &gt; 0){
+        alert(&#39;Your browser is opera&#39;);
+    }else if(UA.firefox &gt; 0){
+        alert(&#39;Your browser is firefox&#39;);
+    }else if(UA.ie &gt; 0){
+        alert(&#39;Your browser is ie&#39;);
+    }else{
+        alert(&#39;Your browser is unknown&#39;);
+    }
+});</code></pre>
+<h2>判断操作系统类型</h2>
+<pre><code>KISSY.use(&#39;ua&#39;,function(S,UA){
+    if(UA.os == &#39;windows&#39;){
+        alert(&#39;Your os is Windows&#39;);
+    }else if(UA.os == &#39;Linux&#39;){
+        alert(&#39;Your os is Linux&#39;);
+    }else if(UA.os == &#39;ios&#39;){
+        alert(&#39;Your os is ios and version is&#39; + UA.ios);
+        if(UA.ipad &gt; 0){
+            alert(&#39;Your device is iPad&#39;);
+        }else if(UA.iphone &gt; 0){
+            alert(&#39;Your device is iPhone&#39;);
+        }else if(UA.ipod &gt; 0){
+            alert(&#39;Your device is iPod&#39;)
+        }
+    }else if(UA.os == &#39;android&#39;){
+        alert(&#39;Your os is Android&#39;);
+    }
+});</code></pre>
+<h3>判断mobile类型</h3>
+<pre><code>KISSY.use(&#39;ua&#39;,function(S,UA){
+    if(UA.mobile == &#39;apple&#39;){
+        alert(&#39;Your device is Apple&#39;);
+    }else if(UA.mobile == &#39;nokia&#39;){
+        alert(&#39;Your device is Nokia&#39;);
+    }else if(UA.mobile == &#39;android&#39;){
+        alert(&#39;Your device is Android&#39;);
+    }else if(UA.mobile == &#39;opera mini&#39; || UA.mobile == &#39;opera mobi&#39;){
+        alert(&#39;Your browser is opera mobile&#39;);
+    }
+}); </code></pre>
+<h3>判断浏览器外壳</h3>
+<pre><code>KISSY.use(&#39;ua&#39;,function(S,UA){
+    if(UA.shell == &#39;chrome&#39;){
+        alert(&#39;Your browser is chrome and the version is&#39; + UA[UA.shell]);
+    }else if(UA.shell == &#39;se360&#39;){
+        alert(&#39;Your browser is 360浏览器&#39;);
+    }else if(UA.shell == &#39;tt&#39;){
+        alert(&#39;Your browser is 腾讯TT浏览器&#39;);
+    }else if(UA.shell == &#39;maxthon&#39;){
+        alert(&#39;Your browser is 遨游浏览器&#39;);
+    }
+});</code></pre>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <title>KISSY: 模块化、接口一致、全终端适配的JS类库</title>
+  
+  <meta name=description content="The aerogel-weight jQuery-compatible JavaScript library
+">
+  
+  <link rel=stylesheet href=assets/style.css />
+  <link rel=stylesheet href=assets/tomorrow-night-bright.css />
+
+  <meta name=apple-mobile-web-app-capable content=yes>
+  <meta name=apple-mobile-web-app-status-bar-style content=white>
+  <meta name=format-detection content="telephone=no">
+	<script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed-min.js"></script>
+	<script src="assets/highlight.pack.js"></script>
+
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+  <div id="menu_icon">≣</div>
+
+<aside id="sidebar" class="interface">
+
+<h3>Introduction</h3>
+
+  <a class="toc_title" href="#">
+    seed.js <span class="version">(1.4.0)</span>
+  </a>
+  <ul class=toc_section>
+    <li><a href="#guide">Hello World</a></li>
+	<li><a href="#download">KISSY 模块依赖表</a></li>
+  </ul>
+
+  <hr>
+
+<h3>Seed</h3>
+
+  <a class=toc_title href="loader.html#loader">loader</a>
+  
+	<ul class=toc_section>
+		<li><a href="loader.html#config">config()</a></li>
+		<li><a href="loader.html#getScript">getScript()</a></li>
+		<li><a href="loader.html#add">add()</a></li>
+		<li><a href="loader.html#use">use()</a></li>
+		<li><a href="loader.html#importStyle">importStyle()</a></li>
+	</ul>
+
+	<a class=toc_title href="path.html">path</a>
+
+	 <ul class=toc_section>
+		<li><a href="path.html#basename">basename()</a></li>
+		<li><a href="path.html#dirname">dirname()</a></li>
+		<li><a href="path.html#extname">extname()</a></li>
+		<li><a href="path.html#join">join()</a></li>
+		<li><a href="path.html#normalize">normalize()</a></li>
+		<li><a href="path.html#relative">relative()</a></li>
+		<li><a href="path.html#resolve">resolve()</a></li>
+	</ul>
+
+	 <a class=toc_title href="uri.html">uri</a>
+
+	 <ul class=toc_section>
+		<li><a href="uri.html#clone">clone()</a></li>
+		<li><a href="uri.html#resolve">resolve()</a></li>
+		<li><a href="uri.html#getScheme">getScheme()</a></li>
+		<li><a href="uri.html#setScheme">setScheme()</a></li>
+		<li><a href="uri.html#getHostname">getHostname()</a></li>
+		<li><a href="uri.html#setHostname">setHostname()</a></li>
+		<li><a href="uri.html#getUserInfo">getUserInfo()</a></li>
+		<li><a href="uri.html#setUserInfo">setUserInfo()</a></li>
+		<li><a href="uri.html#getPort">getPort()</a></li>
+		<li><a href="uri.html#setPort">setPort()</a></li>
+		<li><a href="uri.html#getPath">getPath()</a></li>
+		<li><a href="uri.html#setPath">setPath()</a></li>
+		<li><a href="uri.html#getQuery">getQuery()</a></li>
+		<li><a href="uri.html#setQuery">setQuery()</a></li>
+		<li><a href="uri.html#getFragment">getFragment()</a></li>
+		<li><a href="uri.html#setFragment">setFragment()</a></li>
+		<li><a href="uri.html#isSameOriginAs">isSameOriginAs()</a></li>
+		<li><a href="uri.html#toString">toString()</a></li>
+	</ul>
+
+	 <a class=toc_title href="promise.html">promise</a>
+
+	 <ul class=toc_section>
+		<li><a href="promise.html#then">then()</a></li>
+		<li><a href="promise.html#fail">fail()</a></li>
+		<li><a href="promise.html#fin">fin()</a></li>
+		<li><a href="promise.html#isResolved">isResolved()</a></li>
+		<li><a href="promise.html#isRejected"> isRejected()</a></li>
+		<li><a href="promise.html#when">when() （static）</a></li>
+		<li><a href="promise.html#isPromise">isPromise()（static）</a></li>
+		<li><a href="promise.html#isRejected">isRejected()（static）</a></li>
+		<li><a href="promise.html#all">all()（static）</a></li>
+	</ul>
+
+  <a class=toc_title href="ua.html">ua</a>
+  
+	<ul class=toc_section>
+		<li><a href="ua.html#trident">trident</a></li>
+		<li><a href="ua.html#webkit">webkit</a></li>
+		<li><a href="ua.html#gecko">gecko</a></li>
+		<li><a href="ua.html#presto">presto</a></li>
+		<li><a href="ua.html#chrome">chrome</a></li>
+		<li><a href="ua.html#safari">safari</a></li>
+		<li><a href="ua.html#firefox">firefox</a></li>
+		<li><a href="ua.html#ie">ie</a></li>
+		<li><a href="ua.html#opera>opera</a></li>
+		<li><a href="ua.html#mobile>mobile</a></li>
+		<li><a href="ua.html#core">core</a></li>
+		<li><a href="ua.html#shell">shell</a></li>
+		<li><a href="ua.html#os">os</a></li>
+		<li><a href="ua.html#ipad">ipad</a></li>
+		<li><a href="ua.html#iphone">iphone</a></li>
+		<li><a href="ua.html#ipod">ipod</a></li>
+		<li><a href="ua.html#ios">ios</a></li>
+		<li><a href="ua.html#android">android</a></li>
+	</ul>
+
+
+  <a class=toc_title href="#core">lang</a>
+  
+	<ul class=toc_section>
+		<li><a href="lang.html#augment">augment()</a></li>
+		<li><a href="lang.html#available">available()</a></li>
+		<li><a href="lang.html#bind">bind()</a></li>
+		<li><a href="lang.html#buffer">buffer()</a></li>
+		<li><a href="lang.html#clone">clone()</a></li>
+		<li><a href="lang.html#each">each()</a></li>
+		<li><a href="lang.html#endsWith">endsWith()</a></li>
+		<li><a href="lang.html#error">error()</a></li>
+		<li><a href="lang.html#escapeHTML">escapeHTML()</a></li>
+		<li><a href="lang.html#extend">extend()</a></li>
+		<li><a href="lang.html#filter">filter()</a></li>
+		<li><a href="lang.html#fromUnicode">fromUnicode()</a></li>
+		<li><a href="lang.html#globalEval">globalEval()</a></li>
+		<li><a href="lang.html#guid">guid()</a></li>
+		<li><a href="lang.html#inArray">inArray()</a></li>
+		<li><a href="lang.html#indexOf">indexOf()</a></li>
+		<li><a href="lang.html#isArray">isArray()</a></li>
+		<li><a href="lang.html#isBoolean">isBoolean()</a></li>
+		<li><a href="lang.html#isDate">isDate()</a></li>
+		<li><a href="lang.html#isEmptyObject">isEmptyObject()</a></li>
+		<li><a href="lang.html#isFunction">isFunction()</a></li>
+		<li><a href="lang.html#isNull">isNull()</a></li>
+		<li><a href="lang.html#isNumber">isNumber()</a></li>
+		<li><a href="lang.html#isObject">isObject()</a></li>
+		<li><a href="lang.html#isPlainObject">isPlainObject()</a></li>
+		<li><a href="lang.html#isRegExp">isRegExp()</a></li>
+		<li><a href="lang.html#isString">isString()</a></li>
+		<li><a href="lang.html#isUndefined">isUndefined()</a></li>
+		<li><a href="lang.html#isWindow">isWindow()</a></li>
+		<li><a href="lang.html#keys">keys()</a></li>
+		<li><a href="lang.html#lastIndexOf">lastIndexOf()</a></li>
+		<li><a href="lang.html#later">later()</a></li>
+		<li><a href="lang.html#log">log()</a></li>
+		<li><a href="lang.html#makeArray">makeArray()</a></li>
+		<li><a href="lang.html#map">map()</a></li>
+		<li><a href="lang.html#merge">merge()</a></li>
+		<li><a href="lang.html#mix">mix()</a></li>
+		<li><a href="lang.html#namespace">namespace()</a></li>
+		<li><a href="lang.html#now">now()</a></li>
+		<li><a href="lang.html#param">param()</a></li>
+		<li><a href="lang.html#parseXML">parseXML()</a></li>
+		<li><a href="lang.html#ready">ready()</a></li>
+		<li><a href="lang.html#reduce">reduce()</a></li>
+		<li><a href="lang.html#startsWith">startsWith()</a></li>
+		<li><a href="lang.html#substitute">substitute()</a></li>
+		<li><a href="lang.html#throttle">throttle()</a></li>
+		<li><a href="lang.html#trim">trim()</a></li>
+		<li><a href="lang.html#type">type()</a></li>
+		<li><a href="lang.html#unEscapeHTML">unEscapeHTML()</a></li>
+		<li><a href="lang.html#unique">unique()</a></li>
+		<li><a href="lang.html#unparam">unparam()</a></li>
+		<li><a href="lang.html#version">version()</a></li>
+	</ul>
+
+  <a class=toc_title href="features.html">features</a>
+	<ul class=toc_section>
+		<li><a href="features.html#isDeviceMotionSupported">isDeviceMotionSupported()</a></li>
+		<li><a href="features.html#isMsPointerSupported">isMsPointerSupported()</a></li>
+		<li><a href="features.html#isTouchEventSupported">isTouchEventSupported()</a></li>
+		<li><a href="features.html#isHashChangeSupported">isHashChangeSupported()</a></li>
+		<li><a href="features.html#isTransitionSupported">isTransitionSupported()</a></li>
+		<li><a href="features.html#isTransformSupported">isTransformSupported()</a></li>
+		<li><a href="features.html#isClassListSupported">isClassListSupported()</a></li>
+		<li><a href="features.html#isQuerySelectorSupported">isQuerySelectorSupported()</a></li>
+		<li><a href="features.html#getTransitionPrefix">getTransitionPrefix()</a></li>
+		<li><a href="features.html#getTransformPrefix">getTransformPrefix()</a></li>
+	</ul>
+
+
+  <hr>
+
+<h3>Core</h3>
+
+  <a class=toc_title href="io.html">io（ajax）</a>
+  
+	<ul class=toc_section>
+		<li><a href="io.html#IO ">Ajax</a></li>
+		<li><a href="io.html#IO">IO</a></li>
+		<li><a href="io.html#getResponseHeader">getResponseHeader()</a></li>
+		<li><a href="io.html#getNativeXhr">getNativeXhr</a></li>
+		<li><a href="io.html#abort">abort()</a></li>
+		<li><a href="io.html#then">then()</a></li>
+		<li><a href="io.html#setupConfig">setupConfig()</a></li>
+		<li><a href="io.html#get">get()</a></li>
+		<li><a href="io.html#post">post()</a></li>
+		<li><a href="io.html#getJSON">getJSON()</a></li>
+		<li><a href="io.html#jsonp">jsonp()</a></li>
+		<li><a href="io.html#upload">upload()</a></li>
+		<li><a href="io.html#serialize">serialize()</a></li>
+		<li><a href="io.html#start">start</a></li>
+		<li><a href="io.html#send">send </a></li>
+		<li><a href="io.html#success">success </a></li>
+		<li><a href="io.html#error">error </a></li>
+		<li><a href="io.html#complete">complete </a></li>
+	</ul>
+
+  <a class=toc_title href="#core">anim</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">S.Anim</a></li>
+		<li><a href="#">run()</a></li>
+		<li><a href="#">stop()</a></li>
+		<li><a href="#">pause()</a></li>
+		<li><a href="#">resume()</a></li>
+		<li><a href="#">isRunning()</a></li>
+		<li><a href="#">isPaused()</a></li>
+		<li><a href="#">beforeStart</a></li>
+		<li><a href="#">complete</a></li>
+		<li><a href="#">step</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">base</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">S.Base</a><font color="blue">(Base参元类)</font></li>
+	</ul>
+
+  <a class=toc_title href="#core">cookie</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">get()</a></li>
+		<li><a href="#">set()</a></li>
+		<li><a href="#">remove()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">dom</a>
+  
+	<ul class=toc_section>
+		<li><a href="selector.html">selector()</a></li>
+		<li><a href="query.html">query()</a></li>
+		<li><a href="get.html">get()</a></li>
+		<li><a href="filter.html">filter()</a></li>
+		<li><a href="test.html">test()</a></li>
+		<li><a href="clone.html">clone()</a></li>
+		<li><a href="hasClass.html">hasClass()</a></li>
+		<li><a href="addClass.html">addClass()</a></li>
+		<li><a href="removeClass.html">removeClass()</a></li>
+		<li><a href="replaceClass.html">replaceClass()</a></li>
+		<li><a href="toggleClass.html">toggleClass()</a></li>
+		<li><a href="removeAttr.html">removeAttr()</a></li>
+		<li><a href="attr.html">attr()</a></li>
+		<li><a href="hasAttr.html">hasAttr()</a></li>
+		<li><a href="prop.html">prop()</a></li>
+		<li><a href="hasProp.html">hasProp()</a></li>
+		<li><a href="val.html">val()</a></li>
+		<li><a href="text.html">text()</a></li>
+		<li><a href="css.html">css()</a></li>
+		<li><a href="style.html">style()</a></li>
+		<li><a href="width.html">width()</a></li>
+		<li><a href="height.html">height()</a></li>
+		<li><a href="innerWidth.html">innerWidth()</a></li>
+		<li><a href="innerHeight.html">innerHeight()</a></li>
+		<li><a href="outerWidth.html">outerWidth()</a></li>
+		<li><a href="outerHeight.html">outerHeight()</a></li>
+		<li><a href="addStyleSheet.html">addStyleSheet()</a></li>
+		<li><a href="show.html">show()</a></li>
+		<li><a href="hide.html">hide()</a></li>
+		<li><a href="toggle.html">toggle()</a></li>
+		<li><a href="offset.html">offset()</a></li>
+		<li><a href="scrollTop.html">scrollTop()</a></li>
+		<li><a href="scrollLeft.html">scrollLeft()</a></li>
+		<li><a href="docHeight.html">docHeight()</a></li>
+		<li><a href="docWidth.html">docWidth()</a></li>
+		<li><a href="viewportHeight.html">viewportHeight()</a></li>
+		<li><a href="viewportWidth.html">viewportWidth()</a></li>
+		<li><a href="scrollIntoView.html">scrollIntoView()</a></li>
+		<li><a href="dom-index.html">index()</a></li>
+		<li><a href="parent.html">parent()</a></li>
+		<li><a href="next.html">next()</a></li>
+		<li><a href="prev.html">prev()</a></li>
+		<li><a href="first.html">first()</a></li>
+		<li><a href="last.html">last()</a></li>
+		<li><a href="siblings.html">siblings()</a></li>
+		<li><a href="children.html">children()</a></li>
+		<li><a href="contains.html">contains()</a></li>
+		<li><a href="create.html">create()</a></li>
+		<li><a href="html.html">html()</a></li>
+		<li><a href="remove.html">remove()</a></li>
+		<li><a href="empty.html">empty()</a></li>
+		<li><a href="insertBefore.html">insertBefore()</a></li>
+		<li><a href="insertAfter.html">insertAfter()</a></li>
+		<li><a href="append.html">append()</a></li>
+		<li><a href="prepend.html">prepend()</a></li>
+		<li><a href="replaceWith.html">replaceWith()</a></li>
+		<li><a href="data.html">data()</a></li>
+		<li><a href="removeData.html">removeData()</a></li>
+		<li><a href="hasData.html">hasData()</a></li>
+		<li><a href="unselectable.html">unselectable()</a></li>
+		<li><a href="contents.html">contents()</a></li>
+		<li><a href="wrap.html">wrap()</a></li>
+		<li><a href="wrapAll.html">wrapAll()</a></li>
+		<li><a href="unwrap.html">unwrap()</a></li>
+		<li><a href="wrapInner.html">wrapInner()</a></li>
+		<li><a href="nodeName.html">nodeName()</a></li>
+		<li><a href="outerHTML.html">outerHTML()</a></li>
+
+	</ul>
+
+
+  <a class=toc_title href="#core">event</a>
+  
+	<ul class=toc_section>
+		<li><a href="#"><b>EventTarget</b></a><font color="blue">(事件参元类)</font></li>
+		<li><a href="#"><b>EventObject</b></a><font color="blue">(事件门面对象)</font></li>
+		<li><a href="#">on()</a></li>
+		<li><a href="#">delegate()</a></li>
+		<li><a href="#">detach()</a></li>
+		<li><a href="#">undelegate()</a></li>
+		<li><a href="#">fire()</a></li>
+		<li><a href="#">fireHandler()</a></li>
+	</ul>
+
+
+  <a class=toc_title href="#core">json</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">parse()</a></li>
+		<li><a href="#">stringify()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">node</a>
+  
+	<ul class=toc_section>
+		<li><a href="instance_all.html">all()</a></li>
+		<li><a href="instance_one.html">one()</a></li>
+		<li><a href="getDOMNodes.html">getDOMNodes()</a></li>
+		<li><a href="getDOMNode.html">getDOMNode()</a></li>
+		<li><a href="end.html">end()</a></li>
+		<li><a href="equals.html">equals()</a></li>
+		<li><a href="add.html">add()</a></li>
+		<li><a href="item.html">item()</a></li>
+		<li><a href="slice.html">slice()</a></li>
+		<li><a href="scrollTop.html">scrollTop()</a></li>
+		<li><a href="scrollLeft.html">scrollLeft()</a></li>
+		<li><a href="height.html">height()</a></li>
+		<li><a href="width.html">width()</a></li>
+		<li><a href="addStyleSheet.html">addStyleSheet()</a></li>
+		<li><a href="append.html">append()</a></li>
+		<li><a href="appendTo.html">appendTo()</a></li>
+		<li><a href="prepend.html">prepend()</a></li>
+		<li><a href="prependTo.html">prependTo()</a></li>
+		<li><a href="insertBefore.html">insertBefore()</a></li>
+		<li><a href="before.html">before()</a></li>
+		<li><a href="after.html">after()</a></li>
+		<li><a href="insertAfter.html">insertAfter()</a></li>
+		<li><a href="animate.html">animate()</a></li>
+		<li><a href="stop.html">stop()</a></li>
+		<li><a href="pause.html">pause()</a></li>
+		<li><a href="resume.html">resume()</a></li>
+		<li><a href="isRunning.html">isRunning()</a></li>
+		<li><a href="isPaused.html">isPaused()</a></li>
+		<li><a href="show.html">show()</a></li>
+		<li><a href="hide.html">hide()</a></li>
+		<li><a href="toggle.html">toggle()</a></li>
+		<li><a href="fadeIn.html">fadeIn()</a></li>
+		<li><a href="fadeOut.html">fadeOut()</a></li>
+		<li><a href="fadeToggle.html">fadeToggle()</a></li>
+		<li><a href="slideDown.html">slideDown()</a></li>
+		<li><a href="slideUp.html">slideUp()</a></li>
+		<li><a href="slideToggle.html">slideToggle()</a></li>
+		<li><a href="">继承自dom/event的方法</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">uri</a>
+
+	<ul class=toc_section>
+		<li><a href="#">S.Uri</a></li>
+		<li><a href="#">every()</a></li>
+		<li><a href="#">some()</a></li>
+		<li><a href="#">stamp()</a></li>
+		<li><a href="#">clone()</a></li>
+		<li><a href="#">resolve()</a></li>
+		<li><a href="#">getScheme()</a></li>
+		<li><a href="#">setScheme()</a></li>
+		<li><a href="#">getHostname()</a></li>
+		<li><a href="#">setHostname()</a></li>
+		<li><a href="#">getUserInfo()</a></li>
+		<li><a href="#">setUserInfo()</a></li>
+		<li><a href="#">setPort()</a></li>
+		<li><a href="#">getPort()</a></li>
+		<li><a href="#">setPath()</a></li>
+		<li><a href="#">getPath()</a></li>
+		<li><a href="#">setQuery()</a></li>
+		<li><a href="#">getQuery()</a></li>
+		<li><a href="#">getFragment()</a></li>
+		<li><a href="#">setFragment()</a></li>
+		<li><a href="#">isSameOriginAs()</a></li>
+		<li><a href="#">toString()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">promise</a>
+	<ul class=toc_section>
+		<li><a href="#">S.Promise</a><font color=blue>(内部调用)</font></li>
+		<li><a href="#">S.Defer</a><font color=blue>(内部调用)</font></li>
+	</ul>
+
+  <a class=toc_title href="#core">path</a> 
+	<ul class=toc_section>
+		<li><a href="">basename()</a></li>
+		<li><a href="">dirname()</a></li>
+		<li><a href="">extname()</a></li>
+		<li><a href="">join()</a></li>
+		<li><a href="">normalize()</a></li>
+		<li><a href="">relative()</a></li>
+		<li><a href="">resolve()</a></li>
+	</ul>
+
+<hr />
+
+<h3>Mobile 支持</h3>
+
+  <a class=toc_title href="#core">Mobile Events</a>
+	<ul class=toc_section>
+		<li><a href="#">Touch Events</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">UA 探测</a>
+	<ul class=toc_section>
+		<li><a href="#">Mobile UA</a></li>
+	</ul>
+
+</aside>
+
+<div class="container">
+	<h1>lang</h1>
+<blockquote>
+<p>lang 是一套<code>underscore</code>风格的工具集，提供一些常用的工具函数，<code>lang</code> 模块内嵌在 <code>seed.js</code> 内，无需额外引入，这些函数直接挂载在 KISSY 全局对象上。</p>
+</blockquote>
+<h3>augment()  <code>&lt;static&gt;</code></h3>
+<p><code>augment(r, s1 [, s2 , ...], ov = true, wl) =&gt; Function</code></p>
+<p>将 s1,s2.... 的 <code>prototype</code> 属性的成员复制到 <code>r.prototype</code> 上。这时被复制的成员来自于一个Fucntion对象，这个对象一般被称为掺元类（mixin class）。比如 KISSY 里的 CustemEvent 就是一个掺元类。掺元类只是被扩充用的。参数说明：</p>
+<h4>parameters</h4>
+<ul>
+<li>r (function) – 将要扩充的函数</li>
+<li><code>...s1</code> (function|object) – 扩充来源函数或对象. 非函数对象时复制的就是 s 的成员.</li>
+<li>ov (boolean) – 是否覆盖 r.prototype 同名属性.</li>
+<li>whitelist (Array<string>) – 属性来源对象的属性白名单, 仅在名单中的属性进行复制.</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li><code>r</code>（function），即将要扩充的函数</li>
+</ul>
+<h4>Example</h4>
+<pre><code>var S = KISSY,
+Shoutable = {
+    shout: function() { alert(&#39;I am &#39; + this.name + &#39;.&#39;); }
+};
+
+function Dog(name) { this.name = &#39;Dog &#39; + name; }
+function Pig(name) { this.name = &#39;Pig &#39; + name; }
+
+S.augment(Dog, Shoutable);
+S.augment(Pig, Shoutable);
+
+new Dog(&#39;Jack&#39;).shout(); // =&gt; I am Dog Jack.
+new Pig(&#39;Mary&#39;).shout(); // =&gt; I am Pig Mary.</code></pre>
+<p>augment 方法在 KISSY 里非常基础非常重要. 传统 OO 语言里, 可以通过继承或接口来实现共性方法. 在 JavaScript 里, 通过 mixin 特性, 一切变得更简单. augment 是动态语言 mixin 特性的体现, 灵活运用, 能让代码非常优雅简洁.</p>
+<h3>available()  <code>&lt;static&gt;</code></h3>
+<p><code>available (id,fn) =&gt; void</code></p>
+<p>监听某个节点是否处于可用状态，如果可用，执行回调，此函数一般在要监听的DOM节点执行之前绑定到节点。</p>
+<h4>parameters</h4>
+<ul>
+<li>id (string) – 页面元素 id</li>
+<li>fn (function) – 回调函数, 在 id 元素可用时立刻执行.</li>
+</ul>
+<h3>bind()  <code>&lt;static&gt;</code></h3>
+<p><code>bind (fn , context[, arg1[, arg2[, ...]]]) =&gt; Function</code></p>
+<p>创建一个新函数，该函数可以在固定的上下文以及传递部分固定参数放在用户参数前面给原函数并执行</p>
+<h4>parameters</h4>
+<ul>
+<li>fn (function) – 需要固定上下文以及固定部分参数的函数</li>
+<li>context (object) – 执行 fn 时的 this 值. 如果新函数用于构造器则该参数无用.</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li>Function，符合需求的新函数</li>
+</ul>
+<h4>Example 1，改变运行上下文</h4>
+<p>bind 最简单的用法是生成一个新的函数，无论它如何调用，都运行在一个固定的 this 值中，入门者常犯的错误时从一个对象获得一个方法引用， 然后在后面的调用中期望这个方法的this就是原来的对象(eg.g 把这个方法用在某个回调中). 如果没有特例，那么这个原始对象就丢失了. 但是如果从原方法中得到一个绑定原始对象的函数，这个问题就解决了！</p>
+<pre><code>var x = 9;
+var module = {
+    x: 81,
+    getX: function() { return this.x; }
+};
+
+module.getX(); // 81
+
+var getX = module.getX;
+getX(); // 9, 这里，this 指向全局Global对象
+
+// 创建一个新函数，函数的上下文this绑定至module
+var boundGetX = KISSY.bind(getX,module);
+boundGetX(); // 81</code></pre>
+<h4>Example 2，Currying</h4>
+<p>bind 的下一个简单用法是产生一个具备默认参数的函数. 这些参数跟在 context 后面，无论何时调用绑定函数， 当绑定函数调用目标函数时会把它们放在参数列表开头，然后才是传递给绑定函数的用户参数.</p>
+<pre><code>function list() {
+    return Array.prototype.slice.call(arguments);
+}
+
+var list1 = list(1, 2, 3); // [1, 2, 3]
+
+// 使用当前参数创建一个新函数
+var leadingZeroList = KISSY.bind(list,undefined, 37);
+
+var list2 = leadingZeroList(); // [37]
+var list3 = leadingZeroList(1, 2, 3); // [37, 1, 2, 3]</code></pre>
+<h3>buffer()  <code>&lt;static&gt;</code></h3>
+<p><code>buffer (fn, ms, context)</code></p>
+<p>将 fn 缓存一段时间后, 再被调用执行</p>
+<h4>parameters</h4>
+<ul>
+<li>fn (Function) – 要缓存的函数;</li>
+<li>ms (Number) – 要缓存多长时间后执行, 默认是 150 ms;</li>
+<li>context (Object) – 函数 fn 要执行时的上下文环境, 默认是 this;</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li>Function，返回缓存后的函数对象</li>
+</ul>
+<blockquote>
+<p>此方法为了避免在 ms 段时间内, 执行 fn 多次. 常用于 resize , scroll , mousemove 等连续性事件中；当 ms 设置为 -1, 表示立即执行 fn, 即和直接调用 fn 一样;</p>
+</blockquote>
+<h4>Example</h4>
+<pre><code>self.__onResize = S.buffer(doResize, 100, this);
+$(window).on(&quot;resize&quot;, self.__onResize);</code></pre>
+<h3>clone()  <code>&lt;static&gt;</code></h3>
+<p><code>clone (o[,filter]) =&gt; Object</code></p>
+<p>创建一个 普通对象 或数组的深拷贝, 并且返回.</p>
+<h4>parameters</h4>
+<ul>
+<li>o (object|Array) – 待深拷贝的对象或数组.</li>
+<li>filter – 过滤函数, 返回 false 不拷贝该元素. 传入参数为:<ul>
+<li>待克隆值为数组, 参数同 KISSY.filter() , 上下文对象为全局 window</li>
+<li>待克隆值为普通对象, 参数为对象的每个键, 每个键对应的值, 当前对象, 上下文对象为当前对象.</li>
+</ul>
+</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li>Object，拷贝后的新对象</li>
+</ul>
+<blockquote>
+<p>DOM 节点的克隆请用 dom.clone()</p>
+</blockquote>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+var a={x:{y:{z:1}}}
+var b=S.clone(a); // =&gt; b={x:y:{z:1}} , b!==a
+var c=S.clone(a,function(v,k){if(k==&quot;z&quot;) return false;}) // =&gt; c={x:{y:{}}}</code></pre>
+<h3>each()  <code>&lt;static&gt;</code></h3>
+<p><code>each ( o, fn[, context] )</code></p>
+<p>遍历数组中的每一项, 执行指定方法.</p>
+<h4>parameters</h4>
+<ul>
+<li>o (Array|object) – 需要遍历的数组或对象</li>
+<li>fn (function) – 执行时, 接收 3 个参数：<ul>
+<li>当 o 为数组时, 参数为当前数组单项值, 当前 index, 数组 o</li>
+<li>当 o 为对象时, 参数为当前值 (value), 当前键 (key), 对象 o</li>
+</ul>
+</li>
+<li>context (object) – fn 的上下文对象, 不指定为全局 window</li>
+</ul>
+<pre><code>var S = KISSY,
+arr = [1, 2, 3, 4, 5],
+obj = {
+    &#39;hi&#39;: &#39;kissy&#39;,
+    &#39;bye&#39;: &#39;world&#39;
+},
+sum = 0;
+
+S.each(arr, function(item) {
+    sum += item;
+});
+S.log(sum); // =&gt; 15
+
+
+S.each(obj, function(v,k) {
+    S.log([v,k]);
+});</code></pre>
+<h3>endsWith()  <code>&lt;static&gt;</code></h3>
+<p><code>endsWith (str,suffix) =&gt; Boolean</code></p>
+<p>判断 str 是否以 suffix 结尾</p>
+<h4>parameters</h4>
+<ul>
+<li>str (string) – 查找字符串</li>
+<li>suffix (string) – 后缀字符串</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li>Boolean，str 是否以 suffix 结尾</li>
+</ul>
+<h3>error()   <code>&lt;static&gt;</code></h3>
+<p><code>error (msg) =&gt; void</code></p>
+<h4>parameters</h4>
+<ul>
+<li>msg(string) - 异常信息</li>
+</ul>
+<blockquote>
+<p>只有在 debug 模式下, 才会抛出异常. debug 模式的说明请参考 Config</p>
+</blockquote>
+<h3>escapeHTML()  <code>&lt;static&gt;</code></h3>
+<p><code>escapeHTML (str) =&gt; String</code></p>
+<p>将字符串经过 html 转义得到适合在页面中显示的内容, 例如替换 <code>&lt;</code> 为 <code>&amp;lt;</code></p>
+<h4>parameters</h4>
+<ul>
+<li>str (string) – 要显示在页面中的真实内容</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li>string，经过 html 转义后的字符串</li>
+</ul>
+<h4>example</h4>
+<pre><code>KISSY.escapeHTML(&quot;&lt;a&gt;x&lt;/a&gt;&quot;); // =&gt;  &quot;&amp;lt;a&amp;gt;x&amp;lt;/a&amp;gt;&quot;</code></pre>
+<blockquote>
+<p>此函数只会对以下符号进行 escape：<code>&amp; &gt; &lt; / &quot; &#39;</code>&prime; 等</p>
+</blockquote>
+<h3>extend()  <code>&lt;static&gt;</code></h3>
+<p><code>extend (r,s[,px,sx]) =&gt; Function</code></p>
+<p>让函数对象 r 继承函数对象 s</p>
+<h4>paramters</h4>
+<ul>
+<li>r (function) – receiver,将要继承的子类函数</li>
+<li>s (function|object) – supplier,继承自的父类函数</li>
+<li>px (object) – prototype members, 需要添加/覆盖的原型成员</li>
+<li>sx (object) – static members, 需要添加/覆盖的静态成员.</li>
+</ul>
+<h4>return</h4>
+<ul>
+<li>r（Function）</li>
+</ul>
+<h4>Example</h4>
+<pre><code>var S = KISSY;
+
+function Bird(name) { this.name = name; }
+Bird.prototype.fly = function() { alert(this.name + &#39; is flying now!&#39;); };
+
+function Chicken(name) {
+    Chicken.superclass.constructor.call(this, name);
+}
+S.extend(Chicken, Bird,{
+    fly:function(){
+        Chicken.superclass.fly.call(this)
+        alert(&quot;it&#39;s my turn&quot;);
+    }
+});
+
+new Chicken(&#39;kissy&#39;).fly();</code></pre>
+<p>extend 方法是 KISSY 里类继承的实现方式. 书写 JavaScript 代码时, 请忘记传统 OO 里的继承体系. 还 JavaScript 本色, 给代码一身轻松.</p>
+<blockquote>
+<p>子类方法中可通过 superclass 来访问父类函数的原型, 进而调用父类方法.</p>
+</blockquote>
+<h3>filter()  <code>&lt;static&gt;</code></h3>
+<p><code>filter (arr,fn[,context]) =&gt; Array</code></p>
+<p>遍历数组, 过滤出符合条件的数组项.</p>
+<h4>parameters</h4>
+<ul>
+<li>arr (Array) – 需要遍历的数组.</li>
+<li>fn (function) – 过滤函数. 执行时, 接收 3 个参数：当前项、当前 index, 数组.</li>
+<li>context (object) – fn 执行的上下文对象</li>
+</ul>
+<h4>returns</h4>
+<p>返回符合过滤函数的新数组</p>
+<h4>Example</h4>
+<pre><code>var S = KISSY,
+arr = [1, 2, 3, 4, 5];
+
+var ret = S.filter(arr, function(item) {
+    return item % 2 === 0;
+});
+S.log(ret); // =&gt; [2, 4]</code></pre>
+<h3>fromUnicode()  <code>&lt;static&gt;</code></h3>
+<p><code>fromUnicode (str) =&gt; String</code></p>
+<p>将 str 中 unicode 转义的字符替换成真实字符. 主要用于 taobao 用户名 cookie 读取.</p>
+<h4>parameters</h4>
+<p>str (string) – 包含 unicode 转义的字符串</p>
+<h4>return</h4>
+<p>unicode 转义后的字符串</p>
+<h4>Example</h4>
+<pre><code>KISSY.fromUnicode(&quot;\\u627F\\u7389&quot;) // =&gt; &quot;承玉&quot;</code></pre>
+<h3>globalEval()  <code>&lt;static&gt;</code></h3>
+<p><code>globalEval(code) =&gt; void</code></p>
+<p>在全局作用域下执行代码字符串, 避免 eval 的作用域链</p>
+<h4>parameters</h4>
+<p>code (string) – 代码字符串</p>
+<h3>guid()  <code>&lt;static&gt;</code></h3>
+<p><code>guid(prefix) =&gt; String</code></p>
+<p>生成全局唯一 id.</p>
+<h4>parameters</h4>
+<p>prefix (string) – 唯一 id 前缀</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+for(var i=0;i&lt;5;i++){
+    alert(S.guid(&#39;pre&#39;)); 
+    // =&gt; 输出 prex,pre(x+1),pre(x+2),pre(x+3),pre(x+4)
+    // x 表示一个不确定的数字 ,(x+1) 表示对该数字运算得到的表达式
+    // 例如可能的结果：pre10,pre11,pre12,pre13,pre14                      
+}</code></pre>
+<h3>inArray()  <code>&lt;static&gt;</code></h3>
+<p><code>inArray (elem,arr) =&gt; Boolean</code></p>
+<p>判断元素 elem 是否在数组 arr 中.</p>
+<h4>parameters</h4>
+<ul>
+<li>elem – 任意对象</li>
+<li>arr – 数组</li>
+</ul>
+<h3>indexOf()  <code>&lt;static&gt;</code></h3>
+<p><code>indexof (elem,arr)</code></p>
+<p>返回元素 elem 在数组 arr 中的序号.</p>
+<h4>parameters</h4>
+<ul>
+<li>elem – 任意对象</li>
+<li>arr – 数组</li>
+</ul>
+<h4>return</h4>
+<p>elem 在数组 arr 中的序号，类型为Number</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+function IndexDemo(){
+    var arry1 = [1,2,3,4,5,6];
+    var s = KISSY.indexOf(5,arry1);
+    return(s);  // =&gt; 4
+}</code></pre>
+<h3>isArray()  <code>&lt;static&gt;</code></h3>
+<p><code>isArray (o) =&gt; Boolean</code></p>
+<p>判断o是否为数组</p>
+<h3>isBoolean()  <code>&lt;static&gt;</code></h3>
+<p><code>isBoolean (o) =&gt; Boolean</code></p>
+<p>判断o是否为布尔值</p>
+<h3>isDate()  <code>&lt;static&gt;</code></h3>
+<p><code>isDate(o) =&gt; Boolean</code></p>
+<p>判断o是否为Date</p>
+<h3>isEmptyObject()  <code>&lt;static&gt;</code></h3>
+<p><code>isEmptyObject(o) =&gt; Boolean</code></p>
+<p>判断是否空对象(没有任何可遍历的属性).</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+
+S.isEmptyObject({}); // =&gt; true
+S.isEmptyObject([]); // =&gt; true
+S.isEmptyObject({ a: &#39;a&#39; }); // =&gt; false</code></pre>
+<h3>isFunction()  <code>&lt;static&gt;</code></h3>
+<p><code>isFunction(o) =&gt; Boolean</code></p>
+<p>判断o是否为Function</p>
+<h3>isNull()  <code>&lt;static&gt;</code></h3>
+<p><code>isNull(o) =&gt; Boolean</code></p>
+<p>判断o是否为null</p>
+<h3>isNumber()  <code>&lt;static&gt;</code></h3>
+<p><code>isNumber(o) =&gt; Boolean</code></p>
+<p>判断o是否为Number</p>
+<blockquote>
+<p>NaN 和 Infinity 也返回 true</p>
+</blockquote>
+<h3>isObject()  <code>&lt;static&gt;</code></h3>
+<p><code>isObject(o) =&gt; Boolean</code></p>
+<p>判断o是否为Object</p>
+<h3>isPlainObject()  <code>&lt;static&gt;</code></h3>
+<p><code>isPlainObject(o) =&gt; Boolean</code></p>
+<p>判断是否是普通对象, 通过 {} 或 new FunctionClass/Object() 创建的, 不包括内置对象以及宿主对象.</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+
+S.isPlainObject({}); // =&gt; true
+S.isPlainObject(new Date()); // =&gt; false
+S.isPlainObject(document.body); // =&gt; false</code></pre>
+<h3>isRegExp()  <code>&lt;static&gt;</code></h3>
+<p><code>isRegExp(o) =&gt; Boolean</code></p>
+<p>判断o是否为正则表达式</p>
+<h3>isString()  <code>&lt;static&gt;</code></h3>
+<p><code>isString(o) =&gt; Boolean</code></p>
+<p>判断o是否为String</p>
+<h3>isUndefined()  <code>&lt;static&gt;</code></h3>
+<p><code>isUndefined(o) =&gt; Boolean</code></p>
+<p>判断o是否为undefined</p>
+<h3>Window()  <code>&lt;static&gt;</code></h3>
+<p><code>Window(o) =&gt; Boolean</code></p>
+<p>判断o是否为Window对象</p>
+<p>目前的实现是:</p>
+<pre><code>isWindow: function(o) {
+    return S.type(o) === &#39;object&#39;
+        &amp;&amp; &#39;setInterval&#39; in o
+        &amp;&amp; &#39;document&#39; in o
+        &amp;&amp; o.document.nodeType == 9;
+}</code></pre>
+<p>有更好的实现, 欢迎提出.</p>
+<h3>keys()  <code>&lt;static&gt;</code></h3>
+<p><code>keys(o) =&gt; Object</code></p>
+<p>将对象的所有属性名作为数组返回</p>
+<h4>parameters</h4>
+<p>o ({object}) – 需要遍历的对象</p>
+<h4>return</h4>
+<p>属性名数组</p>
+<h4>example</h4>
+<pre><code>var S = KISSY,
+var o= { x:1, y:2 };
+S.keys(o) =&gt; [&quot;x&quot;,&quot;y&quot;]</code></pre>
+<h3>lastIndexOf()  <code>&lt;static&gt;</code></h3>
+<p><code>lastIndexOf (elem,arr) =&gt; Number</code></p>
+<p>返回元素 elem 在数组 arr 中最后出现的序号.    </p>
+<h4>parameters</h4>
+<ul>
+<li>elem – 任意对象</li>
+<li>arr – 数组</li>
+</ul>
+<h4>return</h4>
+<p>elem 在数组 arr 中最后出现的序号.</p>
+<h3>later()  <code>&lt;static&gt;</code></h3>
+<p><code>later ( fn[, when, periodic, o, data] ) =&gt; Object</code></p>
+<p>延迟执行指定函数 fn</p>
+<h4>parameters</h4>
+<ul>
+<li>fn (function) – 延迟执行的函数.</li>
+<li>when (number) – 延迟时间, 单位是毫秒.</li>
+<li>periodic (boolean) – 是不是周期性执行. 默认为 false.</li>
+<li>o (object) – fn 上下文对象</li>
+<li>data (Array) – 传递的参数. 可以为单个对象, 最后会转换成数组, 依次传递给执行函数.</li>
+</ul>
+<h4>return</h4>
+<p>timer 对象，类型为Object. 包含下面这些属性:</p>
+<ul>
+<li>interval 是否周期执行</li>
+<li>cancel  取消定时器</li>
+</ul>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+
+S.later(function(data) {
+    S.log(data);
+}, 0, false, null, &#39;I am later data.&#39;);</code></pre>
+<h3>log()  <code>&lt;static&gt;</code></h3>
+<p><code>log (msg[,cat=’log’,src]) =&gt; void</code></p>
+<p>输出调试信息    </p>
+<h4>parameters</h4>
+<ul>
+<li>msg (string) – 调试信息</li>
+<li>cat (string) – 调试信息类别. 可以取 info, warn, error, dir, time 等 console 对象的方法名, 默认为 log.</li>
+<li>src (string) – 调试代码所在的源信息</li>
+</ul>
+<p>只有在 debug 模式下, 才会输出调试信息. </p>
+<h3>makeArray()  <code>&lt;static&gt;</code></h3>
+<p><code>makeArray (o) =&gt; Array</code></p>
+<p>将对象 o 转换为数组.</p>
+<h4>parameters</h4>
+<p>o – arguments, NodeList 等 array-like 对象或单个对象</p>
+<h4>return</h4>
+<p>可以代表 o 的新数组</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+
+S.makeArray(&#39;str&#39;); // =&gt; [&#39;str&#39;]
+S.makeArray(S.query(&#39;.div&#39;)); // =&gt; 由所有 div 元素组成的数组
+S.makeArray(null); // =&gt; []</code></pre>
+<h3>map()  <code>&lt;static&gt;</code></h3>
+<p><code>map (arr,fn[,context])     =&gt; Array</code></p>
+<p>创建一个新数组, 数组结果是在对每个原数组元素调用指定函数的返回值.</p>
+<h4>parameter</h4>
+<ul>
+<li>arr (Array) – 需要遍历的数组.</li>
+<li>fn (function) – 能够根据原数组当前元素返回新数组元素的函数.</li>
+<li>context (object) – 执行 fn 时的 this 值.</li>
+</ul>
+<p>原数组保持不变</p>
+<h4>return</h4>
+<p>返回符合根据指定函数调用得到新数组，类型为Array</p>
+<h4>example</h4>
+<pre><code>function makePseudoPlural(single) {
+    return single.replace(/o/g, &quot;e&quot;);
+}
+
+var singles = [&quot;foot&quot;, &quot;goose&quot;, &quot;moose&quot;];
+var plurals = S.map(singles, makePseudoPlural);  // =&gt; [&quot;feet&quot;, &quot;geese&quot;, &quot;meese&quot;]
+
+var a = S.map(&quot;Hello World&quot;,function(x) {
+    return x.charCodeAt(0);
+}); // =&gt; [72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]</code></pre>
+<h3>merge()  <code>&lt;static&gt;</code></h3>
+<p><code>merge (s1,s2[,...]) =&gt; Object</code></p>
+<p>将多个对象的成员合并到一个新对象上. 参数中, 后面的对象成员会覆盖前面的.</p>
+<h4>parameters</h4>
+<ul>
+<li>s1 (object) – 属性源</li>
+<li>s2 (object) – 属性源</li>
+</ul>
+<h4>return</h4>
+<p>合并属性后的新对象.</p>
+<h4>example</h4>
+<pre><code>var S = KISSY,
+a = { a: &#39;a&#39; },
+b = { b: &#39;b&#39; },
+c = { b: &#39;b2&#39;, c: &#39;c&#39; };
+
+var o = S.merge(a, b, c);
+S.log(o.a); // =&gt; &#39;a&#39;
+S.log(o.b); // =&gt; &#39;b2&#39;
+S.log(o.c); // =&gt; &#39;c&#39;</code></pre>
+<p>简单情况下 merge 方法常用来合并配置信息. 推荐使用 Base 处理属性配置.</p>
+<h3>mix()  <code>&lt;static&gt;</code></h3>
+<p><code>mix (receiver , supplier [ , overwrite = true , whitelist , deep ]) =&gt; Object</code></p>
+<p>将 supplier 对象的成员复制到 receiver 对象上.</p>
+<h4>parameter</h4>
+<ul>
+<li>receiver (object) – 属性接受者对象.</li>
+<li>supplier (object) – 属性来源对象.</li>
+<li>overwrite (boolean) – 是否覆盖接受者同名属性.</li>
+<li>whitelist (Array<string>) – 属性来源对象的属性白名单, 仅在名单中的属性进行复制.</li>
+<li>deep (boolean) – 是否进行深度 mix (deep copy)</li>
+</ul>
+<h4>return</h4>
+<p>receiver 属性接受者对象，类型为Object</p>
+<blockquote>
+<p>receiver 会被改变，如果想要保留原始的 receiver ，可以使用 KISSY.merge()</p>
+</blockquote>
+<pre><code>var object=S.merge(object1,object2);</code></pre>
+<p>S.mix 默认不是递归进行的. 如果其中一个属性为对象或者数组，那么他将会被接下来对象的同名属性对应的值所代替，即值不会被合并。 如果设置了参数 deep = true ，那么会对数组和简单对象<code>KISSY.isPlainObject()</code>递归合并.</p>
+<p>supplier undefined 的属性值不会被复制，不过对象从原型继承下来下的值则会被复制.    </p>
+<blockquote>
+<p>该方法仅适用于 javascript 对象，不要再浏览器对象上调用，例如 node.style</p>
+</blockquote>
+<h4>example</h4>
+<p>简单 mix</p>
+<pre><code>var S = KISSY,
+r = { a: &#39;a&#39;, b: &#39;b&#39; };
+
+S.mix(r, { c: &#39;c&#39; });
+S.log(r.c); // =&gt; &#39;c&#39;
+
+S.mix(r, { a: &#39;a2&#39; }, false);
+S.log(r.a); // =&gt; &#39;a&#39;
+
+S.mix(r, { e: &#39;e&#39;, f: &#39;f&#39; }, true, [&#39;f&#39;]);
+S.log(r.e); // =&gt; undefined
+S.log(r.f); // =&gt; &#39;f&#39;</code></pre>
+<p>深度mix</p>
+<pre><code>var object1 = {
+  apple: 0,
+  banana: {weight: 52, price: 100},
+  cherry: 97
+};
+var object2 = {
+  banana: {price: 200},
+  durian: 100
+};
+
+/* merge object2 into object1, recursively */
+S.mix(object1,object2,undefined,undefined,true);
+
+S.log(object1); // =&gt; { apple: 0, banana: { weight: 52, price: 200 }, cherry: 97, durian: 100 }</code></pre>
+<p>默认选项机制</p>
+<p>常用于组件配置，不过推荐用 base 替代</p>
+<pre><code>var defaults = { validate: false, limit: 5, name: &quot;foo&quot; };
+var options = { validate: true, name: &quot;bar&quot; };
+
+/* merge defaults and options, without modifying defaults */
+var settings = S.merge(defaults, options);
+
+S.log(settings); // =&gt; { validate: true, limit: 5, name: bar }</code></pre>
+<p>该方法在 KISSY 里具有非常重要的地位. JavaScript 是一门动态语言, 利用 mixin 特性, 可以很方便的实现特性的静态复制和动态修改.</p>
+<h3>namespace()  <code>&lt;static&gt;</code></h3>
+<p><code>namespace (n1[,....,global=false]) =&gt;    Object</code></p>
+<p>根据参数创建命名空间对象</p>
+<h4>parameters</h4>
+<ul>
+<li>n1 (string) – 命名空间字符串, 如 &quot;fp.search&quot; 或 &quot;KISSY.fp.ad&quot;</li>
+<li>global (boolean) – 是否第一个点之前的字符串作为全局变量, 默认 false 添加到 KISSY</li>
+</ul>
+<h4>return</h4>
+<p>最后创建的命名空间对象</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+
+S.namespace(&#39;app&#39;, &#39;test&#39;); // 创建 KISSY.app 和 KISSY.test 对象
+S.namespace(&#39;app.Shop&#39;); // 创建 KISSY.app.Shop 对象
+S.namespace(&quot;TC.mods&quot;,true); //创建 window.TC.mods 对象</code></pre>
+<p>namespace 方法提供了最基本的命名空间管理. 但对于模块的命名空间推荐采用 kissy 1.4的 loader 机制，详情参阅<a href="../kmd.html">KISSY模块规范</a>.</p>
+<h3>now()  <code>&lt;static&gt;</code></h3>
+<p><code>now () =&gt; Date</code></p>
+<p>返回<code>new Date().getTime()</code></p>
+<h3>param()  <code>&lt;static&gt;</code></h3>
+<p><code>param (o[ ,sep=’&amp;’,eq=’=’,arr=true ]) =&gt; String</code></p>
+<p>将对象 o 转换为参数字符串, 用于发送 http 请求.</p>
+<h4>parameter</h4>
+<ul>
+<li>o (object) – 参数键值对对象</li>
+<li>seq (string) – 参数间分隔符, 默认 &amp;</li>
+<li>eq (string) – 参数与参数值间的分隔符, 默认 =</li>
+<li>arr (boolean) – 参数值为数组时, 参数键是否加 [] 即 %5B%5D , 默认 true</li>
+</ul>
+<h4>return</h4>
+<p>可用于发送请求的参数字符串</p>
+<h4>example</h4>
+<pre><code>var S = KISSY;
+
+S.param({ foo: 1, bar: 2 }); // =&gt; foo=1&amp;bar=2
+S.param({ foo: 1, bar: [2, 3] }); // =&gt; foo=1&amp;bar%5B%5D=2&amp;bar%5B%5D=3
+S.param({ foo: 1, bar: [2, 3] },&#39;&amp;&#39;,&#39;=&#39;,false); // =&gt; foo=1&amp;bar=2&amp;bar=3
+S.param({ foo: &#39;&#39;, bar: 2 }); // =&gt; foo=&amp;bar=2
+S.param({ foo: undefined, bar: 2 }); // =&gt; foo&amp;bar=2</code></pre>
+<blockquote>
+<p>实现同<a href="http://api.jquery.com/jQuery.param/">Jquery.param</a></p>
+</blockquote>
+<h3>parseXML()  <code>&lt;static&gt;</code></h3>
+<p><code>parseXML (str) =&gt; String</code></p>
+<h4>parameter</h4>
+<p>str (string) – 有效的 xml 文档字符串</p>
+<h4>return</h4>
+<p>xml 文档</p>
+<blockquote>
+<p>KISSY.parseXML 使用原生的浏览器机制进行 xml 解析。结果 xml 文档可以像 html dom 一样进行选择器查找。 默认 kissy 对于 xml 文档仅支持 tag 选择器. 载入 sizzle 后可对返回的 xml 文档进行全面遍历.</p>
+</blockquote>
+<h4>example</h4>
+<pre><code>var xml = &quot;&lt;rss version=&#39;2.0&#39;&gt;&lt;channel&gt;&lt;title&gt;RSS Title&lt;/title&gt;&lt;/channel&gt;&lt;/rss&gt;&quot;;
+var xmlDoc=KISSY.all(KISSY.parseXML(xml));
+alert(xmlDoc.one(&quot;title&quot;).text()); // =&gt; RSS Title</code></pre>
+<h3>ready()  <code>&lt;static&gt;</code></h3>
+<p><code>ready (fn) =&gt; void</code></p>
+<p>DomReady时的回调</p>
+<h4>parameter</h4>
+<p>fn (function) – 回调函数, 在 DOM 加载完毕时执行.</p>
+<h4>example</h4>
+<pre><code>KISSY.ready(function(S) {
+    // code
+});</code></pre>
+<p>这是 KISSY 外部代码的基本调用方式. 为了保证代码执行时, 依赖的 DOM 结构已准备好, 推荐尽可能的将代码写在通过 ready 注册的函数里.</p>
+<blockquote>
+<p>在 DOM 加载完毕后, 依旧可以通过 ready 添加函数, 此时会立刻执行.</p>
+</blockquote>
+<h3>reduce()  <code>&lt;static&gt;</code></h3>
+<p><code>reduce (arr,fn[,initialValue]) =&gt; Array</code></p>
+<p>从左向右对每个数组元素调用给定函数，并把返回值累积起来</p>
+<h4>parameter</h4>
+<ul>
+<li>arr (Array) – 需要遍历的数组.</li>
+<li>fn (function) – 在每个数组元素上执行的函数.</li>
+<li>initialValue (object) – 初次执行 fn 时的第一个参数值，如果不指定则为第一个元素值，后续从第二个元素开始遍历</li>
+</ul>
+<h4>return</h4>
+<p>累计值</p>
+<p>reduce 对数组中的每个元素执行 fn 函数，该 fn 接受四个参数：initialValue (或者上次调用 fn 的返回值)， 数组的当前元素，数组的当前位置以及用于遍历的数组.调用 reduce 类似于：</p>
+<pre><code>KISSY.reduce([],function(previousValue, currentValue, index, array){
+    // Your cod    e
+});</code></pre>
+<p>当第一次调用 fn 时 :</p>
+<ul>
+<li>如果调用 reduce 时没有设定 initialValue，previousValue 和 currentValue 是数组的前两个值.</li>
+<li>如果调用 reduce 时设定了 initialValue，那么 previousValue 和 initialValue 相等 ，而 currentValue 则和数组的第一个元素相等.</li>
+</ul>
+<p>比如：</p>
+<pre><code>KISSY.reduce([0,1,2,3,4],function(previousValue, currentValue, index, array){
+  return previousValue + currentValue;
+});
+
+// First call
+previousValue = 0, currentValue = 1, index = 1
+
+// Second call
+previousValue = 1, currentValue = 2, index = 2
+
+// Third call
+previousValue = 3, currentValue = 3, index = 3
+
+// Fourth call
+previousValue = 6, currentValue = 4, index = 4
+
+// array is always the object [0,1,2,3,4] upon which reduce was called
+
+// Return Value: 10</code></pre>
+<p>提供了 initialValue</p>
+<pre><code>KISSY.reduce([0,1,2,3,4],function(previousValue, currentValue, index, array){
+  return previousValue + currentValue;
+}, 10);
+
+// First call
+previousValue = 10, currentValue = 0, index = 0
+
+// Second call
+previousValue = 10, currentValue = 1, index = 1
+
+// Third call
+previousValue = 11, currentValue = 2, index = 2
+
+// Fourth call
+previousValue = 13, currentValue = 3, index = 3
+
+// Fifth call
+previousValue = 16, currentValue = 4, index = 4
+
+// array is always the object [0,1,2,3,4] upon which reduce was called
+
+// Return Value: 20</code></pre>
+<p>得到数组的值总和</p>
+<pre><code>var total = KISSY.reduce([0, 1, 2, 3],function(a, b){ return a + b; });
+// total == 6</code></pre>
+<p>嵌套数组平坦化</p>
+<pre><code>var flattened = KISSY.reduce([[0,1], [2,3], [4,5]],function(a,b) {
+  return a.concat(b);
+});
+// flattened is [0, 1, 2, 3, 4, 5]</code></pre>
+<h3>startsWith()  <code>&lt;static&gt;</code></h3>
+<p><code>startsWith (str,prefix) =&gt; Boolean</code></p>
+<p>判断 str 是否以 prefix 开头</p>
+<h4>parameter</h4>
+<ul>
+<li>str (string) – 查找字符串</li>
+<li>prefix (string) – 前缀字符串</li>
+</ul>
+<h3>substitute()  <code>&lt;static&gt;</code></h3>
+<p><code>substitute (str,o) =&gt; String</code></p>
+<p>将字符串中的占位符替换为对应的键值.</p>
+<h4>parameter</h4>
+<ul>
+<li>str (String) – 包含数据占位符的模板字符串, 占位符用 {} 包起来.</li>
+<li>o (Object) – 数据</li>
+</ul>
+<h4>return</h4>
+<p>将模板和数据结合起来的最终字符串</p>
+<h4>example</h4>
+<pre><code>var S = KISSY,
+str = &#39;{name} is {prop_1} and {prop_2}.&#39;,
+obj = {name: &#39;Jack Bauer&#39;, prop_1: &#39;our lord&#39;, prop_2: &#39;savior&#39;};
+
+S.substitute(str, obj); // =&gt; &#39;Jack Bauer is our lord and savior.&#39;</code></pre>
+<h3>throttle()  <code>&lt;static&gt;</code></h3>
+<p><code>throttle (fn, ms, context) =&gt; Function</code></p>
+<p>ms 时间内只执行 fn 一次, 即使这段时间内 fn 被调用多次.</p>
+<h4>parameter</h4>
+<ul>
+<li>fn (Function) – 要缓存的函数;</li>
+<li>ms (Number) – 要缓存多长时间后执行, 默认是 150 ms;</li>
+<li>context (Object) – 函数 fn 要执行时的上下文环境, 默认是 this;</li>
+</ul>
+<h4>return</h4>
+<p>返回缓存后的函数对象;</p>
+<blockquote>
+<p>当 ms 设置为 -1, 表示立即执行 fn, 即和直接调用 fn 一样;</p>
+<p>throttle 和 buffer 的区别在于, 前者表示间隔内的函数触发被忽略, 后者表示间隔内的触发被放到下个间隔触发</p>
+</blockquote>
+<h4>example</h4>
+<pre><code> function sayHi() {
+    alert(&#39;hi&#39;);
+ }
+
+say = S.throttle(sayHi, 300, this);
+say();              // 忽略
+S.later(say, 200);  // 忽略
+S.later(say, 350);  // 超过300ms后, 终于执行</code></pre>
+<h3>trim()  <code>&lt;static&gt;</code></h3>
+<p><code>trim (str) =&gt; String</code></p>
+<p>去除字符串两端的空白字符.</p>
+<h3>type()  <code>&lt;static&gt;</code></h3>
+<p><code>type(o) =&gt; String</code></p>
+<p>返回o的数据类型</p>
+<h3>unEscapeHTML()  <code>&lt;static&gt;</code></h3>
+<p><code>unEscapeHTML (str) =&gt; String</code></p>
+<p>将字符串中的 html 实体字符替换成对应字符，也可以写成<code>unEscapeHtml</code></p>
+<h4>example</h4>
+<pre><code>KISSY.unEscapeHTML(&quot;&amp;lt;a&amp;gt;x&amp;lt;/a&amp;gt;&quot;); // =&gt;  &quot;&lt;a&gt;x&lt;/a&gt;&quot;</code></pre>
+<p>该函数只会 unescape 以下字符序列（正则式）</p>
+<pre><code>&amp;amp; &amp;lt; &amp;gt; &amp;#x60; &amp;#x2F; &amp;quot; &amp;#x27; &amp;#\d{1,5}</code></pre>
+<h3>unique()  <code>&lt;static&gt;</code></h3>
+<p><code>unique (arr[,keepLast=false]) =&gt; Array</code></p>
+<p>返回一个新数组, 仅包含 arr 去重后的值</p>
+<h4>parameter</h4>
+<ul>
+<li>arr (Array) – 包含重复元素的数组</li>
+<li>keepLast (boolean) – 遇到重复值是保留第一次出现还是保留最后一次出现的元素</li>
+</ul>
+<h4>return</h4>
+<p>包含 arr 去重后的数组</p>
+<h4>example</h4>
+<pre><code>KISSY.unique([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;],true) =&gt; [&#39;b&#39;, &#39;a&#39;]
+KISSY.unique([&#39;a&#39;, &#39;b&#39;, &#39;a&#39;]) =&gt; [&#39;a&#39;, &#39;b&#39;]</code></pre>
+<h3>unparam()  <code>&lt;static&gt;</code></h3>
+<p><code>unparam (str[ ,sep=’&amp;’,eq=’=’ ]) =&gt; Object</code></p>
+<p>将参数字符串 str 还原为对象.</p>
+<h4>parameter</h4>
+<ul>
+<li>o (object) – 参数字符串</li>
+<li>seq (string) – 参数间分隔符, 默认 <code>&amp;</code>    </li>
+<li>eq (string) – 参数与参数值间的分割符, 默认 <code>=</code></li>
+</ul>
+<h4>return</h4>
+<p>参数的对象表示</p>
+<blockquote>
+<p>key 可以不加 <code>[]</code> 如 <code>v=1&amp;v=2</code> =&gt; <code>{v:[1,2]}</code></p>
+</blockquote>
+<p>参数值如果是 gbk 编码的, 则不会解码出对应的真实值. (用的原生 decodeURIComponent, 请修改参数值为 utf-8 编码).</p>
+<pre><code>var S = KISSY;
+
+S.unparam(&#39;foo=1&amp;bar=2&#39;); // =&gt; { foo: 1, bar: 2 }
+S.unparam(&#39;foo=%81%47&#39;); // gbk 编码 =&gt; { foo: &quot;%81%47&quot; } 而不是 {foo: &quot;丢&quot;}
+S.unparam(&#39;foo=1&amp;bar=2&amp;bar=3&#39;); // =&gt; { foo: 1, bar: [2, 3] }
+S.unparam(&#39;foo=1&amp;bar%5B%5D=2&amp;bar%5B%5D=3&#39;); // =&gt; { foo: 1, bar: [2, 3] }</code></pre>
+<h3>version()  <code>&lt;static&gt;</code></h3>
+<p><code>version() =&gt; String</code></p>
+<p>返回 KISSY 类库的版本号. 可通过 KISSY.version 获取.</p>
+
+</div>
+
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+			
+			
+		});
+	})();
+
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			str = str.match(/\w+/)[0];
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+
+</body>
+</html>
+

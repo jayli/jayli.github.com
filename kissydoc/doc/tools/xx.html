@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
+<!--[if gt IE 9]><html class="no-js"><![endif]-->
+<!--[if !IE]><!--><html><!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+</head>
+<body>
+	<div id="log"></div>
+	<button class="c1">iii<span>sdf</span></button>
+	<button class="c2">iii<span>sdf</span></button>
+	<button class="contin">iii</button>
+
+	<script type='kissy/xtemplate' id='tpl'>
+		{{include "sub-tpl-3"}}
+	</script>
+	<script>
+		var o = {
+			title:1
+		};
+	</script>
+	
+	<script>
+		function log(str){
+			var log = document.getElementById('log');
+			log.innerHTML = log.innerHTML + '<p>'+ str.replace(/</ig,'&lt;').replace(/>/ig,'&gt;').replace(/\n/ig,'<br>') +'</p>';
+		}
+		var S = KISSY;
+
+		S.config('debug',true);
+
+
+		KISSY.use('xtemplate,node', function (S, XTemplate) {
+			debugger;
+
+			var tpl = S.all('#tpl').html();
+			var a = new XTemplate(tpl,{
+				subTpls: {
+					'sub-tpl-3': '{{title}}'
+				}
+			}).render(o) // => <div>m</div>
+			log(a);
+
+
+		});
+
+
+	</script>
+</body>
+</html>
+
+

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<img src="templates/assets/img/logo_6.png">
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.0 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="gallery.html">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href=""><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>FAQ</h1>
+<h3>Q:DOM 和 Node 有什么区别？</h3>
+<p>Dom 是面向原生节点的第一层封装，主要是处理浏览器兼容和功能差异，Node 是对节点的第二层封装，主要是整合节点的功能并提供标准的API。</p>
+<pre><code>var btn = KISSY.DOM.get(&#39;#btn&#39;);// 得到原生节点
+var btn = KISSY.Node.one(&#39;#btn&#39;);// 得到包装后的节点</code></pre>
+<h3>Q:<code>*-min.js</code>和<code>*.js</code>的区别</h3>
+<p><code>*-min.js</code>是对应js的压缩版本，开发阶段引用<code>*.js</code>方便调试，发布到线上引用<code>*-min.js</code>减少文件体积。通常在URL中带入参数<code>?ks-debug</code>开打开KISSY的debug模式。<code>*-min.js</code>一般不需要手动生成，需要用工具来生成。</p>
+<h3>Q:<code>rich-base</code>和<code>base</code>模块我应该用哪个？</h3>
+<p>在1.4.0以及后续版本中，<code>rich-base</code>模块已经不存在，只有<code>base</code>模块，这里的base模块包含RichBase的功能，在1.3.0及以前版本中，需要引用<code>rich-base</code>来加载<code>富组件模板</code>。1.3.x 及以前版本推荐直接使用<code>rich-base</code>，1.4.0及后续版本，只需使用base即可。</p>
+<h3>Q:KISSY 载入没有通过<code>add</code>注册的模块时不执行回调，如何解决？</h3>
+<p>比如:</p>
+<pre><code>// a.js
+var a = 1;</code></pre>
+<p>主程序use这个&quot;模块&quot;:</p>
+<pre><code>KISSY.use(&#39;a&#39;,function(){
+    // 不执行回调    
+});</code></pre>
+<p><code>KISSY.use</code>只有一层含义：&quot;执行已经注册过的模块并触发回调&quot;。执行的过程中会探测模块是否已经加载，这里的加载外部模块是正常逻辑，不是独立的一个功能。因此，通过KISSY加载外部“模块”时（外部模块不是<a href="kmd.html">kmd</a>格式），会认为不存在名为a的模块，因此不会执行回调。这样作的好处是依赖关系始终很清晰、不会混淆文件模块和非文件模块。坏处就是<code>KISSY.use</code>只能用于满足kmd规范的模块。KISSY 的设计遵循“约定高于配置“，用易于理解的约定代替一语双关的函数用法的多态。</p>
+<p><code>YUI().use()</code>具有两层含义：&quot;加载外部模块并触发回调&quot;、&quot;执行模块逻辑并触发回调&quot;。因此<code>YUI().use()</code>可以加载非格式化的外部模块。这样作的好处是API统一，坏处是需要根据代码上下文搞清楚<code>use()</code>到底承担哪种角色。</p>
+<p>KISSY 载入外部&quot;文件模块&quot;时，推荐使用<code>KISSY.getScript()</code>。</p>
+<h3>Q:如果<code>use()</code>的模块过多，回调参数需要和模块列表一一对应，有没有更简单的办法？</h3>
+<p>经常看到这种代码：</p>
+<pre><code>// use 的模块太多，一不小心就和 function() 里的回调不对应了
+KISSY.use(&#39;a,b,c,d,e,f,g&#39;,function(S,A,B,C,D,E,F,G){
+    // Your code...
+});</code></pre>
+<p>有没有办法不用去肉眼找模块和变量的对应关系？有方法，KISSY 1.4.0 提供了<code>require</code>语法糖</p>
+<pre><code>KISSY.use(&#39;a,b,c,d,e,f,g&#39;,function(S){
+    var A = S.require(&#39;a&#39;);
+    var B = S.require(&#39;b&#39;);
+    var C = S.require(&#39;c&#39;);
+    // Your code...
+});</code></pre>
+<h3>Q:淘宝 CDN 的 Combo 功能很酷，我可以自己部署吗？</h3>
+<p>淘宝 CDN 基于 Nginx，CDN Combo 是 Nginx 的一个模块，项目开源，参照这里：<a href="https://github.com/alibaba/nginx-http-concat">HTTP Concatenation module for Nginx</a></p>
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>

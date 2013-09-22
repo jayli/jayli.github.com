@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name=viewport content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <title>KISSY: 模块化、接口一致、全终端适配的JS类库</title>
+  
+  <meta name=description content="The aerogel-weight jQuery-compatible JavaScript library
+">
+  
+  <link rel=stylesheet href=assets/style.css />
+  <link rel=stylesheet href=assets/tomorrow-night-bright.css />
+
+  <meta name=apple-mobile-web-app-capable content=yes>
+  <meta name=apple-mobile-web-app-status-bar-style content=white>
+  <meta name=format-detection content="telephone=no">
+	<script src="http://a.tbcdn.cn/s/kissy/1.3.0/seed-min.js"></script>
+	<script src="assets/highlight.pack.js"></script>
+
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+  <div id="menu_icon">≣</div>
+
+<aside id="sidebar" class="interface">
+
+<h3>Introduction</h3>
+
+  <a class="toc_title" href="#">
+    seed.js <span class="version">(1.4.0)</span>
+  </a>
+  <ul class=toc_section>
+    <li><a href="#guide">Hello World</a></li>
+	<li><a href="#download">KISSY 模块依赖表</a></li>
+  </ul>
+
+  <hr>
+
+<h3>Seed</h3>
+
+  <a class=toc_title href="loader.html#loader">loader</a>
+  
+	<ul class=toc_section>
+		<li><a href="loader.html#config">config()</a></li>
+		<li><a href="loader.html#getScript">getScript()</a></li>
+		<li><a href="loader.html#add">add()</a></li>
+		<li><a href="loader.html#use">use()</a></li>
+		<li><a href="loader.html#importStyle">importStyle()</a></li>
+	</ul>
+
+	<a class=toc_title href="path.html">path</a>
+
+	 <ul class=toc_section>
+		<li><a href="path.html#basename">basename()</a></li>
+		<li><a href="path.html#dirname">dirname()</a></li>
+		<li><a href="path.html#extname">extname()</a></li>
+		<li><a href="path.html#join">join()</a></li>
+		<li><a href="path.html#normalize">normalize()</a></li>
+		<li><a href="path.html#relative">relative()</a></li>
+		<li><a href="path.html#resolve">resolve()</a></li>
+	</ul>
+
+	 <a class=toc_title href="uri.html">uri</a>
+
+	 <ul class=toc_section>
+		<li><a href="uri.html#clone">clone()</a></li>
+		<li><a href="uri.html#resolve">resolve()</a></li>
+		<li><a href="uri.html#getScheme">getScheme()</a></li>
+		<li><a href="uri.html#setScheme">setScheme()</a></li>
+		<li><a href="uri.html#getHostname">getHostname()</a></li>
+		<li><a href="uri.html#setHostname">setHostname()</a></li>
+		<li><a href="uri.html#getUserInfo">getUserInfo()</a></li>
+		<li><a href="uri.html#setUserInfo">setUserInfo()</a></li>
+		<li><a href="uri.html#getPort">getPort()</a></li>
+		<li><a href="uri.html#setPort">setPort()</a></li>
+		<li><a href="uri.html#getPath">getPath()</a></li>
+		<li><a href="uri.html#setPath">setPath()</a></li>
+		<li><a href="uri.html#getQuery">getQuery()</a></li>
+		<li><a href="uri.html#setQuery">setQuery()</a></li>
+		<li><a href="uri.html#getFragment">getFragment()</a></li>
+		<li><a href="uri.html#setFragment">setFragment()</a></li>
+		<li><a href="uri.html#isSameOriginAs">isSameOriginAs()</a></li>
+		<li><a href="uri.html#toString">toString()</a></li>
+	</ul>
+
+	 <a class=toc_title href="promise.html">promise</a>
+
+	 <ul class=toc_section>
+		<li><a href="promise.html#then">then()</a></li>
+		<li><a href="promise.html#fail">fail()</a></li>
+		<li><a href="promise.html#fin">fin()</a></li>
+		<li><a href="promise.html#isResolved">isResolved()</a></li>
+		<li><a href="promise.html#isRejected"> isRejected()</a></li>
+		<li><a href="promise.html#when">when() （static）</a></li>
+		<li><a href="promise.html#isPromise">isPromise()（static）</a></li>
+		<li><a href="promise.html#isRejected">isRejected()（static）</a></li>
+		<li><a href="promise.html#all">all()（static）</a></li>
+	</ul>
+
+  <a class=toc_title href="ua.html">ua</a>
+  
+	<ul class=toc_section>
+		<li><a href="ua.html#trident">trident</a></li>
+		<li><a href="ua.html#webkit">webkit</a></li>
+		<li><a href="ua.html#gecko">gecko</a></li>
+		<li><a href="ua.html#presto">presto</a></li>
+		<li><a href="ua.html#chrome">chrome</a></li>
+		<li><a href="ua.html#safari">safari</a></li>
+		<li><a href="ua.html#firefox">firefox</a></li>
+		<li><a href="ua.html#ie">ie</a></li>
+		<li><a href="ua.html#opera>opera</a></li>
+		<li><a href="ua.html#mobile>mobile</a></li>
+		<li><a href="ua.html#core">core</a></li>
+		<li><a href="ua.html#shell">shell</a></li>
+		<li><a href="ua.html#os">os</a></li>
+		<li><a href="ua.html#ipad">ipad</a></li>
+		<li><a href="ua.html#iphone">iphone</a></li>
+		<li><a href="ua.html#ipod">ipod</a></li>
+		<li><a href="ua.html#ios">ios</a></li>
+		<li><a href="ua.html#android">android</a></li>
+	</ul>
+
+
+  <a class=toc_title href="#core">lang</a>
+  
+	<ul class=toc_section>
+		<li><a href="lang.html#augment">augment()</a></li>
+		<li><a href="lang.html#available">available()</a></li>
+		<li><a href="lang.html#bind">bind()</a></li>
+		<li><a href="lang.html#buffer">buffer()</a></li>
+		<li><a href="lang.html#clone">clone()</a></li>
+		<li><a href="lang.html#each">each()</a></li>
+		<li><a href="lang.html#endsWith">endsWith()</a></li>
+		<li><a href="lang.html#error">error()</a></li>
+		<li><a href="lang.html#escapeHTML">escapeHTML()</a></li>
+		<li><a href="lang.html#extend">extend()</a></li>
+		<li><a href="lang.html#filter">filter()</a></li>
+		<li><a href="lang.html#fromUnicode">fromUnicode()</a></li>
+		<li><a href="lang.html#globalEval">globalEval()</a></li>
+		<li><a href="lang.html#guid">guid()</a></li>
+		<li><a href="lang.html#inArray">inArray()</a></li>
+		<li><a href="lang.html#indexOf">indexOf()</a></li>
+		<li><a href="lang.html#isArray">isArray()</a></li>
+		<li><a href="lang.html#isBoolean">isBoolean()</a></li>
+		<li><a href="lang.html#isDate">isDate()</a></li>
+		<li><a href="lang.html#isEmptyObject">isEmptyObject()</a></li>
+		<li><a href="lang.html#isFunction">isFunction()</a></li>
+		<li><a href="lang.html#isNull">isNull()</a></li>
+		<li><a href="lang.html#isNumber">isNumber()</a></li>
+		<li><a href="lang.html#isObject">isObject()</a></li>
+		<li><a href="lang.html#isPlainObject">isPlainObject()</a></li>
+		<li><a href="lang.html#isRegExp">isRegExp()</a></li>
+		<li><a href="lang.html#isString">isString()</a></li>
+		<li><a href="lang.html#isUndefined">isUndefined()</a></li>
+		<li><a href="lang.html#isWindow">isWindow()</a></li>
+		<li><a href="lang.html#keys">keys()</a></li>
+		<li><a href="lang.html#lastIndexOf">lastIndexOf()</a></li>
+		<li><a href="lang.html#later">later()</a></li>
+		<li><a href="lang.html#log">log()</a></li>
+		<li><a href="lang.html#makeArray">makeArray()</a></li>
+		<li><a href="lang.html#map">map()</a></li>
+		<li><a href="lang.html#merge">merge()</a></li>
+		<li><a href="lang.html#mix">mix()</a></li>
+		<li><a href="lang.html#namespace">namespace()</a></li>
+		<li><a href="lang.html#now">now()</a></li>
+		<li><a href="lang.html#param">param()</a></li>
+		<li><a href="lang.html#parseXML">parseXML()</a></li>
+		<li><a href="lang.html#ready">ready()</a></li>
+		<li><a href="lang.html#reduce">reduce()</a></li>
+		<li><a href="lang.html#startsWith">startsWith()</a></li>
+		<li><a href="lang.html#substitute">substitute()</a></li>
+		<li><a href="lang.html#throttle">throttle()</a></li>
+		<li><a href="lang.html#trim">trim()</a></li>
+		<li><a href="lang.html#type">type()</a></li>
+		<li><a href="lang.html#unEscapeHTML">unEscapeHTML()</a></li>
+		<li><a href="lang.html#unique">unique()</a></li>
+		<li><a href="lang.html#unparam">unparam()</a></li>
+		<li><a href="lang.html#version">version()</a></li>
+	</ul>
+
+  <a class=toc_title href="features.html">features</a>
+	<ul class=toc_section>
+		<li><a href="features.html#isDeviceMotionSupported">isDeviceMotionSupported()</a></li>
+		<li><a href="features.html#isMsPointerSupported">isMsPointerSupported()</a></li>
+		<li><a href="features.html#isTouchEventSupported">isTouchEventSupported()</a></li>
+		<li><a href="features.html#isHashChangeSupported">isHashChangeSupported()</a></li>
+		<li><a href="features.html#isTransitionSupported">isTransitionSupported()</a></li>
+		<li><a href="features.html#isTransformSupported">isTransformSupported()</a></li>
+		<li><a href="features.html#isClassListSupported">isClassListSupported()</a></li>
+		<li><a href="features.html#isQuerySelectorSupported">isQuerySelectorSupported()</a></li>
+		<li><a href="features.html#getTransitionPrefix">getTransitionPrefix()</a></li>
+		<li><a href="features.html#getTransformPrefix">getTransformPrefix()</a></li>
+	</ul>
+
+
+  <hr>
+
+<h3>Core</h3>
+
+  <a class=toc_title href="io.html">io（ajax）</a>
+  
+	<ul class=toc_section>
+		<li><a href="io.html#IO ">Ajax</a></li>
+		<li><a href="io.html#IO">IO</a></li>
+		<li><a href="io.html#getResponseHeader">getResponseHeader()</a></li>
+		<li><a href="io.html#getNativeXhr">getNativeXhr</a></li>
+		<li><a href="io.html#abort">abort()</a></li>
+		<li><a href="io.html#then">then()</a></li>
+		<li><a href="io.html#setupConfig">setupConfig()</a></li>
+		<li><a href="io.html#get">get()</a></li>
+		<li><a href="io.html#post">post()</a></li>
+		<li><a href="io.html#getJSON">getJSON()</a></li>
+		<li><a href="io.html#jsonp">jsonp()</a></li>
+		<li><a href="io.html#upload">upload()</a></li>
+		<li><a href="io.html#serialize">serialize()</a></li>
+		<li><a href="io.html#start">start</a></li>
+		<li><a href="io.html#send">send </a></li>
+		<li><a href="io.html#success">success </a></li>
+		<li><a href="io.html#error">error </a></li>
+		<li><a href="io.html#complete">complete </a></li>
+	</ul>
+
+  <a class=toc_title href="#core">anim</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">S.Anim</a></li>
+		<li><a href="#">run()</a></li>
+		<li><a href="#">stop()</a></li>
+		<li><a href="#">pause()</a></li>
+		<li><a href="#">resume()</a></li>
+		<li><a href="#">isRunning()</a></li>
+		<li><a href="#">isPaused()</a></li>
+		<li><a href="#">beforeStart</a></li>
+		<li><a href="#">complete</a></li>
+		<li><a href="#">step</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">base</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">S.Base</a><font color="blue">(Base参元类)</font></li>
+	</ul>
+
+  <a class=toc_title href="#core">cookie</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">get()</a></li>
+		<li><a href="#">set()</a></li>
+		<li><a href="#">remove()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">dom</a>
+  
+	<ul class=toc_section>
+		<li><a href="selector.html">selector()</a></li>
+		<li><a href="query.html">query()</a></li>
+		<li><a href="get.html">get()</a></li>
+		<li><a href="filter.html">filter()</a></li>
+		<li><a href="test.html">test()</a></li>
+		<li><a href="clone.html">clone()</a></li>
+		<li><a href="hasClass.html">hasClass()</a></li>
+		<li><a href="addClass.html">addClass()</a></li>
+		<li><a href="removeClass.html">removeClass()</a></li>
+		<li><a href="replaceClass.html">replaceClass()</a></li>
+		<li><a href="toggleClass.html">toggleClass()</a></li>
+		<li><a href="removeAttr.html">removeAttr()</a></li>
+		<li><a href="attr.html">attr()</a></li>
+		<li><a href="hasAttr.html">hasAttr()</a></li>
+		<li><a href="prop.html">prop()</a></li>
+		<li><a href="hasProp.html">hasProp()</a></li>
+		<li><a href="val.html">val()</a></li>
+		<li><a href="text.html">text()</a></li>
+		<li><a href="css.html">css()</a></li>
+		<li><a href="style.html">style()</a></li>
+		<li><a href="width.html">width()</a></li>
+		<li><a href="height.html">height()</a></li>
+		<li><a href="innerWidth.html">innerWidth()</a></li>
+		<li><a href="innerHeight.html">innerHeight()</a></li>
+		<li><a href="outerWidth.html">outerWidth()</a></li>
+		<li><a href="outerHeight.html">outerHeight()</a></li>
+		<li><a href="addStyleSheet.html">addStyleSheet()</a></li>
+		<li><a href="show.html">show()</a></li>
+		<li><a href="hide.html">hide()</a></li>
+		<li><a href="toggle.html">toggle()</a></li>
+		<li><a href="offset.html">offset()</a></li>
+		<li><a href="scrollTop.html">scrollTop()</a></li>
+		<li><a href="scrollLeft.html">scrollLeft()</a></li>
+		<li><a href="docHeight.html">docHeight()</a></li>
+		<li><a href="docWidth.html">docWidth()</a></li>
+		<li><a href="viewportHeight.html">viewportHeight()</a></li>
+		<li><a href="viewportWidth.html">viewportWidth()</a></li>
+		<li><a href="scrollIntoView.html">scrollIntoView()</a></li>
+		<li><a href="dom-index.html">index()</a></li>
+		<li><a href="parent.html">parent()</a></li>
+		<li><a href="next.html">next()</a></li>
+		<li><a href="prev.html">prev()</a></li>
+		<li><a href="first.html">first()</a></li>
+		<li><a href="last.html">last()</a></li>
+		<li><a href="siblings.html">siblings()</a></li>
+		<li><a href="children.html">children()</a></li>
+		<li><a href="contains.html">contains()</a></li>
+		<li><a href="create.html">create()</a></li>
+		<li><a href="html.html">html()</a></li>
+		<li><a href="remove.html">remove()</a></li>
+		<li><a href="empty.html">empty()</a></li>
+		<li><a href="insertBefore.html">insertBefore()</a></li>
+		<li><a href="insertAfter.html">insertAfter()</a></li>
+		<li><a href="append.html">append()</a></li>
+		<li><a href="prepend.html">prepend()</a></li>
+		<li><a href="replaceWith.html">replaceWith()</a></li>
+		<li><a href="data.html">data()</a></li>
+		<li><a href="removeData.html">removeData()</a></li>
+		<li><a href="hasData.html">hasData()</a></li>
+		<li><a href="unselectable.html">unselectable()</a></li>
+		<li><a href="contents.html">contents()</a></li>
+		<li><a href="wrap.html">wrap()</a></li>
+		<li><a href="wrapAll.html">wrapAll()</a></li>
+		<li><a href="unwrap.html">unwrap()</a></li>
+		<li><a href="wrapInner.html">wrapInner()</a></li>
+		<li><a href="nodeName.html">nodeName()</a></li>
+		<li><a href="outerHTML.html">outerHTML()</a></li>
+
+	</ul>
+
+
+  <a class=toc_title href="#core">event</a>
+  
+	<ul class=toc_section>
+		<li><a href="#"><b>EventTarget</b></a><font color="blue">(事件参元类)</font></li>
+		<li><a href="#"><b>EventObject</b></a><font color="blue">(事件门面对象)</font></li>
+		<li><a href="#">on()</a></li>
+		<li><a href="#">delegate()</a></li>
+		<li><a href="#">detach()</a></li>
+		<li><a href="#">undelegate()</a></li>
+		<li><a href="#">fire()</a></li>
+		<li><a href="#">fireHandler()</a></li>
+	</ul>
+
+
+  <a class=toc_title href="#core">json</a>
+  
+	<ul class=toc_section>
+		<li><a href="#">parse()</a></li>
+		<li><a href="#">stringify()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">node</a>
+  
+	<ul class=toc_section>
+		<li><a href="instance_all.html">all()</a></li>
+		<li><a href="instance_one.html">one()</a></li>
+		<li><a href="getDOMNodes.html">getDOMNodes()</a></li>
+		<li><a href="getDOMNode.html">getDOMNode()</a></li>
+		<li><a href="end.html">end()</a></li>
+		<li><a href="equals.html">equals()</a></li>
+		<li><a href="add.html">add()</a></li>
+		<li><a href="item.html">item()</a></li>
+		<li><a href="slice.html">slice()</a></li>
+		<li><a href="scrollTop.html">scrollTop()</a></li>
+		<li><a href="scrollLeft.html">scrollLeft()</a></li>
+		<li><a href="height.html">height()</a></li>
+		<li><a href="width.html">width()</a></li>
+		<li><a href="addStyleSheet.html">addStyleSheet()</a></li>
+		<li><a href="append.html">append()</a></li>
+		<li><a href="appendTo.html">appendTo()</a></li>
+		<li><a href="prepend.html">prepend()</a></li>
+		<li><a href="prependTo.html">prependTo()</a></li>
+		<li><a href="insertBefore.html">insertBefore()</a></li>
+		<li><a href="before.html">before()</a></li>
+		<li><a href="after.html">after()</a></li>
+		<li><a href="insertAfter.html">insertAfter()</a></li>
+		<li><a href="animate.html">animate()</a></li>
+		<li><a href="stop.html">stop()</a></li>
+		<li><a href="pause.html">pause()</a></li>
+		<li><a href="resume.html">resume()</a></li>
+		<li><a href="isRunning.html">isRunning()</a></li>
+		<li><a href="isPaused.html">isPaused()</a></li>
+		<li><a href="show.html">show()</a></li>
+		<li><a href="hide.html">hide()</a></li>
+		<li><a href="toggle.html">toggle()</a></li>
+		<li><a href="fadeIn.html">fadeIn()</a></li>
+		<li><a href="fadeOut.html">fadeOut()</a></li>
+		<li><a href="fadeToggle.html">fadeToggle()</a></li>
+		<li><a href="slideDown.html">slideDown()</a></li>
+		<li><a href="slideUp.html">slideUp()</a></li>
+		<li><a href="slideToggle.html">slideToggle()</a></li>
+		<li><a href="">继承自dom/event的方法</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">uri</a>
+
+	<ul class=toc_section>
+		<li><a href="#">S.Uri</a></li>
+		<li><a href="#">every()</a></li>
+		<li><a href="#">some()</a></li>
+		<li><a href="#">stamp()</a></li>
+		<li><a href="#">clone()</a></li>
+		<li><a href="#">resolve()</a></li>
+		<li><a href="#">getScheme()</a></li>
+		<li><a href="#">setScheme()</a></li>
+		<li><a href="#">getHostname()</a></li>
+		<li><a href="#">setHostname()</a></li>
+		<li><a href="#">getUserInfo()</a></li>
+		<li><a href="#">setUserInfo()</a></li>
+		<li><a href="#">setPort()</a></li>
+		<li><a href="#">getPort()</a></li>
+		<li><a href="#">setPath()</a></li>
+		<li><a href="#">getPath()</a></li>
+		<li><a href="#">setQuery()</a></li>
+		<li><a href="#">getQuery()</a></li>
+		<li><a href="#">getFragment()</a></li>
+		<li><a href="#">setFragment()</a></li>
+		<li><a href="#">isSameOriginAs()</a></li>
+		<li><a href="#">toString()</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">promise</a>
+	<ul class=toc_section>
+		<li><a href="#">S.Promise</a><font color=blue>(内部调用)</font></li>
+		<li><a href="#">S.Defer</a><font color=blue>(内部调用)</font></li>
+	</ul>
+
+  <a class=toc_title href="#core">path</a> 
+	<ul class=toc_section>
+		<li><a href="">basename()</a></li>
+		<li><a href="">dirname()</a></li>
+		<li><a href="">extname()</a></li>
+		<li><a href="">join()</a></li>
+		<li><a href="">normalize()</a></li>
+		<li><a href="">relative()</a></li>
+		<li><a href="">resolve()</a></li>
+	</ul>
+
+<hr />
+
+<h3>Mobile 支持</h3>
+
+  <a class=toc_title href="#core">Mobile Events</a>
+	<ul class=toc_section>
+		<li><a href="#">Touch Events</a></li>
+	</ul>
+
+  <a class=toc_title href="#core">UA 探测</a>
+	<ul class=toc_section>
+		<li><a href="#">Mobile UA</a></li>
+	</ul>
+
+</aside>
+
+<div class="container">
+	<h1>path</h1>
+<blockquote>
+<p>当前浏览器地址的有关信息</p>
+</blockquote>
+<p>可以直接通过KISSY.Promise调用：</p>
+<pre><code>KISSY.Path.do_sth();</code></pre>
+<p>也可以通过沙箱来调用</p>
+<pre><code>KISSY.use(&#39;path&#39;,function(S,Path){
+    Path.do_sth();// 执行操作
+});</code></pre>
+<h3>basename()  <code>&lt;static&gt;</code></h3>
+<p><code>basename(path,ext) =&gt; String</code></p>
+<p>获取域名中的文件名</p>
+<h4>parameter</h4>
+<ul>
+<li>path：String，路径字符串</li>
+<li>ext：String，需要过滤的扩展名，比如<code>.html</code></li>
+</ul>
+<h4>return</h4>
+<p>返回文件名</p>
+<h4>example</h4>
+<pre><code>Path.basename(&#39;http://www.taobao.com/index.html&#39;,&#39;.html&#39;);//=&gt; index</code></pre>
+<h3>dirname()  <code>&lt;static&gt;</code></h3>
+<p><code>dirname(path) =&gt; String</code></p>
+<p>返回path所指的文件所在的目录路径</p>
+<h4>parameter</h4>
+<p>path（String），Path全称</p>
+<h4>example</h4>
+<pre><code>Path.dirname(&#39;/home/bachi/daily/index.html&#39;);//=&gt;/home/bachi/daily</code></pre>
+<h3>extname()  <code>&lt;static&gt;</code></h3>
+<p><code>extname(path) =&gt; String</code></p>
+<p>获取路径所指文件的扩展名，比如<code>.html</code></p>
+<h4>example</h4>
+<pre><code>Path.extname(&#39;/home/bachi/daily/index.html&#39;);//=&gt; .html</code></pre>
+<h3>join()  <code>&lt;static&gt;</code></h3>
+<p><code>join(p1,p2,...) =&gt; String</code></p>
+<p>以此拼接p1、p2...,遇到<code>../</code>时回退一级目录</p>
+<h4>example</h4>
+<pre><code>// ../../ 表示回退两级目录
+Path.join(&#39;/home/bachi/daily/&#39;,&#39;project&#39;,&#39;../../&#39;,&#39;index.html&#39;);//=&gt; /home/bachi/index.html</code></pre>
+<h3>normalize()  <code>&lt;static&gt;</code></h3>
+<p><code>normalize(path) =&gt; String</code></p>
+<p>将path中的无关内容清理掉，返回直接的路径信息</p>
+<h4>example</h4>
+<pre><code>Path.normalize(&#39;x/y/../z&#39;); // =&gt; x/z/
+Path.normalize(&#39;x/y/z/../&#39;); // =&gt; x/y/</code></pre>
+<h3>relative()  <code>&lt;static&gt;</code></h3>
+<p><code>relative(from,to) =&gt; String</code></p>
+<p>计算相对路径</p>
+<h4>example</h4>
+<pre><code>Path.relative(&#39;x/&#39;,&#39;x/y/z&#39;); // =&gt; &#39;y/z&#39;
+Path.relative(&#39;x/t/z&#39;,&#39;x/&#39;); // =&gt; &#39;../../&#39;</code></pre>
+<h3>resolve()  <code>&lt;static&gt;</code></h3>
+<p><code>resolve([from ...], to) =&gt; String</code></p>
+<p>得到绝对地址，算法逻辑参照NodeJS <a href="http://nodejs.org/api/path.html#path_path_resolve_from_to">Path.resolve</a>。</p>
+<h4>example</h4>
+<pre><code>KISSY.Path.resolve(&#39;wwwroot&#39;, &#39;static_files/png/&#39;, &#39;../gif/image.gif&#39;)
+// =&gt; &#39;wwwroot/static_files/gif/image.gif&#39;
+
+KISSY.Path.resolve(&#39;/foo/bar&#39;, &#39;/tmp/file/&#39;)
+// =&gt;    &#39;/tmp/file&#39;</code></pre>
+
+</div>
+
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+			
+			
+		});
+	})();
+
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			str = str.match(/\w+/)[0];
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+
+</body>
+</html>
+
