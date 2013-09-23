@@ -62,67 +62,44 @@
     <article>
       
 
-	<h1>KISSY 教程大纲</h1>
-<hr>
+	<h1>resizable</h1>
+<p>缩放功能插件，<a href="http://docs.kissyui.com/source/raw/demo/resizable/demo1.html">Demo</a></p>
+<p>调用：</p>
+<pre><code>KISSY.use(&#39;resizable&#39;,function(S,Resizable){
+    // use Resizable
+});</code></pre>
+<p>初始化示例：</p>
+<pre><code>var r = new Resizable({
+    node:&quot;#something-can-resize&quot;,
+    // 指定可拖动的位置
+    handlers:[&quot;b&quot;,&quot;t&quot;,&quot;r&quot;,&quot;l&quot;,&quot;tr&quot;,&quot;tl&quot;,&quot;br&quot;,&quot;bl&quot;],
+
+    // 可选, 设置最小/最大 宽高
+    minHeight:50,
+    minWidth:50,
+    maxHeight:445,
+    maxWidth:700
+});</code></pre>
+<h2>API</h2>
+<h3>配置参数</h3>
 <ul>
-<li>快速上手<ul>
-<li><a href="why-kissy.html">Why KISSY?</a></li>
-<li><a href="simple-useage.html">Hello World!</a></li>
-<li><a href="startup.html">快速使用手册</a></li>
-<li><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
-<li><a href="kmd.html">KISSY 模块定义规范</a></li>
+<li>node:被缩放的节点</li>
+<li>minWidth：默认为0, 表示拖动缩放的最小宽度.</li>
+<li>minHeight：默认为0, 表示拖动缩放的最小高度.</li>
+<li>maxWidth：默认为 Number.MAX_VALUE, 表示拖动缩放的最大宽度.</li>
+<li>maxHeight：默认为 Number.MAX_VALUE, 表示拖动缩放的最大高度.</li>
+<li>handlers：数组，默认为 [], 表示可拖动元素的哪些位置来进行缩放.可取下列值: “b”,”t”,”r”,”l”,”tr”,”tl”,”br”,”bl”． 其中, t,b,l,r 分别表示 top,bottom,left,right, 加上组合共八种取值, 可在上, 下, 左, 右以及左上, 左下, 右上, 右下进行拖动.</li>
 </ul>
-</li>
-<li>KISSY 进阶指南<ul>
-<li><a href="module-map.html">KISSY 核心模块列表</a></li>
-<li><a href="oo.html">KISSY 中的面向对象</a></li>
-<li><a href="seed.html">Seed &amp; 模块化机制</a> <ul>
-<li><a href="uri.html">Uri</a></li>
-<li><a href="features.html">Features</a></li>
-<li><a href="promise.html">Promise</a></li>
-<li><a href="path.html">Path</a></li>
-<li><a href="lang.html">Lang</a></li>
-<li><a href="loader.html">Loader</a></li>
-<li><a href="ua.html">UA</a></li>
+<h3>实例方法</h3>
+<ul>
+<li>destroy() 销毁实例</li>
 </ul>
-</li>
-<li><a href="node.html">Node</a></li>
-<li><a href="event.html">Event</a></li>
-<li><a href="io.html">IO（Ajax）</a></li>
-<li><a href="anim.html">Anim</a></li>
-<li><a href="base.html">Base</a>，包括Attr、自定义事件、插件机制</li>
-<li><a href="xtemplate.html">xtemplate</a></li>
-<li><a href="resizable.html">resizable</a></li>
-<li><a href="http://docs.kissyui.com/docs/html/api/component/editor/editor.html">editor</a></li>
-<li><a href="mobile.html">Mobile 开发最佳实践</a></li>
-<li><a href="nodejs-kissy.html">在 Node 环境中运行 kissy</a></li>
+<h3>实例提供的事件</h3>
+<ul>
+<li>resizeStart：开始拖放后触发</li>
+<li>resize：拖放中触发</li>
+<li>resizeEnd：拖放结束后触发</li>
 </ul>
-</li>
-<li><a href="tools.html">项目构建工具</a><ul>
-<li><a href="kmc.html">KISSY 模块依赖抽取工具 KMC（Kissy Module Complier）</a></li>
-<li><a href="http://abc.f2e.taobao.net/">ABC</a></li>
-<li><a href="clam.html">Clam</a></li>
-</ul>
-</li>
-<li><a href="http://gallery.kissyui.com/guide">KISSY 组件开发</a><ul>
-<li><a href="http://gallery.kissyui.com/quickstart">Generator-kissy-gallery 工具</a></li>
-</ul>
-</li>
-<li><a href="third-party-lib.html">第三方代码库</a></li>
-<li><a href="https://github.com/lorrylockie/tpap/wiki">面向第三方安全的 KISSY</a>，组件开发者必读</li>
-<li><a href="gbs.html">KISSY 浏览器兼容基准（GBS）</a></li>
-<li><a href="history.html">历史版本</a></li>
-<li>KISSY 核心代码规范<ul>
-<li><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS 编码规范</a></li>
-<li><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
-</ul>
-</li>
-<li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">如何为 KISSY Core 贡献代码</a></li>
-<li><a href="xx">1.3.x -&gt; 1.4.0 升级指南</a></li>
-<li><a href="faq.html">FAQ</a></li>
-<li><a href="core-team.html">KISSY 核心小组</a></li>
-</ul>
-<hr>
 
 
       
