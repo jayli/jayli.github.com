@@ -63,72 +63,42 @@
     <article>
       
 
-	<p><style>
-h3 {
-    color:blue;
-}
-</style></p>
-<h1>path</h1>
+	<h1>1.3.x <code>=&gt;</code> 1.4.x 升级指南</h1>
+<h2>升级必读</h2>
+<h3>种子引用路径</h3>
+<p>1.4.x 的引用地址域名由之前的<code>a.tbcdn.cn</code>改为<code>g.tbcdn.cn</code>：</p>
+<pre><code>http://g.tbcdn.cn/kissy/k/1.4.0/seed-min.js</code></pre>
 <blockquote>
-<p>当前浏览器地址的有关信息</p>
+<p>注意：<code>http://g.tbcdn.cn/</code>对应到<code>http://a.tbcdn.cn/g/</code>下的文件，比如，<code>http://g.tbcdn.cn/abc.js</code>和<code>http://a.tbcdn.cn/g/abc.js</code>实际是一个文件。</p>
 </blockquote>
-<p>可以直接通过KISSY.Path调用：</p>
-<pre><code>KISSY.Path.do_sth();</code></pre>
-<p>也可以通过沙箱来调用</p>
-<pre><code>KISSY.use(&#39;path&#39;,function(S,Path){
-    Path.do_sth();// 执行操作
-});</code></pre>
-<h3>basename()  <code>&lt;static&gt;</code></h3>
-<p><code>basename(path,ext) =&gt; String</code></p>
-<p>获取域名中的文件名</p>
-<h4>parameter</h4>
+<h3>1.4.x 将不再提供<code>kissy.js</code></h3>
+<p>为了增强 KISSY 的模块架构和减轻体积，1.4.0 之后将不再提供粗粒度的<code>kissy.js</code>，因此<code>http://g.tbcdn.cn/kissy/k/1.4.0/kissy.js</code>不存在。KISSY 将只提供一种引用方式，即<code>seed.js</code>。</p>
+<p>即，使用 1.4.x 的功能必须首先<code>use(&#39;mod-name&#39;)</code>再使用，注意之前比较滥用的<code>KISSY.ready()</code>，在 1.4.x 中不建议使用。使用模块请参照 <a href="module-map.html">1.4.x 模块列表</a>。</p>
+<h3>模块名称变更</h3>
 <ul>
-<li>path：String，路径字符串</li>
-<li>ext：String，需要过滤的扩展名，比如<code>.html</code></li>
+<li>ajax 变更为 io</li>
 </ul>
-<h4>return</h4>
-<p>返回文件名</p>
-<h4>example</h4>
-<pre><code>Path.basename(&#39;http://www.taobao.com/index.html&#39;,&#39;.html&#39;);//=&gt; index</code></pre>
-<h3>dirname()  <code>&lt;static&gt;</code></h3>
-<p><code>dirname(path) =&gt; String</code></p>
-<p>返回path所指的文件所在的目录路径</p>
-<h4>parameter</h4>
-<p>path（String），Path全称</p>
-<h4>example</h4>
-<pre><code>Path.dirname(&#39;/home/bachi/daily/index.html&#39;);//=&gt;/home/bachi/daily</code></pre>
-<h3>extname()  <code>&lt;static&gt;</code></h3>
-<p><code>extname(path) =&gt; String</code></p>
-<p>获取路径所指文件的扩展名，比如<code>.html</code></p>
-<h4>example</h4>
-<pre><code>Path.extname(&#39;/home/bachi/daily/index.html&#39;);//=&gt; .html</code></pre>
-<h3>join()  <code>&lt;static&gt;</code></h3>
-<p><code>join(p1,p2,...) =&gt; String</code></p>
-<p>以此拼接p1、p2...,遇到<code>../</code>时回退一级目录</p>
-<h4>example</h4>
-<pre><code>// ../../ 表示回退两级目录
-Path.join(&#39;/home/bachi/daily/&#39;,&#39;project&#39;,&#39;../../&#39;,&#39;index.html&#39;);//=&gt; /home/bachi/index.html</code></pre>
-<h3>normalize()  <code>&lt;static&gt;</code></h3>
-<p><code>normalize(path) =&gt; String</code></p>
-<p>将path中的无关内容清理掉，返回直接的路径信息</p>
-<h4>example</h4>
-<pre><code>Path.normalize(&#39;x/y/../z&#39;); // =&gt; x/z/
-Path.normalize(&#39;x/y/z/../&#39;); // =&gt; x/y/</code></pre>
-<h3>relative()  <code>&lt;static&gt;</code></h3>
-<p><code>relative(from,to) =&gt; String</code></p>
-<p>计算相对路径</p>
-<h4>example</h4>
-<pre><code>Path.relative(&#39;x/&#39;,&#39;x/y/z&#39;); // =&gt; &#39;y/z&#39;
-Path.relative(&#39;x/t/z&#39;,&#39;x/&#39;); // =&gt; &#39;../../&#39;</code></pre>
-<h3>resolve()  <code>&lt;static&gt;</code></h3>
-<p><code>resolve([from ...], to) =&gt; String</code></p>
-<p>得到绝对地址，算法逻辑参照NodeJS <a href="http://nodejs.org/api/path.html#path_path_resolve_from_to">Path.resolve</a>。</p>
-<h4>example</h4>
-<pre><code>KISSY.Path.resolve(&#39;wwwroot&#39;, &#39;static_files/png/&#39;, &#39;../gif/image.gif&#39;)
-// =&gt; &#39;wwwroot/static_files/gif/image.gif&#39;
-
-KISSY.Path.resolve(&#39;/foo/bar&#39;, &#39;/tmp/file/&#39;)
-// =&gt;    &#39;/tmp/file&#39;</code></pre>
+<hr>
+<h2>1.4.0 Changelog</h2>
+<ol>
+<li>loader 在 <a href="https://github.com/kissyteam/kissy/issues/269">1.3.1</a> 支持跨包 combo, error 回调，超时回调，importStyle 后，1.4 更添加了<a href="https://github.com/kissyteam/kissy/issues/429">全球化支持</a>.</li>
+<li>anim 支持使用 <a href="https://github.com/kissyteam/kissy/issues/285">transition</a> 动画，并且对 <a href="https://github.com/kissyteam/kissy/issues/402">transform</a> 做了兼容处理</li>
+<li><a href="https://github.com/kissyteam/kissy/issues/282">dom</a> 支持 classList , 自主实现兼容 css3 的选择器引擎，并针对常用的选择器做<a href="https://github.com/kissyteam/kissy/pull/406">特殊优化</a>，通过透明的按需加载来实现全平台 css3 选择器兼容</li>
+<li><a href="https://github.com/kissyteam/kissy/issues/363">touch 手势</a> 对于 win8 的支持</li>
+<li>Base 与 RichBase 合并，并支持 <a href="https://github.com/kissyteam/kissy/issues/447">callSuper</a> 调用，形成完善的 KISSY 类系统。</li>
+<li><a href="https://github.com/kissyteam/kissy/issues/164">date</a> 系列工具类实现，并支持 en/zh 两种语言以及序列化和 parse 功能。</li>
+<li>在 date 以及 KISSY 组件架构的基础上实现 <a href="https://github.com/kissyteam/kissy/issues/162">date/picker</a></li>
+<li>在 KISSY 组件架构的基础上实现 <a href="https://github.com/kissyteam/kissy/issues/222">scroll-view</a>，可模拟触屏以及普通滚动条</li>
+<li>xtemplate 进行了一系列功能增强，例如 <a href="https://github.com/kissyteam/kissy/issues/449">宏的支持</a>，<a href="https://github.com/kissyteam/kissy/issues/431">根作用域的支持</a>，<a href="https://github.com/kissyteam/kissy/issues/389">模块加载的支持</a></li>
+<li>tabs 支持<a href="https://github.com/kissyteam/kissy/issues/335">懒渲染</a></li>
+<li>resizable 支持<a href="https://github.com/kissyteam/kissy/issues/223">代理拖放</a></li>
+<li><a href="https://github.com/kissyteam/kissy/issues/325">getScript ie9 bug fix</a></li>
+<li><a href="https://github.com/kissyteam/kissy/issues/350">placeholder ie67 兼容</a></li>
+<li><a href="https://github.com/kissyteam/kissy/issues/351">getScript ie6 bug fix</a></li>
+<li><a href="https://github.com/kissyteam/kissy/issues/357">editor bug fix</a></li>
+<li><a href="https://github.com/kissyteam/kissy/issues/269">param bug fix</a></li>
+<li><a href="https://github.com/kissyteam/kissy/commit/4f731d1bd2e9cc83ce89fe69b62addd8128c80a7#src/dom/sub-modules/base/src/base/selector.js">css Selector性能优化</a> 面向Mobile设备的选择器性能提速</li>
+</ol>
 
 
       
