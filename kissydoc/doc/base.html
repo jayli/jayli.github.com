@@ -65,7 +65,7 @@
 
 	<h1>Base</h1>
 <p>阅读之前先通读<a href="oo.html">KISSY 中的面向对象</a>。</p>
-<p>有了 S.augment，我们可以很方便得扩展类的原型；有了 S.extend，我们可以很方便地继承；那么 KISSY 对属性 getter、setter 的实现，是基于Base完成的。</p>
+<p>有了 augment，我们可以很方便得扩展类的原型；有了 extend，我们可以很方便地继承；那么 KISSY 对属性 getter、setter 的实现，是基于Base完成的。</p>
 <p>顾名思义，Base 是个基础类；他包含除了getter和setter之外，还包含自定义事件和插件机制。因此Base包括：</p>
 <ol>
 <li><code>getter</code>和<code>setter</code>方法实现：Attribute</li>
@@ -161,7 +161,7 @@ dog.set(&#39;name&#39;,2);</code></pre>
 })</code></pre>
 <p>如何让一个已有的类获得Attr特性？</p>
 <pre><code>// Dog 是一个已有的类
-S.extend(Dog, Base, {
+Base.extend(Dog, Base, {
     bark: function() {
         this.fire(&#39;bark&#39;, {
             message: &#39;Woof! I just barked!&#39;
@@ -177,7 +177,7 @@ dog.on(&#39;bark&#39;, function(e) {
 });</code></pre>
 <p>如果Dog没有被定义过，我想直接定义一个类，这样做（是上一段代码的另一种写法）：</p>
 <pre><code>// 直接定义一个类 Dog 
-var Dog = S.Base.extend({
+var Dog = Base.extend({
     initializer:function(){
         var self = this;
     },
@@ -253,6 +253,27 @@ dog.unplug(&#39;myname&#39;);// 通过插件id来卸载插件</code></pre>
 <p>插件是一种注入代码的方法，利用好插件特性，可以让你的代码架构更加清晰，比如editor就大量使用了插件机制。</p>
 
 
+<div id="disqus_thread"></div>
+<script>
+    if((window.location.hostname.indexOf("kissyui.com")!=-1 )&& window.localStorage.getItem("kissy-commment")!="0"){
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kissy-docs'; // required: replace example with your forum shortname
+
+    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+     //var disqus_identifier = '/anim';
+     //var disqus_url = window.location;
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    }
+</script>
+
+
+
       
   <style>
 	.github-btn {
@@ -273,6 +294,10 @@ dog.unplug(&#39;myname&#39;);// 通过插件id来卸载插件</code></pre>
 	}
   </style>
   <footer>
+
+
+
+
 	<div class="text-center">
 		©2013 - 2033 KISSY UI LIBRARY
 		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
