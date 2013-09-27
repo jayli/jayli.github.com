@@ -25,7 +25,8 @@
 			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
 			<!--img src="templates/assets/img/logo_6.png"-->
 			<!--img src="http://gtms04.alicdn.com/tps/i4/T14oa2FcNcXXaOySEh-180-104.png" alt="" /-->
-			<img src="http://gtms01.alicdn.com/tps/i1/T1Amq1FaXgXXbXVSUh-180-127.png" alt="" />
+			<!--img src="http://gtms01.alicdn.com/tps/i1/T1Amq1FaXgXXbXVSUh-180-127.png" alt="" /-->
+			<img src="http://gtms02.alicdn.com/tps/i2/T1N0jTXXXjXXay7Rri-175-78.png" alt="" />
 		</a>
 	</header>
     <ul>
@@ -82,6 +83,48 @@ KISSY.use(&#39;node&#39;);</code></pre>
 <blockquote>
 <p>最佳实践：在对选择器查找性能要求苛刻的场景中，使用 KISSY DOM 代替 Zepto。</p>
 </blockquote>
+<p>如果你对选择器有更极致的性能邀请，参考这些最佳实践：</p>
+<h3>简单选择器</h3>
+<p>你的选择器只是简单选择器，建议你这样写</p>
+<pre><code>// 速度很快
+S.one( &quot;#container&quot; ).one( &quot;div.robotarm&quot; );
+
+// 速度更快
+S.one( &quot;#container div.robotarm&quot; );</code></pre>
+<p>第二行代码执行速度更快，因为选择器被解析为两个Token，对于每个Token，KISSY都会调用最快的方法，而对于简单选择器，尽可能用一个方法包括，由KISSY自身按需调用最快的方法去查找每个Token。<a href="http://jsperf.com/kissy-vs-zepto-id/8">测试代码</a>。</p>
+<p>简单选择器只包含ID，ClassName，Tag和他们的组合。</p>
+<h3>循环的优化</h3>
+<p>如果循环中有多级选择器，建议这样写：</p>
+<pre><code>// 速度一般
+for(var i = 0 ; i &lt; length; i++){
+    S.one(&#39;#a&#39;).one(&#39;.b&#39;);
+}
+
+// 速度更快
+var el = S.one(&#39;#a&#39;);
+for(var i = 0 ; i &lt; length; i++){
+    el.one(&#39;.b&#39;);
+}</code></pre>
+<h3>尽可能避免 <code>tag.cls</code> ，直接使用<code>.cls</code></h3>
+<p>由于<code>.cls</code>查询在高级浏览器中会直接调用<code>getElementsByClassName</code>，此方法性能仅次于<code>getElementById</code>，而<code>tag.cls</code>会调用<code>querySelector</code>，性能更差。</p>
+<pre><code>// 不要这样做
+S.one( &quot;div.data .gonzalez&quot; );
+
+// 这样性能更优
+S.one( &quot;.data td.gonzalez&quot; );</code></pre>
+<h3>删除累赘选择器</h3>
+<pre><code>S.one( &quot;.data table.attendees td.gonzalez&quot; );
+
+// 性能更好: 把中间的选择器去掉，保持选择器的直达和简单
+S.one( &quot;.data td.gonzalez&quot; );</code></pre>
+<p>选择器多，意味着查询次数多，应当尽可能的避免。</p>
+<h3>避免全局选择器</h3>
+<p>尽可能的避免使用模糊查询和全遍历，使用更精确的选择器查询：</p>
+<pre><code>S.one( &quot;.buttons &gt; *&quot; ); // 非常耗性能
+S.one( &quot;.buttons&quot; ).children(); // 性能好一些
+S.one( &quot;.category :radio&quot; ); // 避免这样用
+S.one( &quot;.category *:radio&quot; ); // 同上，也要避免
+S.one( &quot;.category input:radio&quot; ); // 这种写法更好</code></pre>
 <h2>触屏事件</h2>
 <p><a href="event.html">KISSY Event</a> 包含对触屏事件的封装，这样载入<code>event</code>模块：</p>
 <pre><code>// 在触屏设备中运行
