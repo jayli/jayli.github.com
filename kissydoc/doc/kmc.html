@@ -64,101 +64,159 @@
     <article>
       
 
-	<h1>ModuleCompiler</h1>
-<p><a href="http://travis-ci.org/daxingplay/ModuleCompiler"><img src="https://secure.travis-ci.org/daxingplay/ModuleCompiler.png" alt="Build Status"></a></p>
-<p><a href="http://badge.fury.io/js/kmc"><img src="https://badge.fury.io/js/kmc.png" alt="NPM version"></a></p>
-<h2>简介</h2>
-<p>KISSY Module Compiler（kmc）是一个基于NodeJS的KISSY模块打包工具，目前适用于KISSY 1.2+的代码打包</p>
-<h2>特点</h2>
-<ul>
-<li>支持GruntJS，参见<a href="https://github.com/daxingplay/grunt-kmc">grunt-kmc</a>.</li>
-<li>基于NodeJS，相比于KISSY自带的Java工具，打包快速</li>
-<li>参照浏览器端的KISSY的config进行配置，无需额外知识，只需要改一下包路径即能快速打包</li>
-<li>支持混合编码打包，不同的包可以使用不同的编码</li>
-<li>支持GBK输出</li>
-<li>支持KISSY 1.3的自动combo功能，可以生成依赖关系文件</li>
-<li>提供底层依赖分析接口，方便集成到其他工具当中</li>
-<li>支持map功能，可以使用正则自由替换输出的模块名</li>
-</ul>
-<h2>版本说明</h2>
-<ul>
-<li>0.0.7版本适用于KISSY 1.2、1.3的打包，目前已经在淘宝多个业务广泛使用，单纯打包没有任何问题，但是不具备依赖分析生成功能，此版本已经不再维护，推荐使用新版本。</li>
-<li>1.0.0版本开始支持KISSY 1.3的自动combo功能，推荐使用</li>
-</ul>
-<h2>使用</h2>
-<h3>安装</h3>
-<pre><code>npm install kmc</code></pre>
-<p>or</p>
-<pre><code>git clone git://github.com/daxingplay/ModuleCompiler.git</code></pre>
-<p><strong>注意</strong>: 新版本的KISSY Module Compiler的npm包已经更名为kmc，如果使用老版本（此版已经不再维护），请<code>npm install module-compiler</code></p>
-<h3>编写你的打包脚本</h3>
-<pre><code>var kmc = require(&#39;kmc&#39;);
+	<h1>Kissy Module Compiler（Grunt-KMC）</h1>
+<p>Grunt-kmc 依赖 kmc，<a href="https://github.com/daxingplay/ModuleCompiler/">kmc 使用指南</a>。</p>
+<p>环境依赖：Node，Grunt。</p>
+<h2>环境准备</h2>
+<p>Grunt-kmc 依赖 Grunt <code>~0.4.1</code>。如果你未曾安装grunt，<a href="http://gruntjs.com/getting-started">参照这里安装Grunt</a>，<a href="http://gruntjs.com/sample-gruntfile">学习如何写Gruntfile</a>。熟悉以上内容后，可以这样来安装grunt-kmc插件：</p>
+<pre><code>npm install grunt-kmc --save-dev</code></pre>
+<p>打开你创建的Gruntfile，并添加代码：</p>
+<pre><code>grunt.loadNpmTasks(&#39;grunt-kmc&#39;);</code></pre>
+<h2><code>KMC</code>任务配置</h2>
+<p>在项目的Gruntfile文件中，在<code>grunt.initConfig()</code>函数参数的JSON对象中，添加一段名为<code>kmc</code>的段落。</p>
+<pre><code>grunt.initConfig({
+    kmc: {
+        options: {
+            // 任务配置项，更多配置项请参照这里：
+            // https://github.com/daxingplay/ModuleCompiler
+        },
+        your_target: {
+            // 目标任务，定义文件筛选规则
+        }
+    }
+})</code></pre>
+<h2>配置项</h2>
+<h3>options.packages</h3>
+<p>类型：<code>Array</code>，默认值：<code>[]</code>，KISSY 包配置。</p>
+<h3>options.charset</h3>
+<p>类型：<code>String</code>，默认值：<code>utf-8</code>，</p>
+<h3>options.comboOnly</h3>
+<p>类型：<code>Boolean</code>，默认值：<code>false</code>，当指定某个文件为入口进行解析时，只生成这个文件的依赖Map，不作静态合并</p>
+<h3>options.depFilePath</h3>
+<p>类型：<code>String</code>，默认值：<code>&quot;&quot;</code>，依赖关系表存放的文件路径</p>
+<h3>options.depFileCharset</h3>
+<p>类型：<code>String</code>，默认值：和options.charset 保持一致，依赖关系表存放的文件的编码类型</p>
+<h3>options.traverse</h3>
+<p>类型：<code>Boolean</code>，默认值：<code>false</code>，当指定模个文件为入口文件时，遍历子目录进行构建</p>
+<h3>options.comboMap</h3>
+<p>类型：<code>Boolean</code>，默认值：<code>false</code>，当指定一批文件为源文件时，对这些文件只生成模块依赖关系表，存放于<code>options.depFilePath</code>中</p>
+<hr>
+<h2>示例代码</h2>
+<h3>示例1</h3>
+<p>入口为单个文件，将这个文件的依赖关系解析好后合并入另一个文件</p>
+<pre><code>grunt.initConfig({
+    kmc: {
+        main:{
+            options: {
+                packages: [
+                    {
+                        name: &#39;test&#39;,
+                        path: &#39;assets/src&#39;,
+                        charset: &#39;gbk&#39;
+                    }
+                ]
+            },
+            files: [{
+                src: &#39;assets/src/test/index.js&#39;,
+                dest: &#39;assets/dist/test/index.combo.js&#39;
+            }]
+        }
+    }
+});</code></pre>
+<p>详细配置项请参照<a href="https://github.com/daxingplay/ModuleCompiler">kmc首页</a>。</p>
+<h3>示例2</h3>
+<p>入口为一批文件，每个文件都解析合并</p>
+<pre><code>grunt.initConfig({
+    kmc: {
+        options: {
+            packages: [
+                {
+                    name: &#39;pkg-name&#39;,
+                    path: &#39;../&#39;,
+                    charset:&#39;utf-8&#39;
+                }
+            ],
+            // 将 ModuleName 中的 `src` 去掉
+            map: [[&#39;pkg-name/src/&#39;, &#39;pkg-name/&#39;]]
+        },
 
-// 这里和KISSY.config一样，先配置包
-kmc.config({
-    packages: [{
-        &#39;name&#39;: &#39;sh&#39;,
-        &#39;path&#39;: &#39;这里建议写绝对路径，即sh这个包所在的目录&#39;,
-        &#39;charset&#39;: &#39;gbk&#39;
-    }]
-});
+        main: {
+            files: [
+                {
+                    // 这里指定项目根目录下所有文件为入口文件
+                    expand: true,
+                    cwd: &#39;src/&#39;,
+                    src: [ &#39;**/*.js&#39;, &#39;!Gruntfile.js&#39;],
+                    dest: &#39;build/&#39;
+                }
+            ]
+        }
+    }
+});</code></pre>
+<h3>示例3</h3>
+<p>入口为一批文件，每个文件都解析合并，包名从配置文件中读取</p>
+<pre><code>grunt.initConfig({
+    // 读取`abc.json配置文件中的配置`
+    pkg: grunt.file.readJSON(&#39;abc.json&#39;),
+    kmc: {
+        options: {
+            packages: [
+                {
+                    name: &#39;&lt;%= pkg.name %&gt;&#39;,
+                    path: &#39;../&#39;,
+                    charset:&#39;utf-8&#39;
+                }
+            ],
+            // 将 ModuleName 中的 `src` 去掉
+            map: [[&#39;&lt;%= pkg.name %&gt;/src/&#39;, &#39;&lt;%= pkg.name %&gt;/&#39;]]
+        },
 
-// 将xxx.js打包为xxx.combine.js，输出编码为GBK
-kmc.build(&#39;xxx.js&#39;, &#39;xxx.combine.js&#39;, &#39;gbk&#39;);
-
-// 用node执行你这个打包脚本就ok啦～</code></pre>
-<h3>高级使用指南</h3>
-<pre><code>var kmc = require(&#39;kmc&#39;);
-
-kmc.config({
-    // 和KISSY一样，可以配置多个包
-    packages: [{
-        &#39;name&#39;: &#39;app1&#39;,
-        &#39;path&#39;: &#39;app1这个包所在目录的绝对路径&#39;,
-        // 这里是指app1这个包中的文件的编码，同一个包内的编码请保持一致
-        &#39;charset&#39;: &#39;gbk&#39;
-    }, {
-        &#39;name&#39;: &#39;app2&#39;,
-        &#39;path&#39;: &#39;app2这个包所在目录的绝对路径&#39;,
-        // 这里是指app2这个包源码的编码
-        &#39;charset&#39;: &#39;utf-8&#39;
-    }],
-    // 可以设置哪些模块不打包进来。注意，这里exclude的是具体的模块名，支持正则
-    exclude: [&#39;base&#39;, &#39;event&#39;],
-    // 如果是对一个目录下的所有文件进行打包，可以设置哪些文件不打包进来，支持正则。注意和上面的exclude的配置的区别。
-    ignoreFiles: [&#39;.combo.js&#39;, &#39;-min.js&#39;],
-    // 输出的文件名后缀，不带.js，比如打包后你想输出为xxx.combine.js，那么这里就配置为：.combine
-    suffix: &#39;&#39;,
-    // 类似于KISSY的map方法，可以自己定义把模块名中的路径进行替换
-    map: [
-        // 这样配置的话，那么，如果原先输出的app1的模块名中含有app1/2.0/字样的话，就会被替换成app1/19891014/
-        [&#39;app1/2.0/&#39;, &#39;app1/19891014/&#39;]
-    ],
-    // 这里设置的是最后打包出来的文件的编码，默认UTF-8，这里的设置相当于是全局设置，下面build中的设置是针对单一打包实例的
-    charset: &#39;gbk&#39;
-});
-
-/**
- * 打包一个文件/目录
- * @param inputPath {String} 源文件/目录的绝对路径.
- * @param outputPath {String} 打包出来的文件/目录的路径.
- * @param outputCharset {String} 输出编码，这里的设置会覆盖config.charset中的设置，默认UTF-8
- * @return {Object} 打包出来的文件信息
- */
-kmc.build(&#39;xxx.js&#39;, &#39;xxx.combine.js&#39;, &#39;gbk&#39;);</code></pre>
-<p>更详细的文档，请参见<a href="https://github.com/daxingplay/ModuleCompiler/wiki">wiki</a>。</p>
-<h3>API汇总</h3>
-<ul>
-<li>kmc.config(cfg)：配置包，返回当前所有配置信息。如果不带参数，直接返回当前所有配置信息。</li>
-<li>kmc.analyze(inputPath)：只分析该文件依赖，不打包。</li>
-<li>kmc.build(inputPath, outputPath, outputCharset, depFilePath)：打包函数，具体见wiki</li>
-<li>kmc.combo(inputPath, depFilePath, depFileCharset): 不打包，只生成KISSY 1.3的自动combo依赖文件</li>
-<li>kmc.clean(): 可以清空config中的设置。因为ModuleCompiler是单例运行，所以如果出现一些特别情况，可以在config前执行clean方法清空之前的配置。</li>
-</ul>
-<h2>CHANGELOG</h2>
-<p><a href="https://github.com/daxingplay/ModuleCompiler/blob/master/HISTORY.md">版本更新记录</a></p>
-<h2>License</h2>
-<p>遵守 &quot;MIT&quot;：https://github.com/daxingplay/ModuleCompiler/blob/master/LICENSE.md 协议</p>
+        main: {
+            files: [
+                {
+                    // 这里指定项目根目录下所有文件为入口文件
+                    expand: true,
+                    cwd: &#39;src/&#39;,
+                    src: [ &#39;**/*.js&#39;, &#39;!Gruntfile.js&#39;],
+                    dest: &#39;build/&#39;
+                }
+            ]
+        }
+    }
+});</code></pre>
+<p>其中 abc.json 文件内容如下：</p>
+<pre><code>{
+    &quot;name&quot;: &quot;my-custom-package-name&quot;,
+}</code></pre>
+<h3>示例4</h3>
+<p>只生成模块依赖关系表，对源文件不做修改</p>
+<pre><code>grunt.initConfig({
+    options: {
+        packages: [
+            {
+                name: &#39;h5-test&#39;,
+                path: &#39;../&#39;,// 可以省略
+                charset:&#39;utf-8&#39;
+            }
+        ],
+        // 生成模块依赖关系表
+        depFilePath:&#39;build/mods.js&#39;,
+        comboMap:true
+    },
+    main: {
+        files: [
+            {
+                src: &#39;src/**/*.js&#39;,
+                dest: &#39;build/&#39;
+            }
+        ]
+    }
+});</code></pre>
+<p>仅这样做通常是不够的，源文件需要手动补全模块名，比如</p>
+<pre><code>KISSY.add(&#39;h5-test/abc/index&#39;,function(S){});</code></pre>
+<p>另外此功能还需配合<a href="http://npmjs.org/grunt-contrib-copy">Copy插件</a>一起完成。</p>
+<h2>应用</h2>
+<p><a href="clam.html">Clam</a>工具和<a href="http://abc.f2e.taobao.net/">ABC</a>依赖kmc。</p>
 
 
 <div id="disqus_thread"></div>

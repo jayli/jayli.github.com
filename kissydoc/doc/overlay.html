@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>KISSY - 全终端适配的 JS 类库</title>
+  <meta name="viewport" content="width=device-width">
+  <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
+	<link rel="stylesheet" href="templates/assets/bootstrap.css">
+	<link href="templates/assets/normalize.css" rel="stylesheet">
+	<link href="templates/assets/kissy.css" rel="stylesheet">
+	<link href="templates/assets/prettify.css" rel="stylesheet">
+	<link href="templates/assets/forkit.css" rel="stylesheet">
+	<script src="templates/assets/jquery.min.js"></script>
+	<script src="templates/assets/script.js" type="text/javascript"></script>
+	<script src="http://g.tbcdn.cn/trip/kissy/1.4.0/seed-min.js"></script>
+	<script src="api/assets/highlight.pack.js"></script>
+	<link href="api/assets/tomorrow-night-bright.css" rel=stylesheet />
+	<link rel="shortcut icon" href="http://a.tbcdn.cn/s/kissy/favicon.ico">
+</head>
+
+<body class="">
+    <nav id="sidebar">
+    <header>
+		<a href="index.html">
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T1ceiPFbpcXXcljp_h-200-89.png"-->
+			<!--img src="templates/assets/img/logo_6.png"-->
+			<!--img src="http://gtms04.alicdn.com/tps/i4/T14oa2FcNcXXaOySEh-180-104.png" alt="" /-->
+			<!--img src="http://gtms01.alicdn.com/tps/i1/T1Amq1FaXgXXbXVSUh-180-127.png" alt="" /-->
+			<img src="http://gtms02.alicdn.com/tps/i2/T1N0jTXXXjXXay7Rri-175-78.png" alt="" />
+		</a>
+	</header>
+    <ul>
+      <li class="nav-divider"><a href="index.html"><img src="templates/assets/img/icon-home.png">首页</a></li>
+      <li class="nav-divider"><a href="why-kissy.html"><img src="templates/assets/img/icon-why.png">Why KISSY?</a></li>
+      <li><a href="get-started.html"><img src="templates/assets/img/icon-getting-started.png">KISSY 1.4.x 教程大纲</a></li>
+      <li class="nav-sub"><a href="module-map.html">核心模块列表</a></li>
+      <li class="nav-sub"><a href="kmd.html">KISSY 模块规范 (KMD)</a></li>
+      <li class="nav-sub"><a href="gbs.html">浏览器兼容基准(GBS)</a></li>
+      <li class="nav-sub"><a href="http://cyj.me/jquery-kissy-rosetta/">jQuery KISSY 对比手册</a></li>
+      <li class="nav-sub"><a href="http://gallery.kissyui.com/guide">KISSY 组件开发规范</a></li>
+      <li class="nav-sub nav-divider"><a href="history.html">历史版本</a></li>
+      <li><a href="">API Doc</a></li>
+      <li><a href="http://demo.kissyui.com">Demos</a></li>
+      <li class="nav-divider"><a href="http://gallery.kissyui.com">KISSY Gallery</a></li>
+      <li><a href="tools.html">KISSY 项目构建工具</a></li>
+      <li class="nav-sub"><a href="kmc.html">KS Module Compiler</a></li>
+      <li class="nav-sub"><a href="http://abc.f2e.taobao.net">ABC</a></li>
+      <li class="nav-sub nav-divider"><a href="clam.html">Clam</a></li>
+      <li><a href="third-party-lib.html">第三方代码库</a></li>
+      <li class="nav-sub"><a href="https://github.com/lorrylockie/tpap/wiki">面向第三方安全的 KISSY</a></li>
+      <li class="nav-sub"><a href="http://www.builive.com/demo/index.php">BUI</a></li>
+      <li class="nav-sub nav-divider"><a href="http://work.tmall.net/muidoc/build/">MUI</a></li>
+      <li><a href="https://github.com/kissyteam/kissy/blob/master/CONTRIBUTING.md">为 KISSY Core 贡献代码</a></li>
+      <li class="nav-sub"><a href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS编码规范</a></li>
+      <li class="nav-sub nav-divider"><a href="http://docs.kissyui.com/source/tutorials/style-guide/google/javascriptguide.xml">JavaScript 编码规范</a></li>
+	  <li><a href="upgrade.html"><img src="templates/assets/img/icon-documentation.png">1.3.x->1.4.0 升级指南</a></li>
+	  <li><a href="faq.html"><img src="templates/assets/img/icon-faqs.png">FAQ</a></li>
+      <li><a href="https://github.com/kissyteam/kissy"><img src="templates/assets/img/icon-github.png">GitHub</a></li>
+	  <li><a href="core-team.html"><img src="templates/assets/img/icon-google-plus.png">KISSY 核心小组</a></li>
+    </ul>
+  </nav>
+
+  <div id="content">
+    <article>
+      
+
+	<h1>overlay</h1>
+<blockquote>
+<p>悬浮的对话框是KISSY核心组件中完整的利用了KISSY的面向对象的组件，是典型的组件拼装模式，继承和派生的用法非常值得学习和借鉴。</p>
+</blockquote>
+<h2>Demos</h2>
+<ul>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo1.html">从Markup中构建</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo2.html">新建markup</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo3.html">多个触发元素公用一个 Overlay</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo4.html">demo3 的另一种实现方式（不推荐）</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo5.html">异步加载弹出层内容</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo6.html">对话框 新建 + Mask + aria</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo7.html">对话框 从 Markup 中构建</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo8.html">对话框 限制 + 可缩放</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo9.html">对话框 fixed 居中</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo10.html">对话框运动到某个位置</a> </li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/proxy-scroll.html">代理加窗口自动滚动</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/mask-anim.html">Mask 动画效果</a></li>
+<li><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/effect-target.html">Effect target 效果</a></li>
+</ul>
+<p>Overlay 由三个内部组件派生出来，Controller、Align、Position，Controller又包含另外两个基础组件UIBase和Box。因此Overlay的实例方法大都是组装来的。<code>Overlay</code>对象下挂接两个由他派生出的类：<code>Dialog</code>和<code>Popup</code>，这两个实现是最常用的。</p>
+<p><img src="templates/assets/img/overlay.png" alt=""></p>
+<p>引用方法：</p>
+<pre><code>KISSY.use(&#39;overlay&#39;,function(S,Overlay){
+    // use Overlay
+});</code></pre>
+<h2>一个简单的调用</h2>
+<p><a href="http://docs.kissyui.com/1.3/source/raw/demo/overlay/demo1.html">初始化一个Popup</a></p>
+<pre><code>KISSY.use(&#39;overlay&#39;,function(S,Overlay){
+    //通过dom元素新建立popup
+    var popup = new Overlay.Popup({
+        srcNode:&#39;#dpop&#39;,
+        trigger : &#39;#img-download&#39;,//配置Popup的触发器
+        triggerType : &#39;mouse&#39;,    //触发类型，鼠标触碰时触发
+        align : {
+            node : &#39;#img-download&#39;,
+            points : [&#39;tc&#39;, &#39;bc&#39;],
+            offset : [0, 50]
+        }
+    });
+});</code></pre>
+<p>初始化OVerlay之前应当先加上初始样式</p>
+<pre><code>&lt;style&gt;
+    .ks-overlay {
+        position:absolute;
+        left:-9999px;
+        top:-9999px;
+    }
+    .ks-overlay-hidden {
+        visibility: hidden;
+    }
+
+    .ks-overlay-mask-hidden {
+        display: none;
+    }
+
+    .ks-overlay-shown {
+        visibility: visible;
+    }
+
+    .ks-overlay-mask-shown{
+        display: block;
+    }
+&lt;/style&gt;</code></pre>
+<p>其中Dialog的DOM结构为经典的三段式</p>
+<pre><code>&lt;div class=&#39;dialog&#39;&gt; &lt;!-- 对话框根节点 --&gt;
+    &lt;div class=&#39;content&#39;&gt; &lt;!-- 对话框内容节点 --&gt;
+        &lt;div class=&#39;header&#39;&gt; &lt;!-- 对话框标题节点 --&gt;
+        &lt;/div&gt;
+        &lt;div class=&#39;body&#39;&gt; &lt;!-- 对话框体节点 --&gt;
+        &lt;/div&gt;
+        &lt;div class=&#39;footer&#39;&gt; &lt;!-- 对话框底部节点 --&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<hr>
+<h2>Overlay/Dialog/Popup API</h2>
+<h3>配置参数</h3>
+<p><code>new Overlay(config)</code></p>
+<h4>prefixCls</h4>
+<p>继承自Controller，组件css样式的前缀，默认 “ks-” . 例如假设组件为 menu ，则该组件内的样式类名为 {prefixCls}menu，默认为 “ks-menu”.可用于实现自定义皮肤.</p>
+<h4>srcNode</h4>
+<p>继承自UIBase，当前组件在 dom 树中已经存在的节点.</p>
+<h4>plugins</h4>
+<p>数组，给出插件，插件格式参照<a href="base.html">Base</a>。</p>
+<h4>width</h4>
+<p>继承自Box，组件的宽度，单位为像素</p>
+<h4>height</h4>
+<p>继承自Box，组件的高度，单位为像素</p>
+<h4>elCls</h4>
+<p>继承自Box，附加给根节点的样式类</p>
+<h4>content</h4>
+<p>继承自Box，设置内容html</p>
+<h4>zIndex</h4>
+<p>继承自Position，Number类型，组件根节点的z-index值，默认为9999</p>
+<h4>x</h4>
+<p>继承自Position，Number类型， 组件根节点相对于文档根节点的 x 坐标.</p>
+<h4>y</h4>
+<p>继承自Position，Number类型， 组件根节点相对于文档根节点的 y 坐标.</p>
+<h4>xy</h4>
+<p>继承自Position，数组，相当于将数组第一个元素设置为 x 的值, 将数组的第二个元素设置为 y 的值.</p>
+<h4>align</h4>
+<p>继承自Align，JSON对象，组件节点对齐的相关配置, 例如：</p>
+<pre><code>{
+    node: null,         // 类型选择器字符串, 对齐参考元素, falsy 值为可视区域
+    points: [&#39;tr&#39;,&#39;tl&#39;], // 类型字符串数组, 表示 overlay 的 tl 与参考节点的 tr 对齐
+    offset: [0, 0],      // 类型整数数组, 表示 overlay 最终位置与经 node 和 points 计算后位置的偏移,
+                        // 数组第一个元素表示 x 轴偏移, 第二个元素表示 y 轴偏移.
+    overflow:{
+        adjustX:1, // 当对象不能处于可显示区域时，自动调整横坐标
+        adjustY:1 // 当对象不能处于可显示区域时，自动调整纵坐标
+    }
+}</code></pre>
+<p>points 字符串数组元素的取值范围为 t,b,c 与 l,r,c 的两两组合, 分别表示 top,bottom,center 与 left,right,center 的两两组合, 可以表示 9 种取值范围，如图，第一个字符取值 t,b,c , 第二个字符取值 l,r,c. </p>
+<p><img src="http://docs.kissyui.com/1.3/source/raw/api/component/overlay/align.png" alt=""></p>
+<h4>effect</h4>
+<p>JSON对象，显示隐藏效果，属性包括</p>
+<ul>
+<li>target，KISSY Node或者字符串，动画参考元素</li>
+<li>effect，字符串，可取值 ‘fade’(渐隐显示), ‘slide’(滑动显示).</li>
+<li>easing，字符串，同 <a href="anim.html">KISSY.Anim</a> 的 easing 参数配置.</li>
+<li>duration，数字类型，动画持续时间, 以秒为单位.</li>
+</ul>
+<p>举例：</p>
+<pre><code>{
+    target:&#39;&#39;,        // {String|KISSY.Node} - 可选，动画的参考元素
+    effect:&#39;none&#39;,    // {String} - 可选, 默认为&#39;none&#39;, &#39;none&#39;(无特效), &#39;fade&#39;(渐隐显示), &#39;slide&#39;(滑动显示).
+    easing:&#39;&#39;,        // {String} - 可选, 同 KISSY.Anim 的 easing 参数配置.
+    duration:3        // {Number} - 可选, 动画持续时间, 以秒为单位.
+}</code></pre>
+<h4>closeable</h4>
+<p>Boolean类型，对话框右上角是否包括关闭按钮</p>
+<h4>closeAction</h4>
+<p>字符串，点击关闭按钮的动作。默认 “hide” 隐藏，也可设置 “destroy” 销毁该组件.</p>
+<h4>elBefore</h4>
+<p>Node节点类型，组件根节点的渲染到该节点之前.</p>
+<h4>render</h4>
+<p>Node节点类型， 默认 S.all(“body”)，组件根节点的渲染为该节点最后一个节点.</p>
+<h4>mask</h4>
+<p>Boolean或JSON对象，组件显示时是否使用遮罩层盖住页面其他元素，如果为JSON对象，属性包括：</p>
+<ul>
+<li>closeOnClick，Boolean值，点击遮罩层是否关闭 overlay。</li>
+<li>effect，字符串类型，遮罩层显示隐藏效果. (取值 ‘fade’,’slide’)</li>
+<li>duration，Number类型，效果持续时间. 单位秒</li>
+</ul>
+<h4>headerContent <code>Dialog</code>专有属性</h4>
+<p>组件的标题 html.</p>
+<h4>bodyContent <code>Dialog</code>专有属性</h4>
+<p>组件的正文 html.</p>
+<h4>footerContent <code>Dialog</code>专有属性</h4>
+<p>组件的底部 html.</p>
+<h4>trigger  <code>Popup</code>专有属性</h4>
+<p>触点集合，可以是选择器、字符串，原生节点，Nodelist等</p>
+<h4>triggerType  <code>Popup</code>专有属性</h4>
+<p>默认为 ‘click’, 触发类型, 可选 ‘click’, ‘mouse’.</p>
+<h4>mouseDelay  <code>Popup</code>专有属性</h4>
+<p>单位秒. 可选, triggerType 为 mouse 时, Popup 显示的延迟时间, 默认为 0.1.</p>
+<h4>toggle  <code>Popup</code>专有属性</h4>
+<p>triggerType 为 click 时, Popup 是否有toggle功能，默认为false，不开启</p>
+<hr>
+<h3>实例属性</h3>
+<h4>x</h4>
+<p>x 坐标</p>
+<h4>y</h4>
+<p>y 坐标</p>
+<h4>xy</h4>
+<p>xy坐标数组</p>
+<h4>align</h4>
+<p>对其方式，数组类型</p>
+<h4>closable</h4>
+<p>布尔类型，右上角是否有关闭按钮</p>
+<h4>visible</h4>
+<p>布尔类型，是否处于显示状态</p>
+<h4>el</h4>
+<p>Node节点类型，该组件的根节点. 注意调用 render() 后才可以取得.</p>
+<h4>contentEl</h4>
+<p>Node节点类型，该组件的内容所在节点，一般和 el 相同，注意调用 render() 后才可以取得.</p>
+<h4>maskNode</h4>
+<p>Node节点类型，遮罩层节点</p>
+<h4>header <code>Dialog</code>专有</h4>
+<p>头部内容html</p>
+<h4>body <code>Dialog</code>专有</h4>
+<p>正文html</p>
+<h4>headerContent <code>Dialog</code>专有</h4>
+<p>组件的头部标题html</p>
+<h4>bodyContent <code>Dialog</code>专有</h4>
+<p>组件的正文html</p>
+<h4>footerContent <code>Dialog</code>专有</h4>
+<p>尾部html</p>
+<h4>currentTrigger <code>Popup</code>专有</h4>
+<p>当前的 trigger 节点</p>
+<hr>
+<h3>实例方法</h3>
+<p>Dialog和Popup中都包含同样的实例方法</p>
+<h4>plugin(plugin)</h4>
+<p>继承自Base，安装指定插件，参数<code>plugin</code>为Function或者Object，是插件构造器或者插件对象，返回自身,具体参照<a href="base.html">Base</a></p>
+<h4>unplugin(plugin)</h4>
+<p>继承自Base，卸载插件，参数为字符串或对象，是指定插件的id或者插件对象。返回自身。具体参照<a href="base.html">Base</a></p>
+<h4>render()</h4>
+<p>继承自UIBase，将组件渲染到dom树中</p>
+<h4>destroy()</h4>
+<p>继承自Base，销毁组件</p>
+<h4>show()</h4>
+<p>继承自Box，渲染该组件并显示出来.</p>
+<h4>hide()</h4>
+<p>继承自Box，隐藏该组件并显示出来.</p>
+<h4>center()</h4>
+<p>继承自Align，将节点置于屏幕的中央。</p>
+<h4>move(x,y)</h4>
+<p>继承自Position，将组件置于相对于文档左上角的坐标偏移量的位置。</p>
+<h4>loading()</h4>
+<p>显示菊花</p>
+<h4>unloading()</h4>
+<p>隐藏菊花</p>
+<hr>
+<h3>实例事件</h3>
+<h4>hide</h4>
+<p>继承自UIBase，当组件隐藏时触发</p>
+<h4>show</h4>
+<p>继承自UIBase，当组件显示时触发</p>
+<h4>beforeVisibleChange</h4>
+<p>继承自UIBase，当组件隐藏或显示前触发，事件对象上挂两个属性：</p>
+<ul>
+<li>ev.newVal (Boolean) – 将要隐藏时为 false, 将要显示时为 true</li>
+<li>ev.prevVal (Boolean) – 当前悬浮层显示与否</li>
+</ul>
+<p>返回 false 时, 则会阻止将要进行的显示或隐藏动作.</p>
+<h4>afterRenderUI</h4>
+<p>继承自UIBase，当组件被渲染 dom 时触发</p>
+<h4>afterCurrentTriggerChange <code>Popup</code>专有</h4>
+<p>当 currentTrigger 改变后触发，事件对象挂载属性</p>
+<ul>
+<li>e.newVal ({KISSY.Node}) – 新的 trigger 元素</li>
+</ul>
+
+
+<div id="disqus_thread"></div>
+<script>
+    if((window.location.hostname.indexOf("kissyui.com")!=-1 )&& window.localStorage.getItem("kissy-commment")!="0"){
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kissy-docs'; // required: replace example with your forum shortname
+
+    // The following are highly recommended additional parameters. Remove the slashes in front to use.
+     //var disqus_identifier = '/anim';
+     //var disqus_url = window.location;
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    }
+</script>
+
+
+
+      
+  <style>
+	.github-btn {
+		border: 0 none;
+		overflow: hidden;
+		margin-top:4px;
+	}
+	footer {
+		border-top:1px solid #e2e2e2;
+		padding-top:20px;
+		clear:both;
+	}
+	/* iPhone 及以下 */
+	@media only screen and (max-width: 767px) {
+		.github-link {
+			display:none;
+		}
+	}
+  </style>
+  <footer>
+
+
+
+
+	<div class="text-center">
+		©2013 - 2033 KISSY UI LIBRARY
+		<br /> <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=watch&amp;count=true" width="100" height="20" title="Star on GitHub"></iframe> 
+	<iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=kissyteam&amp;repo=kissy&amp;type=fork&amp;count=true" width="102" height="20" title="Fork on GitHub"></iframe>
+	</div>
+  </footer>
+    </article>
+  </div>
+  <a target="_blank" href="https://github.com/kissyteam/kissy" class="github-link"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" style="position: absolute; top: 0; right: 0; border: 0; z-index: 50"></a>
+  <script>
+	var S = KISSY;
+	(function(){
+		S.use('node',function(S){
+			S.all('code').each(function(node){
+				var className = node.attr('class');
+				if(/^lang-/.test(className)){
+					var tc = className.replace(/^lang-/,'');
+					node.replaceClass(className,tc);
+				}
+			});
+			hljs.tabReplace = '    ';
+			hljs.initHighlighting();
+		});
+	})();
+	(function(){
+		var h3s = document.getElementsByTagName('h3');
+		for(var i = 0;i<h3s.length;i++){
+			var str = S.trim(h3s[i].innerHTML);
+			try{
+				str = str.match(/\w+/)[0];
+			}catch(e){
+				continue;
+			}
+			h3s[i].innerHTML = '<a name="'+str+'"></a>' + h3s[i].innerHTML;
+		}
+	})();
+  </script>
+</body>
+</html>
