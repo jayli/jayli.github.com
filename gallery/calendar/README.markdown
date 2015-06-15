@@ -1,3 +1,10 @@
+<style>
+body {
+		font-family:trebuchet ms , verdana , sans-serif;
+			line-height:1.5;
+}
+</style>
+
 # Calendar
 
 - [Demo](http://jayli.github.io/gallery/calendar/demo/calendar.html)
