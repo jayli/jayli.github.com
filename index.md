@@ -51,10 +51,25 @@ img {
 - [一种项目开发中数据包的加载方法及系统](http://www.soopat.com/Patent/201210009029)（2012）
 - [一种Web前端本地开发环境的搭建方法和装置](http://www.soopat.com/Patent/201110336122)（2011）
 
+### ➭ 演讲 & 分享
+
+- QCon：[极致的 Hybrid](http://t.cn/R2XWPgB)（2015）
+- QCon：[淘宝 HTML5 实战](http://wenku.baidu.com/link?url=grLomTOyFilVoG-0MDI8kXNC8eE0jQUk15hQNPh_dpTBCM4ulcYCclbnA8ObOMg9Yr3olsSnnLIGHWkXyGLt0R9BvBC50-QnRTujK4n3W9y)（2011）
+- D2：[阿里技术嘉年华D2会场-低碳的无线端开发实战](http://adc.taobao.com/carnival/topicinfo/107)（2012）
+- D2：[阿里技术嘉年华D2会场-KISSY Mobile App Toolkit](http://adc.alibabatech.org/carnival/history/schedule/2013/detail/main/208)（2013）
+- 象声汇：[正念前端](http://yunpan.taobao.com/s/jFWjIf9e77)（2015）
+- 象声汇：[加速成长的六个要诀](http://yunpan.taobao.com/s/novUs7dk0J)（2014）
+- 象声汇：[CSS 选择器性能调研](http://yunpan.taobao.com/s/xCEQSUpWZB)（2013）
+- 象声汇：[JavaScript AutoLoad](http://yunpan.taobao.com/s/dz1jS6uNC)（2011）
+- 象声汇：[NodeJS 实战](http://yunpan.taobao.com/s/18FsclgTYsg)（2010）
+- 象声汇：[GUI 进化史](http://yunpan.taobao.com/s/aHwLXEm4wA)（2010）
+- 象声汇：[JavaScript 图形编程](http://yunpan.taobao.com/s/yYQxUsvprB)（2010）
+
 ### ➭ 翻译
 
 [![](http://img01.taobaocdn.com/tps/i1/T1YBC9XjJwXXXXXXXX-275-364.png_150x150.jpg)](http://jayli.github.io/jswebapps/)&nbsp;
 [![](http://gtms01.alicdn.com/tps/i1/TB1MedBHpXXXXasaFXX6LJ3SpXX-273-359.png_150x150.jpg)](http://jayli.github.io/jswebapps/)&nbsp;
-[![](http://gtms04.alicdn.com/tps/i4/TB1.kIsHpXXXXclXFXXoHpKTpXX-516-678.png_150x150.jpg)](http://speakerdeck.com/lijing00333/javascript-partterns)&nbsp;
+[![](http://gtms04.alicdn.com/tps/i4/TB1.kIsHpXXXXclXFXXoHpKTpXX-516-678.png_150x150.jpg)](https://speakerdeck.com/lijing00333/javascript-patterns)&nbsp;
 [![](http://img04.taobaocdn.com/tps/i4/T1uHqiXdlfXXXXXXXX-270-354.jpg_150x150.jpg)](http://ued.taobao.org/javascript/)
+
 
