@@ -3,6 +3,9 @@ body {
 	font-family:trebuchet ms , verdana , sans-serif;
 	line-height:1.5;
 }
+a,a:link,a:visited {
+color:#4078c0;
+}
 </style>
 
 ## A Frontend Engineer
@@ -17,8 +20,6 @@ body {
 
 ### ➭ 文章
 
-
-
 - 【译】[什么是 Node](http://jayli.github.io/whatisnode/)
 - 【译】[使用 YUI 3开发 Web 应用的诀窍](http://ued.taobao.org/blog/2011/04/a-recipe-for-a-yui-3-application/)
 - 【译】[Nicholas C. Zakas vs John Resig 一场关于YUI3/jQuery的精彩辩论](http://ued.taobao.org/blog/2010/11/yui3-vs-jquery/)
@@ -26,7 +27,7 @@ body {
 - [2012 年前端技术回顾](http://www.csdn.net/article/1970-01-01/2815164)
 - [KISSY 的自成体系是一种趋势](http://www.infoq.com/cn/news/2013/07/bachi-on-kissy?utm_source=tuicool)
 - [好的组件无需太复杂 - KISSY Slide 组件简介](http://ued.taobao.org/blog/2013/06/kissy-slide/)
-- [JavaScript语法检查插件 jsLint for Vim](http://ued.taobao.org/blog/2010/11/jslint-for-vim/)
+- [JavaScript语法检查插件 jsLint for Vim](http://ued.taobao.org/blogobao.org/blog/2010/11/jslint-for-vim/)
 - [将你的 KISSY 程序移植到服务器端 – nodejs-kissy 项目简介](http://ued.taobao.org/blog/2010/11/nodejs-kissy/)
 - [YUI3 在淘宝彩票中的实践](http://ued.taobao.org/blog/2010/06/yui3/)
 - [YUI3 设计中的激进和妥协](http://ued.taobao.org/blog/2010/01/yui3%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%BF%80%E8%BF%9B%E5%92%8C%E5%A6%A5%E5%8D%8F/)
@@ -36,4 +37,16 @@ body {
 - [我的 vim 配置](https://github.com/jayli/vim)（VIM）
 - [Combo Script](https://github.com/jayli/combo)（PHP）
 - [YUI3 Calendar](http://jayli.github.io/gallery/calendar/README.html)（JavaScript）
+- [基于 DOM 的碰撞检测 DEMO](http://jayli.github.io/gallery/canvas/g.html)（JavaScript）
+- 编码小工具：[utf8 URL 编码](http://jayli.github.io/gallery/encode/utf8urlencode.html)、[gbk URL 编码](http://www.taobao.com/market/trip/encode-test.php)、[Unicode 编码](http://jayli.github.io/gallery/encode/unicodeEncode.html)（JavaScript）
+- [SandBox](https://github.com/jayli/sandbox/)（JavaScript）
+- [YUI Slide](http://jayli.github.io/gallery/yuislide/)、[KISSY Slide](http://kissygalleryteam.github.io/slide/1.2/demo/index.html)（[1.3](http://kissygalleryteam.github.io/slide/1.3/demo/index.html)）（JavaScript）
+- [Tip](http://kissygalleryteam.github.io/tip/1.0/demo/index.html)（JavaScript）
+
+### ➭ 技术专利
+
+- [一种项目开发中数据包的加载方法及系统](http://www.soopat.com/Patent/201210009029)（2012）
+- [一种Web前端本地开发环境的搭建方法和装置](http://www.soopat.com/Patent/201110336122)（2011）
+
+### ➭ 翻译
 
