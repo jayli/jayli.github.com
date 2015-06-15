@@ -1,6 +1,6 @@
 # Calendar
 
-- [Demo](http://taobao-wd.github.com/calendar/demo/calendar.html)
+- [Demo](http://jayli.github.io/gallery/calendar/demo/calendar.html)
 
 # Info
 
