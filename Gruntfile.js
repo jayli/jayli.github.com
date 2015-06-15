@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						src: ['index.md','gallery/calendar/README.markdown']
+						src: ['index.md','gallery/calendar/README.markdown'],
 						dest: './',
 						ext: '.html'
 					}

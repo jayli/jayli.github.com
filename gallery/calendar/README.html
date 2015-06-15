@@ -1,0 +1,197 @@
+<!DOCTYPE  html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>doc</title>
+    <style>
+      /*github.com style (c) Vasily Polovnyov <vast@whiteants.net>*/
+      pre code {
+        display: block; padding: 0.5em;
+        color: #333;
+        background: #f8f8ff
+      }
+      pre .comment,
+      pre .template_comment,
+      pre .diff .header,
+      pre .javadoc {
+        color: #998;
+        font-style: italic
+      }
+      pre .keyword,
+      pre .css .rule .keyword,
+      pre .winutils,
+      pre .javascript .title,
+      pre .nginx .title,
+      pre .subst,
+      pre .request,
+      pre .status {
+        color: #333;
+        font-weight: bold
+      }
+      pre .number,
+      pre .hexcolor,
+      pre .ruby .constant {
+        color: #099;
+      }
+      pre .string,
+      pre .tag .value,
+      pre .phpdoc,
+      pre .tex .formula {
+        color: #d14
+      }
+      pre .title,
+      pre .id {
+        color: #900;
+        font-weight: bold
+      }
+      pre .javascript .title,
+      pre .lisp .title,
+      pre .clojure .title,
+      pre .subst {
+        font-weight: normal
+      }
+      pre .class .title,
+      pre .haskell .type,
+      pre .vhdl .literal,
+      pre .tex .command {
+        color: #458;
+        font-weight: bold
+      }
+      pre .tag,
+      pre .tag .title,
+      pre .rules .property,
+      pre .django .tag .keyword {
+        color: #000080;
+        font-weight: normal
+      }
+      pre .attribute,
+      pre .variable,
+      pre .lisp .body {
+        color: #008080
+      }
+      pre .regexp {
+        color: #009926
+      }
+      pre .class {
+        color: #458;
+        font-weight: bold
+      }
+      pre .symbol,
+      pre .ruby .symbol .string,
+      pre .lisp .keyword,
+      pre .tex .special,
+      pre .prompt {
+        color: #990073
+      }
+      pre .built_in,
+      pre .lisp .title,
+      pre .clojure .built_in {
+        color: #0086b3
+      }
+      pre .preprocessor,
+      pre .pi,
+      pre .doctype,
+      pre .shebang,
+      pre .cdata {
+        color: #999;
+        font-weight: bold
+      }
+      pre .deletion {
+        background: #fdd
+      }
+      pre .addition {
+        background: #dfd
+      }
+      pre .diff .change {
+        background: #0086b3
+      }
+      pre .chunk {
+        color: #aaa
+      }
+    </style>
+  </head>
+  <body>  
+    <h1 id="calendar">Calendar</h1>
+<ul>
+<li><a href="http://jayli.github.io/gallery/calendar/demo/calendar.html">Demo</a></li>
+</ul>
+<h1 id="info">Info</h1>
+<ul>
+<li>基于YUI3/YUI2</li>
+<li>支持基本的事件：单选、范围选择、弹出、嵌入等等</li>
+<li>根据ID建议，将选择时间的功能去掉了</li>
+<li>理论上，可以日历中的子日历可以有生成无数个，但超过3个的情况需要自定义css：增加class为“multi-2”的样式。</li>
+<li>日历阴影用css3来定义，在opera和ie下日历无阴影</li>
+<li>在chrome中，日期不支持诸如new Date(&#39;2009/12/35&#39;)的天溢出，在调试浏览器的时候应当注意</li>
+<li>在ie6,ie7,firefox2,firefox3.0/3.5/3.6,safari4.0,opera9.62,chrome3.0下测试通过</li>
+</ul>
+<p>引入文件</p>
+<pre><code>modules:{
+    &#39;calendar-skin-default&#39;:{//默认皮肤
+        fullpath:&#39;skin/default.css&#39;,
+        type:&#39;css&#39;
+    },
+    &#39;calendar&#39;:{
+        fullpath:&#39;calendar.js&#39;,
+        requires:[&#39;calendar-skin-default&#39;,&#39;node&#39;]
+    }
+}
+</code></pre><p>新建一个Y.Calendar对象</p>
+<pre><code>var calendar = new Y.Calendar(&#39;J_multipage_1&#39;,{
+    multi_page:2,
+    selected:new Date(&#39;2009/12/28&#39;)
+});
+</code></pre><p>创建一个Y.Calendar,带入配置项并绑定回调
+    var calendar = new Y.Calendar(&#39;J_calendar&#39;).on(&#39;select&#39;,function(d){
+        //your code
+    });</p>
+<p>使用</p>
+<pre><code>new Y.Calendar(id,options);
+</code></pre><p>参数</p>
+<pre><code>/**
+ * calendar.js 
+ * autohr:lijing00333@163.com
+ * @class Y.Calendar
+ * @param { string } 容器或者触点id 
+ * @param { object } 配置项
+ * @return { object } 生成一个calendar实例
+ * @requires { &#39;node&#39; }
+ * @requires { calendar-skin-default } 皮肤
+ * 
+ * Y.Calenar：    
+ *    说明：    日历构造器，通过new Y.Calendar来render一个日历
+ *    使用：    new Y.Calendar(id,options);
+ *    参数:    id:{string}容器id
+ *    配置：    selected {date} 选中的日期
+ *            mindate:{date} 最小可选日期
+ *            maxdate:{date} 最大可选日期
+ *            popup:{boolean} 是否弹出，默认false
+ *            closeable:{boolean} 是否单选关闭（弹出状态下起作用），默认为false
+ *            range_select:{boolean} 是否选择范围，默认为false
+ *            range:{start:date,end:date} 默认选择范围
+ *            multi_select:{number} 日历页数，默认为1
+ *            withtime:{boolean} 日历是否显示time选择，默认为false
+ *            date:{date} 默认显示该日期所在的月份，默认为当天
+ *            startDay:{number} 起始日的偏移，默认为周日，建议取值范围(1-7)
+ *            navigator:{boolean} 是否可以选择跳转的月份，默认为true
+ *            useShim:{boolean} 是否使用iframe遮罩,ie6默认加遮罩
+ *        Y.Calendar的实例的方法：
+ *            init:初始化，参数为options
+ *            render:渲染，init在new的时候调用，render可以在运行时任意时刻调用，参数为options，其成员可覆盖原参数
+ *            hide:隐藏，不会删除窗口
+ *            show:显示窗口
+ *        
+ */
+</code></pre><p>事件类型：</p>
+<ul>
+<li>switch:月份的切换，回调为切换后的日期</li>
+<li>select:单选</li>
+<li>rangeselect:范围选择</li>
+<li>timeselect:时间选择</li>
+<li>show:显示</li>
+<li>hide:隐藏</li>
+</ul>
+
+  </body>
+</html>
