@@ -6,6 +6,9 @@ body {
 a,a:link,a:visited {
 color:#4078c0;
 }
+img {
+  box-shadow: 1px 1px 30px 1px lightgray;
+}
 </style>
 
 ## A Frontend Engineer
@@ -49,4 +52,9 @@ color:#4078c0;
 - [一种Web前端本地开发环境的搭建方法和装置](http://www.soopat.com/Patent/201110336122)（2011）
 
 ### ➭ 翻译
+
+[![](http://img01.taobaocdn.com/tps/i1/T1YBC9XjJwXXXXXXXX-275-364.png_150x150.jpg)](http://jayli.github.io/jswebapps/)&nbsp;
+[![](http://gtms01.alicdn.com/tps/i1/TB1MedBHpXXXXasaFXX6LJ3SpXX-273-359.png_150x150.jpg)](http://jayli.github.io/jswebapps/)&nbsp;
+[![](http://gtms04.alicdn.com/tps/i4/TB1.kIsHpXXXXclXFXXoHpKTpXX-516-678.png_150x150.jpg)](http://speakerdeck.com/lijing00333/javascript-partterns)&nbsp;
+[![](http://img04.taobaocdn.com/tps/i4/T1uHqiXdlfXXXXXXXX-270-354.jpg_150x150.jpg)](http://ued.taobao.org/javascript/)
 
