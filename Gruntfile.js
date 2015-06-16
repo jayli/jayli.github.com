@@ -18,6 +18,9 @@ module.exports = function(grunt) {
 						ext: '.html'
 					}
 				]
+			},
+			options: {
+				template: 'markdown-template.jst',
 			}
 		}
 

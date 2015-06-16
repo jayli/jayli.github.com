@@ -1,15 +1,3 @@
-<style>
-body {
-	font-family:trebuchet ms , verdana , sans-serif;
-	line-height:1.5;
-}
-a,a:link,a:visited {
-color:#4078c0;
-}
-img {
-  box-shadow: 1px 1px 30px 1px lightgray;
-}
-</style>
 
 ## A Frontend Engineer
 
