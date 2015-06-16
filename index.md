@@ -57,7 +57,7 @@
 ### ➭ 翻译
 
 [![](http://img01.taobaocdn.com/tps/i1/T1YBC9XjJwXXXXXXXX-275-364.png_150x150.jpg)](http://jayli.github.io/jswebapps/)&nbsp;
-[![](http://gtms01.alicdn.com/tps/i1/TB1MedBHpXXXXasaFXX6LJ3SpXX-273-359.png_150x150.jpg)](http://jayli.github.io/jswebapps/)&nbsp;
+[![](http://gtms01.alicdn.com/tps/i1/TB1MedBHpXXXXasaFXX6LJ3SpXX-273-359.png_150x150.jpg)](http://jayli.github.io/maintainable.javascript/)&nbsp;
 [![](http://gtms04.alicdn.com/tps/i4/TB1.kIsHpXXXXclXFXXoHpKTpXX-516-678.png_150x150.jpg)](https://speakerdeck.com/lijing00333/javascript-patterns)&nbsp;
 [![](http://img04.taobaocdn.com/tps/i4/T1uHqiXdlfXXXXXXXX-270-354.jpg_150x150.jpg)](http://ued.taobao.org/javascript/)
 
