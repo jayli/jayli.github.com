@@ -41,17 +41,17 @@
 
 ### ➭ 演讲 & 分享
 
-- QCon：[极致的 Hybrid](http://t.cn/R2XWPgB)（2015）
-- QCon：[淘宝 HTML5 实战](http://wenku.baidu.com/link?url=grLomTOyFilVoG-0MDI8kXNC8eE0jQUk15hQNPh_dpTBCM4ulcYCclbnA8ObOMg9Yr3olsSnnLIGHWkXyGLt0R9BvBC50-QnRTujK4n3W9y)（2011）
-- D2：[阿里技术嘉年华D2会场-低碳的无线端开发实战](http://adc.taobao.com/carnival/topicinfo/107)（2012）
-- D2：[阿里技术嘉年华D2会场-KISSY Mobile App Toolkit](http://adc.alibabatech.org/carnival/history/schedule/2013/detail/main/208)（2013）
-- 象声汇：[正念前端](http://yunpan.taobao.com/s/jFWjIf9e77)（2015）
-- 象声汇：[加速成长的六个要诀](http://yunpan.taobao.com/s/novUs7dk0J)（2014）
-- 象声汇：[CSS 选择器性能调研](http://yunpan.taobao.com/s/xCEQSUpWZB)（2013）
-- 象声汇：[JavaScript AutoLoad](http://yunpan.taobao.com/s/dz1jS6uNC)（2011）
-- 象声汇：[NodeJS 实战](http://yunpan.taobao.com/s/18FsclgTYsg)（2010）
-- 象声汇：[GUI 进化史](http://yunpan.taobao.com/s/aHwLXEm4wA)（2010）
-- 象声汇：[JavaScript 图形编程](http://yunpan.taobao.com/s/yYQxUsvprB)（2010）
+- QCon：[极致的 Hybrid](http://pan.baidu.com/s/1eQk0AlG)（2015）
+- QCon：[淘宝 HTML5 实战](http://wenku.baidu.com/view/a1653a13cc7931b765ce151b.html)（2011）
+- D2：[阿里技术嘉年华D2会场-低碳的无线端开发实战](http://wenku.baidu.com/view/fa82b843e45c3b3567ec8bf3.html)（2012）
+- D2：[阿里技术嘉年华D2会场-KISSY Mobile App Toolkit](http://wenku.baidu.com/view/461d4054240c844768eaee05)（2013）
+- 象声汇：[正念前端](http://wenku.baidu.com/view/4dcc0c490508763230121207)（2015）
+- 象声汇：[加速成长的六个要诀](http://wenku.baidu.com/view/a92c3f8b856a561252d36f6b.html)（2014）
+- 象声汇：[CSS 选择器性能调研](http://pan.baidu.com/s/1sjHUizN)（2013）
+- 象声汇：[JavaScript AutoLoad](http://wenku.baidu.com/view/47d44fcdc850ad02de8041f9)（2011）
+- 象声汇：[NodeJS 实战](http://wenku.baidu.com/view/6f8335c34028915f804dc2be.html)（2010）
+- 象声汇：[GUI 进化史](http://wenku.baidu.com/view/f319d68d6529647d2728521c.html)（2010）
+- 象声汇：[JavaScript 图形编程](http://wenku.baidu.com/view/d259189e227916888586d70d)（2010）
 
 ### ➭ 翻译
 
