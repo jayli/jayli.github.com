@@ -12,15 +12,16 @@
 ### ➭ 文章
 
 - 【译】[什么是 Node](http://jayli.github.io/whatisnode/)
-- 【译】[使用 YUI 3开发 Web 应用的诀窍](http://ued.taobao.org/blog/2011/04/a-recipe-for-a-yui-3-application/)
 - 【译】[Nicholas C. Zakas vs John Resig 一场关于YUI3/jQuery的精彩辩论](http://ued.taobao.org/blog/2010/11/yui3-vs-jquery/)
+- [爱梦想，去旅行，阿里旅行·去啊 H5 团队招募ing](https://github.com/jayli/jayli.github.com/issues/17)
+- [微不足道的坚持](https://github.com/jayli/jayli.github.com/issues/12)
+- [蒙台梭利的三段话](https://github.com/jayli/jayli.github.com/issues/14)
 - [前端开发十日谈](https://github.com/jayli/jayli.github.com/issues/1)
 - [2012 年前端技术回顾](http://www.csdn.net/article/1970-01-01/2815164)
 - [KISSY 的自成体系是一种趋势](http://www.infoq.com/cn/news/2013/07/bachi-on-kissy?utm_source=tuicool)
 - [好的组件无需太复杂 - KISSY Slide 组件简介](http://ued.taobao.org/blog/2013/06/kissy-slide/)
 - [JavaScript语法检查插件 jsLint for Vim](http://ued.taobao.org/blogobao.org/blog/2010/11/jslint-for-vim/)
 - [将你的 KISSY 程序移植到服务器端 – nodejs-kissy 项目简介](http://ued.taobao.org/blog/2010/11/nodejs-kissy/)
-- [YUI3 在淘宝彩票中的实践](http://ued.taobao.org/blog/2010/06/yui3/)
 - [YUI3 设计中的激进和妥协](http://ued.taobao.org/blog/2010/01/yui3%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%BF%80%E8%BF%9B%E5%92%8C%E5%A6%A5%E5%8D%8F/)
 
 ### ➭ 项目
