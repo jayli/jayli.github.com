@@ -1,12 +1,6 @@
-# 标题测试
 
-    new Tip(function(){
-      // your code here
-      var a = 1;
-    });
+clone 下来仓库后，执行
 
-阿斯顿发送地方
+	tnpm i
 
-    <script src="sdf"></script>
-
-## 二级标题测试
+修改`index.md`，执行grunt
