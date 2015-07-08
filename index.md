@@ -13,6 +13,7 @@
 
 - 【译】[什么是 Node](http://jayli.github.io/whatisnode/)
 - 【译】[Nicholas C. Zakas vs John Resig 一场关于YUI3/jQuery的精彩辩论](http://ued.taobao.org/blog/2010/11/yui3-vs-jquery/)
+- [前端技术的开放和封闭](https://github.com/jayli/jayli.github.com/issues/18)
 - [爱梦想，去旅行，阿里旅行·去啊 H5 团队招募ing](https://github.com/jayli/jayli.github.com/issues/17)
 - [微不足道的坚持](https://github.com/jayli/jayli.github.com/issues/12)
 - [蒙台梭利的三段话](https://github.com/jayli/jayli.github.com/issues/14)
