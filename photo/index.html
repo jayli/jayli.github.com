@@ -1,48 +1,123 @@
-<!DOCTYPE HTML>
-<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7"> <![endif]-->
-<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7"> <![endif]-->
-<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8"> <![endif]-->
-<!--[if IE 9]><html class="no-js ie ie9 lte9"> <![endif]-->
-<!--[if gt IE 9]><html class="no-js"><![endif]-->
-<!--[if !IE]><!--><html><!--<![endif]-->
-<head>
-	<meta charset="UTF-8">
-	<title></title>
-  <link href="./bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Eyes - Jayli</title>
 
-  <!-- Jumbotron -->
-      <div class="jumbotron">
-        <h1>Marketing stuff!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
+    <!-- Bootstrap -->
+    <link href="assets/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Courier','monospace';
+      }
+      .starter-template {
+        margin-top:45px;
+        margin-bottom:45px;
+      }
+      .icon-list {
+        margin-top:36px;
+        margin-bottom:36px;
+      }
+      .icon-item {
+        margin:10px;
+        display:inline-block;
+        width:24px;
+        height:24px;
+      }
+      .icon-item img {
+        width:100%;
+        height:100%;
+      }
+      .photo-item {
+        margin-bottom: 45px;
+      }
+      .photo-item .des{
+        margin:20px;
+      }
+      .photo-item img {
+        display: block;
+      }
+    </style>
+
+  </head>
+  <body>
+    
+
+    <nav class="navbar navbar-static-top">
+      <div class="container">
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/">Default</a></li>
+            <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
+            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container text-center">
+
+      <div class="starter-template" >
+        <!--img src="assets/logo.svg" /-->
+        <img width=60 src="https://static.unsplash.com/assets/core/logo-black-354c456558d51dbb4395b563c7ca7395.svg" />
       </div>
 
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-lg-4">
-          <h2>Safari bug warning!</h2>
-          <p class="text-danger">As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.</p>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-lg-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
-          <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p>
-        </div>
-      </div>
+      <p>
+          Easy Man, Easy Man! Easy Man!  Easy Man!  Easy Man!
+      </p>
+      <p class="icon-list">
+        <a class="icon-item" href="home">
+          <img src="https://gw.alicdn.com/tps/TB1X8U5JFXXXXXCXVXXXXXXXXXX-64-64.png" />
+        </a>
+        <a class="icon-item" href="github">
+          <img src="https://gw.alicdn.com/tps/TB1P6.6JFXXXXXQXVXXXXXXXXXX-64-64.png" />
+        </a>
+        <a class="icon-item" href="weibo">
+          <img src="https://gw.alicdn.com/tps/TB10gleJVXXXXcRXpXXXXXXXXXX-64-64.png" />
+        </a>
+        <a class="icon-item" href="erweima">
+          <img src="https://gw.alicdn.com/tps/TB1EMQ.JFXXXXbCXFXXXXXXXXXX-64-64.png" />
+        </a>
+      </p>
+    </div><!-- /.container -->
 
-      <!-- Site footer -->
-      <footer class="footer">
-        <p>&copy; Company 2014</p>
-      </footer>
-	
-</body>
+    <div class="container text-center">
+      <div class="photo-item">
+        <a href="">
+          <img class="img-responsive" src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?q=80&fm=jpg&s=643e44f5177366de6cc914c8bcfbe064">
+        </a>
+        <p class="des"> download / [at] 2014-09-09</p>
+      </div>
+      <div class="photo-item">
+        <a href="">
+          <img class="img-responsive" src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?q=80&fm=jpg&s=643e44f5177366de6cc914c8bcfbe064">
+        </a>
+        <p class="des"> download / by jayli </p>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="assets/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/bootstrap.min.js"></script>
+  </body>
 </html>

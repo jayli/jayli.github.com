@@ -47,6 +47,7 @@
 - QCon：[淘宝 HTML5 实战](http://wenku.baidu.com/view/a1653a13cc7931b765ce151b.html)（2011）
 - D2：[低碳的无线端开发实战](http://wenku.baidu.com/view/fa82b843e45c3b3567ec8bf3.html)（2012）
 - D2：[KISSY Mobile App Toolkit](http://wenku.baidu.com/view/461d4054240c844768eaee05)（2013）
+- 象声汇：[懂一点航旅前端技术（培训课）](http://vdisk.weibo.com/s/sWYf0np7mi6/1439391012)（2015）
 - 象声汇：[正念前端](http://wenku.baidu.com/view/484409440508763230121278)（2015）
 - 象声汇：[加速成长的六个要诀](http://wenku.baidu.com/view/a92c3f8b856a561252d36f6b.html)（2014）
 - 象声汇：[CSS 选择器性能调研](http://pan.baidu.com/s/1sjHUizN)（2013）
