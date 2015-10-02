@@ -35,6 +35,7 @@
 - [SandBox](https://github.com/jayli/sandbox/)（JavaScript）
 - [YUI Slide](http://jayli.github.io/gallery/yuislide/)、[KISSY Slide](http://kissygalleryteam.github.io/slide/1.2/demo/index.html)（[1.3](http://kissygalleryteam.github.io/slide/1.3/demo/index.html)）（JavaScript）
 - [Tip](http://kissygalleryteam.github.io/tip/1.0/demo/index.html)（JavaScript）
+- [Kissy Mini](http://m.kissyui.com)（JavaScript）
 
 ### ➭ 技术专利
 

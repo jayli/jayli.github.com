@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         // 对build目录进行清理
         clean: {
             build: {
-                src: ['./index.html','./photo/data.js']
+                src: ['./index.html','./photo/assets/data.js']
 			}
         },
 		markdown: {
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 		replace: {
 			example: {
 				src: ['photo/data.md'],
-				dest: 'photo/data.js',
+				dest: 'photo/assets/data.js',
 				replacements: [{
 					from: /^(http.+(png|jpeg|jpg|gif))$/igm,      // regex replacement ('Fooo' to 'Mooo') 
 					to: "{img:'$1',"
@@ -41,11 +41,6 @@ module.exports = function(grunt) {
 							return "des:'" + matchedWord + "'},";
 						}
 					}
-				},{
-					from: 'Foo',
-					to: function (matchedWord) {   // callback replacement 
-						return matchedWord + ' Bar';
-					}
 				}]
 			}
 		},
@@ -56,8 +51,8 @@ module.exports = function(grunt) {
 				footer:"];",
 			},
 			dist: {
-				src: ['photo/data.js'],
-				dest: 'photo/data.js',
+				src: ['photo/assets/data.js'],
+				dest: 'photo/assets/data.js',
 			}
 		},
 		uglify:{
@@ -70,8 +65,8 @@ module.exports = function(grunt) {
 				files: [
 					{
 						expand: true,
-						src: ['photo/data.js'],
-						dist: 'photo/data.js'
+						src: ['photo/assets/data.js'],
+						dist: 'photo/assets/data.js'
 					}
 				]
 			},
