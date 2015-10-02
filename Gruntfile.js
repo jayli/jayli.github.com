@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 		concat: {
 			options:{
 				stripBanners: true,
-				banner:"var data = [",
+				banner:"var PhotoList = [",
 				footer:"];",
 			},
 			dist: {

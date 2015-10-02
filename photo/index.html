@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +10,10 @@
     <link href="assets/bootstrap.min.css" rel="stylesheet">
     <style>
       body {
-        font-family: 'Courier','monospace';
+        font-family: 'Courier',"MS PGothic", "Osaka",'monospace';
       }
       .starter-template {
-        margin-top:45px;
+        margin-top:20px;
         margin-bottom:45px;
       }
       .icon-list {
@@ -31,7 +31,7 @@
         height:100%;
       }
       .photo-item {
-        margin-bottom: 45px;
+        margin-bottom: 50px;
       }
       .photo-item .des{
         margin:20px;
@@ -39,6 +39,9 @@
       .photo-item img {
         display: block;
       }
+	  .photo-item .imglink {
+		display: inline-block;
+	  }
     </style>
 
   </head>
@@ -49,26 +52,14 @@
       <div class="container">
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
+            <li class="active"><a href="http://jayli.github.io/photo/">Home</a></li>
+            <li><a href="http://jayli.github.io">About</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar/">Default</a></li>
-            <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
-            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+			  <li>
+				  <a class="jiathis_button_weixin" href="javascript:void(0);">Share</a> 
+				  <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1" charset="utf-8"></script>
+			  </li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -82,42 +73,47 @@
       </div>
 
       <p>
-          Easy Man, Easy Man! Easy Man!  Easy Man!  Easy Man!
+		 一张照片就是人生代码的一个 tag，是记录，可回溯。
       </p>
+	  <p>D7000、腾龙 SP AF 17-50mm f/2.8 XR Di II VC</p>
       <p class="icon-list">
-        <a class="icon-item" href="home">
+        <a class="icon-item" href="http://jayli.github.io">
           <img src="https://gw.alicdn.com/tps/TB1X8U5JFXXXXXCXVXXXXXXXXXX-64-64.png" />
         </a>
-        <a class="icon-item" href="github">
+        <a class="icon-item" href="http://github.com/jayli">
           <img src="https://gw.alicdn.com/tps/TB1P6.6JFXXXXXQXVXXXXXXXXXX-64-64.png" />
         </a>
-        <a class="icon-item" href="weibo">
+        <a class="icon-item" href="http://www.weibo.com/jayli">
           <img src="https://gw.alicdn.com/tps/TB10gleJVXXXXcRXpXXXXXXXXXX-64-64.png" />
         </a>
-        <a class="icon-item" href="erweima">
+        <a class="icon-item" href="https://gw.alicdn.com/tps/TB14htbIXXXXXb4XpXXXXXXXXXX.png" target=_blank>
           <img src="https://gw.alicdn.com/tps/TB1EMQ.JFXXXXbCXFXXXXXXXXXX-64-64.png" />
         </a>
       </p>
     </div><!-- /.container -->
 
-    <div class="container text-center">
-      <div class="photo-item">
-        <a href="">
-          <img class="img-responsive" src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?q=80&fm=jpg&s=643e44f5177366de6cc914c8bcfbe064">
-        </a>
-        <p class="des"> download / [at] 2014-09-09</p>
-      </div>
-      <div class="photo-item">
-        <a href="">
-          <img class="img-responsive" src="https://images.unsplash.com/photo-1439694458393-78ecf14da7f9?q=80&fm=jpg&s=643e44f5177366de6cc914c8bcfbe064">
-        </a>
-        <p class="des"> download / by jayli </p>
-      </div>
+    <div class="container text-center" id="J_PhotoListContainer">
     </div>
+
+	<script type="text/juicer" id="J_PhotoItemTpl">
+	{@each itemList as item,index}
+		<div class="photo-item text-center">
+			<a href="${item.img}" class="imglink">
+			  <img class="img-responsive" src="${item.img}">
+			</a>
+			<p class="des"> ${item.des} / by <abbr title="拔赤">Jayli</abbr></p>
+		</div>
+	{@/each}
+	</script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="assets/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="assets/bootstrap.min.js"></script>
+	<script src="http://g.alicdn.com/kissy/m/1.0.1/mini-min.js"></script>
+    <script src="assets/juicer-min.js"></script>
+    <script src="assets/lazyload.js"></script>
+    <script src="assets/data.js"></script>
+    <script src="assets/app.js"></script>
   </body>
 </html>
