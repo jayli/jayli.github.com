@@ -37,6 +37,8 @@ module.exports = function(grunt) {
 							return matchedWord;
 						} else if (/^\{/.test(matchedWord)) {
 							return matchedWord;
+						} else if (/^--.+--$/ig.test(matchedWord)) {
+							return '';
 						} else {
 							return "des:'" + matchedWord + "'},";
 						}
