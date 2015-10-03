@@ -41,7 +41,6 @@
 	  }
       .photo-item .imglink img {
         display: block;
-		max-width:1100px;
       }
     </style>
 
@@ -100,7 +99,7 @@
 	{@each itemList as item,index}
 		<div class="photo-item text-center">
 			<a href="${item.img}" class="imglink">
-			  <img class="img-responsive" src="${item.img}">
+			  <img class="center-block img-responsive" alt="Responsive image" src="${item.img}">
 			</a>
 			<p class="des"> ${item.des} / by <abbr title="拔赤">Jayli</abbr></p>
 		</div>
