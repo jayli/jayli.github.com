@@ -114,7 +114,9 @@
 	<script src="http://g.alicdn.com/kissy/m/1.0.1/mini-min.js"></script>
     <script src="assets/juicer-min.js"></script>
     <script src="assets/lazyload.js"></script>
-    <script src="assets/data.js"></script>
+	<script>
+		document.write("<script src='assets/data.js?t=" + KISSY.now() + "'><\/script>");
+	</script>
     <script src="assets/app.js"></script>
   </body>
 </html>
