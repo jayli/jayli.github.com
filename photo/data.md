@@ -125,10 +125,6 @@ http://img.alicdn.com/imgextra/i4/58882271/TB2L4oKfFXXXXbiXpXXXXXXXXXX_!!5888227
 
 工位旁边的一张海报，内部的 Hackthon 活动 @ 2009
 
-http://img.alicdn.com/imgextra/i4/58882271/TB26lUYfFXXXXXdXpXXXXXXXXXX_!!58882271.jpg
-
-D2 会场身旁小伙准备发言 @ 2009
-
 http://img.alicdn.com/imgextra/i4/58882271/TB29AZ3fFXXXXb5XXXXXXXXXXXX_!!58882271.jpg
 
 杭州滨江-阿里巴巴总部，D2 行程 @ 2009
