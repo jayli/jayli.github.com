@@ -1,3 +1,37 @@
+http://gtms04.alicdn.com/tps/i4/TB18TReLXXXXXX6XpXXI6N9PXXX-1600-1059.jpg
+
+北京，小山谷远处，薄雾中的平谷城 @ 2015-12-18
+
+http://gtms03.alicdn.com/tps/i3/TB1xuZ2KVXXXXb.XVXXDsp.PXXX-1600-1068.jpg
+
+北京，平谷熊儿寨，寒风中静止的风车 @ 2015-12-18
+
+http://gtms03.alicdn.com/tps/i3/TB1w6g_KVXXXXawXFXXI6N9PXXX-1600-1059.jpg
+
+北京，西峪水库，冰上行走的人 @ 2015-12-18
+
+http://gtms02.alicdn.com/tps/i2/TB1gws1KVXXXXcTXVXXI6N9PXXX-1600-1059.jpg
+
+北京，西峪水库，和远处隐约的山影 @ 2015-12-18
+
+http://gtms01.alicdn.com/tps/i1/TB1n57YKVXXXXakaXXXI6N9PXXX-1600-1059.jpg
+
+北京，阿里旅行年底 outing，西峪水库，中信金陵酒店 @ 2015-12-18
+
+http://gtms04.alicdn.com/tps/i4/TB1A.RlLXXXXXXBXXXXI6N9PXXX-1600-1059.jpg
+
+北京，安静的卢沟桥 @ 2015
+
+http://gtms01.alicdn.com/tps/i1/TB1IBc2KVXXXXchXVXXI6N9PXXX-1600-1059.jpg
+
+北京，路灯蘩烁的卢沟新桥 @ 2015
+
+
+http://gtms02.alicdn.com/tps/i2/TB1WstaLXXXXXbEXpXXh7poYVXX-1100-736.jpg
+
+北京、第一场雪@ 2012
+
+
 http://img.alicdn.com/imgextra/i4/58882271/TB2phs0fFXXXXclXXXXXXXXXXXX_!!58882271.jpg
 
 旧金山、Vacaville 小镇 @ 2012
