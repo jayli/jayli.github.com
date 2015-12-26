@@ -72,11 +72,11 @@ http://gw.alicdn.com/tps/TB1._aOLXXXXXa1XXXXXXXXXXXX-2592-3872.jpg
 
 云台山 @ 2012
 
-http://img.alicdn.com/tps/TB1w7WxLXXXXXbjXFXXXXXXXXXX-2592-3872.jpg
+http://img.alicdn.com/tps/TB1w7WxLXXXXXbjXFXXXXXXXXXX-2592-3872.jpg_800x800.jpg
 
 云台山 @ 2012
 
-http://gw.alicdn.com/tps/TB1mJWJLXXXXXXDXpXXXXXXXXXX-3872-2592.jpg
+http://gw.alicdn.com/tps/TB1mJWJLXXXXXXDXpXXXXXXXXXX-3872-2592.jpg_800x800.jpg
 
 成武 @ 2011
 
