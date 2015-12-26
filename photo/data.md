@@ -44,7 +44,7 @@ http://img.alicdn.com/imgextra/i2/58882271/TB2JMsBfFXXXXciXpXXXXXXXXXX_!!5888227
 
 美国硅谷、Google 总部 @ 2012
 
-http://img.alicdn.com/imgextra/i3/58882271/TB2Mrs6fFXXXXbhXXXXXXXXXXXX_!!58882271.jpg
+http://gw.alicdn.com/tps/TB1UmKELXXXXXbaXpXXXXXXXXXX-1000-669.jpg
 
 旧金山大街乱拍，遛狗的人 @ 2012
 
@@ -63,6 +63,22 @@ http://img.alicdn.com/imgextra/i4/58882271/TB2j47PfFXXXXaLXpXXXXXXXXXX_!!5888227
 http://img.alicdn.com/imgextra/i1/58882271/TB2lAoIfFXXXXb_XpXXXXXXXXXX_!!58882271.jpg
 
 旧金山 QCon 大会，我的狗牌 @ 2012
+
+http://gw.alicdn.com/tps/TB12qCKLXXXXXcFXXXXXXXXXXXX-3872-2592.jpg
+
+云台山 @ 2012
+
+http://gw.alicdn.com/tps/TB1._aOLXXXXXa1XXXXXXXXXXXX-2592-3872.jpg
+
+云台山 @ 2012
+
+http://img.alicdn.com/tps/TB1w7WxLXXXXXbjXFXXXXXXXXXX-2592-3872.jpg
+
+云台山 @ 2012
+
+http://gw.alicdn.com/tps/TB1mJWJLXXXXXXDXpXXXXXXXXXX-3872-2592.jpg
+
+成武 @ 2011
 
 ---------------------------------
 
@@ -111,6 +127,53 @@ http://img.alicdn.com/imgextra/i2/58882271/TB2mXATfFXXXXXqXpXXXXXXXXXX_!!5888227
 
 这里是北京，后海 @ 2010
 
+http://gw.alicdn.com/tps/TB1kLaALXXXXXXCXFXXXXXXXXXX-1000-671.jpg
+
+杭州，京杭运河 @ 2010
+
+http://gw.alicdn.com/tps/TB1oGuRLXXXXXXvXXXXXXXXXXXX-1000-671.jpg
+
+杭州，西湖 @ 2010
+
+http://gw.alicdn.com/tps/TB1_ziBLXXXXXc6XpXXXXXXXXXX-3872-2592.jpg
+
+杭州，西湖 @ 2010
+
+http://gw.alicdn.com/tps/TB1ceuxLXXXXXXOXFXXXXXXXXXX-3872-2592.jpg
+
+杭州，杨公堤 @ 2010
+
+http://gw.alicdn.com/tps/TB1ziytLXXXXXc6XFXXXXXXXXXX-2592-3872.jpg
+
+杭州，杨公堤 @ 2010
+
+http://gw.alicdn.com/tps/TB1gSWoLXXXXXbeXVXXXXXXXXXX-2592-3872.jpg
+
+杭州，杨公堤 @ 2010
+
+http://gw.alicdn.com/tps/TB1EB1QLXXXXXXHXXXXXXXXXXXX-2592-3872.jpg
+
+杭州，西湖 @ 2010-3-13
+
+http://gw.alicdn.com/tps/TB1mdqHLXXXXXX5XpXXXXXXXXXX-2592-3872.jpg
+
+杭州，西湖 @ 2010-3-13
+
+http://gw.alicdn.com/tps/TB18KisLXXXXXXIXVXXXXXXXXXX-3872-2592.jpg
+
+杭州，西湖 @ 2010-3-13
+
+http://gw.alicdn.com/tps/TB1fteHLXXXXXagXpXXXXXXXXXX-2592-3872.jpg
+
+杭州，西湖 @ 2010-3-13
+
+http://gw.alicdn.com/tps/TB1XuOuLXXXXXcLXFXXXXXXXXXX-2896-1944.jpg
+
+北京，三环 @ 2010-2-5
+
+http://gw.alicdn.com/tps/TB1KLmQLXXXXXX0XXXXXXXXXXXX-2592-3872.jpg
+
+厦门，鼓浪屿 @ 2010
 ---------------------------------
 
 http://img.alicdn.com/imgextra/i1/58882271/TB2sOQTfFXXXXXrXpXXXXXXXXXX_!!58882271.jpg
