@@ -2,14 +2,13 @@
   "name": "jayli",
   "version": "0.1.0",
   "description": "拔赤的Blog",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt-contrib-clean": "~0.4.0",
     "grunt-markdown": "0.7.0",
-	"grunt-text-replace":"0.4.0",
-	"grunt-contrib-concat":"0.5.1",
-	"grunt-contrib-uglify": "~0.2.0"
+    "grunt-text-replace": "0.4.0",
+    "grunt-contrib-concat": "0.5.1",
+    "grunt-contrib-uglify": "~0.2.0"
   },
   "scripts": {
     "test": "node ./test.js"
@@ -18,8 +17,7 @@
     "type": "git",
     "url": "https://github.com/jayli/jayli.github.com"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "jayli",
   "license": "BSD"
 }
