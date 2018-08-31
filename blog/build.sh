@@ -1,5 +1,5 @@
 #!/bin/sh
 
-jekyll
+jekyll build
 cp -r _site/* ../blog/
-rm _site -rf
+rm -rf _site
