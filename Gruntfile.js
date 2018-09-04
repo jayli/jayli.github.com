@@ -87,3 +87,4 @@ module.exports = function(grunt) {
 		task.run(['clean','markdown','replace:example','concat','uglify']);
 	});
 };
+
