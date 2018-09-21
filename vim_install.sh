@@ -11,7 +11,7 @@ install() {
     mv ~/.vimrc ~/.vimrc.`date +%Y%m%d%H%M%S`
   fi
 
-  ln -s ~/.vim/vimrc ~/.vimrc
+  ln -s ~/.vim/_vimrc ~/.vimrc
   #cp ~/.vim/_vimrc ~/.vimrc
 
   cd ~/.vim
