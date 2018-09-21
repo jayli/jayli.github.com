@@ -27,6 +27,7 @@
 
 ### ➭ 项目
 
+- [Vim-EasyComplete](https://github.com/jayli/vim-easycomplete)（VIM）
 - [我的 vim 配置](https://github.com/jayli/vim)（VIM）
 - [Combo Script](https://github.com/jayli/combo)（PHP）
 - [YUI3 Calendar](http://jayli.github.io/gallery/calendar/README.html)（JavaScript）
