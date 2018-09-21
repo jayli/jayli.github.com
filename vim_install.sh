@@ -24,7 +24,7 @@ install() {
 }
 
 update() {
-  (cd ~/.vim; git pull;git submodule init;git submodule update)
+  (cd ~/.vim; git pull;git submodule foreach git checkout master;)
   #vim +BundleClean +BundleInstall +qall! </dev/tty
 }
 
