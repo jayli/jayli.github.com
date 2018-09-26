@@ -25,7 +25,7 @@ install() {
 
 update() {
 	(cd $HOME/.vim; git pull;)
-	(cd $HOME/.vim; git submodule update --remote;)
+	(cd $HOME/.vim; git submodule update --remote --merge;)
 	(cd $HOME/.vim; git submodule foreach git checkout master;)
   #vim +BundleClean +BundleInstall +qall! </dev/tty
 }
