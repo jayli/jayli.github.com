@@ -784,6 +784,5 @@ Sandbox.onDOMContentLoaded(function() {
 		var SD = Sandbox.DoQueue[i];
 		Sandbox.run(SD.requires, SD.callback);
 	}
-
 });
 
