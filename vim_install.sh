@@ -1,46 +1,49 @@
 #!/bin/sh
 
+# cat ./install.sh | sh -s install
+# cat ./install.sh | sh -s update
+
 install() {
-  if [ -d "$HOME/.vim" ]; then
-    mv $HOME/.vim $HOME/.vim.`date +%Y%m%d%H%M%S`
-  fi
+    if [ -d "$HOME/.vim" ]; then
+        mv $HOME/.vim $HOME/.vim.`date +%Y%m%d%H%M%S`
+    fi
 
-  git clone git@github.com:jayli/vim.git ~/.vim
+    git clone git@github.com:jayli/vim.git ~/.vim
 
-  if [ -f "$HOME/.vimrc" ]; then
-    mv ~/.vimrc ~/.vimrc.`date +%Y%m%d%H%M%S`
-  fi
+    if [ -f "$HOME/.vimrc" ]; then
+        mv ~/.vimrc ~/.vimrc.`date +%Y%m%d%H%M%S`
+    fi
 
-  ln -s $HOME/.vim/_vimrc $HOME/.vimrc
-  #cp ~/.vim/_vimrc ~/.vimrc
+    ln -s $HOME/.vim/_vimrc $HOME/.vimrc
+    #cp ~/.vim/_vimrc ~/.vimrc
 
-  cd $HOME/.vim
-  git submodule init
-  git submodule update
+    cd $HOME/.vim
+    git submodule init
+    git submodule update
 
-  #vim +BundleInstall! +qall! </dev/tty
-
-  #(cd ~/.vim/bundle/YouCompleteMe; ./install.sh --clang-completer)
+    #vim +BundleInstall! +qall! </dev/tty
+    #(cd ~/.vim/bundle/YouCompleteMe; ./install.sh --clang-completer)
 }
 
 update() {
-	(cd $HOME/.vim; git pull;)
-	(cd $HOME/.vim; git submodule update --remote --merge;)
-	(cd $HOME/.vim; git submodule foreach git checkout master;)
-  #vim +BundleClean +BundleInstall +qall! </dev/tty
+    (cd $HOME/.vim; git pull;)
+    (cd $HOME/.vim; git submodule init;)
+    (cd $HOME/.vim; git submodule update --remote --merge;)
+    (cd $HOME/.vim; git submodule foreach git checkout master;)
+    #vim +BundleClean +BundleInstall +qall! </dev/tty
 }
 
 for arg in "$@"
 do
-  case $arg in 
-    install)
-      install;
-      break;
-      ;;
-    update)
-      update;
-      break;
-      ;;
-  esac
+    case $arg in
+        install)
+            install;
+            break;
+            ;;
+        update)
+            update;
+            break;
+            ;;
+    esac
 done
 
