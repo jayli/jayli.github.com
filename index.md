@@ -3,7 +3,7 @@
 
 ### ➭ 本站简介
 
-拔赤，2008 年加入中国雅虎（[Yahoo 已死](http://jayli.github.io/blog/data/2010/12/16/yahoo.html)），后转岗淘宝至今，一直做前端开发，目前厮混在[阿里旅行·去啊](http://www.alitrip.com)前端团队，本站涉及 HTML/CSS/JavaScript 等技术观点，收录个人一些吐槽和技术作品，喜欢折腾，偶尔写写文章、[拍点照片儿](http://jayli.github.io/photo/)、翻译几本小书...
+拔赤，2008 年加入中国雅虎（[Yahoo 已死](http://jayli.github.io/blog/data/2010/12/16/yahoo.html)），后转战淘宝至今，一直做前端开发，目前在[阿里旅行·去啊](http://www.alitrip.com)前端团队，本站涉及 HTML/CSS/JavaScript 等技术观点，收录个人一些吐槽和技术作品，喜欢折腾，偶尔写写文章、[拍点照片儿](http://jayli.github.io/photo/)、翻译几本小书...
 
 您可以在[微博](http://www.weibo.com/jayli)或[微信](https://gw.alicdn.com/tps/TB14htbIXXXXXb4XpXXXXXXXXXX.png)上[at]到我
 
