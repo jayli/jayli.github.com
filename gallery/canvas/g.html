@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<!--created by 拔赤-->
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<style>
-	.score {position:absolute;color:white;z-index:100;}
-	.info{position:absolute;color:#333;text-align:right;bottom:0;right:0;z-index:100;}
-	</style>
-	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
+    <!--created by 拔赤-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+    .score {position:absolute;color:white;z-index:100;}
+    .info{position:absolute;color:#333;text-align:right;bottom:0;right:0;z-index:100;}
+    </style>
+    <script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 <p class="score"></p>
@@ -15,285 +15,279 @@
 </body>
 <script>
 YUI({
-	combine:true,
-	comboBase:'http://a.tbcdn.cn/??',
-	base:'http://a.tbcdn.cn/s/yui/3.2.0/build/',
-	root:'s/yui/3.2.0/build/',
-	filter:{
-		'searchExp': "&", 
-		'replaceStr': ","
-	},
-	modules:{
-		raphael:{
-			fullpath:'raphael-min.js'
-		}
-	}
+    combine:true,
+    comboBase:'http://a.tbcdn.cn/??',
+    base:'http://a.tbcdn.cn/s/yui/3.2.0/build/',
+    root:'s/yui/3.2.0/build/',
+    filter:{
+        'searchExp': "&", 
+        'replaceStr': ","
+    },
+    modules:{
+        raphael:{
+            fullpath:'raphael-min.js'
+        }
+    }
 }).use('raphael','console','dump','node',function(Y){
-	//new Y.Console().render();
+    //new Y.Console().render();
 
-	//全局变量
-	var W = Y.one('body').get('viewportRegion').width,
-		H = Y.one('body').get('viewportRegion').height,
-		R = Raphael(0,0,1,1),
-		B = [],//存储子弹
-		fragments = (Y.UA.webkit > 0)?50:20;//碎片个数
+    //全局变量
+    var W = Y.one('body').get('viewportRegion').width,
+        H = Y.one('body').get('viewportRegion').height,
+        R = Raphael(0,0,1,1),
+        B = [],//存储子弹
+        fragments = (Y.UA.webkit > 0)?50:20;//碎片个数
 
-	//记录分数
-	var Score = {
-		d:1000 * 60, //倒计时，1分钟
-		bullets:0,//发射子弹个数
-		hit:0,//命中个数
-		escape:0,//逃脱的方块
-		cubes:0,//方块总数
-		rate:0, //命中率
-		score:0, //杀敌效率
-		render:function(){
-			var S = Score;
-			if(S.bullets == 0){
-				S.rate = 0;
-			}else{
-				S.rate = Math.round(S.hit / S.bullets * 100)/100 * 100 + '%';
-			}
-			if(S.cubes == 0){
-				S.score = 0;
-			}else{
-				S.score = Math.round(S.hit / S.cubes * 100)/100 * 100 + '%';
-			}
-			S.rate = S.rate.toString().replace(/\..+%/,'%');
-			S.score = S.score.toString().replace(/\..+%/,'%');
-			var str = '打方块！点击鼠标发射炮弹!  方块:'+S.cubes + ',子弹:'+S.bullets+',命中:'+S.hit+',命中率:'+S.rate+',杀伤率:'+S.score;
-			Y.one('.score').set('innerHTML',str);
-			if(S.cubes == 100){
-				S.cubes ++ ;
-				alert('您的成绩:'+str);
-			}
-		}
-	};
+    //记录分数
+    var Score = {
+        d:1000 * 60, //倒计时，1分钟
+        bullets:0,//发射子弹个数
+        hit:0,//命中个数
+        escape:0,//逃脱的方块
+        cubes:0,//方块总数
+        rate:0, //命中率
+        score:0, //杀敌效率
+        render:function(){
+            var S = Score;
+            if(S.bullets == 0){
+                S.rate = 0;
+            }else{
+                S.rate = Math.round(S.hit / S.bullets * 100)/100 * 100 + '%';
+            }
+            if(S.cubes == 0){
+                S.score = 0;
+            }else{
+                S.score = Math.round(S.hit / S.cubes * 100)/100 * 100 + '%';
+            }
+            S.rate = S.rate.toString().replace(/\..+%/,'%');
+            S.score = S.score.toString().replace(/\..+%/,'%');
+            var str = '打方块！点击鼠标发射炮弹!    方块:'+S.cubes + ',子弹:'+S.bullets+',命中:'+S.hit+',命中率:'+S.rate+',杀伤率:'+S.score;
+            Y.one('.score').set('innerHTML',str);
+            if(S.cubes == 100){
+                S.cubes ++ ;
+                alert('您的成绩:'+str);
+            }
+        }
+    };
 
-	//inRegion
-	/*
-		region:[1,2,3,4]
-	*/
-	var inRegion = function(p,r){
-		if(p[0] > r[0] && p[0] < r[2] && p[1] > r[1] && p[1] < r[3]){
-			return true;
-		}else{
-			return false;
-		}
+    //inRegion
+    /*
+        region:[1,2,3,4]
+    */
+    var inRegion = function(p,r){
+        if(p[0] > r[0] && p[0] < r[2] && p[1] > r[1] && p[1] < r[3]){
+            return true;
+        }else{
+            return false;
+        }
 
-	};
+    };
 
-	//判断两个矩形对象是否重合
-	var coincide = function(a,b){
-		a = [
-			a.attr('x'),
-			a.attr('y'),
-			a.attr('x')+a.attr('width'),
-			a.attr('y')+a.attr('height')
-		];
-		b = [
-			b.attr('x'),
-			b.attr('y'),
-			b.attr('x')+b.attr('width'),
-			b.attr('y')+b.attr('height')
-		];
+    //判断两个矩形对象是否重合
+    var coincide = function(a,b){
+        a = [
+            a.attr('x'),
+            a.attr('y'),
+            a.attr('x')+a.attr('width'),
+            a.attr('y')+a.attr('height')
+        ];
+        b = [
+            b.attr('x'),
+            b.attr('y'),
+            b.attr('x')+b.attr('width'),
+            b.attr('y')+b.attr('height')
+        ];
 
-		if(inRegion([a[0],a[1]],b))return true;
-		if(inRegion([a[0],a[3]],b))return true;
-		if(inRegion([a[2],a[1]],b))return true;
-		if(inRegion([a[2],a[3]],b))return true;
+        if(inRegion([a[0],a[1]],b))return true;
+        if(inRegion([a[0],a[3]],b))return true;
+        if(inRegion([a[2],a[1]],b))return true;
+        if(inRegion([a[2],a[3]],b))return true;
 
-		if(inRegion([b[0],b[1]],a))return true;
-		if(inRegion([b[0],b[3]],a))return true;
-		if(inRegion([b[2],b[1]],a))return true;
-		if(inRegion([b[2],b[3]],a))return true;
-		return false;
-	};
-
-
-	//随机得到色值
-	var randomColor = function(){
-		var r,g,b;
-		r=Math.floor(Math.random()*256);
-		g=Math.floor(Math.random()*256);
-		b=Math.floor(Math.random()*256);
-		return 'rgb('+r+','+g+','+b+')';
-	};
-	
-	//火花碎片
-	var Spark = function(opt){
-		//Y.log(opt);
-		var o = opt || {},
-			ox = o.ox,
-			oy = o.oy,
-			dx = o.dx,
-			dy = o.dy,
-			duration = o.duration || 1000,
-			ease = o.ease || '>',
-			color = randomColor(),
-			w = opt.w || 5,
-			w = Math.floor(Math.random()*w + 1);
-			el = R.rect(ox,oy,w,w).attr('fill',color);
-
-		el.animate({
-			x:dx,
-			y:dy,
-			opacity:0
-		},duration,ease,function(){
-			this.remove()
-			
-		});
-			
-	};
-	
-	//随机生成圆中的一个点
-	var RandomPoint = function(x,y,r){
-		var r = Math.random() * r,//随机半径
-			e = Math.random() * (Math.PI * 2),//随机角度
-			a = r * Math.cos(e),
-			b = r * Math.sin(e);
-		x += a;
-		y += b;
-		return {
-			x:x,
-			y:y
-		};
-	};
-	
-	//爆炸
-	//x,y,n:火花个数，r ：爆炸半径，w：火花最大尺寸
-	var explode = function(x,y,n,r,w){
-		for(var i = 0;i<n;i++){
-			var d = RandomPoint(x,y,r);
-			//Y.log(d);
-			new Spark({
-				ox:Math.floor(x),
-				oy:Math.floor(y),
-				dx:Math.floor(d.x),
-				dy:Math.floor(d.y),
-				w:w
-			});
-		}
-	
-	};
+        if(inRegion([b[0],b[1]],a))return true;
+        if(inRegion([b[0],b[3]],a))return true;
+        if(inRegion([b[2],b[1]],a))return true;
+        if(inRegion([b[2],b[3]],a))return true;
+        return false;
+    };
 
 
-	//
-	var removeArray = function(v, a){
-		for(var i=0,m=a.length; i<m; i++){
-			if(a[i] == v){
-				a.splice(i, 1);
-				break;
-			}
-		}
-	};
-	
+    //随机得到色值
+    var randomColor = function(){
+        var r,g,b;
+        r=Math.floor(Math.random()*256);
+        g=Math.floor(Math.random()*256);
+        b=Math.floor(Math.random()*256);
+        return 'rgb('+r+','+g+','+b+')';
+    };
 
-	//发射一发子弹
-	var fire = function(e){
-		var x = e.pageX,
-			y = e.pageY,
-			H = Y.one('body').get('viewportRegion').height + Y.one('body').get('viewportRegion').top - 5,
-			h = H,//H - y,//路程
-			v = 500,//速度
-			d = h / v * 1000,
-			arrow = R.rect(x,H,2,5).attr('fill','white');
-		B.push(arrow);
-		arrow.animate({
-			x:x,
-			y:0
-		},d,function(){
-			removeArray(arrow,B);
-			this.remove();	
-		});
-		Score.bullets++;
-		Score.render();
-	};
+    //火花碎片
+    var Spark = function(opt){
+        //Y.log(opt);
+        var o = opt || {},
+            ox = o.ox,
+            oy = o.oy,
+            dx = o.dx,
+            dy = o.dy,
+            duration = o.duration || 1000,
+            ease = o.ease || '>',
+            color = randomColor(),
+            w = opt.w || 5,
+            w = Math.floor(Math.random()*w + 1);
+            el = R.rect(ox,oy,w,w).attr('fill',color);
+
+        el.animate({
+            x:dx,
+            y:dy,
+            opacity:0
+        },duration,ease,function(){
+            this.remove()
+        });
+    };
+
+    //随机生成圆中的一个点
+    var RandomPoint = function(x,y,r){
+        var r = Math.random() * r,//随机半径
+            e = Math.random() * (Math.PI * 2),//随机角度
+            a = r * Math.cos(e),
+            b = r * Math.sin(e);
+        x += a;
+        y += b;
+        return {
+            x:x,
+            y:y
+        };
+    };
+
+    //爆炸
+    //x,y,n:火花个数，r ：爆炸半径，w：火花最大尺寸
+    var explode = function(x,y,n,r,w){
+        for(var i = 0;i<n;i++){
+            var d = RandomPoint(x,y,r);
+            //Y.log(d);
+            new Spark({
+                ox:Math.floor(x),
+                oy:Math.floor(y),
+                dx:Math.floor(d.x),
+                dy:Math.floor(d.y),
+                w:w
+            });
+        }
+    };
 
 
-	//随机生成一个Drop，起点x位置在0-maxWidth,y值为0，随机最大宽度为w,随机最大速度为
-	//构造器,new Drop
-	var Drop = function(w,v){
-		var that = this;
-		var x = Math.ceil(Math.random()*W),
-			w = Math.ceil(Math.random()*w),//尺寸
-			y = 0 - w, 
-			v = Math.ceil(Math.random()*v),//速度
-			d = H / v * 100;
-		this.destory = function(){
-			if(!that.rect)return;
-			that.rect.remove();	
-			that.rect = null;
-			delete that;
-		};
-		this.rect = R.rect(x,y,w,w).attr('fill',randomColor());
-		this.rect.animate({
-			x:x,
-			y:H - w
-		},d,function(){
-			//减分
-			that.destory();
-			Score.escape++;
-			Score.render();
-		}).onAnimation(function(){
-			if(B.length == 0)return;
-			for(var i = 0;i< B.length;i++){
-				if(coincide(this,B[i])){
-					Y.log(B[i]);
-					var hx = B[i].attrs.x,
-						hy = B[i].attrs.y;
-					B[i].remove();
-					B.splice(i,1);
-					that.destory();
-					explode(hx,hy,fragments,300,10);
-					Score.hit++;
-					Score.render();
-					break;
-				}
-			}
-			
-		}).click(fire);
-		Score.cubes++;
-		Score.render();
-	};
+    var removeArray = function(v, a){
+        for(var i=0,m=a.length; i<m; i++){
+            if(a[i] == v){
+                a.splice(i, 1);
+                break;
+            }
+        }
+    };
+
+    //发射一发子弹
+    var fire = function(e){
+        var x = e.pageX,
+            y = e.pageY,
+            H = Y.one('body').get('viewportRegion').height + Y.one('body').get('viewportRegion').top - 5,
+            h = H,//H - y,//路程
+            v = 500,//速度
+            d = h / v * 1000,
+            arrow = R.rect(x,H,2,5).attr('fill','white');
+        B.push(arrow);
+        arrow.animate({
+            x:x,
+            y:0
+        },d,function(){
+            removeArray(arrow,B);
+            this.remove();  
+        });
+        Score.bullets++;
+        Score.render();
+    };
+
+
+    //随机生成一个Drop，起点x位置在0-maxWidth,y值为0，随机最大宽度为w,随机最大速度为
+    //构造器,new Drop
+    var Drop = function(w,v){
+        var that = this;
+        var x = Math.ceil(Math.random()*W),
+            w = Math.ceil(Math.random()*w),//尺寸
+            y = 0 - w, 
+            v = Math.ceil(Math.random()*v),//速度
+            d = H / v * 100;
+        this.destory = function(){
+            if(!that.rect)return;
+            that.rect.remove(); 
+            that.rect = null;
+            delete that;
+        };
+        this.rect = R.rect(x,y,w,w).attr('fill',randomColor());
+        this.rect.animate({
+            x:x,
+            y:H - w
+        },d,function(){
+            //减分
+            that.destory();
+            Score.escape++;
+            Score.render();
+        }).onAnimation(function(){
+            if(B.length == 0)return;
+            for(var i = 0;i< B.length;i++){
+                if(coincide(this,B[i])){
+                    Y.log(B[i]);
+                    var hx = B[i].attrs.x,
+                        hy = B[i].attrs.y;
+                    B[i].remove();
+                    B.splice(i,1);
+                    that.destory();
+                    explode(hx,hy,fragments,300,10);
+                    Score.hit++;
+                    Score.render();
+                    break;
+                }
+            }
+
+        }).click(fire);
+        Score.cubes++;
+        Score.render();
+    };
 
 
 
 
-	//runtime 
+    //runtime 
 
-	//创建场景
-	var S = function(w,h){
-		R.setSize(W,H);
+    //创建场景
+    var S = function(w,h){
+        R.setSize(W,H);
 
-		//背景
-		return R.rect(0,0,w,h).attr('fill','black');
-	}(W,H);
+        //背景
+        return R.rect(0,0,w,h).attr('fill','black');
+    }(W,H);
 
-	//随着视窗大小改变更改全局参数
-	Y.one('window').on('resize',function(e){
-		W = Y.one('body').get('viewportRegion').width;
-		H = Y.one('body').get('viewportRegion').height;
-	
-		R.setSize(W,H);
-		S.attr({
-			width:W,
-			height:H
-		});
-	});
+    //随着视窗大小改变更改全局参数
+    Y.one('window').on('resize',function(e){
+        W = Y.one('body').get('viewportRegion').width;
+        H = Y.one('body').get('viewportRegion').height;
+    
+        R.setSize(W,H);
+        S.attr({
+            width:W,
+            height:H
+        });
+    });
 
-	S.click(fire);
+    S.click(fire);
 
-	//随机创建下坠物
-	(function(){
-		var d = Math.ceil(Math.random()*2) * 1000;//2秒内的随机数
-		new Drop(20,10);
-		setTimeout(arguments.callee,d);
-	})();
+    //随机创建下坠物
+    (function(){
+        var d = Math.ceil(Math.random()*2) * 1000;//2秒内的随机数
+        new Drop(20,10);
+        setTimeout(arguments.callee,d);
+    })();
 
-	Score.render();
+    Score.render();
 
-	
 });
 
 </script>

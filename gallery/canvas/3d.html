@@ -2,177 +2,177 @@
 <html lang="zh">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="Keywords" content="简单的XHTML页面" />
-	<meta name="Description" content="这是一个简单的XHTML页面" />
-	<title>简单的XHTML页面</title>
-	<script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="简单的XHTML页面" />
+    <meta name="Description" content="这是一个简单的XHTML页面" />
+    <title>简单的XHTML页面</title>
+    <script src="http://a.tbcdn.cn/s/yui/3.2.0/build/yui/yui-min.js"></script>
 </head>
 <body class="yui3-skin-sam">
 </body>
 <script>
 YUI({
-	combine:true,
-	comboBase:'http://a.tbcdn.cn/??',
-	base:'http://a.tbcdn.cn/s/yui/3.2.0/build/',
-	root:'s/yui/3.2.0/build/',
-	filter:{
-		'searchExp': "&", 
-		'replaceStr': ","
-	},
-	modules:{
-		raphael:{
-			fullpath:'raphael-min.js'
-		}
-	}
+    combine:true,
+    comboBase:'http://a.tbcdn.cn/??',
+    base:'http://a.tbcdn.cn/s/yui/3.2.0/build/',
+    root:'s/yui/3.2.0/build/',
+    filter:{
+        'searchExp': "&", 
+        'replaceStr': ","
+    },
+    modules:{
+        raphael:{
+            fullpath:'raphael-min.js'
+        }
+    }
 }).use('raphael','console','dump','node',function(Y){
-	new Y.Console().render();
-	
-	//全局变量
-	var W = Y.one('body').get('viewportRegion').width,
-		H = Y.one('body').get('viewportRegion').height,
-		R = Raphael(0,0,1,1),
-		B = []; //所有的线
-	
-	var sin = Math.sin;
-	var cos = Math.cos;
-	var PI = Math.PI;
-	
-	//将向量a缩放n倍
-	var zoom = function(a,n){
-		var _a = [];
-		for(var i = 0;i<a.length;i++){
-			for(var j = 0;j<a[i].length;j++){
-				if(!_a[i])_a[i] = [];
-				_a[i][j] = a[i][j] * n;
-			}
-		}
-		return _a;
-	};
-	var clear = function(){
-		for(var i = 0;i<B.length;i++){
-			B[i].remove();
-			//B.splice(i,1);
-		}
-		B = [];
-	};
-	//clone
-	var clone = function(o){
-		var a = [];
-		for(var i in o){
-			a[i] = o[i];
-		}
-		return a;
-	};
-	
-	//划线，b，起始位置，e，结束为止，C，画布
-	var drowLine = function(b,e,C){
-		B.push(R.path('M'+b[0]+' '+b[1]+'L'+e[0]+' '+e[1]).attr({stroke: "white"}));
-	};
-	
-	//绘制正方形的12条边,boo,是否清除画布
-	var drowCube = function(cube,boo){
-		if(boo)clear();
+    new Y.Console().render();
+    
+    //全局变量
+    var W = Y.one('body').get('viewportRegion').width,
+        H = Y.one('body').get('viewportRegion').height,
+        R = Raphael(0,0,1,1),
+        B = []; //所有的线
+    
+    var sin = Math.sin;
+    var cos = Math.cos;
+    var PI = Math.PI;
+    
+    //将向量a缩放n倍
+    var zoom = function(a,n){
+        var _a = [];
+        for(var i = 0;i<a.length;i++){
+            for(var j = 0;j<a[i].length;j++){
+                if(!_a[i])_a[i] = [];
+                _a[i][j] = a[i][j] * n;
+            }
+        }
+        return _a;
+    };
+    var clear = function(){
+        for(var i = 0;i<B.length;i++){
+            B[i].remove();
+            //B.splice(i,1);
+        }
+        B = [];
+    };
+    //clone
+    var clone = function(o){
+        var a = [];
+        for(var i in o){
+            a[i] = o[i];
+        }
+        return a;
+    };
+    
+    //划线，b，起始位置，e，结束为止，C，画布
+    var drowLine = function(b,e,C){
+        B.push(R.path('M'+b[0]+' '+b[1]+'L'+e[0]+' '+e[1]).attr({stroke: "white"}));
+    };
+    
+    //绘制正方形的12条边,boo,是否清除画布
+    var drowCube = function(cube,boo){
+        if(boo)clear();
 
-		drowLine(cube[0],cube[3]);
-		drowLine(cube[1],cube[2]);
-		drowLine(cube[6],cube[5]);
-		drowLine(cube[7],cube[4]);
+        drowLine(cube[0],cube[3]);
+        drowLine(cube[1],cube[2]);
+        drowLine(cube[6],cube[5]);
+        drowLine(cube[7],cube[4]);
 
-		drowLine(cube[3],cube[2]);
-		drowLine(cube[7],cube[6]);
-		drowLine(cube[4],cube[5]);
-		drowLine(cube[1],cube[0]);
+        drowLine(cube[3],cube[2]);
+        drowLine(cube[7],cube[6]);
+        drowLine(cube[4],cube[5]);
+        drowLine(cube[1],cube[0]);
 
-		drowLine(cube[3],cube[7]);
-		drowLine(cube[2],cube[6]);
-		drowLine(cube[1],cube[5]);
-		drowLine(cube[0],cube[4]);
-	};
-	//runtime 
+        drowLine(cube[3],cube[7]);
+        drowLine(cube[2],cube[6]);
+        drowLine(cube[1],cube[5]);
+        drowLine(cube[0],cube[4]);
+    };
+    //runtime 
 
-	//创建场景
-	var S = function(w,h){
-		R.setSize(W,H);
+    //创建场景
+    var S = function(w,h){
+        R.setSize(W,H);
 
-		//背景
-		return R.rect(0,0,w,h).attr('fill','black');
-	}(W,H);
+        //背景
+        return R.rect(0,0,w,h).attr('fill','black');
+    }(W,H);
 
-	//随着视窗大小改变更改全局参数
-	Y.one('window').on('resize',function(e){
-		W = Y.one('body').get('viewportRegion').width;
-		H = Y.one('body').get('viewportRegion').height;
-	
-		R.setSize(W,H);
-		S.attr({
-			width:W,
-			height:H
-		});
-	});
-
-
-	var X = [450,250,450],//位移量
-		Z = 120;//放大
-
-	
-	//var c = R.path("M10 10L90 90").attr({stroke: "red"});
-	//S.hide();
-	S.drag(function(dx,dy){
-		drowCube(matrixCube(zoom(clone(getCube(dx/100)),Z),M,X),true);
-	});
-	
-	
-	
-
-	
-	var getCube = function(I){
-		return [
-			[cos(I+PI/2),1,sin(I+PI/2)],
-			[cos(I),1,sin(I)],
-			[cos(I+PI*3/2),1,sin(I+PI*3/2)],
-			[cos(I+PI),1,sin(I+PI)],
-
-			[cos(I+PI/2),-1,sin(I+PI/2)],
-			[cos(I),-1,sin(I)],
-			[cos(I+PI*3/2),-1,sin(I+PI*3/2)],
-			[cos(I+PI),-1,sin(I+PI)]
-		];
-	};
-	//向量的转换，a：原始向量，M：转换矩阵，b：偏移量
-	var matrix = function(a,M,b){
-		if(!b)b = [100,100,100];
-		var x = a[0]*M[0][0] + a[1]*M[1][0] + a[2]*M[2][0]+b[0];
-		var y = a[0]*M[0][1] + a[1]*M[1][1] + a[2]*M[2][1]+b[1];
-		var z = a[0]*M[0][2] + a[1]*M[1][2] + a[2]*M[2][2]+b[2];
-		return [x,y,z];
-	};
-
-	//正方形所有顶点向量的批量转换，c：正方形，M：转换矩阵
-	//正方形所有顶点向量的批量转换，c：正方形，M：转换矩阵
-	var matrixCube = function(c,M,b){
-		var _c = [];
-		if(!b)b=false;
-		for(var i = 0;i<c.length;i++){
-			_c[i] = matrix(c[i],M,b);
-		}
-		return _c;
-	};
-	/*================begin==================*/
-	//变换矩阵1（任意三阶矩阵都可以作为变换矩阵）
-	//角度变换
-	//变换矩阵2
-	var M = [
-		[Math.sqrt(2)/2,Math.sqrt(3)/3,Math.sqrt(6)/6],
-		[-Math.sqrt(2)/2,Math.sqrt(3)/3,Math.sqrt(6)/6],
-		[0,-Math.sqrt(3)/3,Math.sqrt(6)/6]
-	];
+    //随着视窗大小改变更改全局参数
+    Y.one('window').on('resize',function(e){
+        W = Y.one('body').get('viewportRegion').width;
+        H = Y.one('body').get('viewportRegion').height;
+    
+        R.setSize(W,H);
+        S.attr({
+            width:W,
+            height:H
+        });
+    });
 
 
+    var X = [450,250,450],//位移量
+        Z = 120;//放大
+
+    
+    //var c = R.path("M10 10L90 90").attr({stroke: "red"});
+    //S.hide();
+    S.drag(function(dx,dy){
+        drowCube(matrixCube(zoom(clone(getCube(dx/100)),Z),M,X),true);
+    });
+    
+    
+    
+
+    
+    var getCube = function(I){
+        return [
+            [cos(I+PI/2),1,sin(I+PI/2)],
+            [cos(I),1,sin(I)],
+            [cos(I+PI*3/2),1,sin(I+PI*3/2)],
+            [cos(I+PI),1,sin(I+PI)],
+
+            [cos(I+PI/2),-1,sin(I+PI/2)],
+            [cos(I),-1,sin(I)],
+            [cos(I+PI*3/2),-1,sin(I+PI*3/2)],
+            [cos(I+PI),-1,sin(I+PI)]
+        ];
+    };
+    //向量的转换，a：原始向量，M：转换矩阵，b：偏移量
+    var matrix = function(a,M,b){
+        if(!b)b = [100,100,100];
+        var x = a[0]*M[0][0] + a[1]*M[1][0] + a[2]*M[2][0]+b[0];
+        var y = a[0]*M[0][1] + a[1]*M[1][1] + a[2]*M[2][1]+b[1];
+        var z = a[0]*M[0][2] + a[1]*M[1][2] + a[2]*M[2][2]+b[2];
+        return [x,y,z];
+    };
+
+    //正方形所有顶点向量的批量转换，c：正方形，M：转换矩阵
+    //正方形所有顶点向量的批量转换，c：正方形，M：转换矩阵
+    var matrixCube = function(c,M,b){
+        var _c = [];
+        if(!b)b=false;
+        for(var i = 0;i<c.length;i++){
+            _c[i] = matrix(c[i],M,b);
+        }
+        return _c;
+    };
+    /*================begin==================*/
+    //变换矩阵1（任意三阶矩阵都可以作为变换矩阵）
+    //角度变换
+    //变换矩阵2
+    var M = [
+        [Math.sqrt(2)/2,Math.sqrt(3)/3,Math.sqrt(6)/6],
+        [-Math.sqrt(2)/2,Math.sqrt(3)/3,Math.sqrt(6)/6],
+        [0,-Math.sqrt(3)/3,Math.sqrt(6)/6]
+    ];
 
 
-	//drowCube(zoom(cube,100),false);
-	drowCube(matrixCube(zoom(clone(getCube(0)),Z),M,X),false);
+
+
+    //drowCube(zoom(cube,100),false);
+    drowCube(matrixCube(zoom(clone(getCube(0)),Z),M,X),false);
 
 });
 
