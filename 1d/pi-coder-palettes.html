@@ -1,0 +1,1139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pi-coder 三皮肤 · 主色板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #07080b;
+  --ink2: #0b0d12;
+  --ink3: #12151c;
+  --rule: #1c2027;
+  --paper: #eef1f6;
+  --mute: #8b93a1;
+  --faint: #5d6470;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --mono-mixed: "JetBrains Mono", "Inter", ui-monospace, SFMono-Regular, Menlo, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(940px 480px at 10% -8%, rgba(122,162,247,.14), transparent 62%),
+    radial-gradient(780px 440px at 90% -14%, rgba(183,189,248,.12), transparent 64%),
+    radial-gradient(700px 400px at 50% 2%, rgba(230,180,80,.07), transparent 68%),
+    var(--ink);
+  background-attachment: fixed;
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.78;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; }
+.wrap { max-width: 1220px; margin: 0 auto; padding: 0 22px 96px; }
+
+code, .mono { font-family: var(--mono); font-feature-settings: "calt" 1; }
+code { font-size: 14px; color: #9fb6cc; letter-spacing: -.01em; }
+
+/* ---------- page head ---------- */
+header.top { padding: 78px 0 30px; }
+.kicker { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12.5px; letter-spacing: .34em; text-transform: uppercase; color: var(--faint); }
+.kicker::before { content: ""; width: 30px; height: 1px; background: linear-gradient(90deg, transparent, #7aa2f7); }
+h1 {
+  margin: 18px 0 16px;
+  font-size: clamp(42px, 7.6vw, 92px);
+  line-height: .96;
+  letter-spacing: -.032em;
+  font-weight: 750;
+  background: linear-gradient(96deg, #7aa2f7 0%, #b7bdf8 38%, #e6b450 66%, #f7768e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 14px 48px rgba(122,162,247,.16));
+}
+h1 small { display: block; font-size: clamp(16px, 2.2vw, 23px); font-weight: 800; letter-spacing: .05em; color: var(--mute); margin-top: 16px; -webkit-text-fill-color: var(--mute); }
+.lead { max-width: 840px; color: var(--mute); font-size: 16px; line-height: 1.82; }
+.lead b { color: var(--paper); font-weight: 620; }
+.lead a { color: #7aa2f7; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(122,162,247,.45); transition: text-decoration-color .2s ease; }
+.lead a:hover { text-decoration-color: #7aa2f7; }
+
+/* ---------- trio preview ---------- */
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 48px 0 10px; }
+.prev {
+  position: relative; display: block; height: 302px; border-radius: 16px; overflow: hidden;
+  background: var(--p-bg); text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 26px 60px -34px #000;
+  transition: transform .42s cubic-bezier(.2,.8,.2,1), box-shadow .42s ease;
+}
+.prev:hover { transform: translateY(-6px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 36px 72px -32px #000; }
+.prev .glow {
+  position: absolute; inset: -30% -10% auto auto; width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, var(--p-accent) 0%, transparent 68%); opacity: .32; filter: blur(9px);
+  transition: opacity .42s ease;
+}
+.prev:hover .glow { opacity: .5; }
+.prev .cn { position: absolute; top: 28px; left: 28px; font-size: 46px; letter-spacing: 0; color: var(--p-fg); font-weight: 500; }
+.prev .en { position: absolute; top: 96px; left: 30px; font-family: var(--mono); font-size: 13px; letter-spacing: .1em; color: var(--p-soft); }
+.prev .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: var(--p-dna); }
+.prev .fnote { position: absolute; bottom: 96px; left: 28px; font-family: var(--mono); font-size: 12.5px; color: var(--p-soft); opacity: .88; }
+
+/* ---------- nav ---------- */
+nav.toc {
+  position: sticky; top: 0; z-index: 30; margin: 28px -22px 8px; padding: 12px 22px;
+  background: rgba(7,8,11,.82); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px;
+}
+nav.toc a { color: var(--mute); text-decoration: none; font-family: var(--mono); transition: color .2s ease; }
+nav.toc a:hover { color: var(--paper); }
+nav.toc .sep { color: var(--rule); }
+
+/* ---------- theme plate ---------- */
+.plate {
+  position: relative; overflow: hidden;
+  margin: 60px 0 0; padding: 42px 42px 50px; border-radius: 20px;
+  background-color: var(--p-bg);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 280px);
+  color: var(--p-fg);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 46px 96px -60px #000;
+  scroll-margin-top: 62px;
+}
+.plate::after {
+  content: ""; position: absolute; top: -190px; right: -140px; width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, var(--p-accent) 0%, transparent 68%); opacity: .11; filter: blur(12px); pointer-events: none;
+}
+.plate > * { position: relative; z-index: 1; }
+.dna { display: flex; height: 100px; border-radius: 16px; overflow: hidden; transform: skewX(-7deg); margin: 0 0 42px; box-shadow: 0 22px 44px -38px #000; }
+.dna i { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 2px; padding: 10px 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .03em; font-style: normal; overflow-wrap: anywhere; }
+
+.phead { display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: end; }
+.phead .idx {
+  font-family: var(--mono); font-size: 120px; line-height: .78; font-weight: 700;
+  color: transparent; -webkit-text-stroke: 1.5px var(--p-accent); opacity: .8;
+}
+.phead h2 { margin: 0; font-size: clamp(30px, 4.6vw, 50px); letter-spacing: -.015em; font-weight: 680; color: var(--p-fg); }
+.phead h2 em { font-style: normal; color: var(--p-accent); }
+.phead .sub { font-family: var(--mono); font-size: 13.5px; color: var(--p-soft); margin-top: 8px; letter-spacing: .05em; }
+.phead .mood { max-width: 440px; font-family: var(--mono-mixed); font-size: 15px; color: var(--p-soft); line-height: 1.8; }
+.phead .mood b { color: var(--p-fg); font-weight: 620; }
+
+.h3 { display: flex; align-items: baseline; gap: 13px; margin: 52px 0 17px; }
+.h3 b { font-size: 17px; font-weight: 640; color: var(--p-fg); white-space: nowrap; }
+.h3 span { font-family: var(--mono); font-size: 11.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--p-dim); white-space: nowrap; }
+.h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--p-line), transparent); }
+
+/* ---------- swatches ---------- */
+.blk {
+  position: relative; border-radius: 10px; display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0; overflow: hidden; cursor: copy;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 16px 32px -28px #000;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+}
+.blk:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 22px 36px -22px #000; }
+.lb { padding: 13px 15px 14px; display: flex; flex-direction: column; }
+.lb .nm { font-size: 15.5px; font-weight: 640; letter-spacing: .005em; line-height: 1.35; overflow-wrap: anywhere; }
+.lb .hx { font-family: var(--mono); font-size: 13px; opacity: .78; letter-spacing: .04em; margin-top: 2px; }
+.lb .rl { font-size: 12.5px; opacity: .66; line-height: 1.5; margin-top: 2px; }
+.on-l { color: #000; }
+.on-d { color: #fff; }
+.blk.flash::after, .blk.fail::after {
+  content: "已复制"; position: absolute; inset: 0; display: grid; place-items: center;
+  background: rgba(0,0,0,.58); color: #fff; font-family: var(--sans); font-size: 14.5px; font-weight: 620; letter-spacing: .12em;
+}
+.blk.fail::after { content: "复制失败 · 请手动选中"; font-size: 13px; }
+
+.roles { display: grid; grid-template-columns: repeat(auto-fill, minmax(172px, 1fr)); gap: 11px; }
+.roles .blk { height: 132px; }
+
+.vars { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 9px; }
+.vars .blk { height: 84px; }
+.vars .lb { padding: 10px 12px 11px; }
+.vars .lb .nm { font-size: 13.5px; }
+.vars .lb .hx { font-size: 12px; }
+
+/* ---------- surfaces table ---------- */
+table.surf { width: 100%; border-collapse: collapse; }
+table.surf th { text-align: left; font-family: var(--mono); font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--p-dim); font-weight: 500; padding: 0 12px 9px 0; }
+table.surf td { padding: 6px 12px 6px 0; vertical-align: middle; }
+table.surf td.k { width: 152px; font-size: 15px; color: var(--p-fg); white-space: nowrap; }
+table.surf td.k span { display: block; font-family: var(--mono); font-size: 12px; color: var(--p-dim); }
+table.surf td.bar { padding-right: 18px; }
+table.surf td.bar div { height: 34px; border-radius: 9px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+table.surf td.v { width: 106px; font-family: var(--mono); font-size: 13.5px; color: var(--p-soft); text-align: right; }
+.surf2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 36px; }
+.surf2 > table { min-width: 0; }
+
+/* ---------- code ---------- */
+.code {
+  margin: 0; padding: 22px 24px; border-radius: 10px; overflow-x: auto;
+  background: var(--p-code-bg);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 24px 44px -38px #000;
+  font-family: var(--mono); font-size: 16px; line-height: 1.9; color: var(--c-var);
+  font-variant-ligatures: contextual;
+}
+.c-cm { color: var(--c-cm); font-style: italic; }
+.c-kw { color: var(--c-kw); }
+.c-fn { color: var(--c-fn); }
+.c-st { color: var(--c-st); }
+.c-nm { color: var(--c-nm); }
+.c-ty { color: var(--c-ty); }
+.c-op { color: var(--c-op); }
+.c-pu { color: var(--c-pu); }
+.c-va { color: var(--c-va); }
+
+.syn { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 9px; margin-top: 17px; }
+.syn .blk { height: 100px; }
+.syn .lb { padding: 11px 13px 12px; }
+
+.pnote { margin: 38px 0 0; font-size: 14.5px; color: var(--p-soft); border-top: 1px solid var(--p-line); padding-top: 18px; line-height: 1.85; }
+.pnote code { color: var(--p-accent); background: none; padding: 0; }
+.pnote b { color: var(--p-fg); }
+.pnote a { color: var(--p-accent); }
+
+/* ---------- cross table ---------- */
+section.cross { margin: 88px 0 0; }
+section.cross h2 { font-size: 31px; letter-spacing: -.015em; margin: 0 0 8px; font-weight: 680; }
+section.cross p.sub { color: var(--mute); margin: 0 0 28px; font-size: 16.5px; }
+.crossgrid { overflow-x: auto; }
+table.cross2 { border-collapse: separate; border-spacing: 9px; width: 100%; min-width: 660px; }
+table.cross2 th { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 500; text-align: left; padding: 0 4px 7px; }
+table.cross2 td.rk { font-size: 14.5px; color: var(--mute); white-space: nowrap; padding-right: 10px; width: 132px; }
+table.cross2 td.rk span { display: block; font-family: var(--mono); font-size: 11.5px; color: #454a55; }
+table.cross2 td.cell { width: 30%; }
+table.cross2 td.cell div {
+  height: 62px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 15px; font-family: var(--mono); font-size: 13.5px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+}
+table.cross2 td.cell div:hover { transform: translateY(-2px); }
+
+footer.end { margin: 90px 0 0; padding-top: 26px; border-top: 1px solid var(--rule); color: var(--faint); font-size: 14px; line-height: 1.9; }
+footer.end b { color: var(--mute); font-weight: 600; }
+footer.end a { color: var(--mute); }
+
+/* ---------- live demo: pi TUI ---------- */
+#demo { scroll-margin-top: 58px; }
+.demobar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 18px; }
+.demobtns { display: flex; flex-wrap: wrap; gap: 10px; }
+.demo-btn {
+  display: inline-flex; align-items: center; gap: 10px; padding: 10px 15px 10px 11px; cursor: pointer;
+  background: var(--ink2); border: 1px solid var(--rule); border-radius: 12px; color: var(--mute);
+  font-family: var(--sans); font-size: 14.5px; line-height: 1;
+  transition: color .25s ease, border-color .25s ease, background .25s ease, transform .25s ease;
+}
+.demo-btn:hover { color: var(--paper); border-color: #343b47; transform: translateY(-1px); }
+.demo-btn[aria-pressed="true"] { color: var(--paper); background: var(--ink3); border-color: rgba(255,255,255,.26); }
+.demo-btn .dot { width: 28px; height: 11px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+.demo-btn b { font-weight: 620; }
+.demo-btn span { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.demo-btn[aria-pressed="true"] span { color: var(--mute); }
+.demofile { font-family: var(--mono); font-size: 12.5px; color: var(--faint); }
+.demofile code { font-size: 12.5px; color: #9fb6cc; }
+
+.demo {
+  --d-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 24px; border-radius: 20px; background: var(--d-page); font-family: var(--d-mono);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+  transition: background .35s ease;
+}
+/* 三套皮肤：色值逐字取自三个主题 JSON；--d-page = export.pageBg，--d-card = 该皮肤的主底色（ayu 的 bg / catppuccin 的 base / summer-night 的 night），其余同名槽位 */
+.demo[data-theme="summer-night"] {
+  --d-page: #16161e; --d-card: #1a1b26; --d-fg: #c6c8d1; --d-muted: #818596; --d-dim: #6b7089;
+  --d-accent: #95c4ce; --d-ok: #89b8c2; --d-warn: #e2a478; --d-err: #e27878;
+  --d-border: #515e97; --d-borderTh: #626262;
+  --d-userBg: #1b1c1d; --d-userFg: #c6c8d1;
+  --d-toolBg: #11171d; --d-toolTitle: #95c4ce; --d-toolOut: #a3adcb; --d-bashOut: #818596;
+  --d-mdCode: #a093c7; --d-mdLink: #89b8c2; --d-bullet: #cdd1e6;
+  --d-add: #8bc391; --d-del: #e27878; --d-addBg: #1c241b; --d-delBg: #2e1c21;
+  --d-thinking: #6b7089; --d-synFn: #84a0c6; --d-prop: #2d2c5d;
+}
+.demo[data-theme="catppuccin"] {
+  --d-page: #11111b; --d-card: #1e1e2e; --d-fg: #cdd6f4; --d-muted: #82889e; --d-dim: #7e8398;
+  --d-accent: #b7bdf8; --d-ok: #a6e3a1; --d-warn: #fab387; --d-err: #eba0ac;
+  --d-border: #313244; --d-borderTh: #89b4fa;
+  --d-userBg: #181825; --d-userFg: #cdd6f4;
+  --d-toolBg: #151515; --d-toolTitle: #cba6f7; --d-toolOut: #82889e; --d-bashOut: #82889e;
+  --d-mdCode: #94e2d5; --d-mdLink: #89b4fa; --d-bullet: #fab387;
+  --d-add: #a6e3a1; --d-del: #f38ba8; --d-addBg: #1c241b; --d-delBg: #2e1c21;
+  --d-thinking: #82889e; --d-synFn: #89dceb; --d-prop: #1e1e29;
+}
+.demo[data-theme="ayu"] {
+  --d-page: #0b0e14; --d-card: #0d1017; --d-fg: #bfbdb6; --d-muted: #6b7385; --d-dim: #515868;
+  --d-accent: #e6b450; --d-ok: #aad94c; --d-warn: #ff8f40; --d-err: #d95757;
+  --d-border: #232938; --d-borderTh: #626262;
+  --d-userBg: #1b1c1d; --d-userFg: #dbdbdd;
+  --d-toolBg: #10151f; --d-toolTitle: #e6b450; --d-toolOut: #bfbdb6; --d-bashOut: #6b7385;
+  --d-mdCode: #95e6cb; --d-mdLink: #59c2ff; --d-bullet: #ff8f40;
+  --d-add: #aad94c; --d-del: #d95757; --d-addBg: #1d241c; --d-delBg: #321d23;
+  --d-thinking: #6b7385; --d-synFn: #ffb454; --d-prop: #161d2b;
+}
+
+/* ---------- header topbar + project badge ---------- */
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; }
+.pibadge {
+  display: inline-flex; align-items: center; gap: 10px; padding: 8px 15px 8px 12px;
+  border: 1px solid var(--rule); border-radius: 999px; color: var(--paper);
+  background: var(--ink2);
+  font-family: var(--mono); text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease, background .3s ease;
+}
+.pibadge:hover { transform: translateY(-2px); border-color: #3a424f; background: var(--ink3); }
+.pibadge-mark { display: inline-flex; }
+.pibadge-text { display: flex; flex-direction: column; line-height: 1.3; }
+.pibadge-text b { font-size: 12.5px; font-weight: 600; letter-spacing: .01em; }
+.pibadge-text i { font-style: normal; font-size: 10.5px; color: var(--faint); letter-spacing: .04em; }
+
+.term {
+  background: var(--d-card); border-radius: 12px; overflow: hidden;
+  box-shadow: 0 0 0 1px var(--d-border), 0 40px 80px -52px #000;
+  transition: background .35s ease, box-shadow .35s ease;
+}
+.term-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--d-page); border-bottom: 1px solid var(--d-border); }
+.term-dots { display: inline-flex; gap: 6px; }
+.term-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--d-border); }
+.term-dots i:nth-child(1) { background: var(--d-err); opacity: .75; }
+.term-dots i:nth-child(2) { background: var(--d-warn); opacity: .75; }
+.term-dots i:nth-child(3) { background: var(--d-ok); opacity: .75; }
+.term-title { flex: 1; font-size: 12.5px; color: var(--d-muted); letter-spacing: .02em; }
+.term-badge { padding: 3px 10px; border: 1px solid var(--d-border); border-radius: 999px; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--d-accent); }
+
+.term-screen {
+  height: 430px; overflow-y: auto; padding: 18px 20px 6px;
+  font-size: 13.5px; line-height: 1.78; color: var(--d-fg);
+  scrollbar-width: thin; scrollbar-color: var(--d-border) transparent;
+}
+.msg-user { margin: 0 0 14px; padding: 10px 12px; border-radius: 6px; background: var(--d-userBg); color: var(--d-userFg); }
+.think { margin: 0 0 14px; color: var(--d-thinking); }
+.think-tag { font-weight: 620; }
+.tool { margin: 0 0 14px; padding: 9px 11px; border-radius: 6px; background: var(--d-toolBg); }
+.tool-head { margin-bottom: 2px; color: var(--d-toolTitle); font-weight: 700; }
+.tool-path { color: var(--d-accent); font-weight: 400; }
+.tool-meta { color: var(--d-dim); font-weight: 400; }
+.tool-cmd { color: var(--d-fg); font-weight: 400; }
+.tool-out { color: var(--d-toolOut); white-space: pre-wrap; }
+.tool-out.bash { color: var(--d-bashOut); }
+.diff { margin-top: 6px; border-radius: 4px; overflow: hidden; font-size: 12.5px; line-height: 1.75; }
+.diff div { padding: 0 6px; white-space: pre-wrap; }
+.diff .ctx { color: var(--d-dim); }
+.diff .add { color: var(--d-add); background: var(--d-addBg); }
+.diff .del { color: var(--d-del); background: var(--d-delBg); }
+.md p { margin: 0 0 10px; }
+.md ul { margin: 0 0 10px; padding-left: 18px; }
+.md li { margin: 0 0 5px; }
+.md li::marker { color: var(--d-bullet); }
+.md code { font-family: var(--d-mono); font-size: 12.5px; color: var(--d-mdCode); }
+.md .link { color: var(--d-mdLink); text-decoration: underline; text-underline-offset: 2px; }
+
+.term-bottom { padding: 0 20px 12px; font-size: 13.5px; }
+.tasks { margin: 0 0 14px; }
+.tasks-head { color: var(--d-accent); }
+.task { padding-left: 2px; }
+.task .tick { color: var(--d-ok); }
+.task .id { color: var(--d-dim); }
+.task s { color: var(--d-dim); }
+.editor { margin: 0 0 4px; }
+.ed-top { display: flex; align-items: center; gap: 0; }
+.ed-rule { flex: 1; height: 1px; background: var(--d-borderTh); opacity: .55; }
+.ed-rule.pre { flex: 0 0 26px; }
+.ed-work { padding: 0 4px; color: var(--d-fg); font-size: 12.5px; }
+.ed-work .spin { color: var(--d-accent); }
+.ed-row { padding: 2px 0; color: var(--d-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ed-prompt { color: var(--d-borderTh); }
+.ed-caret { display: inline-block; width: 8px; height: 15px; margin-left: 2px; vertical-align: -2px; background: var(--d-fg); opacity: .8; animation: demo-blink 1.1s steps(1, end) infinite; }
+.ed-bot { height: 1px; background: var(--d-borderTh); opacity: .55; }
+@keyframes demo-blink { 0%, 55% { opacity: .8; } 56%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ed-caret { animation: none; } }
+.sl-main, .sl-cwd { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sl-main { margin-top: 6px; }
+.sl-cwd { color: var(--d-muted); }
+.sl-dim, .sl-sep { color: var(--d-dim); }
+.sl-accent { color: var(--d-accent); }
+.sl-lvl { color: var(--d-synFn); }
+.sl-ok { color: var(--d-ok); }
+.sl-warn { color: var(--d-warn); }
+.sl-err { color: var(--d-err); }
+
+@media (max-width: 1200px) {
+  /* 段内只留变量名，hex 在下方大色块里已有 */
+  .dna i span { display: none; }
+}
+@media (max-width: 1000px) {
+  /* 8 段色带在窄屏退化为纯色带：字号归零但保留布局，避免长名被截成半个单词 */
+  .dna i { font-size: 0; }
+}
+@media (max-width: 980px) {
+  .trio { grid-template-columns: 1fr 1fr; }
+  .prev:nth-child(3) { grid-column: span 2; }
+  .phead { grid-template-columns: auto 1fr; }
+  .phead .mood { grid-column: 1 / -1; }
+  .surf2 { grid-template-columns: 1fr; column-gap: 0; }
+  .plate { padding: 30px 24px 34px; border-radius: 16px; }
+  .demo { padding: 16px; }
+  .term-screen { height: 380px; }
+}
+@media (max-width: 640px) {
+  .trio { grid-template-columns: 1fr; }
+  .prev:nth-child(3) { grid-column: auto; }
+  table.surf td.k { width: 118px; font-size: 13.5px; white-space: normal; }
+  .demo { padding: 12px; border-radius: 14px; }
+  .term-screen { height: 330px; padding: 14px 14px 4px; font-size: 12.5px; }
+  .term-bottom { padding: 0 14px 10px; font-size: 12.5px; }
+  .demofile { display: none; }
+  .pibadge { padding: 7px 12px 7px 9px; gap: 8px; }
+  .pibadge-text i { display: none; }
+  .pibadge-mark svg { width: 22px; height: 15px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div class="topbar">
+    <div class="kicker">pi themes · color plates</div>
+    <a class="pibadge" href="https://pi.dev/packages/@bachi/pi-coder" target="_blank" rel="noopener noreferrer" title="pi.dev 上的 @bachi/pi-coder 插件">
+      <span class="pibadge-mark">
+        <svg viewBox="0 0 12 8" width="27" height="18" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="piMarkGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#7aa2f7"/><stop offset="45%" stop-color="#b7bdf8"/><stop offset="75%" stop-color="#e6b450"/><stop offset="100%" stop-color="#f7768e"/>
+            </linearGradient>
+          </defs>
+          <g fill="url(#piMarkGrad)">
+            <rect x="0" y="0" width="3" height="2"/><rect x="3" y="0" width="3" height="2"/><rect x="6" y="0" width="3" height="2"/>
+            <rect x="0" y="2" width="3" height="2"/><rect x="6" y="2" width="3" height="2"/>
+            <rect x="0" y="4" width="3" height="2"/><rect x="3" y="4" width="3" height="2"/><rect x="9" y="4" width="3" height="2"/>
+            <rect x="0" y="6" width="3" height="2"/><rect x="9" y="6" width="3" height="2"/>
+          </g>
+        </svg>
+      </span>
+      <span class="pibadge-text"><b>@bachi/pi-coder</b><i>pi.dev · pi 插件包</i></span>
+    </a>
+  </div>
+  <h1>pi-coder 三色<small>三套暗色 PI 主题风格，完美适配 PI，深夜编程不瞌睡</small></h1>
+  <p class="lead">
+    专门为 <a href="https://pi.dev/packages/@bachi/pi-coder">@bachi/pi-coder</a> 定制的三套暗色 PI 主题 —— 调色板分别取自 catppuccin mocha、ayu dark 与 iceberg.vim 的 dark 形态，面向 mac retina 屏完成微调，适配深夜编程体验。
+    皮肤源文件来自 <a href="https://pi.dev/packages/@bachi/pi-coder">@bachi/pi-coder</a>，展示页色值取自 <code>themes</code> 目录下三个 <code>pi-coder-</code> 前缀的皮肤文件，
+    点击任意色块可复制其十六进制值。底部有 <a href="#demo">PI 着色预览</a>。
+  </p>
+
+  <div class="trio">
+    <a class="prev" href="#summer-night" style="--p-bg:#1A1B26;--p-fg:#C6C8D1;--p-soft:#818596;--p-accent:#95C4CE;--p-dna:linear-gradient(90deg,#2A3158 0 25%,#2D2C5D 0 50%,#1A1B26 0 75%,#686F9A 0 100%)">
+      <span class="glow"></span>
+      <span class="cn">夏夜</span>
+      <span class="en">pi-coder-summer-night</span>
+      <span class="fnote">40 vars · 底色 #1A1B26</span>
+      <span class="bar"></span>
+    </a>
+    <a class="prev" href="#catppuccin" style="--p-bg:#1E1E2E;--p-fg:#CDD6F4;--p-soft:#82889E;--p-accent:#B7BDF8;--p-dna:linear-gradient(90deg,#B7BDF8 0 25%,#CBA6F7 0 50%,#89B4FA 0 75%,#FAB387 0 100%)">
+      <span class="glow"></span>
+      <span class="cn">卡布</span>
+      <span class="en">pi-coder-catppuccin · mocha</span>
+      <span class="fnote">36 vars · 底色 #1E1E2E</span>
+      <span class="bar"></span>
+    </a>
+    <a class="prev" href="#ayu" style="--p-bg:#0D1017;--p-fg:#BFBDB6;--p-soft:#6B7385;--p-accent:#E6B450;--p-dna:linear-gradient(90deg,#E6B450 0 25%,#FF8F40 0 50%,#39BAE6 0 75%,#AAD94C 0 100%)">
+      <span class="glow"></span>
+      <span class="cn">阿玉</span>
+      <span class="en">pi-coder-ayu</span>
+      <span class="fnote">30 vars · 底色 #0D1017</span>
+      <span class="bar"></span>
+    </a>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#summer-night">01 summer-night</a><span class="sep">/</span>
+  <a href="#catppuccin">02 catppuccin</a><span class="sep">/</span>
+  <a href="#ayu">03 ayu</a><span class="sep">/</span>
+  <a href="#cross">三色对照</a><span class="sep">/</span>
+  <a href="#howto">读法</a><span class="sep">/</span>
+  <a href="#demo">着色演示</a>
+</nav>
+
+<!-- ============================ 01 summer-night ============================ -->
+<section class="plate" id="summer-night" style="
+  --p-bg:#1A1B26; --p-fg:#C6C8D1; --p-soft:#818596; --p-dim:#6B7089; --p-line:#2A3158;
+  --p-accent:#95C4CE; --p-code-bg:#16161E;
+  --c-cm:#6E7DC0; --c-kw:#A093C7; --c-fn:#84A0C6; --c-var:#D2D4DE; --c-st:#B4BE82;
+  --c-nm:#E9B189; --c-ty:#95C4CE; --c-op:#91ACD1; --c-pu:#CDD1E6; --c-va:#D2D4DE;">
+
+  <div class="dna">
+    <i style="background:#1A1B26;color:#fff">night <span>#1A1B26</span></i>
+    <i style="background:#16161E;color:#fff">panel <span>#16161E</span></i>
+    <i style="background:#2D2C5D;color:#fff">select <span>#2D2C5D</span></i>
+    <i style="background:#2A3158;color:#fff">hairline <span>#2A3158</span></i>
+    <i style="background:#3E445E;color:#fff">slate <span>#3E445E</span></i>
+    <i style="background:#444B71;color:#fff">quote <span>#444B71</span></i>
+    <i style="background:#515E97;color:#fff">comment <span>#515E97</span></i>
+    <i style="background:#686F9A;color:#fff">ghost <span>#686F9A</span></i>
+    <i style="background:#818596;color:#000">ui <span>#818596</span></i>
+    <i style="background:#C6C8D1;color:#000">fg <span>#C6C8D1</span></i>
+  </div>
+
+  <div class="phead">
+    <div class="idx">01</div>
+    <div>
+      <h2>夏夜 <em>summer-night</em></h2>
+      <div class="sub">40 vars · 冷灰前景 + 青紫强调</div>
+    </div>
+    <p class="mood">这是一套自建主题：底色是压暗的深蓝黑 <b>#1A1B26</b>，前景为偏冷的灰白 <b>fg #C6C8D1</b>；关键字与行内代码走紫 <b>moonLilac #A093C7</b>，类型与强调落在亮青 <b>sky #95C4CE</b>，函数与运算符另有蓝系两支，字符串绿、数字黄。工具卡片、userMessage、diff 底色沿用上一版；代码注释提亮一档。</p>
+  </div>
+
+  <div class="h3"><b>语义槽位</b><span>ui roles</span></div>
+  <div class="roles">
+    <div class="blk" style="background:#95C4CE" data-hex="#95C4CE"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#95C4CE</span><span class="rl">强调色</span></div></div>
+    <div class="blk" style="background:#95C4CE" data-hex="#95C4CE"><div class="lb on-l"><span class="nm">toolTitle</span><span class="hx">#95C4CE</span><span class="rl">工具标题</span></div></div>
+    <div class="blk" style="background:#91ACD1" data-hex="#91ACD1"><div class="lb on-l"><span class="nm">mdHeading</span><span class="hx">#91ACD1</span><span class="rl">标题</span></div></div>
+    <div class="blk" style="background:#89B8C2" data-hex="#89B8C2"><div class="lb on-l"><span class="nm">mdLink</span><span class="hx">#89B8C2</span><span class="rl">链接</span></div></div>
+    <div class="blk" style="background:#A093C7" data-hex="#A093C7"><div class="lb on-l"><span class="nm">mdCode</span><span class="hx">#A093C7</span><span class="rl">行内代码</span></div></div>
+    <div class="blk" style="background:#89B8C2" data-hex="#89B8C2"><div class="lb on-l"><span class="nm">success</span><span class="hx">#89B8C2</span><span class="rl">成功</span></div></div>
+    <div class="blk" style="background:#E27878" data-hex="#E27878"><div class="lb on-l"><span class="nm">error</span><span class="hx">#E27878</span><span class="rl">错误</span></div></div>
+    <div class="blk" style="background:#E2A478" data-hex="#E2A478"><div class="lb on-l"><span class="nm">warning</span><span class="hx">#E2A478</span><span class="rl">警告</span></div></div>
+    <div class="blk" style="background:#818596" data-hex="#818596"><div class="lb on-l"><span class="nm">muted</span><span class="hx">#818596</span><span class="rl">次要文本</span></div></div>
+    <div class="blk" style="background:#6B7089" data-hex="#6B7089"><div class="lb on-d"><span class="nm">dim</span><span class="hx">#6B7089</span><span class="rl">最弱文本 · 与 Think 同色</span></div></div>
+  </div>
+
+  <div class="h3"><b>底色与表面</b><span>surfaces</span></div>
+  <div class="surf2">
+  <table class="surf">
+    <thead><tr><th>槽位</th><th>色块</th><th style="text-align:right">hex</th></tr></thead>
+    <tbody>
+      <tr><td class="k">主底色<span>night</span></td><td class="bar"><div style="background:#1A1B26"></div></td><td class="v">#1A1B26</td></tr>
+      <tr><td class="k">用户消息底<span>userMessageBg</span></td><td class="bar"><div style="background:#1B1C1D"></div></td><td class="v">#1B1C1D</td></tr>
+      <tr><td class="k">自定义消息底<span>customMessageBg</span></td><td class="bar"><div style="background:#2B2B3B"></div></td><td class="v">#2B2B3B</td></tr>
+      <tr><td class="k">选中行<span>selectedBg</span></td><td class="bar"><div style="background:#2D2C5D"></div></td><td class="v">#2D2C5D</td></tr>
+      <tr><td class="k">工具待执行<span>toolPendingBg</span></td><td class="bar"><div style="background:#101017"></div></td><td class="v">#101017</td></tr>
+      <tr><td class="k">工具成功底<span>toolSuccessBg</span></td><td class="bar"><div style="background:#11171D"></div></td><td class="v">#11171D</td></tr>
+      <tr><td class="k">工具失败底<span>toolErrorBg</span></td><td class="bar"><div style="background:#191319"></div></td><td class="v">#191319</td></tr>
+    </tbody>
+  </table>
+  <table class="surf">
+    <thead><tr><th>槽位</th><th>色块</th><th style="text-align:right">hex</th></tr></thead>
+    <tbody>
+      <tr><td class="k">差异新增底<span>toolDiffAddedBg</span></td><td class="bar"><div style="background:#1C241B"></div></td><td class="v">#1C241B</td></tr>
+      <tr><td class="k">差异删除底<span>toolDiffRemovedBg</span></td><td class="bar"><div style="background:#2E1C21"></div></td><td class="v">#2E1C21</td></tr>
+      <tr><td class="k">边框<span>border</span></td><td class="bar"><div style="background:#515E97"></div></td><td class="v">#515E97</td></tr>
+      <tr><td class="k">弱边框<span>borderMuted</span></td><td class="bar"><div style="background:#2A3158"></div></td><td class="v">#2A3158</td></tr>
+      <tr><td class="k">导出页底<span>export.pageBg</span></td><td class="bar"><div style="background:#16161E"></div></td><td class="v">#16161E</td></tr>
+      <tr><td class="k">导出卡片<span>export.cardBg</span></td><td class="bar"><div style="background:#1A1B26"></div></td><td class="v">#1A1B26</td></tr>
+      <tr><td class="k">导出信息底<span>export.infoBg</span></td><td class="bar"><div style="background:#2D2C5D"></div></td><td class="v">#2D2C5D</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="h3"><b>语法取样</b><span>syntax sampler</span></div>
+  <pre class="code"><span class="c-cm">// pi-coder-summer-night · syntax sampler</span>
+<span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
+
+<span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-summer-night"</span><span class="c-pu">);</span>
+
+<span class="c-kw">export default class</span> <span class="c-ty">SummerNight</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+  <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
+  <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
+<span class="c-pu">}</span></pre>
+
+  <div class="syn">
+    <div class="blk" style="background:#6E7DC0" data-hex="#6E7DC0"><div class="lb on-l"><span class="nm">comment</span><span class="hx">#6E7DC0</span></div></div>
+    <div class="blk" style="background:#A093C7" data-hex="#A093C7"><div class="lb on-l"><span class="nm">keyword</span><span class="hx">#A093C7</span></div></div>
+    <div class="blk" style="background:#84A0C6" data-hex="#84A0C6"><div class="lb on-l"><span class="nm">function</span><span class="hx">#84A0C6</span></div></div>
+    <div class="blk" style="background:#D2D4DE" data-hex="#D2D4DE"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#D2D4DE</span></div></div>
+    <div class="blk" style="background:#B4BE82" data-hex="#B4BE82"><div class="lb on-l"><span class="nm">string</span><span class="hx">#B4BE82</span></div></div>
+    <div class="blk" style="background:#E9B189" data-hex="#E9B189"><div class="lb on-l"><span class="nm">number</span><span class="hx">#E9B189</span></div></div>
+    <div class="blk" style="background:#95C4CE" data-hex="#95C4CE"><div class="lb on-l"><span class="nm">type</span><span class="hx">#95C4CE</span></div></div>
+    <div class="blk" style="background:#91ACD1" data-hex="#91ACD1"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#91ACD1</span></div></div>
+    <div class="blk" style="background:#CDD1E6" data-hex="#CDD1E6"><div class="lb on-l"><span class="nm">punctuation</span><span class="hx">#CDD1E6</span></div></div>
+  </div>
+
+  <div class="h3"><b>全部变量</b><span>full var list · 其余 30 项</span></div>
+  <div class="vars">
+    <div class="blk" style="background:#1A1B26" data-hex="#1A1B26"><div class="lb on-d"><span class="nm">night</span><span class="hx">#1A1B26</span></div></div>
+    <div class="blk" style="background:#16161E" data-hex="#16161E"><div class="lb on-d"><span class="nm">panel</span><span class="hx">#16161E</span></div></div>
+    <div class="blk" style="background:#2D2C5D" data-hex="#2D2C5D"><div class="lb on-d"><span class="nm">select</span><span class="hx">#2D2C5D</span></div></div>
+    <div class="blk" style="background:#2A3158" data-hex="#2A3158"><div class="lb on-d"><span class="nm">hairline</span><span class="hx">#2A3158</span></div></div>
+    <div class="blk" style="background:#3E445E" data-hex="#3E445E"><div class="lb on-d"><span class="nm">slate</span><span class="hx">#3E445E</span></div></div>
+    <div class="blk" style="background:#444B71" data-hex="#444B71"><div class="lb on-d"><span class="nm">quote</span><span class="hx">#444B71</span></div></div>
+    <div class="blk" style="background:#5B6389" data-hex="#5B6389"><div class="lb on-d"><span class="nm">separator</span><span class="hx">#5B6389</span></div></div>
+    <div class="blk" style="background:#515E97" data-hex="#515E97"><div class="lb on-d"><span class="nm">comment</span><span class="hx">#515E97</span></div></div>
+    <div class="blk" style="background:#686F9A" data-hex="#686F9A"><div class="lb on-d"><span class="nm">ghost</span><span class="hx">#686F9A</span></div></div>
+    <div class="blk" style="background:#818596" data-hex="#818596"><div class="lb on-l"><span class="nm">ui</span><span class="hx">#818596</span></div></div>
+    <div class="blk" style="background:#A3ADCB" data-hex="#A3ADCB"><div class="lb on-l"><span class="nm">markdown</span><span class="hx">#A3ADCB</span></div></div>
+    <div class="blk" style="background:#CDD1E6" data-hex="#CDD1E6"><div class="lb on-l"><span class="nm">brace</span><span class="hx">#CDD1E6</span></div></div>
+    <div class="blk" style="background:#C6C8D1" data-hex="#C6C8D1"><div class="lb on-l"><span class="nm">fg</span><span class="hx">#C6C8D1</span></div></div>
+    <div class="blk" style="background:#D2D4DE" data-hex="#D2D4DE"><div class="lb on-l"><span class="nm">white</span><span class="hx">#D2D4DE</span></div></div>
+    <div class="blk" style="background:#283457" data-hex="#283457"><div class="lb on-d"><span class="nm">find</span><span class="hx">#283457</span></div></div>
+    <div class="blk" style="background:#1C241B" data-hex="#1C241B"><div class="lb on-d"><span class="nm">addedLine</span><span class="hx">#1C241B</span></div></div>
+    <div class="blk" style="background:#8BC391" data-hex="#8BC391"><div class="lb on-l"><span class="nm">addedGreen</span><span class="hx">#8BC391</span></div></div>
+    <div class="blk" style="background:#2E1C21" data-hex="#2E1C21"><div class="lb on-d"><span class="nm">removedLine</span><span class="hx">#2E1C21</span></div></div>
+    <div class="blk" style="background:#101017" data-hex="#101017"><div class="lb on-d"><span class="nm">pendingCard</span><span class="hx">#101017</span></div></div>
+    <div class="blk" style="background:#11171D" data-hex="#11171D"><div class="lb on-d"><span class="nm">successCard</span><span class="hx">#11171D</span></div></div>
+    <div class="blk" style="background:#191319" data-hex="#191319"><div class="lb on-d"><span class="nm">errorCard</span><span class="hx">#191319</span></div></div>
+    <div class="blk" style="background:#626262" data-hex="#626262"><div class="lb on-d"><span class="nm">thinkingGrey</span><span class="hx">#626262</span></div></div>
+    <div class="blk" style="background:#6E7DC0" data-hex="#6E7DC0"><div class="lb on-l"><span class="nm">commentBright</span><span class="hx">#6E7DC0</span></div></div>
+    <div class="blk" style="background:#A093C7" data-hex="#A093C7"><div class="lb on-l"><span class="nm">moonLilac</span><span class="hx">#A093C7</span></div></div>
+    <div class="blk" style="background:#818596" data-hex="#818596"><div class="lb on-l"><span class="nm">bashOutput</span><span class="hx">#818596</span></div></div>
+    <div class="blk" style="background:#1B1C1D" data-hex="#1B1C1D"><div class="lb on-d"><span class="nm">ayuUserBg</span><span class="hx">#1B1C1D</span></div></div>
+    <div class="blk" style="background:#6B7089" data-hex="#6B7089"><div class="lb on-d"><span class="nm">ayuThinking</span><span class="hx">#6B7089</span></div></div>
+    <div class="blk" style="background:#6B7089" data-hex="#6B7089"><div class="lb on-d"><span class="nm">dimText</span><span class="hx">#6B7089</span></div></div>
+    <div class="blk" style="background:#515E97" data-hex="#515E97"><div class="lb on-d"><span class="nm">frame</span><span class="hx">#515E97</span></div></div>
+    <div class="blk" style="background:#2B2B3B" data-hex="#2B2B3B"><div class="lb on-d"><span class="nm">panelAlt</span><span class="hx">#2B2B3B</span></div></div>
+  </div>
+
+  <p class="pnote">
+    <b>文件</b> <code>themes/pi-coder-summer-night.json</code> · 40 个变量、59 个槽位赋值。
+    <code>colors</code> 里没有一个字面量色值，全部引用 <code>vars</code>。调色板以 iceberg.vim 的 dark 分支为底：26 个变量是它的字面值（折 21 个色值、5 组同值）、1 个是按 <code>comment</code> 算出来的 <code>commentBright</code>、12 个是上一版保留的底色、1 个是后加的 diff 新增行前景 <code>addedGreen</code>。
+    槽位映射只动了一处：<code>toolDiffAdded</code> 由 <code>teal</code> 改指 <code>addedGreen</code>（<code>#8BC391</code>）。
+  </p>
+</section>
+
+<!-- ============================ 02 catppuccin ============================ -->
+<section class="plate" id="catppuccin" style="
+  --p-bg:#1E1E2E; --p-fg:#CDD6F4; --p-soft:#A6ADC8; --p-dim:#7F849C; --p-line:#313244;
+  --p-accent:#B7BDF8; --p-code-bg:#181825;
+  --c-cm:#A6ADC8; --c-kw:#CBA6F7; --c-fn:#89DCEB; --c-var:#CDD6F4; --c-st:#A6E3A1;
+  --c-nm:#FAB387; --c-ty:#F9E2AF; --c-op:#74C7EC; --c-pu:#7F849C; --c-va:#CDD6F4;">
+
+  <div class="dna">
+    <i style="background:#B7BDF8;color:#000">macchiatoLavender <span>#B7BDF8</span></i>
+    <i style="background:#CBA6F7;color:#000">mauve <span>#CBA6F7</span></i>
+    <i style="background:#89B4FA;color:#000">blue <span>#89B4FA</span></i>
+    <i style="background:#89DCEB;color:#000">sky <span>#89DCEB</span></i>
+    <i style="background:#94E2D5;color:#000">teal <span>#94E2D5</span></i>
+    <i style="background:#A6E3A1;color:#000">green <span>#A6E3A1</span></i>
+    <i style="background:#F9E2AF;color:#000">yellow <span>#F9E2AF</span></i>
+    <i style="background:#FAB387;color:#000">peach <span>#FAB387</span></i>
+  </div>
+
+  <div class="phead">
+    <div class="idx">02</div>
+    <div>
+      <h2>卡布 <em>catppuccin</em></h2>
+      <div class="sub">36 vars · 官方 Mocha + 10 个自定义</div>
+    </div>
+    <p class="mood">在官方 <b>Catppuccin Mocha</b> 基础上面向 retina 屏做了大量微调，三档深底（<b>crust / mantle / base</b>）撑起层次。唯一一处"越界"是强调色：用的是 Macchiato 的 <b>lavender #B7BDF8</b>（重命名为 <code>macchiatoLavender</code>），而不是 Mocha 自己的 <b>mauve</b> —— mauve 被降级去当工具标题与关键字。</p>
+  </div>
+
+  <div class="h3"><b>语义槽位</b><span>ui roles</span></div>
+  <div class="roles">
+    <div class="blk" style="background:#B7BDF8" data-hex="#B7BDF8"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#B7BDF8</span><span class="rl">强调色</span></div></div>
+    <div class="blk" style="background:#CBA6F7" data-hex="#CBA6F7"><div class="lb on-l"><span class="nm">toolTitle</span><span class="hx">#CBA6F7</span><span class="rl">工具标题</span></div></div>
+    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">mdHeading</span><span class="hx">#FAB387</span><span class="rl">标题</span></div></div>
+    <div class="blk" style="background:#89B4FA" data-hex="#89B4FA"><div class="lb on-l"><span class="nm">mdLink</span><span class="hx">#89B4FA</span><span class="rl">链接</span></div></div>
+    <div class="blk" style="background:#94E2D5" data-hex="#94E2D5"><div class="lb on-l"><span class="nm">mdCode</span><span class="hx">#94E2D5</span><span class="rl">行内代码</span></div></div>
+    <div class="blk" style="background:#A6E3A1" data-hex="#A6E3A1"><div class="lb on-l"><span class="nm">success</span><span class="hx">#A6E3A1</span><span class="rl">成功</span></div></div>
+    <div class="blk" style="background:#EBA0AC" data-hex="#EBA0AC"><div class="lb on-l"><span class="nm">error</span><span class="hx">#EBA0AC</span><span class="rl">错误（用 maroon，非 red）</span></div></div>
+    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">warning</span><span class="hx">#FAB387</span><span class="rl">警告</span></div></div>
+    <div class="blk" style="background:#82889E" data-hex="#82889E"><div class="lb on-l"><span class="nm">muted</span><span class="hx">#82889E</span><span class="rl">次要文本</span></div></div>
+    <div class="blk" style="background:#7E8398" data-hex="#7E8398"><div class="lb on-l"><span class="nm">dim</span><span class="hx">#7E8398</span><span class="rl">最弱文本</span></div></div>
+  </div>
+
+  <div class="h3"><b>底色与表面</b><span>surfaces</span></div>
+  <div class="surf2">
+  <table class="surf">
+    <thead><tr><th>槽位</th><th>色块</th><th style="text-align:right">hex</th></tr></thead>
+    <tbody>
+      <tr><td class="k">页面底色<span>bg (base)</span></td><td class="bar"><div style="background:#1E1E2E"></div></td><td class="v">#1E1E2E</td></tr>
+      <tr><td class="k">用户消息底<span>userMessageBg (mantle)</span></td><td class="bar"><div style="background:#181825"></div></td><td class="v">#181825</td></tr>
+      <tr><td class="k">自定义消息底<span>customMessageBg (mantle)</span></td><td class="bar"><div style="background:#181825"></div></td><td class="v">#181825</td></tr>
+      <tr><td class="k">选中行<span>selectedBg</span></td><td class="bar"><div style="background:#1E1E29"></div></td><td class="v">#1E1E29</td></tr>
+      <tr><td class="k">工具待执行<span>toolPendingBg</span></td><td class="bar"><div style="background:#0B151F"></div></td><td class="v">#0B151F</td></tr>
+      <tr><td class="k">工具成功底<span>toolSuccessBg</span></td><td class="bar"><div style="background:#151515"></div></td><td class="v">#151515</td></tr>
+      <tr><td class="k">工具失败底<span>toolErrorBg</span></td><td class="bar"><div style="background:#171010"></div></td><td class="v">#171010</td></tr>
+    </tbody>
+  </table>
+  <table class="surf">
+    <thead><tr><th>槽位</th><th>色块</th><th style="text-align:right">hex</th></tr></thead>
+    <tbody>
+      <tr><td class="k">差异新增底<span>diffAddedBg</span></td><td class="bar"><div style="background:#1C241B"></div></td><td class="v">#1C241B</td></tr>
+      <tr><td class="k">差异删除底<span>diffRemovedBg</span></td><td class="bar"><div style="background:#2E1C21"></div></td><td class="v">#2E1C21</td></tr>
+      <tr><td class="k">边框<span>border (surface1)</span></td><td class="bar"><div style="background:#45475A"></div></td><td class="v">#45475A</td></tr>
+      <tr><td class="k">弱边框<span>borderMuted (surface0)</span></td><td class="bar"><div style="background:#313244"></div></td><td class="v">#313244</td></tr>
+      <tr><td class="k">导出页底<span>export.pageBg (crust)</span></td><td class="bar"><div style="background:#11111B"></div></td><td class="v">#11111B</td></tr>
+      <tr><td class="k">导出卡片<span>export.cardBg (mantle)</span></td><td class="bar"><div style="background:#181825"></div></td><td class="v">#181825</td></tr>
+      <tr><td class="k">导出信息底<span>export.infoBg</span></td><td class="bar"><div style="background:#242031"></div></td><td class="v">#242031</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="h3"><b>语法取样</b><span>syntax sampler</span></div>
+  <pre class="code"><span class="c-cm">// pi-coder-catppuccin · syntax sampler</span>
+<span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
+
+<span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-catppuccin"</span><span class="c-pu">);</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Catppuccin</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+  <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
+  <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
+<span class="c-pu">}</span></pre>
+
+  <div class="syn">
+    <div class="blk" style="background:#A6ADC8" data-hex="#A6ADC8"><div class="lb on-l"><span class="nm">comment</span><span class="hx">#A6ADC8</span></div></div>
+    <div class="blk" style="background:#CBA6F7" data-hex="#CBA6F7"><div class="lb on-l"><span class="nm">keyword</span><span class="hx">#CBA6F7</span></div></div>
+    <div class="blk" style="background:#89DCEB" data-hex="#89DCEB"><div class="lb on-l"><span class="nm">function</span><span class="hx">#89DCEB</span></div></div>
+    <div class="blk" style="background:#CDD6F4" data-hex="#CDD6F4"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#CDD6F4</span></div></div>
+    <div class="blk" style="background:#A6E3A1" data-hex="#A6E3A1"><div class="lb on-l"><span class="nm">string</span><span class="hx">#A6E3A1</span></div></div>
+    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">number</span><span class="hx">#FAB387</span></div></div>
+    <div class="blk" style="background:#F9E2AF" data-hex="#F9E2AF"><div class="lb on-l"><span class="nm">type</span><span class="hx">#F9E2AF</span></div></div>
+    <div class="blk" style="background:#74C7EC" data-hex="#74C7EC"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#74C7EC</span></div></div>
+    <div class="blk" style="background:#7F849C" data-hex="#7F849C"><div class="lb on-l"><span class="nm">punctuation</span><span class="hx">#7F849C</span></div></div>
+  </div>
+
+  <div class="h3"><b>Mocha 全家福</b><span>upstream palette · 26 colors</span></div>
+  <div class="vars">
+    <div class="blk" style="background:#F5E0DC" data-hex="#F5E0DC"><div class="lb on-l"><span class="nm">rosewater</span><span class="hx">#F5E0DC</span></div></div>
+    <div class="blk" style="background:#F2CDCD" data-hex="#F2CDCD"><div class="lb on-l"><span class="nm">flamingo</span><span class="hx">#F2CDCD</span></div></div>
+    <div class="blk" style="background:#F5C2E7" data-hex="#F5C2E7"><div class="lb on-l"><span class="nm">pink</span><span class="hx">#F5C2E7</span></div></div>
+    <div class="blk" style="background:#CBA6F7" data-hex="#CBA6F7"><div class="lb on-l"><span class="nm">mauve</span><span class="hx">#CBA6F7</span></div></div>
+    <div class="blk" style="background:#F38BA8" data-hex="#F38BA8"><div class="lb on-l"><span class="nm">red</span><span class="hx">#F38BA8</span></div></div>
+    <div class="blk" style="background:#EBA0AC" data-hex="#EBA0AC"><div class="lb on-l"><span class="nm">maroon</span><span class="hx">#EBA0AC</span></div></div>
+    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">peach</span><span class="hx">#FAB387</span></div></div>
+    <div class="blk" style="background:#F9E2AF" data-hex="#F9E2AF"><div class="lb on-l"><span class="nm">yellow</span><span class="hx">#F9E2AF</span></div></div>
+    <div class="blk" style="background:#A6E3A1" data-hex="#A6E3A1"><div class="lb on-l"><span class="nm">green</span><span class="hx">#A6E3A1</span></div></div>
+    <div class="blk" style="background:#94E2D5" data-hex="#94E2D5"><div class="lb on-l"><span class="nm">teal</span><span class="hx">#94E2D5</span></div></div>
+    <div class="blk" style="background:#89DCEB" data-hex="#89DCEB"><div class="lb on-l"><span class="nm">sky</span><span class="hx">#89DCEB</span></div></div>
+    <div class="blk" style="background:#74C7EC" data-hex="#74C7EC"><div class="lb on-l"><span class="nm">sapphire</span><span class="hx">#74C7EC</span></div></div>
+    <div class="blk" style="background:#89B4FA" data-hex="#89B4FA"><div class="lb on-l"><span class="nm">blue</span><span class="hx">#89B4FA</span></div></div>
+    <div class="blk" style="background:#B4BEFE" data-hex="#B4BEFE"><div class="lb on-l"><span class="nm">lavender</span><span class="hx">#B4BEFE</span></div></div>
+    <div class="blk" style="background:#CDD6F4" data-hex="#CDD6F4"><div class="lb on-l"><span class="nm">text</span><span class="hx">#CDD6F4</span></div></div>
+    <div class="blk" style="background:#BAC2DE" data-hex="#BAC2DE"><div class="lb on-l"><span class="nm">subtext1</span><span class="hx">#BAC2DE</span></div></div>
+    <div class="blk" style="background:#A6ADC8" data-hex="#A6ADC8"><div class="lb on-l"><span class="nm">subtext0</span><span class="hx">#A6ADC8</span></div></div>
+    <div class="blk" style="background:#9399B2" data-hex="#9399B2"><div class="lb on-l"><span class="nm">overlay2</span><span class="hx">#9399B2</span></div></div>
+    <div class="blk" style="background:#7F849C" data-hex="#7F849C"><div class="lb on-l"><span class="nm">overlay1</span><span class="hx">#7F849C</span></div></div>
+    <div class="blk" style="background:#6C7086" data-hex="#6C7086"><div class="lb on-d"><span class="nm">overlay0</span><span class="hx">#6C7086</span></div></div>
+    <div class="blk" style="background:#585B70" data-hex="#585B70"><div class="lb on-d"><span class="nm">surface2</span><span class="hx">#585B70</span></div></div>
+    <div class="blk" style="background:#45475A" data-hex="#45475A"><div class="lb on-d"><span class="nm">surface1</span><span class="hx">#45475A</span></div></div>
+    <div class="blk" style="background:#313244" data-hex="#313244"><div class="lb on-d"><span class="nm">surface0</span><span class="hx">#313244</span></div></div>
+    <div class="blk" style="background:#1E1E2E" data-hex="#1E1E2E"><div class="lb on-d"><span class="nm">base</span><span class="hx">#1E1E2E</span></div></div>
+    <div class="blk" style="background:#181825" data-hex="#181825"><div class="lb on-d"><span class="nm">mantle</span><span class="hx">#181825</span></div></div>
+    <div class="blk" style="background:#11111B" data-hex="#11111B"><div class="lb on-d"><span class="nm">crust</span><span class="hx">#11111B</span></div></div>
+  </div>
+
+  <div class="h3"><b>自定义变量</b><span>local additions · 10</span></div>
+  <div class="vars">
+    <div class="blk" style="background:#B7BDF8" data-hex="#B7BDF8"><div class="lb on-l"><span class="nm">macchiatoLavender</span><span class="hx">#B7BDF8</span></div></div>
+    <div class="blk" style="background:#242031" data-hex="#242031"><div class="lb on-d"><span class="nm">exportInfoTint</span><span class="hx">#242031</span></div></div>
+    <div class="blk" style="background:#7E8398" data-hex="#7E8398"><div class="lb on-l"><span class="nm">dimText</span><span class="hx">#7E8398</span></div></div>
+    <div class="blk" style="background:#82889E" data-hex="#82889E"><div class="lb on-l"><span class="nm">secondaryText</span><span class="hx">#82889E</span></div></div>
+    <div class="blk" style="background:#1E1E29" data-hex="#1E1E29"><div class="lb on-d"><span class="nm">selected</span><span class="hx">#1E1E29</span></div></div>
+    <div class="blk" style="background:#151515" data-hex="#151515"><div class="lb on-d"><span class="nm">successPanel</span><span class="hx">#151515</span></div></div>
+    <div class="blk" style="background:#171010" data-hex="#171010"><div class="lb on-d"><span class="nm">errorPanel</span><span class="hx">#171010</span></div></div>
+    <div class="blk" style="background:#0B151F" data-hex="#0B151F"><div class="lb on-d"><span class="nm">pendingPanel</span><span class="hx">#0B151F</span></div></div>
+    <div class="blk" style="background:#1C241B" data-hex="#1C241B"><div class="lb on-d"><span class="nm">diffAddedBg</span><span class="hx">#1C241B</span></div></div>
+    <div class="blk" style="background:#2E1C21" data-hex="#2E1C21"><div class="lb on-d"><span class="nm">diffRemovedBg</span><span class="hx">#2E1C21</span></div></div>
+  </div>
+
+  <p class="pnote">
+    <b>文件</b> <code>themes/pi-coder-catppuccin.json</code> · 36 个变量（26 个上游 Mocha + 10 个本地新增）、54 个槽位赋值。
+    值得注意的几处偏移：<code>error</code> 用 <b>maroon #EBA0AC</b> 而非 red；<code>syntaxFunction</code> 用 <b>sky</b> 而非 blue；三个工具面板色（<b>#151515 / #171010 / #0B151F</b>）是自造的近黑，比 Mocha 的 surface 系更沉。
+  </p>
+</section>
+
+<!-- ============================ 03 ayu ============================ -->
+<section class="plate" id="ayu" style="
+  --p-bg:#0D1017; --p-fg:#BFBDB6; --p-soft:#6B7385; --p-dim:#515868; --p-line:#232938;
+  --p-accent:#E6B450; --p-code-bg:#0B0E14;
+  --c-cm:#6B7385; --c-kw:#FF8F40; --c-fn:#FFB454; --c-var:#BFBDB6; --c-st:#67A567;
+  --c-nm:#D2A6FF; --c-ty:#59C2FF; --c-op:#F29668; --c-pu:#6B7385; --c-va:#BFBDB6;">
+
+  <div class="dna">
+    <i style="background:#E6B450;color:#000">accent <span>#E6B450</span></i>
+    <i style="background:#FF8F40;color:#000">orange <span>#FF8F40</span></i>
+    <i style="background:#FFB454;color:#000">function <span>#FFB454</span></i>
+    <i style="background:#E6B673;color:#000">yellow <span>#E6B673</span></i>
+    <i style="background:#AAD94C;color:#000">green <span>#AAD94C</span></i>
+    <i style="background:#67A567;color:#000">stringGreen <span>#67A567</span></i>
+    <i style="background:#95E6CB;color:#000">cyan <span>#95E6CB</span></i>
+    <i style="background:#39BAE6;color:#000">blue <span>#39BAE6</span></i>
+  </div>
+
+  <div class="phead">
+    <div class="idx">03</div>
+    <div>
+      <h2>阿玉 <em>ayu</em></h2>
+      <div class="sub">30 vars · 官方 Dark 血统 · 自成一档的灰阶</div>
+    </div>
+    <p class="mood">一整套暖橙 + 青蓝的主题，灰阶和主色调都做了微调。语法槽位贴着官方 <b>ayu Dark</b> 走（10 个角色对齐后平均 ΔE 只有 1.72），灰阶与面板是自家第三套值，比 Dark 更沉。字符串没有用官方的 <b>#AAD94C</b>，而是压暗到 <b>stringGreen #67A567</b>。</p>
+  </div>
+
+  <div class="h3"><b>语义槽位</b><span>ui roles</span></div>
+  <div class="roles">
+    <div class="blk" style="background:#E6B450" data-hex="#E6B450"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#E6B450</span><span class="rl">强调色</span></div></div>
+    <div class="blk" style="background:#E6B450" data-hex="#E6B450"><div class="lb on-l"><span class="nm">toolTitle</span><span class="hx">#E6B450</span><span class="rl">工具标题</span></div></div>
+    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">mdHeading</span><span class="hx">#FF8F40</span><span class="rl">标题</span></div></div>
+    <div class="blk" style="background:#59C2FF" data-hex="#59C2FF"><div class="lb on-l"><span class="nm">mdLink</span><span class="hx">#59C2FF</span><span class="rl">链接</span></div></div>
+    <div class="blk" style="background:#95E6CB" data-hex="#95E6CB"><div class="lb on-l"><span class="nm">mdCode</span><span class="hx">#95E6CB</span><span class="rl">行内代码</span></div></div>
+    <div class="blk" style="background:#AAD94C" data-hex="#AAD94C"><div class="lb on-l"><span class="nm">success</span><span class="hx">#AAD94C</span><span class="rl">成功</span></div></div>
+    <div class="blk" style="background:#D95757" data-hex="#D95757"><div class="lb on-l"><span class="nm">error</span><span class="hx">#D95757</span><span class="rl">错误</span></div></div>
+    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">warning</span><span class="hx">#FF8F40</span><span class="rl">警告</span></div></div>
+    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">muted</span><span class="hx">#6B7385</span><span class="rl">次要文本</span></div></div>
+    <div class="blk" style="background:#515868" data-hex="#515868"><div class="lb on-d"><span class="nm">dim</span><span class="hx">#515868</span><span class="rl">最弱文本</span></div></div>
+  </div>
+
+  <div class="h3"><b>底色与表面</b><span>surfaces</span></div>
+  <div class="surf2">
+  <table class="surf">
+    <thead><tr><th>槽位</th><th>色块</th><th style="text-align:right">hex</th></tr></thead>
+    <tbody>
+      <tr><td class="k">页面底色<span>bg</span></td><td class="bar"><div style="background:#0D1017"></div></td><td class="v">#0D1017</td></tr>
+      <tr><td class="k">用户消息底<span>userMessageBg</span></td><td class="bar"><div style="background:#1B1C1D"></div></td><td class="v">#1B1C1D</td></tr>
+      <tr><td class="k">自定义消息底<span>customMessageBg</span></td><td class="bar"><div style="background:#1B1C1D"></div></td><td class="v">#1B1C1D</td></tr>
+      <tr><td class="k">选中行<span>selectedBg</span></td><td class="bar"><div style="background:#161D2B"></div></td><td class="v">#161D2B</td></tr>
+      <tr><td class="k">工具待执行<span>toolPendingBg</span></td><td class="bar"><div style="background:#1B1C1D"></div></td><td class="v">#1B1C1D</td></tr>
+      <tr><td class="k">工具成功底<span>toolSuccessBg</span></td><td class="bar"><div style="background:#10151F"></div></td><td class="v">#10151F</td></tr>
+      <tr><td class="k">工具失败底<span>toolErrorBg</span></td><td class="bar"><div style="background:#1B171D"></div></td><td class="v">#1B171D</td></tr>
+    </tbody>
+  </table>
+  <table class="surf">
+    <thead><tr><th>槽位</th><th>色块</th><th style="text-align:right">hex</th></tr></thead>
+    <tbody>
+      <tr><td class="k">差异新增底<span>diffAddedBg</span></td><td class="bar"><div style="background:#1D241C"></div></td><td class="v">#1D241C</td></tr>
+      <tr><td class="k">差异删除底<span>diffRemovedBg</span></td><td class="bar"><div style="background:#321D23"></div></td><td class="v">#321D23</td></tr>
+      <tr><td class="k">边框<span>border (dimmed)</span></td><td class="bar"><div style="background:#515868"></div></td><td class="v">#515868</td></tr>
+      <tr><td class="k">弱边框<span>borderMuted</span></td><td class="bar"><div style="background:#232938"></div></td><td class="v">#232938</td></tr>
+      <tr><td class="k">导出页底<span>export.pageBg</span></td><td class="bar"><div style="background:#0B0E14"></div></td><td class="v">#0B0E14</td></tr>
+      <tr><td class="k">导出卡片<span>export.cardBg</span></td><td class="bar"><div style="background:#0D1017"></div></td><td class="v">#0D1017</td></tr>
+      <tr><td class="k">导出信息底<span>export.infoBg</span></td><td class="bar"><div style="background:#1A1610"></div></td><td class="v">#1A1610</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="h3"><b>语法取样</b><span>syntax sampler</span></div>
+  <pre class="code"><span class="c-cm">// pi-coder-ayu · syntax sampler</span>
+<span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
+
+<span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-ayu"</span><span class="c-pu">);</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Ayu</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+  <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
+  <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
+<span class="c-pu">}</span></pre>
+
+  <div class="syn">
+    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">comment</span><span class="hx">#6B7385</span></div></div>
+    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">keyword</span><span class="hx">#FF8F40</span></div></div>
+    <div class="blk" style="background:#FFB454" data-hex="#FFB454"><div class="lb on-l"><span class="nm">function</span><span class="hx">#FFB454</span></div></div>
+    <div class="blk" style="background:#BFBDB6" data-hex="#BFBDB6"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#BFBDB6</span></div></div>
+    <div class="blk" style="background:#67A567" data-hex="#67A567"><div class="lb on-l"><span class="nm">string</span><span class="hx">#67A567</span></div></div>
+    <div class="blk" style="background:#D2A6FF" data-hex="#D2A6FF"><div class="lb on-l"><span class="nm">number</span><span class="hx">#D2A6FF</span></div></div>
+    <div class="blk" style="background:#59C2FF" data-hex="#59C2FF"><div class="lb on-l"><span class="nm">type</span><span class="hx">#59C2FF</span></div></div>
+    <div class="blk" style="background:#F29668" data-hex="#F29668"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#F29668</span></div></div>
+    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">punctuation</span><span class="hx">#6B7385</span></div></div>
+  </div>
+
+  <div class="h3"><b>全部变量</b><span>full var list · 其余 22 项</span></div>
+  <div class="vars">
+    <div class="blk" style="background:#0D1017" data-hex="#0D1017"><div class="lb on-d"><span class="nm">bg</span><span class="hx">#0D1017</span></div></div>
+    <div class="blk" style="background:#0B0E14" data-hex="#0B0E14"><div class="lb on-d"><span class="nm">panelBg</span><span class="hx">#0B0E14</span></div></div>
+    <div class="blk" style="background:#151C28" data-hex="#151C28"><div class="lb on-d"><span class="nm">editorLine</span><span class="hx">#151C28</span></div></div>
+    <div class="blk" style="background:#DBDBDD" data-hex="#DBDBDD"><div class="lb on-l"><span class="nm">textColor</span><span class="hx">#DBDBDD</span></div></div>
+    <div class="blk" style="background:#BFBDB6" data-hex="#BFBDB6"><div class="lb on-l"><span class="nm">fg</span><span class="hx">#BFBDB6</span></div></div>
+    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">muted</span><span class="hx">#6B7385</span></div></div>
+    <div class="blk" style="background:#515868" data-hex="#515868"><div class="lb on-d"><span class="nm">dimmed</span><span class="hx">#515868</span></div></div>
+    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">orange</span><span class="hx">#FF8F40</span></div></div>
+    <div class="blk" style="background:#E6B673" data-hex="#E6B673"><div class="lb on-l"><span class="nm">yellow</span><span class="hx">#E6B673</span></div></div>
+    <div class="blk" style="background:#AAD94C" data-hex="#AAD94C"><div class="lb on-l"><span class="nm">green</span><span class="hx">#AAD94C</span></div></div>
+    <div class="blk" style="background:#67A567" data-hex="#67A567"><div class="lb on-l"><span class="nm">stringGreen</span><span class="hx">#67A567</span></div></div>
+    <div class="blk" style="background:#95E6CB" data-hex="#95E6CB"><div class="lb on-l"><span class="nm">cyan</span><span class="hx">#95E6CB</span></div></div>
+    <div class="blk" style="background:#39BAE6" data-hex="#39BAE6"><div class="lb on-l"><span class="nm">blue</span><span class="hx">#39BAE6</span></div></div>
+    <div class="blk" style="background:#59C2FF" data-hex="#59C2FF"><div class="lb on-l"><span class="nm">entityBlue</span><span class="hx">#59C2FF</span></div></div>
+    <div class="blk" style="background:#D2A6FF" data-hex="#D2A6FF"><div class="lb on-l"><span class="nm">purple</span><span class="hx">#D2A6FF</span></div></div>
+    <div class="blk" style="background:#D95757" data-hex="#D95757"><div class="lb on-l"><span class="nm">red</span><span class="hx">#D95757</span></div></div>
+    <div class="blk" style="background:#F29668" data-hex="#F29668"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#F29668</span></div></div>
+    <div class="blk" style="background:#626262" data-hex="#626262"><div class="lb on-d"><span class="nm">thinkingGrey</span><span class="hx">#626262</span></div></div>
+    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">bashOutput</span><span class="hx">#6B7385</span></div></div>
+    <div class="blk" style="background:#161D2B" data-hex="#161D2B"><div class="lb on-d"><span class="nm">selectedBg</span><span class="hx">#161D2B</span></div></div>
+    <div class="blk" style="background:#1B1C1D" data-hex="#1B1C1D"><div class="lb on-d"><span class="nm">userMessageBg</span><span class="hx">#1B1C1D</span></div></div>
+    <div class="blk" style="background:#1B1C1D" data-hex="#1B1C1D"><div class="lb on-d"><span class="nm">toolPendingBg</span><span class="hx">#1B1C1D</span></div></div>
+    <div class="blk" style="background:#10151F" data-hex="#10151F"><div class="lb on-d"><span class="nm">toolSuccessBg</span><span class="hx">#10151F</span></div></div>
+    <div class="blk" style="background:#1B171D" data-hex="#1B171D"><div class="lb on-d"><span class="nm">toolErrorBg</span><span class="hx">#1B171D</span></div></div>
+    <div class="blk" style="background:#1A1610" data-hex="#1A1610"><div class="lb on-d"><span class="nm">infoBg</span><span class="hx">#1A1610</span></div></div>
+    <div class="blk" style="background:#1D241C" data-hex="#1D241C"><div class="lb on-d"><span class="nm">diffAddedBg</span><span class="hx">#1D241C</span></div></div>
+    <div class="blk" style="background:#321D23" data-hex="#321D23"><div class="lb on-d"><span class="nm">diffRemovedBg</span><span class="hx">#321D23</span></div></div>
+  </div>
+
+  <p class="pnote">
+    <b>文件</b> <code>themes/pi-coder-ayu.json</code> · 30 个变量、55 个槽位赋值。
+    xhigh 与 max 同色（<code>#626262</code>），也是三套里唯一把高思考档画成中灰而非彩色的。相比于官方 ayu 色系做了大量的调整，主要是代码块 diff 和 pi 工具调用色块的底色等等做了调整。
+  </p>
+</section>
+
+<!-- ============================ cross ============================ -->
+<section class="cross" id="cross">
+  <h2>三色对照</h2>
+  <p class="sub">同一槽位、三套取值。点色块复制 hex。</p>
+  <div class="crossgrid">
+    <table class="cross2">
+      <thead>
+        <tr><th style="width:108px">槽位</th><th>summer-night</th><th>catppuccin</th><th>ayu</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="rk">底色<span>bg</span></td>
+          <td class="cell"><div style="background:#1A1B26" data-hex="#1A1B26"><span class="on-d">#1A1B26</span><span class="on-d">night</span></div></td>
+          <td class="cell"><div style="background:#1E1E2E" data-hex="#1E1E2E"><span class="on-d">#1E1E2E</span><span class="on-d">base</span></div></td>
+          <td class="cell"><div style="background:#0D1017" data-hex="#0D1017"><span class="on-d">#0D1017</span><span class="on-d">bg</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">前景<span>text</span></td>
+          <td class="cell"><div style="background:#C6C8D1" data-hex="#C6C8D1"><span class="on-l">#C6C8D1</span><span class="on-l">fg</span></div></td>
+          <td class="cell"><div style="background:#CDD6F4" data-hex="#CDD6F4"><span class="on-l">#CDD6F4</span><span class="on-l">text</span></div></td>
+          <td class="cell"><div style="background:#BFBDB6" data-hex="#BFBDB6"><span class="on-l">#BFBDB6</span><span class="on-l">fg</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">强调色<span>accent</span></td>
+          <td class="cell"><div style="background:#95C4CE" data-hex="#95C4CE"><span class="on-l">#95C4CE</span><span class="on-l">sky</span></div></td>
+          <td class="cell"><div style="background:#B7BDF8" data-hex="#B7BDF8"><span class="on-l">#B7BDF8</span><span class="on-l">macchiatoLavender</span></div></td>
+          <td class="cell"><div style="background:#E6B450" data-hex="#E6B450"><span class="on-l">#E6B450</span><span class="on-l">accent</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">成功<span>success</span></td>
+          <td class="cell"><div style="background:#89B8C2" data-hex="#89B8C2"><span class="on-l">#89B8C2</span><span class="on-l">teal</span></div></td>
+          <td class="cell"><div style="background:#A6E3A1" data-hex="#A6E3A1"><span class="on-l">#A6E3A1</span><span class="on-l">green</span></div></td>
+          <td class="cell"><div style="background:#AAD94C" data-hex="#AAD94C"><span class="on-l">#AAD94C</span><span class="on-l">green</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">错误<span>error</span></td>
+          <td class="cell"><div style="background:#E27878" data-hex="#E27878"><span class="on-l">#E27878</span><span class="on-l">red</span></div></td>
+          <td class="cell"><div style="background:#EBA0AC" data-hex="#EBA0AC"><span class="on-l">#EBA0AC</span><span class="on-l">maroon</span></div></td>
+          <td class="cell"><div style="background:#D95757" data-hex="#D95757"><span class="on-l">#D95757</span><span class="on-l">red</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">警告<span>warning</span></td>
+          <td class="cell"><div style="background:#E2A478" data-hex="#E2A478"><span class="on-l">#E2A478</span><span class="on-l">yellow</span></div></td>
+          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
+          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">关键字<span>syntaxKeyword</span></td>
+          <td class="cell"><div style="background:#A093C7" data-hex="#A093C7"><span class="on-l">#A093C7</span><span class="on-l">moonLilac</span></div></td>
+          <td class="cell"><div style="background:#CBA6F7" data-hex="#CBA6F7"><span class="on-l">#CBA6F7</span><span class="on-l">mauve</span></div></td>
+          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">字符串<span>syntaxString</span></td>
+          <td class="cell"><div style="background:#B4BE82" data-hex="#B4BE82"><span class="on-l">#B4BE82</span><span class="on-l">green</span></div></td>
+          <td class="cell"><div style="background:#A6E3A1" data-hex="#A6E3A1"><span class="on-l">#A6E3A1</span><span class="on-l">green</span></div></td>
+          <td class="cell"><div style="background:#67A567" data-hex="#67A567"><span class="on-l">#67A567</span><span class="on-l">stringGreen</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">函数名<span>syntaxFunction</span></td>
+          <td class="cell"><div style="background:#84A0C6" data-hex="#84A0C6"><span class="on-l">#84A0C6</span><span class="on-l">blue</span></div></td>
+          <td class="cell"><div style="background:#89DCEB" data-hex="#89DCEB"><span class="on-l">#89DCEB</span><span class="on-l">sky</span></div></td>
+          <td class="cell"><div style="background:#FFB454" data-hex="#FFB454"><span class="on-l">#FFB454</span><span class="on-l">function</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">注释<span>syntaxComment</span></td>
+          <td class="cell"><div style="background:#6E7DC0" data-hex="#6E7DC0"><span class="on-l">#6E7DC0</span><span class="on-l">commentBright</span></div></td>
+          <td class="cell"><div style="background:#A6ADC8" data-hex="#A6ADC8"><span class="on-l">#A6ADC8</span><span class="on-l">subtext0</span></div></td>
+          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">面板底<span>userMessageBg</span></td>
+          <td class="cell"><div style="background:#1B1C1D" data-hex="#1B1C1D"><span class="on-d">#1B1C1D</span><span class="on-d">ayuUserBg</span></div></td>
+          <td class="cell"><div style="background:#181825" data-hex="#181825"><span class="on-d">#181825</span><span class="on-d">mantle</span></div></td>
+          <td class="cell"><div style="background:#1B1C1D" data-hex="#1B1C1D"><span class="on-d">#1B1C1D</span><span class="on-d">userMessageBg</span></div></td>
+        </tr>
+        <tr>
+          <td class="rk">选中行<span>selectedBg</span></td>
+          <td class="cell"><div style="background:#2D2C5D" data-hex="#2D2C5D"><span class="on-d">#2D2C5D</span><span class="on-d">select</span></div></td>
+          <td class="cell"><div style="background:#1E1E29" data-hex="#1E1E29"><span class="on-d">#1E1E29</span><span class="on-d">selected</span></div></td>
+          <td class="cell"><div style="background:#161D2B" data-hex="#161D2B"><span class="on-d">#161D2B</span><span class="on-d">selectedBg</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ howto ============================ -->
+<section class="cross" id="howto">
+  <h2>读法</h2>
+  <p class="sub">每块色板里出现的两类名字，含义并不相同。</p>
+  <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px">
+    <div style="background:var(--ink2);border:1px solid var(--rule);border-radius:14px;padding:18px 20px">
+      <h3 style="margin:0 0 9px;font-size:16.5px">变量名（色块内的大字）</h3>
+      <p style="margin:0;color:var(--mute);font-size:15px;line-height:1.8">
+        主题 JSON 里 <code>vars</code> 的键，是这套配色自己的命名 —— <b>moonLilac</b>、<b>macchiatoLavender</b>、<b>stringGreen</b> 之类。它只对这套皮肤有意义，换一套皮肤同一个名字不会出现。
+      </p>
+    </div>
+    <div style="background:var(--ink2);border:1px solid var(--rule);border-radius:14px;padding:18px 20px">
+      <h3 style="margin:0 0 9px;font-size:16.5px">槽位名（色块下的小字）</h3>
+      <p style="margin:0;color:var(--mute);font-size:15px;line-height:1.8">
+        pi 主题 schema 里 <code>colors</code> 的固定键 —— accent / success / mdLink / syntaxString …… 三个皮肤必须各自给出同一批键的取值，这才是三套配色之间唯一可比的层。上文对照表即参照于此。
+      </p>
+    </div>
+    <div style="background:var(--ink2);border:1px solid var(--rule);border-radius:14px;padding:18px 20px">
+      <h3 style="margin:0 0 9px;font-size:16.5px">色块上的文字颜色</h3>
+      <p style="margin:0;color:var(--mute);font-size:15px;line-height:1.8">
+        每块色板内的标签用黑或白，按 WCAG 相对亮度二选一，取对比度更高者；底部边缘接近 1:1 的深底一律用白字。这不是皮肤的一部分，只是这张表的排版规则。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ live demo ============================ -->
+<section class="cross" id="demo">
+  <h2>着色效果</h2>
+  <p class="sub">
+    取自一次真实会话：上半是聊天区，下半是 pi 的输入框、任务清单和 statusline。点下面的按钮换皮肤。
+  </p>
+
+  <div class="demobar">
+    <div class="demobtns" role="group" aria-label="切换演示皮肤">
+      <button type="button" class="demo-btn" data-demo="summer-night" aria-pressed="false">
+        <i class="dot" style="background:linear-gradient(90deg,#84A0C6 0 25%,#A093C7 0 50%,#95C4CE 0 75%,#89B8C2 0 100%)"></i>
+        <b>夏夜</b><span>summer-night</span>
+      </button>
+      <button type="button" class="demo-btn" data-demo="catppuccin" aria-pressed="false">
+        <i class="dot" style="background:linear-gradient(90deg,#B7BDF8 0 25%,#CBA6F7 0 50%,#89B4FA 0 75%,#FAB387 0 100%)"></i>
+        <b>卡布</b><span>catppuccin</span>
+      </button>
+      <button type="button" class="demo-btn" data-demo="ayu" aria-pressed="true">
+        <i class="dot" style="background:linear-gradient(90deg,#E6B450 0 25%,#FF8F40 0 50%,#39BAE6 0 75%,#AAD94C 0 100%)"></i>
+        <b>阿玉</b><span>ayu</span>
+      </button>
+    </div>
+    <div class="demofile">当前皮肤 <code id="demo-file">themes/pi-coder-ayu.json</code></div>
+  </div>
+
+  <div class="demo" id="demo-stage" data-theme="ayu">
+    <div class="term">
+      <div class="term-bar">
+        <span class="term-dots"><i></i><i></i><i></i></span>
+        <span class="term-title">pi · session 01a0b95e · /Users/bachi/ttt/a</span>
+        <span class="term-badge" id="demo-badge">ayu</span>
+      </div>
+
+      <div class="term-screen">
+        <div class="msg-user">修改 server.js 到 https，如果已经是 https，就修改到 http，用 新建 tasks 来实现</div>
+
+        <div class="think"><span class="think-tag">Think: </span>The user wants me to toggle server.js between HTTPS and HTTP. They say 「用 新建 tasks 来实现」— use the task list to do this. First, let me read server.js to see the current state.…</div>
+
+        <div class="tool">
+          <div class="tool-head">Read <span class="tool-path">/Users/bachi/ttt/a/server.js</span> <span class="tool-meta">(120 lines)</span></div>
+          <div class="tool-out">// 监听走纯 HTTP；反代上游按 PROXY_TARGET 协议选择 http/https
+const https = require('https');
+const PORT = process.env.PORT || 18080;</div>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">Bash <span class="tool-cmd">ls -la /Users/bachi/ttt/a/cert/</span></div>
+          <div class="tool-out bash">total 16
+drwxr-xr-x@  4 bachi  staff   128 Jul 22 10:07 .
+-rw-r--r--@  1 bachi  staff  1123 Jul 22 10:07 abc.com+5.pem
+-rw-------@  1 bachi  staff  1704 Jul 22 10:07 abc.com+5-key.pem</div>
+        </div>
+
+        <div class="tool">
+          <div class="tool-head">Edit <span class="tool-path">/Users/bachi/ttt/a/server.js</span> <span class="tool-meta">3 blocks</span></div>
+          <div class="diff">
+            <div class="ctx">  const PORT = process.env.PORT || 18080;</div>
+            <div class="del">- const server = http.createServer(handleRequest);</div>
+            <div class="add">+ const server = https.createServer(TLS_OPTIONS, handleRequest);</div>
+            <div class="ctx"> </div>
+            <div class="del">-   console.log(`HTTP 静态资源服务器已启动: http://localhost:${PORT}`);</div>
+            <div class="add">+   console.log(`HTTPS 静态资源服务器已启动: https://localhost:${PORT}`);</div>
+          </div>
+        </div>
+
+        <div class="md">
+          <p><code>server.js</code> 已从 HTTP 切到 HTTPS，其余逻辑（<code>/api/</code> 反代、MIME、目录穿越防护）未动。</p>
+          <ul>
+            <li><code>server.js</code>：新增 <code>TLS_OPTIONS</code> 加载 <code>cert/abc.com+5.pem</code> / <code>cert/abc.com+5-key.pem</code>，入口改为 <code>https.createServer(TLS_OPTIONS, handleRequest)</code>。</li>
+            <li><code>CLAUDE.md</code>：更新启动命令注释、协议说明和文件表里 <code>server.js</code> / <code>cert/</code> 两行。</li>
+          </ul>
+          <p>其他三份实现（Go / Rust / Python）仍是 HTTP，未改 —— <span class="link">详见 README</span>。</p>
+        </div>
+      </div>
+
+      <div class="term-bottom">
+        <div class="tasks">
+          <div class="tasks-head">● 4 tasks (4 done)</div>
+          <div class="task"><span class="tick">✔</span> <s><span class="id">#1</span> 确认 server.js 当前协议与历史 HTTPS 写法</s></div>
+          <div class="task"><span class="tick">✔</span> <s><span class="id">#2</span> 把 server.js 切到 HTTPS（加载 cert/ 证书，端口不变）</s></div>
+          <div class="task"><span class="tick">✔</span> <s><span class="id">#3</span> 启动服务并用 curl 验证 HTTPS 静态资源与 /api/ 反代</s></div>
+          <div class="task"><span class="tick">✔</span> <s><span class="id">#4</span> 同步更新 CLAUDE.md 中 server.js 的协议说明</s></div>
+        </div>
+
+        <div class="editor">
+          <div class="ed-top">
+            <span class="ed-rule pre"></span>
+            <span class="ed-work"><span class="spin">⠹</span> Thinking</span>
+            <span class="ed-rule"></span>
+          </div>
+          <div class="ed-row"><span class="ed-prompt">❯</span> 顺手把 CLAUDE.md 里 server.js 的协议说明也对齐一下<span class="ed-caret"></span></div>
+          <div class="ed-bot"></div>
+        </div>
+
+        <div class="sl-main"><span>⚡️</span> <span class="sl-accent">deepseek-flash</span><span class="sl-dim">/</span><span class="sl-lvl">max</span><span class="sl-sep"> | </span><span class="sl-dim">Ctx</span> <span class="sl-ok">8.4%</span><span class="sl-sep"> | </span><span class="sl-dim">⎇</span> <span class="sl-accent">main</span><span class="sl-sep"> | </span><span class="sl-dim">(</span><span class="sl-ok">+38</span><span class="sl-dim">,</span><span class="sl-err">-12</span><span class="sl-dim">)</span><span class="sl-sep"> | </span><span class="sl-warn">thinking</span></div>
+        <div class="sl-cwd"><span class="sl-ok">✔ 4/4</span><span class="sl-sep"> | </span>📁 /Users/bachi/ttt/a</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="pnote">
+    输入框上方那行是 <code>simple-task</code> 的任务清单（已完成的 <code>✔</code> 用 success、正文用 dim 加删除线），下面依次是
+    pi 的输入框（边框与 <code>❯</code> 取当前思考档的颜色，这里是 <code>max</code> → 本主题的 <code>thinkingMax</code>；左上一段是工作指示器嵌在边框里的样子）
+    与 statusline 两行： <code>⚡️ 模型/档位 | Ctx 百分比 | 分支 | (+增,-删) | 状态</code>，第二行是所有扩展 <code>setStatus</code> 的文本（任务计数、cwd）。
+    分支图标用的是 <code>⎇</code>（<code>U+2387</code>，通用符号区，没装 Nerd Font 的机器也能正常显示）。
+  </p>
+</section>
+
+<footer class="end">
+  <p>
+    <b>数据来源</b> <code>themes/pi-coder-summer-night.json</code> · <code>pi-coder-catppuccin.json</code> · <code>pi-coder-ayu.json</code>，色值与变量名逐字抄录。<br>
+    <b>三个皮肤合计</b> 105 个变量 · 168 个槽位赋值 · 底色区间 #0B0E14 – #1E1E2E。
+  </p>
+</footer>
+
+</div>
+<script>
+(function () {
+  const flash = (el, cls) => {
+    el.classList.add(cls)
+    setTimeout(() => el.classList.remove(cls), 760)
+  }
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-hex]')
+    if (!el) return
+    const hex = el.dataset.hex
+    if (navigator.clipboard) navigator.clipboard.writeText(hex).then(() => flash(el, 'flash'), () => flash(el, 'fail'))
+    else flash(el, 'fail')
+  })
+})()
+;(function () {
+    const stage = document.getElementById('demo-stage')
+    if (!stage) return
+    const badge = document.getElementById('demo-badge')
+    const file = document.getElementById('demo-file')
+    const buttons = [...document.querySelectorAll('.demo-btn')]
+    // 像真终端一样停在最新一行：开场就把聊天区滚到底（上面的内容可往上滚）
+    const screen = stage.querySelector('.term-screen')
+    screen.scrollTop = screen.scrollHeight
+    const FILES = {
+      'summer-night': 'themes/pi-coder-summer-night.json',
+      catppuccin: 'themes/pi-coder-catppuccin.json',
+      ayu: 'themes/pi-coder-ayu.json',
+    }
+    const apply = (name) => {
+      if (!FILES[name]) return
+      stage.dataset.theme = name
+      badge.textContent = name
+      file.textContent = FILES[name]
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.demo === name)))
+    }
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.demo)))
+  })()
+</script>
+</body>
+</html>
