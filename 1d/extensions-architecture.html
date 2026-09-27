@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pi-coder 扩展架构图</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --card2: #1c2330;
+    --border: #2d3646;
+    --text: #e6edf3;
+    --dim: #9aa7b8;
+    --faint: #5c6773;
+    --pi: #2dd4bf;
+    --render: #e8875b;
+    --tui: #d2a8ff;
+    --flow: #79c0ff;
+    --model: #7ee787;
+    --danger: #f85149;
+    --warn: #d29922;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+    line-height: 1.55; padding: 40px 16px 80px;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 30px; }
+  header h1 { font-size: 26px; }
+  header .sub { color: var(--dim); font-size: 14px; margin-top: 8px; }
+  header .sub code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; }
+
+  .diagram { display: flex; justify-content: center; overflow-x: auto; }
+  .diagram svg { max-width: 100%; height: auto; }
+
+  h2 {
+    font-size: 19px; margin: 44px 0 6px;
+    padding-left: 12px; border-left: 4px solid var(--pi);
+  }
+  h2 .note-inline { color: var(--faint); font-size: 13px; font-weight: normal; margin-left: 8px; }
+  .diagram-note { color: var(--dim); font-size: 13px; margin-bottom: 12px; }
+
+  .companions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+  .comp {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; font-size: 12.5px;
+  }
+  .comp h4 { font-size: 12px; color: var(--dim); letter-spacing: 1px; margin-bottom: 9px; }
+  .comp b { display: block; font-size: 13px; margin-bottom: 2px; }
+  .comp span { color: var(--dim); font-size: 11.5px; display: block; margin-bottom: 7px; }
+  .comp span:last-child { margin-bottom: 0; }
+  .comp .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: baseline; }
+
+  footer { margin-top: 44px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--faint); font-size: 12px; }
+  footer p { margin: 4px 0; }
+  footer code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+  @media (max-width: 1000px) {
+    .companions { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>pi-coder 扩展架构</h1>
+  <div class="sub">底座是 pi 内核（<code>@earendil-works/pi-coding-agent</code> 0.87.1），30 个扩展全部通过同一套扩展 API 挂载 · 依据 <code>docs/extensions.md</code> 与源码实测</div>
+</header>
+
+<!-- ================= 主图：分层架构 ================= -->
+<div class="diagram">
+<svg width="1120" height="972" viewBox="0 0 1120 972" font-family="-apple-system, 'PingFang SC', sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c6773"/>
+    </marker>
+  </defs>
+
+  <!-- ========== 扩展层 ========== -->
+  <rect x="20" y="24" width="1080" height="330" rx="14" fill="#161b22" stroke="#2d3646"/>
+  <text x="40" y="17" fill="#9aa7b8" font-size="12.5" font-weight="700" letter-spacing="1">扩展层 · 30 个</text>
+
+  <!-- 工具渲染覆盖 (5) -->
+  <text x="40" y="58" fill="#e8875b" font-size="13" font-weight="700">工具渲染覆盖 · 5</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11">
+    <rect x="40"  y="70" width="190" height="28" rx="7" fill="#1c2330" stroke="#e8875b" stroke-opacity=".55"/><text x="135" y="88"  text-anchor="middle" fill="#e6edf3">bash-command-collapse</text>
+    <rect x="40"  y="104" width="190" height="28" rx="7" fill="#1c2330" stroke="#e8875b" stroke-opacity=".55"/><text x="135" y="122" text-anchor="middle" fill="#e6edf3">read-path-collapse</text>
+    <rect x="40"  y="138" width="190" height="28" rx="7" fill="#1c2330" stroke="#e8875b" stroke-opacity=".55"/><text x="135" y="156" text-anchor="middle" fill="#e6edf3">tool-diff</text>
+    <rect x="40"  y="172" width="190" height="28" rx="7" fill="#1c2330" stroke="#e8875b" stroke-opacity=".55"/><text x="135" y="190" text-anchor="middle" fill="#e6edf3">thinking-collapse</text>
+    <rect x="40"  y="206" width="190" height="28" rx="7" fill="#1c2330" stroke="#e8875b" stroke-opacity=".55"/><text x="135" y="224" text-anchor="middle" fill="#e6edf3">fenceless-code-block</text>
+  </g>
+
+  <!-- TUI 外观 (7) -->
+  <text x="250" y="58" fill="#d2a8ff" font-size="13" font-weight="700">TUI 外观 · 7</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11">
+    <rect x="250" y="70"  width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="88"  text-anchor="middle" fill="#e6edf3">statusline</text>
+    <rect x="250" y="104" width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="122" text-anchor="middle" fill="#e6edf3">cwd-statusline</text>
+    <rect x="250" y="138" width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="156" text-anchor="middle" fill="#e6edf3">startup-logo</text>
+    <rect x="250" y="172" width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="190" text-anchor="middle" fill="#e6edf3" font-size="9.5">below-editor-after-statusline</text>
+    <rect x="250" y="206" width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="224" text-anchor="middle" fill="#e6edf3">prompt-editor</text>
+    <rect x="250" y="240" width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="258" text-anchor="middle" fill="#e6edf3">user-message-bar</text>
+    <rect x="250" y="274" width="190" height="28" rx="7" fill="#1c2330" stroke="#d2a8ff" stroke-opacity=".55"/><text x="345" y="292" text-anchor="middle" fill="#e6edf3">working-indicator</text>
+  </g>
+
+  <!-- 工作流 (8) -->
+  <text x="460" y="58" fill="#79c0ff" font-size="13" font-weight="700">工作流 · 8</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11">
+    <rect x="460" y="70"  width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="88"  text-anchor="middle" fill="#e6edf3">simple-task</text>
+    <rect x="460" y="104" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="122" text-anchor="middle" fill="#e6edf3">recap</text>
+    <rect x="460" y="138" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="156" text-anchor="middle" fill="#e6edf3">rewind</text>
+    <rect x="460" y="172" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="190" text-anchor="middle" fill="#e6edf3">init-command</text>
+    <rect x="460" y="206" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="224" text-anchor="middle" fill="#e6edf3">theme-command</text>
+    <rect x="460" y="240" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="258" text-anchor="middle" fill="#e6edf3">folder-history</text>
+    <rect x="460" y="274" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="292" text-anchor="middle" fill="#e6edf3">clear-command</text>
+    <rect x="460" y="308" width="190" height="28" rx="7" fill="#1c2330" stroke="#79c0ff" stroke-opacity=".55"/><text x="555" y="326" text-anchor="middle" fill="#e6edf3">exit-command</text>
+  </g>
+
+  <!-- 模型与工具 (10) -->
+  <text x="670" y="58" fill="#7ee787" font-size="13" font-weight="700">模型与工具 · 10</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11">
+    <rect x="670"  y="70"  width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="765" y="88"  text-anchor="middle" fill="#e6edf3">plan-mode</text>
+    <rect x="880"  y="70"  width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="975" y="88"  text-anchor="middle" fill="#e6edf3">sandbox-boundary</text>
+    <rect x="670"  y="104" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="765" y="122" text-anchor="middle" fill="#e6edf3">core-rules</text>
+    <rect x="880"  y="104" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="975" y="122" text-anchor="middle" fill="#e6edf3">verify-loop</text>
+    <rect x="670"  y="138" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="765" y="156" text-anchor="middle" fill="#e6edf3">memory</text>
+    <rect x="880"  y="138" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="975" y="156" text-anchor="middle" fill="#e6edf3">background-tasks</text>
+    <rect x="670"  y="172" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="765" y="190" text-anchor="middle" fill="#e6edf3">ask-user-question</text>
+    <rect x="880"  y="172" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="975" y="190" text-anchor="middle" fill="#e6edf3">mcp</text>
+    <rect x="670"  y="206" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="765" y="224" text-anchor="middle" fill="#e6edf3">auto-default-model</text>
+    <rect x="880"  y="206" width="190" height="28" rx="7" fill="#1c2330" stroke="#7ee787" stroke-opacity=".55"/><text x="975" y="224" text-anchor="middle" fill="#e6edf3">subagent-log-guard</text>
+  </g>
+
+  <!-- ========== 层间箭头 1 ========== -->
+  <line x1="560" y1="354" x2="560" y2="404" stroke="#5c6773" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="574" y="384" fill="#5c6773" font-size="11.5">挂载 · 覆盖（同名工具先注册者整包接管）</text>
+
+  <!-- ========== 扩展 API 接口面 ========== -->
+  <rect x="20" y="410" width="1080" height="130" rx="14" fill="#161b22" stroke="#2d3646"/>
+  <text x="40" y="403" fill="#9aa7b8" font-size="12.5" font-weight="700" letter-spacing="1">扩展 API 接口面（pi loader 加载，全部扩展共用）</text>
+  <g font-family="ui-monospace, 'SF Mono', Menlo, monospace" font-size="11.5">
+    <rect x="40"  y="432" width="170" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="125" y="451" text-anchor="middle" fill="#2dd4bf">registerTool ×18</text>
+    <rect x="224" y="432" width="200" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="324" y="451" text-anchor="middle" fill="#2dd4bf">registerCommand ×17</text>
+    <rect x="438" y="432" width="250" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="563" y="451" text-anchor="middle" fill="#2dd4bf">registerMessageRenderer ×2</text>
+    <rect x="702" y="432" width="290" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="847" y="451" text-anchor="middle" fill="#2dd4bf">registerMarkdownTransformer ×1</text>
+    <rect x="40"  y="472" width="330" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="205" y="491" text-anchor="middle" fill="#2dd4bf">ctx.on(session_start | tool_call | input | …)</text>
+    <rect x="384" y="472" width="350" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="559" y="491" text-anchor="middle" fill="#2dd4bf">ctx.ui.setHeader / setStatus / setWorkingMessage</text>
+    <rect x="748" y="472" width="230" height="30" rx="15" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="863" y="491" text-anchor="middle" fill="#2dd4bf">systemPromptOptions.sections</text>
+    <rect x="40"  y="512" width="220" height="24" rx="12" fill="rgba(45,212,191,.08)" stroke="rgba(45,212,191,.35)"/><text x="150" y="528" text-anchor="middle" fill="#2dd4bf">appendEntry()（会话日志）</text>
+  </g>
+
+  <!-- ========== 层间箭头 2 ========== -->
+  <line x1="560" y1="540" x2="560" y2="590" stroke="#5c6773" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="574" y="570" fill="#5c6773" font-size="11.5">提供</text>
+
+  <!-- ========== pi 内核 ========== -->
+  <rect x="20" y="596" width="1080" height="176" rx="14" fill="#161b22" stroke="rgba(45,212,191,.45)"/>
+  <text x="40" y="626" fill="#2dd4bf" font-size="15" font-weight="700">pi 内核 · @earendil-works/pi-coding-agent 0.87.1</text>
+  <text x="1080" y="626" text-anchor="end" fill="#5c6773" font-size="11.5">Node ≥ 22.19 · TypeScript 扩展 · 53 个 PI_* 环境开关</text>
+  <g>
+    <rect x="40"  y="642" width="245" height="108" rx="9" fill="rgba(0,0,0,.25)" stroke="#2d3646"/>
+    <text x="54" y="666" fill="#e6edf3" font-size="12.5" font-weight="700">Agent 循环</text>
+    <text x="54" y="688" fill="#9aa7b8" font-size="10.5">turn / settle 边界</text>
+    <text x="54" y="704" fill="#9aa7b8" font-size="10.5">agent_before_settle 钩子</text>
+    <text x="54" y="720" fill="#9aa7b8" font-size="10.5">原生压缩 + 压缩前钩子</text>
+
+    <rect x="305" y="642" width="245" height="108" rx="9" fill="rgba(0,0,0,.25)" stroke="#2d3646"/>
+    <text x="319" y="666" fill="#e6edf3" font-size="12.5" font-weight="700">8 个内置工具</text>
+    <text x="319" y="688" fill="#9aa7b8" font-size="10.5">bash / powershell / read / edit</text>
+    <text x="319" y="704" fill="#9aa7b8" font-size="10.5">write / grep / find / ls</text>
+    <text x="319" y="720" fill="#9aa7b8" font-size="10.5">ExecOptions 无后台原语</text>
+
+    <rect x="570" y="642" width="245" height="108" rx="9" fill="rgba(0,0,0,.25)" stroke="#2d3646"/>
+    <text x="584" y="666" fill="#e6edf3" font-size="12.5" font-weight="700">会话存储</text>
+    <text x="584" y="688" fill="#9aa7b8" font-size="10.5">会话 JSONL 落盘</text>
+    <text x="584" y="704" fill="#9aa7b8" font-size="10.5">resume</text>
+    <text x="584" y="720" fill="#9aa7b8" font-size="10.5">分支投影 getBranch()</text>
+
+    <rect x="835" y="642" width="245" height="108" rx="9" fill="rgba(0,0,0,.25)" stroke="#2d3646"/>
+    <text x="849" y="666" fill="#e6edf3" font-size="12.5" font-weight="700">pi-tui 组件库</text>
+    <text x="849" y="688" fill="#9aa7b8" font-size="10.5">Editor / Box / Container</text>
+    <text x="849" y="704" fill="#9aa7b8" font-size="10.5">Markdown 渲染 · 差分渲染器</text>
+    <text x="849" y="720" fill="#9aa7b8" font-size="10.5">备用屏</text>
+  </g>
+
+  <!-- ========== 层间箭头 3 ========== -->
+  <line x1="560" y1="772" x2="560" y2="822" stroke="#5c6773" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="574" y="802" fill="#5c6773" font-size="11.5">包裹（仅 macOS）</text>
+
+  <!-- ========== 操作系统 ========== -->
+  <rect x="20" y="828" width="1080" height="104" rx="14" fill="#161b22" stroke="#2d3646" stroke-dasharray="6 5"/>
+  <text x="40" y="821" fill="#9aa7b8" font-size="12.5" font-weight="700" letter-spacing="1">操作系统</text>
+  <text x="40" y="862" fill="#e6edf3" font-size="12.5" font-weight="700">macOS seatbelt（sandbox-exec）</text>
+  <text x="40" y="884" fill="#9aa7b8" font-size="11.5">bash 工具被包进 (deny file-write-unlink) 能力边界：删除收窄、写入不限；永不删除层由内核 deny 行兜底</text>
+  <text x="40" y="914" fill="#e6edf3" font-size="12.5" font-weight="700">Linux / 其他</text>
+  <text x="160" y="914" fill="#9aa7b8" font-size="11.5">无 sandbox-exec，删除边界自动关闭（PI_SANDBOX=off 语义），仅剩 AGENTS.md 纪律文本</text>
+
+  <!-- ========== 图例 ========== -->
+  <g font-size="11.5" fill="#9aa7b8">
+    <rect x="40"  y="946" width="12" height="12" rx="3" fill="#1c2330" stroke="#e8875b"/>
+    <text x="58"  y="957">工具渲染覆盖 5</text>
+    <rect x="190" y="946" width="12" height="12" rx="3" fill="#1c2330" stroke="#d2a8ff"/>
+    <text x="208" y="957">TUI 外观 7</text>
+    <rect x="320" y="946" width="12" height="12" rx="3" fill="#1c2330" stroke="#79c0ff"/>
+    <text x="338" y="957">工作流 8</text>
+    <rect x="430" y="946" width="12" height="12" rx="3" fill="#1c2330" stroke="#7ee787"/>
+    <text x="448" y="957">模型与工具 10</text>
+  </g>
+</svg>
+</div>
+
+<!-- ================= 副图：扩展间依赖 ================= -->
+<h2>扩展间依赖 <span class="note-inline">四条 import + 一个 globalThis 单例 + 一处刻意绕过</span></h2>
+<div class="diagram-note">pi loader 不保证两个扩展共享模块实例，故权限模式单例挂在 globalThis；background-tasks 绕过删除边界的缺口写在工具描述里而非堵上。</div>
+<div class="diagram">
+<svg width="1040" height="460" viewBox="0 0 1040 460" font-family="-apple-system, 'PingFang SC', sans-serif">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9aa7b8"/>
+    </marker>
+    <marker id="arr2R" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f85149"/>
+    </marker>
+  </defs>
+
+  <!-- 节点 -->
+  <g font-size="13" font-weight="600">
+    <rect x="40"  y="30"  width="200" height="52" rx="10" fill="#1c2330" stroke="#7ee787" stroke-width="1.5"/>
+    <text x="140" y="61" text-anchor="middle" fill="#e6edf3">plan-mode</text>
+
+    <rect x="40"  y="170" width="200" height="52" rx="10" fill="#1c2330" stroke="#7ee787" stroke-width="1.5"/>
+    <text x="140" y="201" text-anchor="middle" fill="#e6edf3">verify-loop</text>
+
+    <rect x="40"  y="280" width="200" height="52" rx="10" fill="#1c2330" stroke="#79c0ff" stroke-width="1.5"/>
+    <text x="140" y="311" text-anchor="middle" fill="#e6edf3">recap</text>
+
+    <rect x="40"  y="370" width="200" height="52" rx="10" fill="#1c2330" stroke="#79c0ff" stroke-width="1.5"/>
+    <text x="140" y="401" text-anchor="middle" fill="#e6edf3">simple-task</text>
+
+    <rect x="340" y="30"  width="280" height="52" rx="10" fill="#2a1f14" stroke="#d29922" stroke-width="1.5"/>
+    <text x="480" y="61" text-anchor="middle" fill="#e6edf3">sandbox-mode 单例（globalThis）</text>
+
+    <rect x="340" y="170" width="280" height="64" rx="10" fill="#26141a" stroke="#f85149" stroke-width="1.5"/>
+    <text x="480" y="197" text-anchor="middle" fill="#e6edf3">bash-command-collapse/sandbox.ts</text>
+    <text x="480" y="218" text-anchor="middle" fill="#9aa7b8" font-size="10.5" font-weight="normal">+ allowlist.ts（持久 allowlist）</text>
+
+    <rect x="720" y="170" width="280" height="64" rx="10" fill="#26141a" stroke="#f85149" stroke-width="1.5"/>
+    <text x="860" y="197" text-anchor="middle" fill="#e6edf3">sandbox-boundary</text>
+    <text x="860" y="218" text-anchor="middle" fill="#9aa7b8" font-size="10.5" font-weight="normal">apply_patch 删除行 · tool_call 钩子</text>
+
+    <rect x="720" y="330" width="280" height="52" rx="10" fill="#1c2330" stroke="#d29922" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="860" y="361" text-anchor="middle" fill="#e6edf3">background-tasks</text>
+  </g>
+
+  <!-- 连线 -->
+  <line x1="240" y1="56" x2="336" y2="56" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="288" y="47" text-anchor="middle" fill="#9aa7b8" font-size="10.5">写</text>
+
+  <line x1="480" y1="82" x2="480" y2="166" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="468" y="130" text-anchor="end" fill="#9aa7b8" font-size="10.5">读</text>
+
+  <path d="M 620 56 C 800 56 860 90 860 166" stroke="#9aa7b8" stroke-width="1.5" fill="none" marker-end="url(#arr2)"/>
+  <text x="790" y="98" text-anchor="middle" fill="#9aa7b8" font-size="10.5">读</text>
+
+  <line x1="720" y1="202" x2="624" y2="202" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="672" y="193" text-anchor="middle" fill="#9aa7b8" font-size="10.5">import</text>
+
+  <line x1="140" y1="222" x2="140" y2="276" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="152" y="254" fill="#9aa7b8" font-size="10.5">import subagents.ts</text>
+
+  <line x1="140" y1="332" x2="140" y2="366" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#arr2)"/>
+  <text x="152" y="354" fill="#9aa7b8" font-size="10.5">import gap.ts</text>
+
+  <path d="M 860 330 L 860 238" stroke="#f85149" stroke-width="1.5" stroke-dasharray="5 4" fill="none" marker-end="url(#arr2R)"/>
+  <text x="872" y="290" fill="#f85149" font-size="10.5">绕过删除边界（已声明）</text>
+
+  <!-- 图例 -->
+  <g font-size="10.5" fill="#9aa7b8">
+    <line x1="40" y1="448" x2="70" y2="448" stroke="#9aa7b8" stroke-width="1.5" marker-end="url(#arr2)"/>
+    <text x="78" y="452">import / 读写</text>
+    <line x1="180" y1="448" x2="210" y2="448" stroke="#f85149" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arr2R)"/>
+    <text x="218" y="452">绕过删除边界</text>
+    <rect x="330" y="440" width="13" height="13" rx="3" fill="#26141a" stroke="#f85149"/>
+    <text x="350" y="451">删除边界（seatbelt 两半）</text>
+    <rect x="520" y="440" width="13" height="13" rx="3" fill="#2a1f14" stroke="#d29922"/>
+    <text x="540" y="451">运行时状态单例</text>
+    <rect x="660" y="440" width="13" height="13" rx="3" fill="#1c2330" stroke="#d29922" stroke-dasharray="4 3"/>
+    <text x="680" y="451">边界外执行</text>
+  </g>
+</svg>
+</div>
+
+<!-- ================= 旁挂配套 ================= -->
+<div class="companions">
+  <div class="comp">
+    <h4>旁挂配套包（npm 独立安装）</h4>
+    <b>pi-subagents 0.72.1</b>
+    <span>子代理 + watchdog 双模型审查 + 三预算 + workflowScript 编排；recap / verify-loop / subagent-log-guard 与之配合</span>
+    <b>pi-web-access 0.32.0</b>
+    <span>web 检索工具</span>
+  </div>
+  <div class="comp">
+    <h4>主题（3）</h4>
+    <b><span class="swatch" style="background:#e8875b"></span>pi-coder-1337</b>
+    <span>默认，移植自 Codex CLI 内置 1337</span>
+    <b><span class="swatch" style="background:#d2a8ff"></span>pi-coder-catppuccin</b>
+    <span>含 tool-diff 自定义底色 token</span>
+    <b><span class="swatch" style="background:#79c0ff"></span>pi-coder-ayu</b>
+    <span>vars 只留 slot 仍引用的条目</span>
+  </div>
+  <div class="comp">
+    <h4>全局配置（config/）</h4>
+    <b>AGENTS.md</b>
+    <span>28KB 全局纪律，注入 system prompt 的 project_context 段</span>
+    <b>AGENTS.core.md</b>
+    <span>7KB 蒸馏核心，由 core-rules/ 按 hash diff 重注入</span>
+  </div>
+  <div class="comp">
+    <h4>行为开关</h4>
+    <b>53 个 PI_* 环境变量</b>
+    <span>未设置 = 开，off = 关；全表见 docs/extensions.md「Environment switches」</span>
+  </div>
+</div>
+
+<footer>
+  <p><b>分层依据</b>：四大类分类与 30 个扩展清单来自 <code>docs/extensions.md</code>（仓库权威扩展文档）；API 接口面的调用次数为源码 grep 实测（registerTool ×18、registerCommand ×17、registerMessageRenderer ×2、registerMarkdownTransformer ×1）。</p>
+  <p><b>底座语义</b>：pi 内核提供 agent 循环、8 个内置工具、会话 JSONL 与 pi-tui；扩展以「同名工具先注册者整包接管」的方式覆盖 bash / read / edit / write 的渲染与行为。内核没有后台执行原语，background-tasks/ 是扩展级补法。</p>
+  <p>生成于 2026-09-27 · 对应仓库 HEAD <code>d82fa69</code>（v2.1.6）</p>
+</footer>
+
+</div>
+</body>
+</html>
