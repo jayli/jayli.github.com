@@ -3,301 +3,217 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>pi-coder 三皮肤 · 主色板</title>
+<title>pi-coder 五色 · 主色板</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #07080b;
-  --ink2: #0b0d12;
-  --ink3: #12151c;
-  --rule: #1c2027;
-  --paper: #eef1f6;
-  --mute: #8b93a1;
-  --faint: #5d6470;
+  --ink: #07080b; --ink2: #0b0d12; --ink3: #12151c; --rule: #1c2027;
+  --paper: #eef1f6; --mute: #8b93a1; --faint: #5d6470;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --mono-mixed: "JetBrains Mono", "Inter", ui-monospace, SFMono-Regular, Menlo, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --switcher-h: 62px;
 }
-
 html { scroll-behavior: smooth; }
 * { box-sizing: border-box; }
-
 body {
-  margin: 0;
-  background:
-    radial-gradient(940px 480px at 10% -8%, rgba(122,162,247,.14), transparent 62%),
+  margin: 0; color: var(--paper); font-family: var(--sans); font-size: 16px; line-height: 1.78;
+  background: radial-gradient(940px 480px at 10% -8%, rgba(122,162,247,.14), transparent 62%),
     radial-gradient(780px 440px at 90% -14%, rgba(183,189,248,.12), transparent 64%),
-    radial-gradient(700px 400px at 50% 2%, rgba(230,180,80,.07), transparent 68%),
-    var(--ink);
-  background-attachment: fixed;
-  color: var(--paper);
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.78;
-  font-optical-sizing: auto;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+    radial-gradient(700px 400px at 50% 2%, rgba(230,180,80,.07), transparent 68%), var(--ink);
+  background-attachment: fixed; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
-
 a { color: inherit; }
-.wrap { max-width: 1220px; margin: 0 auto; padding: 0 22px 96px; }
-
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 26px 96px; }
 code, .mono { font-family: var(--mono); font-feature-settings: "calt" 1; }
 code { font-size: 14px; color: #9fb6cc; letter-spacing: -.01em; }
+[hidden] { display: none !important; }
 
-/* ---------- page head ---------- */
-header.top { padding: 78px 0 30px; }
+/* ---------- 页头 ---------- */
+header.top { padding: 66px 0 8px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; }
 .kicker { display: inline-flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12.5px; letter-spacing: .34em; text-transform: uppercase; color: var(--faint); }
 .kicker::before { content: ""; width: 30px; height: 1px; background: linear-gradient(90deg, transparent, #7aa2f7); }
-h1 {
-  margin: 18px 0 16px;
-  font-size: clamp(42px, 7.6vw, 92px);
-  line-height: .96;
-  letter-spacing: -.032em;
-  font-weight: 750;
-  background: linear-gradient(96deg, #7aa2f7 0%, #b7bdf8 38%, #e6b450 66%, #f7768e 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 14px 48px rgba(122,162,247,.16));
-}
-h1 small { display: block; font-size: clamp(16px, 2.2vw, 23px); font-weight: 800; letter-spacing: .05em; color: var(--mute); margin-top: 16px; -webkit-text-fill-color: var(--mute); }
-.lead { max-width: 840px; color: var(--mute); font-size: 16px; line-height: 1.82; }
+.pibadge { display: inline-flex; align-items: center; gap: 10px; padding: 8px 15px 8px 12px; border: 1px solid var(--rule);
+  border-radius: 999px; background: var(--ink2); font-family: var(--mono); text-decoration: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03); transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease; }
+.pibadge:hover { transform: translateY(-2px); border-color: #3a424f; }
+.pibadge-text { display: flex; flex-direction: column; line-height: 1.3; }
+.pibadge-text b { font-size: 12.5px; font-weight: 600; }
+.pibadge-text i { font-style: normal; font-size: 10.5px; color: var(--faint); letter-spacing: .04em; }
+h1 { margin: 20px 0 16px; font-size: clamp(40px, 7vw, 84px); line-height: .96; letter-spacing: -.032em; font-weight: 750;
+  background: linear-gradient(96deg, #7aa2f7 0%, #b7bdf8 28%, #e6b450 52%, #fad07a 70%, #86abdc 86%, #f7768e 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 14px 48px rgba(122,162,247,.16)); }
+h1 small { display: block; font-size: clamp(15px, 2vw, 21px); font-weight: 800; letter-spacing: .05em; color: var(--mute); margin-top: 16px; -webkit-text-fill-color: var(--mute); }
+.lead { max-width: 940px; color: var(--mute); font-size: 16px; line-height: 1.85; margin: 0; }
 .lead b { color: var(--paper); font-weight: 620; }
-.lead a { color: #7aa2f7; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(122,162,247,.45); transition: text-decoration-color .2s ease; }
+.lead a { color: #7aa2f7; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(122,162,247,.45); }
 .lead a:hover { text-decoration-color: #7aa2f7; }
 
-/* ---------- trio preview ---------- */
-.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 48px 0 10px; }
-.prev {
-  position: relative; display: block; height: 302px; border-radius: 16px; overflow: hidden;
-  background: var(--p-bg); text-decoration: none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 26px 60px -34px #000;
-  transition: transform .42s cubic-bezier(.2,.8,.2,1), box-shadow .42s ease;
-}
-.prev:hover { transform: translateY(-6px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 36px 72px -32px #000; }
-.prev .glow {
-  position: absolute; inset: -30% -10% auto auto; width: 320px; height: 320px; border-radius: 50%;
-  background: radial-gradient(circle, var(--p-accent) 0%, transparent 68%); opacity: .32; filter: blur(9px);
-  transition: opacity .42s ease;
-}
-.prev:hover .glow { opacity: .5; }
-.prev .cn { position: absolute; top: 28px; left: 28px; font-size: 46px; letter-spacing: 0; color: var(--p-fg); font-weight: 500; }
-.prev .en { position: absolute; top: 96px; left: 30px; font-family: var(--mono); font-size: 13px; letter-spacing: .1em; color: var(--p-soft); }
-.prev .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: var(--p-dna); }
-.prev .fnote { position: absolute; bottom: 96px; left: 28px; font-family: var(--mono); font-size: 12.5px; color: var(--p-soft); opacity: .88; }
+/* ---------- 主题切换器（sticky；每个 tab 就是一份迷你皮肤预览）---------- */
+.switcher { position: sticky; top: 0; z-index: 40; margin: 30px -26px 0; padding: 11px 26px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: rgba(7,8,11,.88); backdrop-filter: blur(16px) saturate(1.3);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tab { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px 7px 8px; cursor: pointer;
+  border-radius: 11px; border: 1px solid rgba(255,255,255,.1); background: var(--t-bg); color: var(--t-soft);
+  font-family: var(--sans); text-align: left;
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, border-color .22s ease, opacity .22s ease;
+  opacity: .62; }
+.tab:hover { transform: translateY(-2px); opacity: .92; border-color: rgba(255,255,255,.22); }
+.tab .swatch { width: 38px; height: 24px; border-radius: 6px; flex: none; background: var(--t-dna);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); }
+.tab .tname { display: flex; flex-direction: column; line-height: 1.28; }
+.tab b { font-size: 14.5px; font-weight: 620; color: var(--t-fg); }
+.tab em { font-style: normal; font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; color: var(--t-soft); }
+.tab[aria-selected="true"] { opacity: 1; border-color: var(--t-accent);
+  box-shadow: 0 0 0 1px var(--t-accent), 0 10px 26px -14px var(--t-accent); }
+.tab[aria-selected="true"] em { color: var(--t-accent); }
+.tab:focus-visible { outline: 2px solid #7aa2f7; outline-offset: 2px; }
+.switcher-links { margin-left: auto; display: flex; gap: 16px; font-family: var(--mono); font-size: 12.5px; }
+.switcher-links a { color: var(--mute); text-decoration: none; padding: 6px 0; transition: color .2s ease; }
+.switcher-links a:hover { color: var(--paper); }
 
-/* ---------- nav ---------- */
-nav.toc {
-  position: sticky; top: 0; z-index: 30; margin: 28px -22px 8px; padding: 12px 22px;
-  background: rgba(7,8,11,.82); backdrop-filter: blur(14px);
-  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
-  display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px;
-}
-nav.toc a { color: var(--mute); text-decoration: none; font-family: var(--mono); transition: color .2s ease; }
-nav.toc a:hover { color: var(--paper); }
-nav.toc .sep { color: var(--rule); }
-
-/* ---------- theme plate ---------- */
-.plate {
-  position: relative; overflow: hidden;
-  margin: 60px 0 0; padding: 42px 42px 50px; border-radius: 20px;
+/* ---------- 单主题面板 ---------- */
+.plate { position: relative; margin: 34px 0 0; padding: 40px 40px 44px; border-radius: 22px; overflow: hidden;
   background-color: var(--p-bg);
-  background-image: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 280px);
-  color: var(--p-fg);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 46px 96px -60px #000;
-  scroll-margin-top: 62px;
-}
-.plate::after {
-  content: ""; position: absolute; top: -190px; right: -140px; width: 480px; height: 480px; border-radius: 50%;
-  background: radial-gradient(circle, var(--p-accent) 0%, transparent 68%); opacity: .11; filter: blur(12px); pointer-events: none;
-}
+  background-image: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,0) 300px);
+  color: var(--p-fg); box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 46px 96px -60px #000; }
+.plate::after { content: ""; position: absolute; top: -200px; right: -150px; width: 520px; height: 520px; border-radius: 50%;
+  background: radial-gradient(circle, var(--p-accent) 0%, transparent 68%); opacity: .1; filter: blur(12px); pointer-events: none; }
 .plate > * { position: relative; z-index: 1; }
-.dna { display: flex; height: 100px; border-radius: 16px; overflow: hidden; transform: skewX(-7deg); margin: 0 0 42px; box-shadow: 0 22px 44px -38px #000; }
-.dna i { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 2px; padding: 10px 12px; font-family: var(--mono); font-size: 12px; letter-spacing: .03em; font-style: normal; overflow-wrap: anywhere; }
 
-.phead { display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: end; }
-.phead .idx {
-  font-family: var(--mono); font-size: 120px; line-height: .78; font-weight: 700;
-  color: transparent; -webkit-text-stroke: 1.5px var(--p-accent); opacity: .8;
-}
-.phead h2 { margin: 0; font-size: clamp(30px, 4.6vw, 50px); letter-spacing: -.015em; font-weight: 680; color: var(--p-fg); }
-.phead h2 em { font-style: normal; color: var(--p-accent); }
-.phead .sub { font-family: var(--mono); font-size: 13.5px; color: var(--p-soft); margin-top: 8px; letter-spacing: .05em; }
-.phead .mood { max-width: 440px; font-family: var(--mono-mixed); font-size: 15px; color: var(--p-soft); line-height: 1.8; }
-.phead .mood b { color: var(--p-fg); font-weight: 620; }
+.phead { display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start; margin-bottom: 34px; }
+.phead .idx { font-family: var(--mono); font-size: 68px; line-height: .78; font-weight: 300; color: var(--p-accent); opacity: .32; }
+.ptitle h2 { margin: 0; font-size: clamp(30px, 4.4vw, 48px); letter-spacing: -.018em; font-weight: 700; color: var(--p-fg); line-height: 1.1; }
+.ptitle h2 em { font-style: normal; color: var(--p-accent); font-family: var(--mono); font-size: .62em; letter-spacing: -.01em; }
+.ptitle .sub { font-family: var(--mono); font-size: 12.5px; color: var(--p-soft); margin-top: 10px; letter-spacing: .02em; opacity: .82; }
+.ptitle .mood { max-width: 780px; font-family: var(--mono-mixed); font-size: 14.5px; color: var(--p-soft); line-height: 1.9; margin: 16px 0 0; }
+.ptitle .mood b { color: var(--p-fg); font-weight: 620; }
+.ptitle .mood code { color: var(--p-accent); font-size: 12.5px; }
 
-.h3 { display: flex; align-items: baseline; gap: 13px; margin: 52px 0 17px; }
-.h3 b { font-size: 17px; font-weight: 640; color: var(--p-fg); white-space: nowrap; }
-.h3 span { font-family: var(--mono); font-size: 11.5px; letter-spacing: .24em; text-transform: uppercase; color: var(--p-dim); white-space: nowrap; }
+.dna { display: flex; height: 92px; border-radius: 14px; overflow: hidden; transform: skewX(-7deg);
+  box-shadow: 0 22px 44px -30px #000; }
+.dna i { flex: 1 1 0; min-width: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px;
+  padding: 11px 13px; font-family: var(--mono); font-size: 11.5px; letter-spacing: -.01em; white-space: nowrap; }
+.dna i span { opacity: .6; font-size: 10.5px; }
+
+/* 两栏：左主色（宽）/ 右语法取样 + 变量（窄） */
+.cols { display: grid; grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr); gap: 40px; margin-top: 44px; align-items: start; }
+.h3 { display: flex; align-items: baseline; gap: 12px; margin: 0 0 15px; }
+.h3 + .h3, .col-side .h3:not(:first-child) { margin-top: 34px; }
+.h3 b { font-size: 16px; font-weight: 640; color: var(--p-fg); white-space: nowrap; }
+.h3 span { font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--p-soft); opacity: .66; white-space: nowrap; }
 .h3::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--p-line), transparent); }
 
-/* ---------- swatches ---------- */
-.blk {
-  position: relative; border-radius: 10px; display: flex; flex-direction: column; justify-content: flex-end;
-  padding: 0; overflow: hidden; cursor: copy;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.08), 0 16px 32px -28px #000;
-  transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
-}
-.blk:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 22px 36px -22px #000; }
-.lb { padding: 13px 15px 14px; display: flex; flex-direction: column; }
-.lb .nm { font-size: 15.5px; font-weight: 640; letter-spacing: .005em; line-height: 1.35; overflow-wrap: anywhere; }
-.lb .hx { font-family: var(--mono); font-size: 13px; opacity: .78; letter-spacing: .04em; margin-top: 2px; }
-.lb .rl { font-size: 12.5px; opacity: .66; line-height: 1.5; margin-top: 2px; }
-.on-l { color: #000; }
-.on-d { color: #fff; }
-.blk.flash::after, .blk.fail::after {
-  content: "已复制"; position: absolute; inset: 0; display: grid; place-items: center;
-  background: rgba(0,0,0,.58); color: #fff; font-family: var(--sans); font-size: 14.5px; font-weight: 620; letter-spacing: .12em;
-}
-.blk.fail::after { content: "复制失败 · 请手动选中"; font-size: 13px; }
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 9px; }
+.chip { position: relative; border-radius: 10px; padding: 10px 12px 11px; min-height: 82px; cursor: copy; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 1px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.09); transition: transform .22s ease, box-shadow .22s ease; }
+.chip:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3), 0 16px 28px -18px #000; }
+.chip b { font-family: var(--mono); font-size: 12.5px; font-weight: 600; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.chip i { font-style: normal; font-size: 11.5px; opacity: .74; }
+.chip span { font-family: var(--mono); font-size: 10px; opacity: .58; letter-spacing: .01em; overflow-wrap: anywhere; }
+.chip.na { background: rgba(0,0,0,.3); box-shadow: inset 0 0 0 1px var(--p-line); color: var(--p-soft); cursor: default; }
+.chip.na:hover { transform: none; }
+.on-l { color: #000; } .on-d { color: #fff; }
+.chip.flash::after, .chip.fail::after, .vchip.flash::after, .vchip.fail::after,
+td.cell div.flash::after, td.cell div.fail::after {
+  position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.74); color: #fff;
+  font-family: var(--sans); font-size: 12px; letter-spacing: .04em; border-radius: inherit; }
+.chip.flash::after, .vchip.flash::after, td.cell div.flash::after { content: "已复制"; }
+.chip.fail::after, .vchip.fail::after, td.cell div.fail::after { content: "复制失败"; }
 
-.roles { display: grid; grid-template-columns: repeat(auto-fill, minmax(172px, 1fr)); gap: 11px; }
-.roles .blk { height: 132px; }
+pre.code { margin: 0; padding: 16px 18px; border-radius: 12px; overflow-x: auto; font-family: var(--mono);
+  font-size: 12.5px; line-height: 1.85; background: rgba(0,0,0,.3); box-shadow: inset 0 0 0 1px var(--p-line); color: var(--p-fg); }
+pre.code .c-cm { color: var(--c-cm); font-style: italic; } pre.code .c-kw { color: var(--c-kw); }
+pre.code .c-fn { color: var(--c-fn); } pre.code .c-va { color: var(--c-va); } pre.code .c-st { color: var(--c-st); }
+pre.code .c-nm { color: var(--c-nm); } pre.code .c-ty { color: var(--c-ty); } pre.code .c-op { color: var(--c-op); }
+pre.code .c-pu { color: var(--c-pu); }
 
-.vars { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 9px; }
-.vars .blk { height: 84px; }
-.vars .lb { padding: 10px 12px 11px; }
-.vars .lb .nm { font-size: 13.5px; }
-.vars .lb .hx { font-size: 12px; }
+.vstrip { display: flex; flex-wrap: wrap; gap: 6px; }
+.vchip { position: relative; display: inline-flex; align-items: baseline; gap: 7px; padding: 4px 10px; border-radius: 999px;
+  font-family: var(--mono); font-size: 11px; cursor: copy; overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); transition: transform .2s ease; }
+.vchip:hover { transform: translateY(-1px); }
+.vchip b { font-weight: 600; opacity: .92; }
 
-/* ---------- code ---------- */
-.code {
-  margin: 0; padding: 22px 24px; border-radius: 10px; overflow-x: auto;
-  background: var(--p-code-bg);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 24px 44px -38px #000;
-  font-family: var(--mono); font-size: 16px; line-height: 1.9; color: var(--c-var);
-  font-variant-ligatures: contextual;
-}
-.c-cm { color: var(--c-cm); font-style: italic; }
-.c-kw { color: var(--c-kw); }
-.c-fn { color: var(--c-fn); }
-.c-st { color: var(--c-st); }
-.c-nm { color: var(--c-nm); }
-.c-ty { color: var(--c-ty); }
-.c-op { color: var(--c-op); }
-.c-pu { color: var(--c-pu); }
-.c-va { color: var(--c-va); }
-
-.syn { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 9px; margin-top: 17px; }
-.syn .blk { height: 100px; }
-.syn .lb { padding: 11px 13px 12px; }
-
-.pnote { margin: 38px 0 0; font-size: 14.5px; color: var(--p-soft); border-top: 1px solid var(--p-line); padding-top: 18px; line-height: 1.85; }
-.pnote code { color: var(--p-accent); background: none; padding: 0; }
+.pnote { margin: 38px 0 0; font-size: 14px; color: var(--p-soft); border-top: 1px solid var(--p-line); padding-top: 20px; line-height: 1.9; }
+.pnote code { color: var(--p-accent); background: none; padding: 0; font-size: 12.5px; }
 .pnote b { color: var(--p-fg); }
-.pnote a { color: var(--p-accent); }
 
-/* ---------- cross table ---------- */
-section.cross { margin: 88px 0 0; }
-section.cross h2 { font-size: 31px; letter-spacing: -.015em; margin: 0 0 8px; font-weight: 680; }
-section.cross p.sub { color: var(--mute); margin: 0 0 28px; font-size: 16.5px; }
-.crossgrid { overflow-x: auto; }
-table.cross2 { border-collapse: separate; border-spacing: 9px; width: 100%; min-width: 660px; }
-table.cross2 th { font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 500; text-align: left; padding: 0 4px 7px; }
-table.cross2 td.rk { font-size: 14.5px; color: var(--mute); white-space: nowrap; padding-right: 10px; width: 132px; }
-table.cross2 td.rk span { display: block; font-family: var(--mono); font-size: 11.5px; color: #454a55; }
-table.cross2 td.cell { width: 30%; }
-table.cross2 td.cell div {
-  height: 62px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 15px; font-family: var(--mono); font-size: 13.5px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
-  transition: transform .28s cubic-bezier(.2,.8,.2,1);
-}
-table.cross2 td.cell div:hover { transform: translateY(-2px); }
-table.cross2 tr.grp td { padding: 22px 0 4px; }
-table.cross2 tbody tr:first-child.grp td { padding-top: 4px; }
-table.cross2 tr.grp b { font-size: 13px; font-weight: 640; letter-spacing: .02em; color: var(--mute); }
-table.cross2 tr.grp i { font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--faint); letter-spacing: .06em; }
-table.cross2 td.cell div.na {
-  justify-content: center; background: transparent; box-shadow: inset 0 0 0 1px var(--rule);
-  color: #454a55; font-size: 12px; letter-spacing: .08em;
-}
-table.cross2 td.cell div.na:hover { transform: none; }
-
-footer.end { margin: 90px 0 0; padding-top: 26px; border-top: 1px solid var(--rule); color: var(--faint); font-size: 14px; line-height: 1.9; }
-footer.end b { color: var(--mute); font-weight: 600; }
-footer.end a { color: var(--mute); }
-
-/* ---------- live demo: pi TUI ---------- */
-#demo { scroll-margin-top: 58px; }
-.demobar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 18px; }
-.demobtns { display: flex; flex-wrap: wrap; gap: 10px; }
-.demo-btn {
-  display: inline-flex; align-items: center; gap: 10px; padding: 10px 15px 10px 11px; cursor: pointer;
-  background: var(--ink2); border: 1px solid var(--rule); border-radius: 12px; color: var(--mute);
-  font-family: var(--sans); font-size: 14.5px; line-height: 1;
-  transition: color .25s ease, border-color .25s ease, background .25s ease, transform .25s ease;
-}
-.demo-btn:hover { color: var(--paper); border-color: #343b47; transform: translateY(-1px); }
-.demo-btn[aria-pressed="true"] { color: var(--paper); background: var(--ink3); border-color: rgba(255,255,255,.26); }
-.demo-btn .dot { width: 28px; height: 11px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
-.demo-btn b { font-weight: 620; }
-.demo-btn span { font-family: var(--mono); font-size: 12px; color: var(--faint); }
-.demo-btn[aria-pressed="true"] span { color: var(--mute); }
-.demofile { font-family: var(--mono); font-size: 12.5px; color: var(--faint); }
+/* ---------- 着色演示 ---------- */
+section.demo { margin: 92px 0 0; scroll-margin-top: calc(var(--switcher-h) + 12px); }
+section.demo h2 { margin: 0 0 12px; font-size: clamp(26px, 3.4vw, 38px); letter-spacing: -.02em; font-weight: 700; }
+section.demo p.sub { color: var(--mute); margin: 0 0 26px; font-size: 15.5px; max-width: 940px; line-height: 1.85; }
+section.demo p.sub code { font-size: 13px; }
+.demobar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 16px; }
+.demobtns { display: flex; flex-wrap: wrap; gap: 8px; }
+.demo-btn { display: inline-flex; align-items: center; gap: 9px; padding: 7px 13px 7px 9px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--ink2); color: var(--mute); font-family: var(--mono); font-size: 12px;
+  transition: border-color .2s ease, color .2s ease, background .2s ease, transform .2s ease; }
+.demo-btn:hover { transform: translateY(-1px); color: var(--paper); border-color: #3a424f; }
+.demo-btn[aria-pressed="true"] { color: var(--paper); background: var(--ink3); border-color: #4a5361; box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+.demo-btn .dot { width: 24px; height: 13px; border-radius: 4px; flex: none; background: var(--t-dna); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+.demo-btn b { font-weight: 600; font-family: var(--sans); font-size: 13px; }
+.demo-btn span { opacity: .6; }
+.demofile { font-family: var(--mono); font-size: 12px; color: var(--faint); }
 .demofile code { font-size: 12.5px; color: #9fb6cc; }
 
-.demo {
-  --d-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", ui-monospace, SFMono-Regular, Menlo, monospace;
-  padding: 24px; border-radius: 20px; background: var(--d-page); font-family: var(--d-mono);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
-  transition: background .35s ease;
-}
-/* 三套皮肤：色值逐字取自三个主题 JSON；--d-page = export.pageBg，--d-card = 该皮肤的主底色（ayu 的 bg / catppuccin 的 base / 1337 的 bg），其余同名槽位 */
+.demo { --d-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 22px; border-radius: 18px; background: var(--d-page); font-family: var(--d-mono);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); transition: background .35s ease; }
 .demo[data-theme="catppuccin"] {
-  --d-page: #11111b; --d-card: #1e1e2e; --d-fg: #cdd6f4; --d-muted: #82889e; --d-dim: #7e8398;
-  --d-accent: #b7bdf8; --d-ok: #a6e3a1; --d-warn: #fab387; --d-err: #eba0ac;
-  --d-border: #45475a; --d-borderTh: #626262;
-  --d-userBg: #181825; --d-userFg: #cdd6f4;
-  --d-toolBg: #151515; --d-toolTitle: #cba6f7; --d-toolOut: #82889e; --d-bashOut: #82889e;
-  --d-mdCode: #94e2d5; --d-mdLink: #89b4fa; --d-bullet: #fab387;
+  --d-page: #11111b; --d-card: #181825; --d-fg: #cdd6f4; --d-muted: #82889e;
+  --d-dim: #7e8398; --d-accent: #b7bdf8; --d-ok: #a6e3a1; --d-warn: #fab387;
+  --d-err: #eba0ac; --d-border: #45475a; --d-borderTh: #626262; --d-userBg: #181825;
+  --d-userFg: #cdd6f4; --d-toolBg: #151515; --d-toolTitle: #cba6f7; --d-toolOut: #82889e;
+  --d-bashOut: #82889e; --d-mdCode: #94e2d5; --d-mdLink: #89b4fa; --d-bullet: #fab387;
   --d-add: #a6e3a1; --d-del: #f38ba8; --d-addBg: #1c241b; --d-delBg: #2e1c21;
   --d-thinking: #82889e; --d-synFn: #89dceb; --d-prop: #1e1e29;
 }
 .demo[data-theme="ayu"] {
-  --d-page: #0b0e14; --d-card: #0d1017; --d-fg: #bfbdb6; --d-muted: #6b7385; --d-dim: #515868;
-  --d-accent: #e6b450; --d-ok: #aad94c; --d-warn: #ff8f40; --d-err: #d95757;
-  --d-border: #515868; --d-borderTh: #626262;
-  --d-userBg: #1b1c1d; --d-userFg: #dbdbdd;
-  --d-toolBg: #10151f; --d-toolTitle: #e6b450; --d-toolOut: #bfbdb6; --d-bashOut: #6b7385;
-  --d-mdCode: #95e6cb; --d-mdLink: #59c2ff; --d-bullet: #ff8f40;
+  --d-page: #0b0e14; --d-card: #0d1017; --d-fg: #bfbdb6; --d-muted: #6b7385;
+  --d-dim: #515868; --d-accent: #e6b450; --d-ok: #aad94c; --d-warn: #ff8f40;
+  --d-err: #d95757; --d-border: #515868; --d-borderTh: #626262; --d-userBg: #1b1c1d;
+  --d-userFg: #dbdbdd; --d-toolBg: #10151f; --d-toolTitle: #e6b450; --d-toolOut: #bfbdb6;
+  --d-bashOut: #6b7385; --d-mdCode: #95e6cb; --d-mdLink: #59c2ff; --d-bullet: #ff8f40;
   --d-add: #aad94c; --d-del: #d95757; --d-addBg: #1d241c; --d-delBg: #321d23;
   --d-thinking: #6b7385; --d-synFn: #ffb454; --d-prop: #161d2b;
 }
 .demo[data-theme="leet"] {
-  --d-page: #111111; --d-card: #191919; --d-fg: #f8f8f2; --d-muted: #999999; --d-dim: #6d6d6d;
-  --d-accent: #8cdaff; --d-ok: #a6e22e; --d-warn: #fdb082; --d-err: #e27878;
-  --d-border: #515151; --d-borderTh: #696969;
-  --d-userBg: #242424; --d-userFg: #f8f8f2;
-  --d-toolBg: #202020; --d-toolTitle: #8cdaff; --d-toolOut: #d0d0d0; --d-bashOut: #999999;
-  --d-mdCode: #0d92c1; --d-mdLink: #6699cc; --d-bullet: #fbdfb5;
+  --d-page: #111111; --d-card: #191919; --d-fg: #f8f8f2; --d-muted: #999999;
+  --d-dim: #6d6d6d; --d-accent: #8cdaff; --d-ok: #a6e22e; --d-warn: #fdb082;
+  --d-err: #e27878; --d-border: #515151; --d-borderTh: #696969; --d-userBg: #242424;
+  --d-userFg: #f8f8f2; --d-toolBg: #202020; --d-toolTitle: #8cdaff; --d-toolOut: #d0d0d0;
+  --d-bashOut: #999999; --d-mdCode: #0d92c1; --d-mdLink: #6699cc; --d-bullet: #fbdfb5;
   --d-add: #8bc391; --d-del: #e27878; --d-addBg: #1c241b; --d-delBg: #2e1c21;
   --d-thinking: #6d6d6d; --d-synFn: #8cdaff; --d-prop: #515151;
 }
-
-/* ---------- header topbar + project badge ---------- */
-.topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px 20px; flex-wrap: wrap; }
-.pibadge {
-  display: inline-flex; align-items: center; gap: 10px; padding: 8px 15px 8px 12px;
-  border: 1px solid var(--rule); border-radius: 999px; color: var(--paper);
-  background: var(--ink2);
-  font-family: var(--mono); text-decoration: none;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-  transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease, background .3s ease;
+.demo[data-theme="coffee"] {
+  --d-page: #111111; --d-card: #191919; --d-fg: #f8f8f2; --d-muted: #999999;
+  --d-dim: #6d6d6d; --d-accent: #fad07a; --d-ok: #99ad6a; --d-warn: #ffff00;
+  --d-err: #ff4c4a; --d-border: #395956; --d-borderTh: #696969; --d-userBg: #242424;
+  --d-userFg: #f8f8f2; --d-toolBg: #202020; --d-toolTitle: #fad07a; --d-toolOut: #d0d0d0;
+  --d-bashOut: #999999; --d-mdCode: #88c0c7; --d-mdLink: #73acff; --d-bullet: #eeffee;
+  --d-add: #8bc391; --d-del: #e27878; --d-addBg: #1c241b; --d-delBg: #2e1c21;
+  --d-thinking: #6d6d6d; --d-synFn: #fad07a; --d-prop: #444444;
 }
-.pibadge:hover { transform: translateY(-2px); border-color: #3a424f; background: var(--ink3); }
-.pibadge-mark { display: inline-flex; }
-.pibadge-text { display: flex; flex-direction: column; line-height: 1.3; }
-.pibadge-text b { font-size: 12.5px; font-weight: 600; letter-spacing: .01em; }
-.pibadge-text i { font-style: normal; font-size: 10.5px; color: var(--faint); letter-spacing: .04em; }
-
-.term {
-  background: var(--d-card); border-radius: 12px; overflow: hidden;
-  box-shadow: 0 0 0 1px var(--d-border), 0 40px 80px -52px #000;
-  transition: background .35s ease, box-shadow .35s ease;
+.demo[data-theme="nightfox"] {
+  --d-page: #111111; --d-card: #191919; --d-fg: #f8f8f2; --d-muted: #999999;
+  --d-dim: #6d6d6d; --d-accent: #86abdc; --d-ok: #81b29a; --d-warn: #dbc074;
+  --d-err: #c94f6d; --d-border: #39506d; --d-borderTh: #696969; --d-userBg: #242424;
+  --d-userFg: #f8f8f2; --d-toolBg: #202020; --d-toolTitle: #86abdc; --d-toolOut: #d0d0d0;
+  --d-bashOut: #999999; --d-mdCode: #63cdcf; --d-mdLink: #9d79d6; --d-bullet: #7ad4d6;
+  --d-add: #8bc391; --d-del: #e27878; --d-addBg: #1c241b; --d-delBg: #2e1c21;
+  --d-thinking: #6d6d6d; --d-synFn: #86abdc; --d-prop: #3c5372;
 }
+
+.term { background: var(--d-card); border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--d-border), 0 40px 80px -52px #000;
+  transition: background .35s ease, box-shadow .35s ease; }
 .term-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--d-page); border-bottom: 1px solid var(--d-border); }
 .term-dots { display: inline-flex; gap: 6px; }
 .term-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--d-border); }
@@ -306,12 +222,8 @@ footer.end a { color: var(--mute); }
 .term-dots i:nth-child(3) { background: var(--d-ok); opacity: .75; }
 .term-title { flex: 1; font-size: 12.5px; color: var(--d-muted); letter-spacing: .02em; }
 .term-badge { padding: 3px 10px; border: 1px solid var(--d-border); border-radius: 999px; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--d-accent); }
-
-.term-screen {
-  height: 430px; overflow-y: auto; padding: 18px 20px 6px;
-  font-size: 13.5px; line-height: 1.78; color: var(--d-fg);
-  scrollbar-width: thin; scrollbar-color: var(--d-border) transparent;
-}
+.term-screen { height: 430px; overflow-y: auto; padding: 18px 20px 6px; font-size: 13.5px; line-height: 1.78; color: var(--d-fg);
+  scrollbar-width: thin; scrollbar-color: var(--d-border) transparent; }
 .msg-user { margin: 0 0 14px; padding: 10px 12px; border-radius: 6px; background: var(--d-userBg); color: var(--d-userFg); }
 .think { margin: 0 0 14px; color: var(--d-thinking); }
 .think-tag { font-weight: 620; }
@@ -327,26 +239,23 @@ footer.end a { color: var(--mute); }
 .diff .ctx { color: var(--d-dim); }
 .diff .add { color: var(--d-add); background: var(--d-addBg); }
 .diff .del { color: var(--d-del); background: var(--d-delBg); }
-.md p { margin: 0 0 10px; }
-.md ul { margin: 0 0 10px; padding-left: 18px; }
-.md li { margin: 0 0 5px; }
+.md p { margin: 0 0 10px; } .md ul { margin: 0 0 10px; padding-left: 18px; } .md li { margin: 0 0 5px; }
 .md li::marker { color: var(--d-bullet); }
 .md code { font-family: var(--d-mono); font-size: 12.5px; color: var(--d-mdCode); }
 .md .link { color: var(--d-mdLink); text-decoration: underline; text-underline-offset: 2px; }
-
 .term-bottom { padding: 0 20px 12px; font-size: 13.5px; }
 .tasks { margin: 0 0 14px; }
 .tasks-head { color: var(--d-accent); }
 .task { padding-left: 2px; }
-.task .tick { color: var(--d-ok); }
-.task .id { color: var(--d-dim); }
-.task s { color: var(--d-dim); }
+.task .tick { color: var(--d-ok); } .task .id { color: var(--d-dim); } .task s { color: var(--d-dim); }
 .editor { margin: 0 0 4px; }
 .ed-top { display: flex; align-items: center; gap: 0; }
 .ed-rule { flex: 1; height: 1px; background: var(--d-borderTh); opacity: .55; }
 .ed-rule.pre { flex: 0 0 26px; }
-.ed-work { padding: 0 4px; color: var(--d-fg); font-size: 12.5px; }
+.ed-work { padding: 0 4px; color: var(--d-fg); font-size: 12.5px; white-space: nowrap; }
 .ed-work .spin { color: var(--d-accent); }
+.ed-sum { flex: none; padding-left: 10px; color: var(--d-muted); font-size: 12.5px; white-space: nowrap; }
+.ed-sum .mk { color: var(--d-accent); }
 .ed-row { padding: 2px 0; color: var(--d-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ed-prompt { color: var(--d-borderTh); }
 .ed-caret { display: inline-block; width: 8px; height: 15px; margin-left: 2px; vertical-align: -2px; background: var(--d-fg); opacity: .8; animation: demo-blink 1.1s steps(1, end) infinite; }
@@ -354,42 +263,43 @@ footer.end a { color: var(--mute); }
 @keyframes demo-blink { 0%, 55% { opacity: .8; } 56%, 100% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .ed-caret { animation: none; } }
 .sl-main, .sl-cwd { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sl-main { margin-top: 6px; }
-.sl-cwd { color: var(--d-muted); }
-.sl-dim, .sl-sep { color: var(--d-dim); }
-.sl-accent { color: var(--d-accent); }
-.sl-lvl { color: var(--d-synFn); }
-.sl-ok { color: var(--d-ok); }
-.sl-warn { color: var(--d-warn); }
-.sl-err { color: var(--d-err); }
+.sl-main { margin-top: 6px; } .sl-cwd { color: var(--d-muted); }
+.sl-dim, .sl-sep { color: var(--d-dim); } .sl-accent { color: var(--d-accent); } .sl-lvl { color: var(--d-synFn); }
+.sl-ok { color: var(--d-ok); } .sl-warn { color: var(--d-warn); } .sl-err { color: var(--d-err); }
+.pnote-plain { margin: 26px 0 0; font-size: 14px; color: var(--mute); line-height: 1.9; max-width: 1040px; }
+.pnote-plain code { font-size: 12.5px; color: #9fb6cc; }
+.pnote-plain b { color: var(--paper); }
 
-@media (max-width: 1200px) {
-  /* 段内只留变量名，hex 在下方大色块里已有 */
+footer.end { margin: 84px 0 0; padding-top: 24px; border-top: 1px solid var(--rule); color: var(--faint); font-size: 14px; line-height: 1.95; }
+footer.end b { color: var(--mute); font-weight: 600; }
+footer.end code { font-size: 12.5px; }
+
+@media (max-width: 1180px) {
+  .cols { grid-template-columns: 1fr; gap: 8px; }
   .dna i span { display: none; }
 }
-@media (max-width: 1000px) {
-  /* 8 段色带在窄屏退化为纯色带：字号归零但保留布局，避免长名被截成半个单词 */
-  .dna i { font-size: 0; }
-}
-@media (max-width: 980px) {
-  .trio { grid-template-columns: 1fr 1fr; }
-  .prev:nth-child(3) { grid-column: span 2; }
-  .phead { grid-template-columns: auto 1fr; }
-  .phead .mood { grid-column: 1 / -1; }
-  .plate { padding: 30px 24px 34px; border-radius: 16px; }
-  .demo { padding: 16px; }
-  .term-screen { height: 380px; }
+@media (max-width: 1000px) { .dna i { font-size: 0; } }
+@media (max-width: 900px) {
+  .plate { padding: 30px 24px 34px; border-radius: 18px; }
+  .switcher { gap: 8px; }
+  .switcher-links { margin-left: 0; width: 100%; }
+  .tab em { display: none; }
+  .demo { padding: 16px; } .term-screen { height: 380px; }
 }
 @media (max-width: 640px) {
-  .trio { grid-template-columns: 1fr; }
-  .prev:nth-child(3) { grid-column: auto; }
+  .wrap { padding: 0 16px 72px; }
+  .switcher { margin: 24px -16px 0; padding: 9px 16px; }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; padding: 6px 11px 6px 7px; }
+  .plate { padding: 24px 18px 28px; }
+  .phead { grid-template-columns: 1fr; gap: 10px; }
+  .phead .idx { font-size: 44px; }
+  .chips { grid-template-columns: repeat(auto-fill, minmax(146px, 1fr)); }
   .demo { padding: 12px; border-radius: 14px; }
   .term-screen { height: 330px; padding: 14px 14px 4px; font-size: 12.5px; }
   .term-bottom { padding: 0 14px 10px; font-size: 12.5px; }
   .demofile { display: none; }
-  .pibadge { padding: 7px 12px 7px 9px; gap: 8px; }
-  .pibadge-text i { display: none; }
-  .pibadge-mark svg { width: 22px; height: 15px; }
 }
 </style>
 </head>
@@ -400,748 +310,444 @@ footer.end a { color: var(--mute); }
   <div class="topbar">
     <div class="kicker">pi themes · color plates</div>
     <a class="pibadge" href="https://pi.dev/packages/@bachi/pi-coder" target="_blank" rel="noopener noreferrer" title="pi.dev 上的 @bachi/pi-coder 插件">
-      <span class="pibadge-mark">
-        <svg viewBox="0 0 12 8" width="27" height="18" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="piMarkGrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#7aa2f7"/><stop offset="45%" stop-color="#b7bdf8"/><stop offset="75%" stop-color="#e6b450"/><stop offset="100%" stop-color="#f7768e"/>
-            </linearGradient>
-          </defs>
-          <g fill="url(#piMarkGrad)">
-            <rect x="0" y="0" width="3" height="2"/><rect x="3" y="0" width="3" height="2"/><rect x="6" y="0" width="3" height="2"/>
-            <rect x="0" y="2" width="3" height="2"/><rect x="6" y="2" width="3" height="2"/>
-            <rect x="0" y="4" width="3" height="2"/><rect x="3" y="4" width="3" height="2"/><rect x="9" y="4" width="3" height="2"/>
-            <rect x="0" y="6" width="3" height="2"/><rect x="9" y="6" width="3" height="2"/>
-          </g>
-        </svg>
-      </span>
+      <svg viewBox="0 0 12 8" width="27" height="18" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="piMarkGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7aa2f7"/><stop offset="45%" stop-color="#b7bdf8"/><stop offset="75%" stop-color="#fad07a"/><stop offset="100%" stop-color="#f7768e"/>
+        </linearGradient></defs>
+        <g fill="url(#piMarkGrad)">
+          <rect x="0" y="0" width="3" height="2"/><rect x="3" y="0" width="3" height="2"/><rect x="6" y="0" width="3" height="2"/>
+          <rect x="0" y="2" width="3" height="2"/><rect x="6" y="2" width="3" height="2"/>
+          <rect x="0" y="4" width="3" height="2"/><rect x="3" y="4" width="3" height="2"/><rect x="9" y="4" width="3" height="2"/>
+          <rect x="0" y="6" width="3" height="2"/><rect x="9" y="6" width="3" height="2"/>
+        </g>
+      </svg>
       <span class="pibadge-text"><b>@bachi/pi-coder</b><i>pi.dev · pi 插件包</i></span>
     </a>
   </div>
-  <h1>pi-coder 三色<small>三套暗色 PI 主题风格，完美适配 PI，深夜编程不瞌睡</small></h1>
+  <h1>pi-coder 五色<small>五套暗色 PI 主题，深夜编程不瞌睡</small></h1>
   <p class="lead">
-    专门为 <a href="https://pi.dev/packages/@bachi/pi-coder">@bachi/pi-coder</a> 定制的三套暗色 PI 主题 —— 调色板分别取自 catppuccin mocha、ayu dark，以及 Codex CLI 内置的 1337。面向 mac retina 屏完成微调，适配深夜编程体验。
-    皮肤源文件来自 <a href="https://pi.dev/packages/@bachi/pi-coder">@bachi/pi-coder</a>，展示页色值取自 <code>themes</code> 目录下三个 <code>pi-coder-</code> 前缀的皮肤文件，
-    点击任意色块可复制其十六进制值。底部有 <a href="#demo">PI 着色预览</a>。
+    为 <a href="https://pi.dev/packages/@bachi/pi-coder">@bachi/pi-coder</a> 定制的五套暗色 PI 主题：调色板分别取自
+    <b>catppuccin mocha</b>、<b>ayu dark</b>、Codex CLI 内置的 <b>1337</b>，以及在 1337 灰底上重定主色的
+    <b>coffee</b>（暖调奶金）与 <b>nightfox</b>（Nordfox 雾蓝）。面向 mac retina 屏微调。
+    色值逐字取自 <code>clients/pi/themes/</code> 下五个 <code>pi-coder-*.json</code>（<code>colors</code> 里的变量引用已解析成实际 hex），
+    点任意色块复制其十六进制值。<b>下面点一套皮肤看它的完整色板</b>，再往下是 <a href="#demo" style="color:#7aa2f7">着色演示</a>。
   </p>
-
-  <div class="trio">
-    <a class="prev" href="#catppuccin" style="--p-bg:#1E1E2E;--p-fg:#CDD6F4;--p-soft:#82889E;--p-accent:#B7BDF8;--p-dna:linear-gradient(90deg,#B7BDF8 0 25%,#CBA6F7 0 50%,#89B4FA 0 75%,#FAB387 0 100%)">
-      <span class="glow"></span>
-      <span class="cn">卡布</span>
-      <span class="en">pi-coder-catppuccin · mocha</span>
-      <span class="fnote">30 vars · 底色 #1E1E2E</span>
-      <span class="bar"></span>
-    </a>
-    <a class="prev" href="#ayu" style="--p-bg:#0D1017;--p-fg:#BFBDB6;--p-soft:#6B7385;--p-accent:#E6B450;--p-dna:linear-gradient(90deg,#E6B450 0 25%,#FF8F40 0 50%,#39BAE6 0 75%,#AAD94C 0 100%)">
-      <span class="glow"></span>
-      <span class="cn">阿玉</span>
-      <span class="en">pi-coder-ayu</span>
-      <span class="fnote">27 vars · 底色 #0D1017</span>
-      <span class="bar"></span>
-    </a>
-    <a class="prev" href="#leet" style="--p-bg:#191919;--p-fg:#F8F8F2;--p-soft:#999999;--p-accent:#8CDAFF;--p-dna:linear-gradient(90deg,#FF5E5E 0 25%,#FDB082 0 50%,#E9FDAC 0 75%,#8CDAFF 0 100%)">
-      <span class="glow"></span>
-      <span class="cn">黑客</span>
-      <span class="en">pi-coder-1337 · codex</span>
-      <span class="fnote">35 vars · 底色 #191919</span>
-      <span class="bar"></span>
-    </a>
-  </div>
 </header>
 
-<nav class="toc">
-  <a href="#catppuccin">01 catppuccin</a><span class="sep">/</span>
-  <a href="#ayu">02 ayu</a><span class="sep">/</span>
-  <a href="#leet">03 1337</a><span class="sep">/</span>
-  <a href="#cross">三色对照</a><span class="sep">/</span>
-  <a href="#demo">着色演示</a>
-</nav>
-
-<!-- ============================ 01 catppuccin ============================ -->
-<section class="plate" id="catppuccin" style="
-  --p-bg:#1E1E2E; --p-fg:#CDD6F4; --p-soft:#A6ADC8; --p-dim:#7F849C; --p-line:#313244;
-  --p-accent:#B7BDF8; --p-code-bg:#181825;
-  --c-cm:#A6ADC8; --c-kw:#CBA6F7; --c-fn:#89DCEB; --c-var:#CDD6F4; --c-st:#A6E3A1;
-  --c-nm:#FAB387; --c-ty:#F9E2AF; --c-op:#74C7EC; --c-pu:#7F849C; --c-va:#CDD6F4;">
-
-  <div class="dna">
-    <i style="background:#B7BDF8;color:#000">macchiatoLavender <span>#B7BDF8</span></i>
-    <i style="background:#CBA6F7;color:#000">mauve <span>#CBA6F7</span></i>
-    <i style="background:#89B4FA;color:#000">blue <span>#89B4FA</span></i>
-    <i style="background:#89DCEB;color:#000">sky <span>#89DCEB</span></i>
-    <i style="background:#94E2D5;color:#000">teal <span>#94E2D5</span></i>
-    <i style="background:#A6E3A1;color:#000">green <span>#A6E3A1</span></i>
-    <i style="background:#F9E2AF;color:#000">yellow <span>#F9E2AF</span></i>
-    <i style="background:#FAB387;color:#000">peach <span>#FAB387</span></i>
+<div class="switcher">
+  <div class="tabs" role="tablist" aria-label="选择皮肤">
+    <button type="button" class="tab" id="tab-catppuccin" role="tab" data-tab="catppuccin"
+        aria-selected="true" aria-controls="catppuccin" tabindex="0"
+        style="--t-bg:#181825;--t-accent:#B7BDF8;--t-fg:#CDD6F4;--t-soft:#82889E;--t-dna:linear-gradient(90deg,#B7BDF8 0 25%,#CBA6F7 0 50%,#89B4FA 0 75%,#89DCEB 0 100%)">
+        <i class="swatch"></i><span class="tname"><b>卡布</b><em>catppuccin</em></span></button>
+    <button type="button" class="tab" id="tab-ayu" role="tab" data-tab="ayu"
+        aria-selected="false" aria-controls="ayu" tabindex="-1"
+        style="--t-bg:#0D1017;--t-accent:#E6B450;--t-fg:#DBDBDD;--t-soft:#6B7385;--t-dna:linear-gradient(90deg,#E6B450 0 25%,#FF8F40 0 50%,#39BAE6 0 75%,#95E6CB 0 100%)">
+        <i class="swatch"></i><span class="tname"><b>阿玉</b><em>ayu</em></span></button>
+    <button type="button" class="tab" id="tab-leet" role="tab" data-tab="leet"
+        aria-selected="false" aria-controls="leet" tabindex="-1"
+        style="--t-bg:#191919;--t-accent:#8CDAFF;--t-fg:#F8F8F2;--t-soft:#999999;--t-dna:linear-gradient(90deg,#FF5E5E 0 25%,#FDB082 0 50%,#E9FDAC 0 75%,#8CDAFF 0 100%)">
+        <i class="swatch"></i><span class="tname"><b>黑客</b><em>leet</em></span></button>
+    <button type="button" class="tab" id="tab-coffee" role="tab" data-tab="coffee"
+        aria-selected="false" aria-controls="coffee" tabindex="-1"
+        style="--t-bg:#191919;--t-accent:#FAD07A;--t-fg:#F8F8F2;--t-soft:#999999;--t-dna:linear-gradient(90deg,#FAD07A 0 25%,#99AD6A 0 50%,#CF6A4C 0 75%,#73ACFF 0 100%)">
+        <i class="swatch"></i><span class="tname"><b>咖啡</b><em>coffee</em></span></button>
+    <button type="button" class="tab" id="tab-nightfox" role="tab" data-tab="nightfox"
+        aria-selected="false" aria-controls="nightfox" tabindex="-1"
+        style="--t-bg:#191919;--t-accent:#86ABDC;--t-fg:#F8F8F2;--t-soft:#999999;--t-dna:linear-gradient(90deg,#86ABDC 0 25%,#81B29A 0 50%,#C94F6D 0 75%,#DBC074 0 100%)">
+        <i class="swatch"></i><span class="tname"><b>夜狐</b><em>nightfox</em></span></button>
   </div>
+  <div class="switcher-links">
+    <a href="#demo">着色演示</a>
+  </div>
+</div>
+
+<section class="plate" id="catppuccin" role="tabpanel" aria-labelledby="tab-catppuccin" style="
+  --p-bg:#181825; --p-fg:#CDD6F4; --p-soft:#82889E; --p-line:#313244; --p-accent:#B7BDF8; --c-cm:#A6ADC8; --c-kw:#CBA6F7; --c-fn:#89DCEB; --c-va:#CDD6F4; --c-st:#A6E3A1; --c-nm:#FAB387; --c-ty:#F9E2AF; --c-op:#74C7EC; --c-pu:#7F849C;">
 
   <div class="phead">
     <div class="idx">01</div>
-    <div>
+    <div class="ptitle">
       <h2>卡布 <em>catppuccin</em></h2>
-      <div class="sub">30 vars · 官方 Mocha + 10 个自定义</div>
+      <div class="sub">31 vars（31 个被引用） · 54 槽位 · 底色 #181825</div>
+      <p class="mood">在官方 <b>Catppuccin Mocha</b> 基础上面向 retina 屏做了大量微调，三档深底（<b>crust #11111B / mantle #181825 / selected #1E1E29</b>）撑起层次。唯一一处"越界"是强调色：用的是 Macchiato 的 <b>lavender #B7BDF8</b>（重命名为 <code>macchiatoLavender</code>），而不是 Mocha 自己的 <b>mauve</b> —— mauve 被降级去当工具标题与关键字。</p>
     </div>
-    <p class="mood">在官方 <b>Catppuccin Mocha</b> 基础上面向 retina 屏做了大量微调，三档深底（<b>crust / mantle / base</b>）撑起层次。唯一一处"越界"是强调色：用的是 Macchiato 的 <b>lavender #B7BDF8</b>（重命名为 <code>macchiatoLavender</code>），而不是 Mocha 自己的 <b>mauve</b> —— mauve 被降级去当工具标题与关键字。</p>
   </div>
 
-  <div class="h3"><b>语义槽位</b><span>ui roles</span></div>
-  <div class="roles">
-    <div class="blk" style="background:#B7BDF8" data-hex="#B7BDF8"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#B7BDF8</span><span class="rl">强调色</span></div></div>
-    <div class="blk" style="background:#CBA6F7" data-hex="#CBA6F7"><div class="lb on-l"><span class="nm">toolTitle</span><span class="hx">#CBA6F7</span><span class="rl">工具标题</span></div></div>
-    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">mdHeading</span><span class="hx">#FAB387</span><span class="rl">标题</span></div></div>
-    <div class="blk" style="background:#89B4FA" data-hex="#89B4FA"><div class="lb on-l"><span class="nm">mdLink</span><span class="hx">#89B4FA</span><span class="rl">链接</span></div></div>
-    <div class="blk" style="background:#94E2D5" data-hex="#94E2D5"><div class="lb on-l"><span class="nm">mdCode</span><span class="hx">#94E2D5</span><span class="rl">行内代码</span></div></div>
-    <div class="blk" style="background:#A6E3A1" data-hex="#A6E3A1"><div class="lb on-l"><span class="nm">success</span><span class="hx">#A6E3A1</span><span class="rl">成功</span></div></div>
-    <div class="blk" style="background:#EBA0AC" data-hex="#EBA0AC"><div class="lb on-l"><span class="nm">error</span><span class="hx">#EBA0AC</span><span class="rl">错误（用 maroon，非 red）</span></div></div>
-    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">warning</span><span class="hx">#FAB387</span><span class="rl">警告</span></div></div>
-    <div class="blk" style="background:#82889E" data-hex="#82889E"><div class="lb on-l"><span class="nm">muted</span><span class="hx">#82889E</span><span class="rl">次要文本</span></div></div>
-    <div class="blk" style="background:#7E8398" data-hex="#7E8398"><div class="lb on-l"><span class="nm">dim</span><span class="hx">#7E8398</span><span class="rl">最弱文本</span></div></div>
+  <div class="dna">
+      <i style="background:#B7BDF8;color:#000">macchiatoLavender <span>#B7BDF8</span></i>
+      <i style="background:#CBA6F7;color:#000">mauve <span>#CBA6F7</span></i>
+      <i style="background:#89B4FA;color:#000">blue <span>#89B4FA</span></i>
+      <i style="background:#89DCEB;color:#000">sky <span>#89DCEB</span></i>
+      <i style="background:#94E2D5;color:#000">teal <span>#94E2D5</span></i>
+      <i style="background:#A6E3A1;color:#000">green <span>#A6E3A1</span></i>
+      <i style="background:#F9E2AF;color:#000">yellow <span>#F9E2AF</span></i>
+      <i style="background:#FAB387;color:#000">peach <span>#FAB387</span></i>
   </div>
 
-  <div class="h3"><b>语法取样</b><span>syntax sampler</span></div>
-  <pre class="code"><span class="c-cm">// pi-coder-catppuccin · syntax sampler</span>
+  <div class="cols">
+    <div class="col-main">
+      <div class="h3"><b>主色 22 槽</b><span>primary slots · 点色块复制 hex</span></div>
+      <div class="chips">
+      <div class="chip on-l" style="background:#B7BDF8" data-hex="#B7BDF8" title="点击复制 #B7BDF8"><b>accent</b><i>强调色</i><span>#B7BDF8 · macchiatoLavender</span></div>
+      <div class="chip on-l" style="background:#CBA6F7" data-hex="#CBA6F7" title="点击复制 #CBA6F7"><b>borderAccent</b><i>高亮边框</i><span>#CBA6F7 · mauve</span></div>
+      <div class="chip on-d" style="background:#45475A" data-hex="#45475A" title="点击复制 #45475A"><b>border</b><i>边框</i><span>#45475A · surface1</span></div>
+      <div class="chip on-d" style="background:#1E1E29" data-hex="#1E1E29" title="点击复制 #1E1E29"><b>selectedBg</b><i>选中行底</i><span>#1E1E29 · selected</span></div>
+      <div class="chip on-l" style="background:#A6E3A1" data-hex="#A6E3A1" title="点击复制 #A6E3A1"><b>success</b><i>成功</i><span>#A6E3A1 · green</span></div>
+      <div class="chip on-l" style="background:#EBA0AC" data-hex="#EBA0AC" title="点击复制 #EBA0AC"><b>error</b><i>错误</i><span>#EBA0AC · maroon</span></div>
+      <div class="chip on-l" style="background:#FAB387" data-hex="#FAB387" title="点击复制 #FAB387"><b>warning</b><i>警告</i><span>#FAB387 · peach</span></div>
+      <div class="chip on-l" style="background:#CBA6F7" data-hex="#CBA6F7" title="点击复制 #CBA6F7"><b>toolTitle</b><i>工具标题</i><span>#CBA6F7 · mauve</span></div>
+      <div class="chip on-l" style="background:#FAB387" data-hex="#FAB387" title="点击复制 #FAB387"><b>mdHeading</b><i>MD 标题</i><span>#FAB387 · peach</span></div>
+      <div class="chip on-l" style="background:#89B4FA" data-hex="#89B4FA" title="点击复制 #89B4FA"><b>mdLink</b><i>MD 链接</i><span>#89B4FA · blue</span></div>
+      <div class="chip on-l" style="background:#94E2D5" data-hex="#94E2D5" title="点击复制 #94E2D5"><b>mdCode</b><i>MD 行内代码</i><span>#94E2D5 · teal</span></div>
+      <div class="chip on-l" style="background:#FAB387" data-hex="#FAB387" title="点击复制 #FAB387"><b>mdListBullet</b><i>MD 列表符</i><span>#FAB387 · peach</span></div>
+      <div class="chip on-l" style="background:#FAB387" data-hex="#FAB387" title="点击复制 #FAB387"><b>bashMode</b><i>Bash 模式边框</i><span>#FAB387 · peach</span></div>
+      <div class="chip on-l" style="background:#A6ADC8" data-hex="#A6ADC8" title="点击复制 #A6ADC8"><b>syntaxComment</b><i>注释</i><span>#A6ADC8 · subtext0</span></div>
+      <div class="chip on-l" style="background:#CBA6F7" data-hex="#CBA6F7" title="点击复制 #CBA6F7"><b>syntaxKeyword</b><i>关键字</i><span>#CBA6F7 · mauve</span></div>
+      <div class="chip on-l" style="background:#89DCEB" data-hex="#89DCEB" title="点击复制 #89DCEB"><b>syntaxFunction</b><i>函数名</i><span>#89DCEB · sky</span></div>
+      <div class="chip na"><b>syntaxVariable</b><i>变量名</i><span>终端默认</span></div>
+      <div class="chip on-l" style="background:#A6E3A1" data-hex="#A6E3A1" title="点击复制 #A6E3A1"><b>syntaxString</b><i>字符串</i><span>#A6E3A1 · green</span></div>
+      <div class="chip on-l" style="background:#FAB387" data-hex="#FAB387" title="点击复制 #FAB387"><b>syntaxNumber</b><i>数字</i><span>#FAB387 · peach</span></div>
+      <div class="chip on-l" style="background:#F9E2AF" data-hex="#F9E2AF" title="点击复制 #F9E2AF"><b>syntaxType</b><i>类型名</i><span>#F9E2AF · yellow</span></div>
+      <div class="chip on-l" style="background:#74C7EC" data-hex="#74C7EC" title="点击复制 #74C7EC"><b>syntaxOperator</b><i>运算符</i><span>#74C7EC · sapphire</span></div>
+      <div class="chip on-l" style="background:#7F849C" data-hex="#7F849C" title="点击复制 #7F849C"><b>syntaxPunctuation</b><i>标点</i><span>#7F849C · overlay1</span></div>
+      </div>
+    </div>
+
+    <div class="col-side">
+      <div class="h3"><b>语法取样</b><span>sampler</span></div>
+      <pre class="code"><span class="c-cm">// pi-coder-catppuccin · syntax sampler</span>
 <span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
 
 <span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-catppuccin"</span><span class="c-pu">);</span>
-<span class="c-kw">export default class</span> <span class="c-ty">Catppuccin</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Theme</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
   <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
   <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
 <span class="c-pu">}</span></pre>
-
-  <div class="syn">
-    <div class="blk" style="background:#A6ADC8" data-hex="#A6ADC8"><div class="lb on-l"><span class="nm">comment</span><span class="hx">#A6ADC8</span></div></div>
-    <div class="blk" style="background:#CBA6F7" data-hex="#CBA6F7"><div class="lb on-l"><span class="nm">keyword</span><span class="hx">#CBA6F7</span></div></div>
-    <div class="blk" style="background:#89DCEB" data-hex="#89DCEB"><div class="lb on-l"><span class="nm">function</span><span class="hx">#89DCEB</span></div></div>
-    <div class="blk" style="background:#CDD6F4" data-hex="#CDD6F4"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#CDD6F4</span></div></div>
-    <div class="blk" style="background:#A6E3A1" data-hex="#A6E3A1"><div class="lb on-l"><span class="nm">string</span><span class="hx">#A6E3A1</span></div></div>
-    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">number</span><span class="hx">#FAB387</span></div></div>
-    <div class="blk" style="background:#F9E2AF" data-hex="#F9E2AF"><div class="lb on-l"><span class="nm">type</span><span class="hx">#F9E2AF</span></div></div>
-    <div class="blk" style="background:#74C7EC" data-hex="#74C7EC"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#74C7EC</span></div></div>
-    <div class="blk" style="background:#7F849C" data-hex="#7F849C"><div class="lb on-l"><span class="nm">punctuation</span><span class="hx">#7F849C</span></div></div>
+      <div class="h3"><b>全部变量</b><span>vars · 31</span></div>
+      <div class="vstrip"><span class="vchip on-l" style="background:#CBA6F7" data-hex="#CBA6F7" title="点击复制 #CBA6F7"><b>mauve</b>#CBA6F7</span><span class="vchip on-l" style="background:#F38BA8" data-hex="#F38BA8" title="点击复制 #F38BA8"><b>red</b>#F38BA8</span><span class="vchip on-l" style="background:#EBA0AC" data-hex="#EBA0AC" title="点击复制 #EBA0AC"><b>maroon</b>#EBA0AC</span><span class="vchip on-l" style="background:#FAB387" data-hex="#FAB387" title="点击复制 #FAB387"><b>peach</b>#FAB387</span><span class="vchip on-l" style="background:#F9E2AF" data-hex="#F9E2AF" title="点击复制 #F9E2AF"><b>yellow</b>#F9E2AF</span><span class="vchip on-l" style="background:#A6E3A1" data-hex="#A6E3A1" title="点击复制 #A6E3A1"><b>green</b>#A6E3A1</span><span class="vchip on-l" style="background:#94E2D5" data-hex="#94E2D5" title="点击复制 #94E2D5"><b>teal</b>#94E2D5</span><span class="vchip on-l" style="background:#89DCEB" data-hex="#89DCEB" title="点击复制 #89DCEB"><b>sky</b>#89DCEB</span><span class="vchip on-l" style="background:#74C7EC" data-hex="#74C7EC" title="点击复制 #74C7EC"><b>sapphire</b>#74C7EC</span><span class="vchip on-l" style="background:#89B4FA" data-hex="#89B4FA" title="点击复制 #89B4FA"><b>blue</b>#89B4FA</span><span class="vchip on-l" style="background:#CDD6F4" data-hex="#CDD6F4" title="点击复制 #CDD6F4"><b>text</b>#CDD6F4</span><span class="vchip on-l" style="background:#BAC2DE" data-hex="#BAC2DE" title="点击复制 #BAC2DE"><b>subtext1</b>#BAC2DE</span><span class="vchip on-l" style="background:#A6ADC8" data-hex="#A6ADC8" title="点击复制 #A6ADC8"><b>subtext0</b>#A6ADC8</span><span class="vchip on-l" style="background:#9399B2" data-hex="#9399B2" title="点击复制 #9399B2"><b>overlay2</b>#9399B2</span><span class="vchip on-l" style="background:#7F849C" data-hex="#7F849C" title="点击复制 #7F849C"><b>overlay1</b>#7F849C</span><span class="vchip on-d" style="background:#6C7086" data-hex="#6C7086" title="点击复制 #6C7086"><b>overlay0</b>#6C7086</span><span class="vchip on-d" style="background:#45475A" data-hex="#45475A" title="点击复制 #45475A"><b>surface1</b>#45475A</span><span class="vchip on-d" style="background:#313244" data-hex="#313244" title="点击复制 #313244"><b>surface0</b>#313244</span><span class="vchip on-d" style="background:#181825" data-hex="#181825" title="点击复制 #181825"><b>mantle</b>#181825</span><span class="vchip on-d" style="background:#11111B" data-hex="#11111B" title="点击复制 #11111B"><b>crust</b>#11111B</span><span class="vchip on-l" style="background:#B7BDF8" data-hex="#B7BDF8" title="点击复制 #B7BDF8"><b>macchiatoLavender</b>#B7BDF8</span><span class="vchip on-d" style="background:#242031" data-hex="#242031" title="点击复制 #242031"><b>exportInfoTint</b>#242031</span><span class="vchip on-l" style="background:#7E8398" data-hex="#7E8398" title="点击复制 #7E8398"><b>dimText</b>#7E8398</span><span class="vchip on-l" style="background:#82889E" data-hex="#82889E" title="点击复制 #82889E"><b>secondaryText</b>#82889E</span><span class="vchip on-d" style="background:#626262" data-hex="#626262" title="点击复制 #626262"><b>thinkingGrey</b>#626262</span><span class="vchip on-d" style="background:#1E1E29" data-hex="#1E1E29" title="点击复制 #1E1E29"><b>selected</b>#1E1E29</span><span class="vchip on-d" style="background:#151515" data-hex="#151515" title="点击复制 #151515"><b>successPanel</b>#151515</span><span class="vchip on-d" style="background:#171010" data-hex="#171010" title="点击复制 #171010"><b>errorPanel</b>#171010</span><span class="vchip on-d" style="background:#0B151F" data-hex="#0B151F" title="点击复制 #0B151F"><b>pendingPanel</b>#0B151F</span><span class="vchip on-d" style="background:#1C241B" data-hex="#1C241B" title="点击复制 #1C241B"><b>diffAddedBg</b>#1C241B</span><span class="vchip on-d" style="background:#2E1C21" data-hex="#2E1C21" title="点击复制 #2E1C21"><b>diffRemovedBg</b>#2E1C21</span></div>
+    </div>
   </div>
 
-  <div class="h3"><b>全部变量</b><span>used vars · 30</span></div>
-  <div class="vars">
-    <div class="blk" style="background:#CBA6F7" data-hex="#CBA6F7"><div class="lb on-l"><span class="nm">mauve</span><span class="hx">#CBA6F7</span></div></div>
-    <div class="blk" style="background:#F38BA8" data-hex="#F38BA8"><div class="lb on-l"><span class="nm">red</span><span class="hx">#F38BA8</span></div></div>
-    <div class="blk" style="background:#EBA0AC" data-hex="#EBA0AC"><div class="lb on-l"><span class="nm">maroon</span><span class="hx">#EBA0AC</span></div></div>
-    <div class="blk" style="background:#FAB387" data-hex="#FAB387"><div class="lb on-l"><span class="nm">peach</span><span class="hx">#FAB387</span></div></div>
-    <div class="blk" style="background:#F9E2AF" data-hex="#F9E2AF"><div class="lb on-l"><span class="nm">yellow</span><span class="hx">#F9E2AF</span></div></div>
-    <div class="blk" style="background:#A6E3A1" data-hex="#A6E3A1"><div class="lb on-l"><span class="nm">green</span><span class="hx">#A6E3A1</span></div></div>
-    <div class="blk" style="background:#94E2D5" data-hex="#94E2D5"><div class="lb on-l"><span class="nm">teal</span><span class="hx">#94E2D5</span></div></div>
-    <div class="blk" style="background:#89DCEB" data-hex="#89DCEB"><div class="lb on-l"><span class="nm">sky</span><span class="hx">#89DCEB</span></div></div>
-    <div class="blk" style="background:#74C7EC" data-hex="#74C7EC"><div class="lb on-l"><span class="nm">sapphire</span><span class="hx">#74C7EC</span></div></div>
-    <div class="blk" style="background:#89B4FA" data-hex="#89B4FA"><div class="lb on-l"><span class="nm">blue</span><span class="hx">#89B4FA</span></div></div>
-    <div class="blk" style="background:#CDD6F4" data-hex="#CDD6F4"><div class="lb on-l"><span class="nm">text</span><span class="hx">#CDD6F4</span></div></div>
-    <div class="blk" style="background:#BAC2DE" data-hex="#BAC2DE"><div class="lb on-l"><span class="nm">subtext1</span><span class="hx">#BAC2DE</span></div></div>
-    <div class="blk" style="background:#A6ADC8" data-hex="#A6ADC8"><div class="lb on-l"><span class="nm">subtext0</span><span class="hx">#A6ADC8</span></div></div>
-    <div class="blk" style="background:#9399B2" data-hex="#9399B2"><div class="lb on-l"><span class="nm">overlay2</span><span class="hx">#9399B2</span></div></div>
-    <div class="blk" style="background:#7F849C" data-hex="#7F849C"><div class="lb on-l"><span class="nm">overlay1</span><span class="hx">#7F849C</span></div></div>
-    <div class="blk" style="background:#6C7086" data-hex="#6C7086"><div class="lb on-d"><span class="nm">overlay0</span><span class="hx">#6C7086</span></div></div>
-    <div class="blk" style="background:#45475A" data-hex="#45475A"><div class="lb on-d"><span class="nm">surface1</span><span class="hx">#45475A</span></div></div>
-    <div class="blk" style="background:#313244" data-hex="#313244"><div class="lb on-d"><span class="nm">surface0</span><span class="hx">#313244</span></div></div>
-    <div class="blk" style="background:#181825" data-hex="#181825"><div class="lb on-d"><span class="nm">mantle</span><span class="hx">#181825</span></div></div>
-    <div class="blk" style="background:#11111B" data-hex="#11111B"><div class="lb on-d"><span class="nm">crust</span><span class="hx">#11111B</span></div></div>
-    <div class="blk" style="background:#B7BDF8" data-hex="#B7BDF8"><div class="lb on-l"><span class="nm">macchiatoLavender</span><span class="hx">#B7BDF8</span></div></div>
-    <div class="blk" style="background:#242031" data-hex="#242031"><div class="lb on-d"><span class="nm">exportInfoTint</span><span class="hx">#242031</span></div></div>
-    <div class="blk" style="background:#7E8398" data-hex="#7E8398"><div class="lb on-l"><span class="nm">dimText</span><span class="hx">#7E8398</span></div></div>
-    <div class="blk" style="background:#82889E" data-hex="#82889E"><div class="lb on-l"><span class="nm">secondaryText</span><span class="hx">#82889E</span></div></div>
-    <div class="blk" style="background:#626262" data-hex="#626262"><div class="lb on-d"><span class="nm">thinkingGrey</span><span class="hx">#626262</span></div></div>
-    <div class="blk" style="background:#1E1E29" data-hex="#1E1E29"><div class="lb on-d"><span class="nm">selected</span><span class="hx">#1E1E29</span></div></div>
-    <div class="blk" style="background:#151515" data-hex="#151515"><div class="lb on-d"><span class="nm">successPanel</span><span class="hx">#151515</span></div></div>
-    <div class="blk" style="background:#171010" data-hex="#171010"><div class="lb on-d"><span class="nm">errorPanel</span><span class="hx">#171010</span></div></div>
-    <div class="blk" style="background:#1C241B" data-hex="#1C241B"><div class="lb on-d"><span class="nm">diffAddedBg</span><span class="hx">#1C241B</span></div></div>
-    <div class="blk" style="background:#2E1C21" data-hex="#2E1C21"><div class="lb on-d"><span class="nm">diffRemovedBg</span><span class="hx">#2E1C21</span></div></div>
-  </div>
-
-  <p class="pnote">
-    <b>文件</b> <code>themes/pi-coder-catppuccin.json</code> · 31 个变量（其中 30 个被引用）、54 个槽位赋值。
-    值得注意的几处偏移：<code>error</code> 用 <b>maroon #EBA0AC</b> 而非 red；<code>syntaxFunction</code> 用 <b>sky</b> 而非 blue；工具面板只剩成功 / 失败两态（<b>#151515</b> / <b>#171010</b>，自造近黑，比 Mocha 的 surface 系更沉）—— <code>toolPendingBg</code> 已清空成终端底色。<code>syntaxVariable</code> 与 <code>text</code> 一样是空串（终端默认色），上面语法取样里那一格用调色板的 <code>text</code> <b>#CDD6F4</b> 近似显示。
-  </p>
+  <p class="pnote"><b>文件</b> <code>themes/pi-coder-catppuccin.json</code> · <code>error</code> 用 <b>maroon</b> 而非 red；<code>syntaxFunction</code> 用 <b>sky</b> 而非 blue；<code>text</code> 与 <code>syntaxVariable</code> 是空串（终端默认色），取样里用调色板的 <code>text</code> 近似显示。</p>
 </section>
 
-<!-- ============================ 02 ayu ============================ -->
-<section class="plate" id="ayu" style="
-  --p-bg:#0D1017; --p-fg:#BFBDB6; --p-soft:#6B7385; --p-dim:#515868; --p-line:#232938;
-  --p-accent:#E6B450; --p-code-bg:#0B0E14;
-  --c-cm:#6B7385; --c-kw:#FF8F40; --c-fn:#FFB454; --c-var:#BFBDB6; --c-st:#67A567;
-  --c-nm:#D2A6FF; --c-ty:#59C2FF; --c-op:#F29668; --c-pu:#6B7385; --c-va:#BFBDB6;">
-
-  <div class="dna">
-    <i style="background:#E6B450;color:#000">accent <span>#E6B450</span></i>
-    <i style="background:#FF8F40;color:#000">orange <span>#FF8F40</span></i>
-    <i style="background:#FFB454;color:#000">function <span>#FFB454</span></i>
-    <i style="background:#AAD94C;color:#000">green <span>#AAD94C</span></i>
-    <i style="background:#67A567;color:#000">stringGreen <span>#67A567</span></i>
-    <i style="background:#95E6CB;color:#000">cyan <span>#95E6CB</span></i>
-    <i style="background:#39BAE6;color:#000">blue <span>#39BAE6</span></i>
-    <i style="background:#D2A6FF;color:#000">purple <span>#D2A6FF</span></i>
-  </div>
+<section class="plate" id="ayu" role="tabpanel" aria-labelledby="tab-ayu" hidden style="
+  --p-bg:#0D1017; --p-fg:#DBDBDD; --p-soft:#6B7385; --p-line:#232938; --p-accent:#E6B450; --c-cm:#6B7385; --c-kw:#FF8F40; --c-fn:#FFB454; --c-va:#BFBDB6; --c-st:#67A567; --c-nm:#D2A6FF; --c-ty:#59C2FF; --c-op:#F29668; --c-pu:#6B7385;">
 
   <div class="phead">
     <div class="idx">02</div>
-    <div>
+    <div class="ptitle">
       <h2>阿玉 <em>ayu</em></h2>
-      <div class="sub">27 vars · 官方 Dark 血统 · 自成一档的灰阶</div>
+      <div class="sub">27 vars（27 个被引用） · 55 槽位 · 底色 #0D1017</div>
+      <p class="mood"><b>Ayu Dark</b> 的暖金 + 橙 + 青三原色，底色压到 <b>#0D1017</b>（比官方 ayu dark 更沉一档）。强调色取 <b>#E6B450</b> 的琥珀金，函数名单独取更亮的 <b>function #FFB454</b>，字符串不用官方 green 而用降饱和的 <b>stringGreen #67A567</b> —— 大面积代码里不刺眼。</p>
     </div>
-    <p class="mood">一整套暖橙 + 青蓝的主题，灰阶和主色调都做了微调。语法槽位贴着官方 <b>ayu Dark</b> 走（10 个角色对齐后平均 ΔE 只有 1.72），灰阶与面板是自家第三套值，比 Dark 更沉。字符串没有用官方的 <b>#AAD94C</b>，而是压暗到 <b>stringGreen #67A567</b>。</p>
   </div>
 
-  <div class="h3"><b>语义槽位</b><span>ui roles</span></div>
-  <div class="roles">
-    <div class="blk" style="background:#E6B450" data-hex="#E6B450"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#E6B450</span><span class="rl">强调色</span></div></div>
-    <div class="blk" style="background:#E6B450" data-hex="#E6B450"><div class="lb on-l"><span class="nm">toolTitle</span><span class="hx">#E6B450</span><span class="rl">工具标题</span></div></div>
-    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">mdHeading</span><span class="hx">#FF8F40</span><span class="rl">标题</span></div></div>
-    <div class="blk" style="background:#59C2FF" data-hex="#59C2FF"><div class="lb on-l"><span class="nm">mdLink</span><span class="hx">#59C2FF</span><span class="rl">链接</span></div></div>
-    <div class="blk" style="background:#95E6CB" data-hex="#95E6CB"><div class="lb on-l"><span class="nm">mdCode</span><span class="hx">#95E6CB</span><span class="rl">行内代码</span></div></div>
-    <div class="blk" style="background:#AAD94C" data-hex="#AAD94C"><div class="lb on-l"><span class="nm">success</span><span class="hx">#AAD94C</span><span class="rl">成功</span></div></div>
-    <div class="blk" style="background:#D95757" data-hex="#D95757"><div class="lb on-l"><span class="nm">error</span><span class="hx">#D95757</span><span class="rl">错误</span></div></div>
-    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">warning</span><span class="hx">#FF8F40</span><span class="rl">警告</span></div></div>
-    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">muted</span><span class="hx">#6B7385</span><span class="rl">次要文本</span></div></div>
-    <div class="blk" style="background:#515868" data-hex="#515868"><div class="lb on-d"><span class="nm">dim</span><span class="hx">#515868</span><span class="rl">最弱文本</span></div></div>
+  <div class="dna">
+      <i style="background:#E6B450;color:#000">accent <span>#E6B450</span></i>
+      <i style="background:#FF8F40;color:#000">orange <span>#FF8F40</span></i>
+      <i style="background:#39BAE6;color:#000">blue <span>#39BAE6</span></i>
+      <i style="background:#95E6CB;color:#000">cyan <span>#95E6CB</span></i>
+      <i style="background:#AAD94C;color:#000">green <span>#AAD94C</span></i>
+      <i style="background:#D2A6FF;color:#000">purple <span>#D2A6FF</span></i>
+      <i style="background:#FFB454;color:#000">function <span>#FFB454</span></i>
+      <i style="background:#59C2FF;color:#000">entityBlue <span>#59C2FF</span></i>
   </div>
 
-  <div class="h3"><b>语法取样</b><span>syntax sampler</span></div>
-  <pre class="code"><span class="c-cm">// pi-coder-ayu · syntax sampler</span>
+  <div class="cols">
+    <div class="col-main">
+      <div class="h3"><b>主色 22 槽</b><span>primary slots · 点色块复制 hex</span></div>
+      <div class="chips">
+      <div class="chip on-l" style="background:#E6B450" data-hex="#E6B450" title="点击复制 #E6B450"><b>accent</b><i>强调色</i><span>#E6B450 · accent</span></div>
+      <div class="chip on-l" style="background:#E6B450" data-hex="#E6B450" title="点击复制 #E6B450"><b>borderAccent</b><i>高亮边框</i><span>#E6B450 · accent</span></div>
+      <div class="chip on-d" style="background:#515868" data-hex="#515868" title="点击复制 #515868"><b>border</b><i>边框</i><span>#515868 · dimmed</span></div>
+      <div class="chip on-d" style="background:#161D2B" data-hex="#161D2B" title="点击复制 #161D2B"><b>selectedBg</b><i>选中行底</i><span>#161D2B · selectedBg</span></div>
+      <div class="chip on-l" style="background:#AAD94C" data-hex="#AAD94C" title="点击复制 #AAD94C"><b>success</b><i>成功</i><span>#AAD94C · green</span></div>
+      <div class="chip on-l" style="background:#D95757" data-hex="#D95757" title="点击复制 #D95757"><b>error</b><i>错误</i><span>#D95757 · red</span></div>
+      <div class="chip on-l" style="background:#FF8F40" data-hex="#FF8F40" title="点击复制 #FF8F40"><b>warning</b><i>警告</i><span>#FF8F40 · orange</span></div>
+      <div class="chip on-l" style="background:#E6B450" data-hex="#E6B450" title="点击复制 #E6B450"><b>toolTitle</b><i>工具标题</i><span>#E6B450 · accent</span></div>
+      <div class="chip on-l" style="background:#FF8F40" data-hex="#FF8F40" title="点击复制 #FF8F40"><b>mdHeading</b><i>MD 标题</i><span>#FF8F40 · orange</span></div>
+      <div class="chip on-l" style="background:#59C2FF" data-hex="#59C2FF" title="点击复制 #59C2FF"><b>mdLink</b><i>MD 链接</i><span>#59C2FF · entityBlue</span></div>
+      <div class="chip on-l" style="background:#95E6CB" data-hex="#95E6CB" title="点击复制 #95E6CB"><b>mdCode</b><i>MD 行内代码</i><span>#95E6CB · cyan</span></div>
+      <div class="chip on-l" style="background:#FF8F40" data-hex="#FF8F40" title="点击复制 #FF8F40"><b>mdListBullet</b><i>MD 列表符</i><span>#FF8F40 · orange</span></div>
+      <div class="chip on-l" style="background:#FF8F40" data-hex="#FF8F40" title="点击复制 #FF8F40"><b>bashMode</b><i>Bash 模式边框</i><span>#FF8F40 · orange</span></div>
+      <div class="chip on-d" style="background:#6B7385" data-hex="#6B7385" title="点击复制 #6B7385"><b>syntaxComment</b><i>注释</i><span>#6B7385 · muted</span></div>
+      <div class="chip on-l" style="background:#FF8F40" data-hex="#FF8F40" title="点击复制 #FF8F40"><b>syntaxKeyword</b><i>关键字</i><span>#FF8F40 · orange</span></div>
+      <div class="chip on-l" style="background:#FFB454" data-hex="#FFB454" title="点击复制 #FFB454"><b>syntaxFunction</b><i>函数名</i><span>#FFB454 · function</span></div>
+      <div class="chip on-l" style="background:#BFBDB6" data-hex="#BFBDB6" title="点击复制 #BFBDB6"><b>syntaxVariable</b><i>变量名</i><span>#BFBDB6 · fg</span></div>
+      <div class="chip on-l" style="background:#67A567" data-hex="#67A567" title="点击复制 #67A567"><b>syntaxString</b><i>字符串</i><span>#67A567 · stringGreen</span></div>
+      <div class="chip on-l" style="background:#D2A6FF" data-hex="#D2A6FF" title="点击复制 #D2A6FF"><b>syntaxNumber</b><i>数字</i><span>#D2A6FF · purple</span></div>
+      <div class="chip on-l" style="background:#59C2FF" data-hex="#59C2FF" title="点击复制 #59C2FF"><b>syntaxType</b><i>类型名</i><span>#59C2FF · entityBlue</span></div>
+      <div class="chip on-l" style="background:#F29668" data-hex="#F29668" title="点击复制 #F29668"><b>syntaxOperator</b><i>运算符</i><span>#F29668 · operator</span></div>
+      <div class="chip on-d" style="background:#6B7385" data-hex="#6B7385" title="点击复制 #6B7385"><b>syntaxPunctuation</b><i>标点</i><span>#6B7385 · muted</span></div>
+      </div>
+    </div>
+
+    <div class="col-side">
+      <div class="h3"><b>语法取样</b><span>sampler</span></div>
+      <pre class="code"><span class="c-cm">// pi-coder-ayu · syntax sampler</span>
 <span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
 
 <span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-ayu"</span><span class="c-pu">);</span>
-<span class="c-kw">export default class</span> <span class="c-ty">Ayu</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Theme</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
   <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
   <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
 <span class="c-pu">}</span></pre>
-
-  <div class="syn">
-    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">comment</span><span class="hx">#6B7385</span></div></div>
-    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">keyword</span><span class="hx">#FF8F40</span></div></div>
-    <div class="blk" style="background:#FFB454" data-hex="#FFB454"><div class="lb on-l"><span class="nm">function</span><span class="hx">#FFB454</span></div></div>
-    <div class="blk" style="background:#BFBDB6" data-hex="#BFBDB6"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#BFBDB6</span></div></div>
-    <div class="blk" style="background:#67A567" data-hex="#67A567"><div class="lb on-l"><span class="nm">string</span><span class="hx">#67A567</span></div></div>
-    <div class="blk" style="background:#D2A6FF" data-hex="#D2A6FF"><div class="lb on-l"><span class="nm">number</span><span class="hx">#D2A6FF</span></div></div>
-    <div class="blk" style="background:#59C2FF" data-hex="#59C2FF"><div class="lb on-l"><span class="nm">type</span><span class="hx">#59C2FF</span></div></div>
-    <div class="blk" style="background:#F29668" data-hex="#F29668"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#F29668</span></div></div>
-    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">punctuation</span><span class="hx">#6B7385</span></div></div>
+      <div class="h3"><b>全部变量</b><span>vars · 27</span></div>
+      <div class="vstrip"><span class="vchip on-d" style="background:#0D1017" data-hex="#0D1017" title="点击复制 #0D1017"><b>bg</b>#0D1017</span><span class="vchip on-d" style="background:#0B0E14" data-hex="#0B0E14" title="点击复制 #0B0E14"><b>panelBg</b>#0B0E14</span><span class="vchip on-l" style="background:#DBDBDD" data-hex="#DBDBDD" title="点击复制 #DBDBDD"><b>textColor</b>#DBDBDD</span><span class="vchip on-l" style="background:#BFBDB6" data-hex="#BFBDB6" title="点击复制 #BFBDB6"><b>fg</b>#BFBDB6</span><span class="vchip on-d" style="background:#6B7385" data-hex="#6B7385" title="点击复制 #6B7385"><b>muted</b>#6B7385</span><span class="vchip on-d" style="background:#515868" data-hex="#515868" title="点击复制 #515868"><b>dimmed</b>#515868</span><span class="vchip on-l" style="background:#E6B450" data-hex="#E6B450" title="点击复制 #E6B450"><b>accent</b>#E6B450</span><span class="vchip on-l" style="background:#FF8F40" data-hex="#FF8F40" title="点击复制 #FF8F40"><b>orange</b>#FF8F40</span><span class="vchip on-l" style="background:#AAD94C" data-hex="#AAD94C" title="点击复制 #AAD94C"><b>green</b>#AAD94C</span><span class="vchip on-l" style="background:#67A567" data-hex="#67A567" title="点击复制 #67A567"><b>stringGreen</b>#67A567</span><span class="vchip on-l" style="background:#95E6CB" data-hex="#95E6CB" title="点击复制 #95E6CB"><b>cyan</b>#95E6CB</span><span class="vchip on-l" style="background:#39BAE6" data-hex="#39BAE6" title="点击复制 #39BAE6"><b>blue</b>#39BAE6</span><span class="vchip on-l" style="background:#59C2FF" data-hex="#59C2FF" title="点击复制 #59C2FF"><b>entityBlue</b>#59C2FF</span><span class="vchip on-l" style="background:#D2A6FF" data-hex="#D2A6FF" title="点击复制 #D2A6FF"><b>purple</b>#D2A6FF</span><span class="vchip on-l" style="background:#D95757" data-hex="#D95757" title="点击复制 #D95757"><b>red</b>#D95757</span><span class="vchip on-l" style="background:#F29668" data-hex="#F29668" title="点击复制 #F29668"><b>operator</b>#F29668</span><span class="vchip on-l" style="background:#FFB454" data-hex="#FFB454" title="点击复制 #FFB454"><b>function</b>#FFB454</span><span class="vchip on-d" style="background:#232938" data-hex="#232938" title="点击复制 #232938"><b>borderMuted</b>#232938</span><span class="vchip on-d" style="background:#626262" data-hex="#626262" title="点击复制 #626262"><b>thinkingGrey</b>#626262</span><span class="vchip on-d" style="background:#6B7385" data-hex="#6B7385" title="点击复制 #6B7385"><b>bashOutput</b>#6B7385</span><span class="vchip on-d" style="background:#161D2B" data-hex="#161D2B" title="点击复制 #161D2B"><b>selectedBg</b>#161D2B</span><span class="vchip on-d" style="background:#1B1C1D" data-hex="#1B1C1D" title="点击复制 #1B1C1D"><b>userMessageBg</b>#1B1C1D</span><span class="vchip on-d" style="background:#10151F" data-hex="#10151F" title="点击复制 #10151F"><b>toolSuccessBg</b>#10151F</span><span class="vchip on-d" style="background:#1B171D" data-hex="#1B171D" title="点击复制 #1B171D"><b>toolErrorBg</b>#1B171D</span><span class="vchip on-d" style="background:#1A1610" data-hex="#1A1610" title="点击复制 #1A1610"><b>infoBg</b>#1A1610</span><span class="vchip on-d" style="background:#1D241C" data-hex="#1D241C" title="点击复制 #1D241C"><b>diffAddedBg</b>#1D241C</span><span class="vchip on-d" style="background:#321D23" data-hex="#321D23" title="点击复制 #321D23"><b>diffRemovedBg</b>#321D23</span></div>
+    </div>
   </div>
 
-  <div class="h3"><b>全部变量</b><span>used vars · 27</span></div>
-  <div class="vars">
-    <div class="blk" style="background:#0D1017" data-hex="#0D1017"><div class="lb on-d"><span class="nm">bg</span><span class="hx">#0D1017</span></div></div>
-    <div class="blk" style="background:#0B0E14" data-hex="#0B0E14"><div class="lb on-d"><span class="nm">panelBg</span><span class="hx">#0B0E14</span></div></div>
-    <div class="blk" style="background:#DBDBDD" data-hex="#DBDBDD"><div class="lb on-l"><span class="nm">textColor</span><span class="hx">#DBDBDD</span></div></div>
-    <div class="blk" style="background:#BFBDB6" data-hex="#BFBDB6"><div class="lb on-l"><span class="nm">fg</span><span class="hx">#BFBDB6</span></div></div>
-    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">muted</span><span class="hx">#6B7385</span></div></div>
-    <div class="blk" style="background:#515868" data-hex="#515868"><div class="lb on-d"><span class="nm">dimmed</span><span class="hx">#515868</span></div></div>
-    <div class="blk" style="background:#E6B450" data-hex="#E6B450"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#E6B450</span></div></div>
-    <div class="blk" style="background:#FF8F40" data-hex="#FF8F40"><div class="lb on-l"><span class="nm">orange</span><span class="hx">#FF8F40</span></div></div>
-    <div class="blk" style="background:#AAD94C" data-hex="#AAD94C"><div class="lb on-l"><span class="nm">green</span><span class="hx">#AAD94C</span></div></div>
-    <div class="blk" style="background:#67A567" data-hex="#67A567"><div class="lb on-l"><span class="nm">stringGreen</span><span class="hx">#67A567</span></div></div>
-    <div class="blk" style="background:#95E6CB" data-hex="#95E6CB"><div class="lb on-l"><span class="nm">cyan</span><span class="hx">#95E6CB</span></div></div>
-    <div class="blk" style="background:#39BAE6" data-hex="#39BAE6"><div class="lb on-l"><span class="nm">blue</span><span class="hx">#39BAE6</span></div></div>
-    <div class="blk" style="background:#59C2FF" data-hex="#59C2FF"><div class="lb on-l"><span class="nm">entityBlue</span><span class="hx">#59C2FF</span></div></div>
-    <div class="blk" style="background:#D2A6FF" data-hex="#D2A6FF"><div class="lb on-l"><span class="nm">purple</span><span class="hx">#D2A6FF</span></div></div>
-    <div class="blk" style="background:#D95757" data-hex="#D95757"><div class="lb on-l"><span class="nm">red</span><span class="hx">#D95757</span></div></div>
-    <div class="blk" style="background:#F29668" data-hex="#F29668"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#F29668</span></div></div>
-    <div class="blk" style="background:#FFB454" data-hex="#FFB454"><div class="lb on-l"><span class="nm">function</span><span class="hx">#FFB454</span></div></div>
-    <div class="blk" style="background:#232938" data-hex="#232938"><div class="lb on-d"><span class="nm">borderMuted</span><span class="hx">#232938</span></div></div>
-    <div class="blk" style="background:#626262" data-hex="#626262"><div class="lb on-d"><span class="nm">thinkingGrey</span><span class="hx">#626262</span></div></div>
-    <div class="blk" style="background:#6B7385" data-hex="#6B7385"><div class="lb on-d"><span class="nm">bashOutput</span><span class="hx">#6B7385</span></div></div>
-    <div class="blk" style="background:#161D2B" data-hex="#161D2B"><div class="lb on-d"><span class="nm">selectedBg</span><span class="hx">#161D2B</span></div></div>
-    <div class="blk" style="background:#1B1C1D" data-hex="#1B1C1D"><div class="lb on-d"><span class="nm">userMessageBg</span><span class="hx">#1B1C1D</span></div></div>
-    <div class="blk" style="background:#10151F" data-hex="#10151F"><div class="lb on-d"><span class="nm">toolSuccessBg</span><span class="hx">#10151F</span></div></div>
-    <div class="blk" style="background:#1B171D" data-hex="#1B171D"><div class="lb on-d"><span class="nm">toolErrorBg</span><span class="hx">#1B171D</span></div></div>
-    <div class="blk" style="background:#1A1610" data-hex="#1A1610"><div class="lb on-d"><span class="nm">infoBg</span><span class="hx">#1A1610</span></div></div>
-    <div class="blk" style="background:#1D241C" data-hex="#1D241C"><div class="lb on-d"><span class="nm">diffAddedBg</span><span class="hx">#1D241C</span></div></div>
-    <div class="blk" style="background:#321D23" data-hex="#321D23"><div class="lb on-d"><span class="nm">diffRemovedBg</span><span class="hx">#321D23</span></div></div>
-  </div>
-
-  <p class="pnote">
-    <b>文件</b> <code>themes/pi-coder-ayu.json</code> · 27 个变量、55 个槽位赋值。
-    xhigh 与 max 同色（<code>#626262</code>）。相比于官方 ayu 色系做了大量的调整，主要是代码块 diff 和 pi 工具调用色块的底色等等做了调整。
-  </p>
+  <p class="pnote"><b>文件</b> <code>themes/pi-coder-ayu.json</code> · 五个槽位（<code>text</code> / <code>toolOutput</code> / <code>mdCodeBlock</code> / <code>syntaxVariable</code> / <code>customMessageText</code>）都指向同一个 <code>fg #BFBDB6</code>，而用户消息字单独取更亮的 <code>textColor #DBDBDD</code>。</p>
 </section>
 
-<!-- ============================ 03 1337 ============================ -->
-<section class="plate" id="leet" style="
-  --p-bg:#191919; --p-fg:#F8F8F2; --p-soft:#999999; --p-dim:#6D6D6D; --p-line:#515151;
-  --p-accent:#8CDAFF; --p-code-bg:#111111;
-  --c-cm:#6D6D6D; --c-kw:#FF5E5E; --c-fn:#8CDAFF; --c-var:#E9FDAC; --c-st:#FBE3BF;
-  --c-nm:#FDB082; --c-ty:#8CDAFF; --c-op:#F8F8F2; --c-pu:#FFFFFF; --c-va:#E9FDAC;">
-
-  <div class="dna">
-    <i style="background:#191919;color:#fff">bg <span>#191919</span></i>
-    <i style="background:#3D3D3D;color:#fff">lineHighlight <span>#3D3D3D</span></i>
-    <i style="background:#515151;color:#fff">selection <span>#515151</span></i>
-    <i style="background:#6D6D6D;color:#fff">comment <span>#6D6D6D</span></i>
-    <i style="background:#999999;color:#fff">gutterIgnored <span>#999999</span></i>
-    <i style="background:#FFFFFF;color:#000">white <span>#FFFFFF</span></i>
-    <i style="background:#F8F8F2;color:#000">fg <span>#F8F8F2</span></i>
-    <i style="background:#D0D0D0;color:#000">softFg <span>#D0D0D0</span></i>
-  </div>
+<section class="plate" id="leet" role="tabpanel" aria-labelledby="tab-leet" hidden style="
+  --p-bg:#191919; --p-fg:#F8F8F2; --p-soft:#999999; --p-line:#3B3A32; --p-accent:#8CDAFF; --c-cm:#6D6D6D; --c-kw:#FF5E5E; --c-fn:#8CDAFF; --c-va:#E9FDAC; --c-st:#FBE3BF; --c-nm:#FDB082; --c-ty:#8CDAFF; --c-op:#F8F8F2; --c-pu:#FFFFFF;">
 
   <div class="phead">
     <div class="idx">03</div>
-    <div>
-      <h2>黑客 <em>1337</em></h2>
-      <div class="sub">35 vars · Codex CLI 内置主题 · 纯语法血统</div>
+    <div class="ptitle">
+      <h2>黑客 <em>leet</em></h2>
+      <div class="sub">35 vars（35 个被引用） · 59 槽位 · 底色 #191919</div>
+      <p class="mood">Codex CLI 内置的 <b>1337</b> 主题：纯中性灰底 <b>#191919</b>，主色是 <b>funcBlue #8CDAFF</b> 的冰蓝，关键字用 <b>#FF5E5E</b> 的珊瑚红。它是另外两套（coffee / nightfox）的**结构基准** —— 那两套的次要槽位逐字节照搬这里。</p>
     </div>
-    <p class="mood">这个主题源自 Codex CLI 的内置主题 1337，原作出自 Mark Herpich 的 Sublime 配色。底色是中性近黑，代码全走它自己那套高饱和色，一眼就能辨出；1337 本身只定义了语法、没有任何 UI 槽位，所以界面色全部从它那 28 个色值里取，整体呈现的风格更加让 pi 靠近 codex 的氛围感。</p>
   </div>
 
-  <div class="h3"><b>语义槽位</b><span>ui roles</span></div>
-  <div class="roles">
-    <div class="blk" style="background:#8CDAFF" data-hex="#8CDAFF"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#8CDAFF</span><span class="rl">强调色</span></div></div>
-    <div class="blk" style="background:#8CDAFF" data-hex="#8CDAFF"><div class="lb on-l"><span class="nm">toolTitle</span><span class="hx">#8CDAFF</span><span class="rl">工具标题</span></div></div>
-    <div class="blk" style="background:#FF8942" data-hex="#FF8942"><div class="lb on-d"><span class="nm">mdHeading</span><span class="hx">#FF8942</span><span class="rl">标题</span></div></div>
-    <div class="blk" style="background:#6699CC" data-hex="#6699CC"><div class="lb on-d"><span class="nm">mdLink</span><span class="hx">#6699CC</span><span class="rl">链接</span></div></div>
-    <div class="blk" style="background:#0D92C1" data-hex="#0D92C1"><div class="lb on-d"><span class="nm">mdCode</span><span class="hx">#0D92C1</span><span class="rl">行内代码（指定）</span></div></div>
-    <div class="blk" style="background:#A6E22E" data-hex="#A6E22E"><div class="lb on-l"><span class="nm">success</span><span class="hx">#A6E22E</span><span class="rl">成功</span></div></div>
-    <div class="blk" style="background:#E27878" data-hex="#E27878"><div class="lb on-l"><span class="nm">error</span><span class="hx">#E27878</span><span class="rl">错误 · 与 diff 删除行同色</span></div></div>
-    <div class="blk" style="background:#FDB082" data-hex="#FDB082"><div class="lb on-l"><span class="nm">warning</span><span class="hx">#FDB082</span><span class="rl">警告</span></div></div>
-    <div class="blk" style="background:#999999" data-hex="#999999"><div class="lb on-d"><span class="nm">muted</span><span class="hx">#999999</span><span class="rl">次要文本</span></div></div>
-    <div class="blk" style="background:#6D6D6D" data-hex="#6D6D6D"><div class="lb on-d"><span class="nm">dim</span><span class="hx">#6D6D6D</span><span class="rl">最弱文本</span></div></div>
+  <div class="dna">
+      <i style="background:#FF5E5E;color:#000">keyword <span>#FF5E5E</span></i>
+      <i style="background:#FDB082;color:#000">number <span>#FDB082</span></i>
+      <i style="background:#E9FDAC;color:#000">variable <span>#E9FDAC</span></i>
+      <i style="background:#8CDAFF;color:#000">funcBlue <span>#8CDAFF</span></i>
+      <i style="background:#FBE3BF;color:#000">string <span>#FBE3BF</span></i>
+      <i style="background:#A6E22E;color:#000">inserted <span>#A6E22E</span></i>
+      <i style="background:#D699FF;color:#000">languageLiteral <span>#D699FF</span></i>
+      <i style="background:#FBDFB5;color:#000">storageType <span>#FBDFB5</span></i>
   </div>
 
-  <div class="h3"><b>语法取样</b><span>syntax sampler</span></div>
-  <pre class="code"><span class="c-cm">// pi-coder-1337 · syntax sampler</span>
+  <div class="cols">
+    <div class="col-main">
+      <div class="h3"><b>主色 22 槽</b><span>primary slots · 点色块复制 hex</span></div>
+      <div class="chips">
+      <div class="chip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>accent</b><i>强调色</i><span>#8CDAFF · accent</span></div>
+      <div class="chip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>borderAccent</b><i>高亮边框</i><span>#8CDAFF · accent</span></div>
+      <div class="chip on-d" style="background:#515151" data-hex="#515151" title="点击复制 #515151"><b>border</b><i>边框</i><span>#515151 · selection</span></div>
+      <div class="chip on-d" style="background:#515151" data-hex="#515151" title="点击复制 #515151"><b>selectedBg</b><i>选中行底</i><span>#515151 · selection</span></div>
+      <div class="chip on-l" style="background:#A6E22E" data-hex="#A6E22E" title="点击复制 #A6E22E"><b>success</b><i>成功</i><span>#A6E22E · inserted</span></div>
+      <div class="chip on-l" style="background:#E27878" data-hex="#E27878" title="点击复制 #E27878"><b>error</b><i>错误</i><span>#E27878 · removedRed</span></div>
+      <div class="chip on-l" style="background:#FDB082" data-hex="#FDB082" title="点击复制 #FDB082"><b>warning</b><i>警告</i><span>#FDB082 · number</span></div>
+      <div class="chip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>toolTitle</b><i>工具标题</i><span>#8CDAFF · funcBlue</span></div>
+      <div class="chip on-l" style="background:#FF8942" data-hex="#FF8942" title="点击复制 #FF8942"><b>mdHeading</b><i>MD 标题</i><span>#FF8942 · constantLanguage</span></div>
+      <div class="chip on-l" style="background:#6699CC" data-hex="#6699CC" title="点击复制 #6699CC"><b>mdLink</b><i>MD 链接</i><span>#6699CC · libFunc</span></div>
+      <div class="chip on-l" style="background:#0D92C1" data-hex="#0D92C1" title="点击复制 #0D92C1"><b>mdCode</b><i>MD 行内代码</i><span>#0D92C1 · mdCodeCyan</span></div>
+      <div class="chip on-l" style="background:#FBDFB5" data-hex="#FBDFB5" title="点击复制 #FBDFB5"><b>mdListBullet</b><i>MD 列表符</i><span>#FBDFB5 · storageType</span></div>
+      <div class="chip on-l" style="background:#FC9354" data-hex="#FC9354" title="点击复制 #FC9354"><b>bashMode</b><i>Bash 模式边框</i><span>#FC9354 · param</span></div>
+      <div class="chip on-d" style="background:#6D6D6D" data-hex="#6D6D6D" title="点击复制 #6D6D6D"><b>syntaxComment</b><i>注释</i><span>#6D6D6D · comment</span></div>
+      <div class="chip on-l" style="background:#FF5E5E" data-hex="#FF5E5E" title="点击复制 #FF5E5E"><b>syntaxKeyword</b><i>关键字</i><span>#FF5E5E · keyword</span></div>
+      <div class="chip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>syntaxFunction</b><i>函数名</i><span>#8CDAFF · funcBlue</span></div>
+      <div class="chip on-l" style="background:#E9FDAC" data-hex="#E9FDAC" title="点击复制 #E9FDAC"><b>syntaxVariable</b><i>变量名</i><span>#E9FDAC · variable</span></div>
+      <div class="chip on-l" style="background:#FBE3BF" data-hex="#FBE3BF" title="点击复制 #FBE3BF"><b>syntaxString</b><i>字符串</i><span>#FBE3BF · string</span></div>
+      <div class="chip on-l" style="background:#FDB082" data-hex="#FDB082" title="点击复制 #FDB082"><b>syntaxNumber</b><i>数字</i><span>#FDB082 · number</span></div>
+      <div class="chip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>syntaxType</b><i>类型名</i><span>#8CDAFF · funcBlue</span></div>
+      <div class="chip on-l" style="background:#F8F8F2" data-hex="#F8F8F2" title="点击复制 #F8F8F2"><b>syntaxOperator</b><i>运算符</i><span>#F8F8F2 · fg</span></div>
+      <div class="chip on-l" style="background:#FFFFFF" data-hex="#FFFFFF" title="点击复制 #FFFFFF"><b>syntaxPunctuation</b><i>标点</i><span>#FFFFFF · white</span></div>
+      </div>
+    </div>
+
+    <div class="col-side">
+      <div class="h3"><b>语法取样</b><span>sampler</span></div>
+      <pre class="code"><span class="c-cm">// pi-coder-1337 · syntax sampler</span>
 <span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
 
 <span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-1337"</span><span class="c-pu">);</span>
-<span class="c-kw">export default class</span> <span class="c-ty">Leet</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Theme</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
   <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
   <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
 <span class="c-pu">}</span></pre>
-
-  <div class="syn">
-    <div class="blk" style="background:#6D6D6D" data-hex="#6D6D6D"><div class="lb on-d"><span class="nm">comment</span><span class="hx">#6D6D6D</span></div></div>
-    <div class="blk" style="background:#FF5E5E" data-hex="#FF5E5E"><div class="lb on-d"><span class="nm">keyword</span><span class="hx">#FF5E5E</span></div></div>
-    <div class="blk" style="background:#8CDAFF" data-hex="#8CDAFF"><div class="lb on-l"><span class="nm">function</span><span class="hx">#8CDAFF</span></div></div>
-    <div class="blk" style="background:#E9FDAC" data-hex="#E9FDAC"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#E9FDAC</span></div></div>
-    <div class="blk" style="background:#FBE3BF" data-hex="#FBE3BF"><div class="lb on-l"><span class="nm">string</span><span class="hx">#FBE3BF</span></div></div>
-    <div class="blk" style="background:#FDB082" data-hex="#FDB082"><div class="lb on-l"><span class="nm">number</span><span class="hx">#FDB082</span></div></div>
-    <div class="blk" style="background:#8CDAFF" data-hex="#8CDAFF"><div class="lb on-l"><span class="nm">type</span><span class="hx">#8CDAFF</span></div></div>
-    <div class="blk" style="background:#F8F8F2" data-hex="#F8F8F2"><div class="lb on-l"><span class="nm">operator</span><span class="hx">#F8F8F2</span></div></div>
-    <div class="blk" style="background:#FFFFFF" data-hex="#FFFFFF"><div class="lb on-l"><span class="nm">punctuation</span><span class="hx">#FFFFFF</span></div></div>
+      <div class="h3"><b>全部变量</b><span>vars · 35</span></div>
+      <div class="vstrip"><span class="vchip on-d" style="background:#191919" data-hex="#191919" title="点击复制 #191919"><b>bg</b>#191919</span><span class="vchip on-d" style="background:#3B3A32" data-hex="#3B3A32" title="点击复制 #3B3A32"><b>invisibles</b>#3B3A32</span><span class="vchip on-d" style="background:#3D3D3D" data-hex="#3D3D3D" title="点击复制 #3D3D3D"><b>lineHighlight</b>#3D3D3D</span><span class="vchip on-d" style="background:#515151" data-hex="#515151" title="点击复制 #515151"><b>selection</b>#515151</span><span class="vchip on-d" style="background:#6D6D6D" data-hex="#6D6D6D" title="点击复制 #6D6D6D"><b>comment</b>#6D6D6D</span><span class="vchip on-l" style="background:#999999" data-hex="#999999" title="点击复制 #999999"><b>gutterIgnored</b>#999999</span><span class="vchip on-l" style="background:#FFFFFF" data-hex="#FFFFFF" title="点击复制 #FFFFFF"><b>white</b>#FFFFFF</span><span class="vchip on-l" style="background:#F8F8F2" data-hex="#F8F8F2" title="点击复制 #F8F8F2"><b>fg</b>#F8F8F2</span><span class="vchip on-l" style="background:#D0D0D0" data-hex="#D0D0D0" title="点击复制 #D0D0D0"><b>softFg</b>#D0D0D0</span><span class="vchip on-l" style="background:#FBE3BF" data-hex="#FBE3BF" title="点击复制 #FBE3BF"><b>string</b>#FBE3BF</span><span class="vchip on-l" style="background:#FDB082" data-hex="#FDB082" title="点击复制 #FDB082"><b>number</b>#FDB082</span><span class="vchip on-l" style="background:#FF8942" data-hex="#FF8942" title="点击复制 #FF8942"><b>constantLanguage</b>#FF8942</span><span class="vchip on-l" style="background:#E9FDAC" data-hex="#E9FDAC" title="点击复制 #E9FDAC"><b>variable</b>#E9FDAC</span><span class="vchip on-l" style="background:#FF5E5E" data-hex="#FF5E5E" title="点击复制 #FF5E5E"><b>keyword</b>#FF5E5E</span><span class="vchip on-l" style="background:#FBDFB5" data-hex="#FBDFB5" title="点击复制 #FBDFB5"><b>storageType</b>#FBDFB5</span><span class="vchip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>funcBlue</b>#8CDAFF</span><span class="vchip on-l" style="background:#FC9354" data-hex="#FC9354" title="点击复制 #FC9354"><b>param</b>#FC9354</span><span class="vchip on-l" style="background:#97D8EA" data-hex="#97D8EA" title="点击复制 #97D8EA"><b>tagAttr</b>#97D8EA</span><span class="vchip on-l" style="background:#6699CC" data-hex="#6699CC" title="点击复制 #6699CC"><b>libFunc</b>#6699CC</span><span class="vchip on-l" style="background:#D699FF" data-hex="#D699FF" title="点击复制 #D699FF"><b>languageLiteral</b>#D699FF</span><span class="vchip on-l" style="background:#FFB2F9" data-hex="#FFB2F9" title="点击复制 #FFB2F9"><b>namespacePink</b>#FFB2F9</span><span class="vchip on-l" style="background:#A6E22E" data-hex="#A6E22E" title="点击复制 #A6E22E"><b>inserted</b>#A6E22E</span><span class="vchip on-d" style="background:#242424" data-hex="#242424" title="点击复制 #242424"><b>userBg</b>#242424</span><span class="vchip on-l" style="background:#8CDAFF" data-hex="#8CDAFF" title="点击复制 #8CDAFF"><b>accent</b>#8CDAFF</span><span class="vchip on-l" style="background:#0D92C1" data-hex="#0D92C1" title="点击复制 #0D92C1"><b>mdCodeCyan</b>#0D92C1</span><span class="vchip on-d" style="background:#202020" data-hex="#202020" title="点击复制 #202020"><b>successCard</b>#202020</span><span class="vchip on-d" style="background:#171010" data-hex="#171010" title="点击复制 #171010"><b>errorCard</b>#171010</span><span class="vchip on-d" style="background:#696969" data-hex="#696969" title="点击复制 #696969"><b>thinkingGrey</b>#696969</span><span class="vchip on-l" style="background:#999999" data-hex="#999999" title="点击复制 #999999"><b>bashOutput</b>#999999</span><span class="vchip on-l" style="background:#8BC391" data-hex="#8BC391" title="点击复制 #8BC391"><b>addedGreen</b>#8BC391</span><span class="vchip on-d" style="background:#1C241B" data-hex="#1C241B" title="点击复制 #1C241B"><b>addedLine</b>#1C241B</span><span class="vchip on-d" style="background:#2E1C21" data-hex="#2E1C21" title="点击复制 #2E1C21"><b>removedLine</b>#2E1C21</span><span class="vchip on-l" style="background:#E27878" data-hex="#E27878" title="点击复制 #E27878"><b>removedRed</b>#E27878</span><span class="vchip on-d" style="background:#181825" data-hex="#181825" title="点击复制 #181825"><b>cardBg</b>#181825</span><span class="vchip on-d" style="background:#111111" data-hex="#111111" title="点击复制 #111111"><b>pageBg</b>#111111</span></div>
+    </div>
   </div>
 
-  <div class="h3"><b>全部变量</b><span>used vars · 35</span></div>
-  <div class="vars">
-    <div class="blk" style="background:#191919" data-hex="#191919"><div class="lb on-d"><span class="nm">bg</span><span class="hx">#191919</span></div></div>
-    <div class="blk" style="background:#3B3A32" data-hex="#3B3A32"><div class="lb on-d"><span class="nm">invisibles</span><span class="hx">#3B3A32</span></div></div>
-    <div class="blk" style="background:#3D3D3D" data-hex="#3D3D3D"><div class="lb on-d"><span class="nm">lineHighlight</span><span class="hx">#3D3D3D</span></div></div>
-    <div class="blk" style="background:#515151" data-hex="#515151"><div class="lb on-d"><span class="nm">selection</span><span class="hx">#515151</span></div></div>
-    <div class="blk" style="background:#6D6D6D" data-hex="#6D6D6D"><div class="lb on-d"><span class="nm">comment</span><span class="hx">#6D6D6D</span></div></div>
-    <div class="blk" style="background:#999999" data-hex="#999999"><div class="lb on-d"><span class="nm">gutterIgnored</span><span class="hx">#999999</span></div></div>
-    <div class="blk" style="background:#FFFFFF" data-hex="#FFFFFF"><div class="lb on-l"><span class="nm">white</span><span class="hx">#FFFFFF</span></div></div>
-    <div class="blk" style="background:#F8F8F2" data-hex="#F8F8F2"><div class="lb on-l"><span class="nm">fg</span><span class="hx">#F8F8F2</span></div></div>
-    <div class="blk" style="background:#D0D0D0" data-hex="#D0D0D0"><div class="lb on-l"><span class="nm">softFg</span><span class="hx">#D0D0D0</span></div></div>
-    <div class="blk" style="background:#FBE3BF" data-hex="#FBE3BF"><div class="lb on-l"><span class="nm">string</span><span class="hx">#FBE3BF</span></div></div>
-    <div class="blk" style="background:#FDB082" data-hex="#FDB082"><div class="lb on-l"><span class="nm">number</span><span class="hx">#FDB082</span></div></div>
-    <div class="blk" style="background:#FF8942" data-hex="#FF8942"><div class="lb on-d"><span class="nm">constantLanguage</span><span class="hx">#FF8942</span></div></div>
-    <div class="blk" style="background:#E9FDAC" data-hex="#E9FDAC"><div class="lb on-l"><span class="nm">variable</span><span class="hx">#E9FDAC</span></div></div>
-    <div class="blk" style="background:#FF5E5E" data-hex="#FF5E5E"><div class="lb on-d"><span class="nm">keyword</span><span class="hx">#FF5E5E</span></div></div>
-    <div class="blk" style="background:#FBDFB5" data-hex="#FBDFB5"><div class="lb on-l"><span class="nm">storageType</span><span class="hx">#FBDFB5</span></div></div>
-    <div class="blk" style="background:#8CDAFF" data-hex="#8CDAFF"><div class="lb on-l"><span class="nm">funcBlue</span><span class="hx">#8CDAFF</span></div></div>
-    <div class="blk" style="background:#FC9354" data-hex="#FC9354"><div class="lb on-d"><span class="nm">param</span><span class="hx">#FC9354</span></div></div>
-    <div class="blk" style="background:#97D8EA" data-hex="#97D8EA"><div class="lb on-l"><span class="nm">tagAttr</span><span class="hx">#97D8EA</span></div></div>
-    <div class="blk" style="background:#6699CC" data-hex="#6699CC"><div class="lb on-d"><span class="nm">libFunc</span><span class="hx">#6699CC</span></div></div>
-    <div class="blk" style="background:#D699FF" data-hex="#D699FF"><div class="lb on-d"><span class="nm">languageLiteral</span><span class="hx">#D699FF</span></div></div>
-    <div class="blk" style="background:#FFB2F9" data-hex="#FFB2F9"><div class="lb on-l"><span class="nm">namespacePink</span><span class="hx">#FFB2F9</span></div></div>
-    <div class="blk" style="background:#A6E22E" data-hex="#A6E22E"><div class="lb on-l"><span class="nm">inserted</span><span class="hx">#A6E22E</span></div></div>
-    <div class="blk" style="background:#242424" data-hex="#242424"><div class="lb on-d"><span class="nm">userBg</span><span class="hx">#242424</span></div></div>
-    <div class="blk" style="background:#8CDAFF" data-hex="#8CDAFF"><div class="lb on-l"><span class="nm">accent</span><span class="hx">#8CDAFF</span></div></div>
-    <div class="blk" style="background:#0D92C1" data-hex="#0D92C1"><div class="lb on-d"><span class="nm">mdCodeCyan</span><span class="hx">#0D92C1</span></div></div>
-    <div class="blk" style="background:#202020" data-hex="#202020"><div class="lb on-d"><span class="nm">successCard</span><span class="hx">#202020</span></div></div>
-    <div class="blk" style="background:#171010" data-hex="#171010"><div class="lb on-d"><span class="nm">errorCard</span><span class="hx">#171010</span></div></div>
-    <div class="blk" style="background:#696969" data-hex="#696969"><div class="lb on-d"><span class="nm">thinkingGrey</span><span class="hx">#696969</span></div></div>
-    <div class="blk" style="background:#999999" data-hex="#999999"><div class="lb on-d"><span class="nm">bashOutput</span><span class="hx">#999999</span></div></div>
-    <div class="blk" style="background:#8BC391" data-hex="#8BC391"><div class="lb on-l"><span class="nm">addedGreen</span><span class="hx">#8BC391</span></div></div>
-    <div class="blk" style="background:#1C241B" data-hex="#1C241B"><div class="lb on-d"><span class="nm">addedLine</span><span class="hx">#1C241B</span></div></div>
-    <div class="blk" style="background:#2E1C21" data-hex="#2E1C21"><div class="lb on-d"><span class="nm">removedLine</span><span class="hx">#2E1C21</span></div></div>
-    <div class="blk" style="background:#E27878" data-hex="#E27878"><div class="lb on-d"><span class="nm">removedRed</span><span class="hx">#E27878</span></div></div>
-    <div class="blk" style="background:#181825" data-hex="#181825"><div class="lb on-d"><span class="nm">cardBg</span><span class="hx">#181825</span></div></div>
-    <div class="blk" style="background:#111111" data-hex="#111111"><div class="lb on-d"><span class="nm">pageBg</span><span class="hx">#111111</span></div></div>
-  </div>
-
-  <p class="pnote">
-    <b>文件</b> <code>themes/pi-coder-1337.json</code> · 35 个变量、59 个槽位赋值（<code>toolPendingBg</code> 是空串，其余 58 个都引用 <code>vars</code>）。
-    移植自 Codex CLI 内置的 <b>1337</b>：48 个可核对的作用域里 37 个与上游逐字节同值，其余 11 个是 Codex 侧合并成继承父级、并非改色。
-    pi 的语法槽比它少，所以有合并（函数名 / 类名共用函数蓝、库函数蓝转 <code>mdLink</code>）与替换（<code>mdHeading</code> 改用 <b>#FF8942</b>；<code>mdCode</code>、卡片底、diff 与思考边框、<code>error</code> 为指定值）。
-  </p>
+  <p class="pnote"><b>文件</b> <code>themes/pi-coder-1337.json</code> · <code>syntaxPunctuation</code> 用纯白 <b>#FFFFFF</b>（全页最亮的一格）；<code>accent</code> / <code>toolTitle</code> / <code>syntaxFunction</code> / <code>syntaxType</code> 四者同值但各取独立变量，便于日后单独调。</p>
 </section>
 
-<!-- ============================ cross ============================ -->
-<section class="cross" id="cross">
-  <h2>三色对照</h2>
-  <p class="sub">主题 JSON 里 <code>colors</code> 的槽位（三套取并集，共 53 个），按用途分组。点色块复制 hex。</p>
-  <div class="crossgrid">
-    <table class="cross2">
-      <thead>
-        <tr><th style="width:108px">槽位</th><th>catppuccin</th><th>ayu</th><th>1337</th></tr>
-      </thead>
-      <tbody>
-        <tr class="grp"><td colspan="4"><b>基础与状态 <i>· 12</i></b></td></tr>
-        <tr>
-          <td class="rk">强调色<span>accent</span></td>
-          <td class="cell"><div style="background:#B7BDF8" data-hex="#B7BDF8"><span class="on-l">#B7BDF8</span><span class="on-l">macchiatoLavender</span></div></td>
-          <td class="cell"><div style="background:#E6B450" data-hex="#E6B450"><span class="on-l">#E6B450</span><span class="on-l">accent</span></div></td>
-          <td class="cell"><div style="background:#8CDAFF" data-hex="#8CDAFF"><span class="on-l">#8CDAFF</span><span class="on-l">accent</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">边框<span>border</span></td>
-          <td class="cell"><div style="background:#45475A" data-hex="#45475A"><span class="on-d">#45475A</span><span class="on-d">surface1</span></div></td>
-          <td class="cell"><div style="background:#515868" data-hex="#515868"><span class="on-d">#515868</span><span class="on-d">dimmed</span></div></td>
-          <td class="cell"><div style="background:#515151" data-hex="#515151"><span class="on-d">#515151</span><span class="on-d">selection</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">高亮边框<span>borderAccent</span></td>
-          <td class="cell"><div style="background:#CBA6F7" data-hex="#CBA6F7"><span class="on-l">#CBA6F7</span><span class="on-l">mauve</span></div></td>
-          <td class="cell"><div style="background:#E6B450" data-hex="#E6B450"><span class="on-l">#E6B450</span><span class="on-l">accent</span></div></td>
-          <td class="cell"><div style="background:#8CDAFF" data-hex="#8CDAFF"><span class="on-l">#8CDAFF</span><span class="on-l">accent</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">弱边框<span>borderMuted</span></td>
-          <td class="cell"><div style="background:#313244" data-hex="#313244"><span class="on-d">#313244</span><span class="on-d">surface0</span></div></td>
-          <td class="cell"><div style="background:#232938" data-hex="#232938"><span class="on-d">#232938</span><span class="on-d">borderMuted</span></div></td>
-          <td class="cell"><div style="background:#3B3A32" data-hex="#3B3A32"><span class="on-d">#3B3A32</span><span class="on-d">invisibles</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">成功<span>success</span></td>
-          <td class="cell"><div style="background:#A6E3A1" data-hex="#A6E3A1"><span class="on-l">#A6E3A1</span><span class="on-l">green</span></div></td>
-          <td class="cell"><div style="background:#AAD94C" data-hex="#AAD94C"><span class="on-l">#AAD94C</span><span class="on-l">green</span></div></td>
-          <td class="cell"><div style="background:#A6E22E" data-hex="#A6E22E"><span class="on-l">#A6E22E</span><span class="on-l">inserted</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">错误<span>error</span></td>
-          <td class="cell"><div style="background:#EBA0AC" data-hex="#EBA0AC"><span class="on-l">#EBA0AC</span><span class="on-l">maroon</span></div></td>
-          <td class="cell"><div style="background:#D95757" data-hex="#D95757"><span class="on-l">#D95757</span><span class="on-l">red</span></div></td>
-          <td class="cell"><div style="background:#E27878" data-hex="#E27878"><span class="on-l">#E27878</span><span class="on-l">removedRed</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">警告<span>warning</span></td>
-          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
-          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
-          <td class="cell"><div style="background:#FDB082" data-hex="#FDB082"><span class="on-l">#FDB082</span><span class="on-l">number</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">次要文本<span>muted</span></td>
-          <td class="cell"><div style="background:#82889E" data-hex="#82889E"><span class="on-l">#82889E</span><span class="on-l">secondaryText</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#999999" data-hex="#999999"><span class="on-l">#999999</span><span class="on-l">gutterIgnored</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">最弱文本<span>dim</span></td>
-          <td class="cell"><div style="background:#7E8398" data-hex="#7E8398"><span class="on-l">#7E8398</span><span class="on-l">dimText</span></div></td>
-          <td class="cell"><div style="background:#515868" data-hex="#515868"><span class="on-d">#515868</span><span class="on-d">dimmed</span></div></td>
-          <td class="cell"><div style="background:#6D6D6D" data-hex="#6D6D6D"><span class="on-d">#6D6D6D</span><span class="on-d">comment</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">默认前景<span>text</span></td>
-          <td class="cell"><div class="na">空串 · 终端默认</div></td>
-          <td class="cell"><div style="background:#BFBDB6" data-hex="#BFBDB6"><span class="on-l">#BFBDB6</span><span class="on-l">fg</span></div></td>
-          <td class="cell"><div style="background:#F8F8F2" data-hex="#F8F8F2"><span class="on-l">#F8F8F2</span><span class="on-l">fg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考文本<span>thinkingText</span></td>
-          <td class="cell"><div style="background:#82889E" data-hex="#82889E"><span class="on-l">#82889E</span><span class="on-l">secondaryText</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#6D6D6D" data-hex="#6D6D6D"><span class="on-d">#6D6D6D</span><span class="on-d">comment</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">选中行底<span>selectedBg</span></td>
-          <td class="cell"><div style="background:#1E1E29" data-hex="#1E1E29"><span class="on-d">#1E1E29</span><span class="on-d">selected</span></div></td>
-          <td class="cell"><div style="background:#161D2B" data-hex="#161D2B"><span class="on-d">#161D2B</span><span class="on-d">selectedBg</span></div></td>
-          <td class="cell"><div style="background:#515151" data-hex="#515151"><span class="on-d">#515151</span><span class="on-d">selection</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>消息块 <i>· 5</i></b></td></tr>
-        <tr>
-          <td class="rk">用户消息底<span>userMessageBg</span></td>
-          <td class="cell"><div style="background:#181825" data-hex="#181825"><span class="on-d">#181825</span><span class="on-d">mantle</span></div></td>
-          <td class="cell"><div style="background:#1B1C1D" data-hex="#1B1C1D"><span class="on-d">#1B1C1D</span><span class="on-d">userMessageBg</span></div></td>
-          <td class="cell"><div style="background:#242424" data-hex="#242424"><span class="on-d">#242424</span><span class="on-d">userBg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">用户消息字<span>userMessageText</span></td>
-          <td class="cell"><div style="background:#CDD6F4" data-hex="#CDD6F4"><span class="on-l">#CDD6F4</span><span class="on-l">text</span></div></td>
-          <td class="cell"><div style="background:#DBDBDD" data-hex="#DBDBDD"><span class="on-l">#DBDBDD</span><span class="on-l">textColor</span></div></td>
-          <td class="cell"><div style="background:#F8F8F2" data-hex="#F8F8F2"><span class="on-l">#F8F8F2</span><span class="on-l">fg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">自定义消息底<span>customMessageBg</span></td>
-          <td class="cell"><div style="background:#181825" data-hex="#181825"><span class="on-d">#181825</span><span class="on-d">mantle</span></div></td>
-          <td class="cell"><div style="background:#1B1C1D" data-hex="#1B1C1D"><span class="on-d">#1B1C1D</span><span class="on-d">userMessageBg</span></div></td>
-          <td class="cell"><div style="background:#242424" data-hex="#242424"><span class="on-d">#242424</span><span class="on-d">userBg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">自定义消息字<span>customMessageText</span></td>
-          <td class="cell"><div style="background:#CDD6F4" data-hex="#CDD6F4"><span class="on-l">#CDD6F4</span><span class="on-l">text</span></div></td>
-          <td class="cell"><div style="background:#BFBDB6" data-hex="#BFBDB6"><span class="on-l">#BFBDB6</span><span class="on-l">fg</span></div></td>
-          <td class="cell"><div style="background:#F8F8F2" data-hex="#F8F8F2"><span class="on-l">#F8F8F2</span><span class="on-l">fg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">自定义消息标签<span>customMessageLabel</span></td>
-          <td class="cell"><div style="background:#CBA6F7" data-hex="#CBA6F7"><span class="on-l">#CBA6F7</span><span class="on-l">mauve</span></div></td>
-          <td class="cell"><div style="background:#E6B450" data-hex="#E6B450"><span class="on-l">#E6B450</span><span class="on-l">accent</span></div></td>
-          <td class="cell"><div style="background:#FFB2F9" data-hex="#FFB2F9"><span class="on-l">#FFB2F9</span><span class="on-l">namespacePink</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>工具调用块 <i>· 4</i></b></td></tr>
-        <tr>
-          <td class="rk">工具成功底<span>toolSuccessBg</span></td>
-          <td class="cell"><div style="background:#151515" data-hex="#151515"><span class="on-d">#151515</span><span class="on-d">successPanel</span></div></td>
-          <td class="cell"><div style="background:#10151F" data-hex="#10151F"><span class="on-d">#10151F</span><span class="on-d">toolSuccessBg</span></div></td>
-          <td class="cell"><div style="background:#202020" data-hex="#202020"><span class="on-d">#202020</span><span class="on-d">successCard</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">工具失败底<span>toolErrorBg</span></td>
-          <td class="cell"><div style="background:#171010" data-hex="#171010"><span class="on-d">#171010</span><span class="on-d">errorPanel</span></div></td>
-          <td class="cell"><div style="background:#1B171D" data-hex="#1B171D"><span class="on-d">#1B171D</span><span class="on-d">toolErrorBg</span></div></td>
-          <td class="cell"><div style="background:#171010" data-hex="#171010"><span class="on-d">#171010</span><span class="on-d">errorCard</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">工具标题<span>toolTitle</span></td>
-          <td class="cell"><div style="background:#CBA6F7" data-hex="#CBA6F7"><span class="on-l">#CBA6F7</span><span class="on-l">mauve</span></div></td>
-          <td class="cell"><div style="background:#E6B450" data-hex="#E6B450"><span class="on-l">#E6B450</span><span class="on-l">accent</span></div></td>
-          <td class="cell"><div style="background:#8CDAFF" data-hex="#8CDAFF"><span class="on-l">#8CDAFF</span><span class="on-l">funcBlue</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">工具输出<span>toolOutput</span></td>
-          <td class="cell"><div style="background:#82889E" data-hex="#82889E"><span class="on-l">#82889E</span><span class="on-l">secondaryText</span></div></td>
-          <td class="cell"><div style="background:#BFBDB6" data-hex="#BFBDB6"><span class="on-l">#BFBDB6</span><span class="on-l">fg</span></div></td>
-          <td class="cell"><div style="background:#D0D0D0" data-hex="#D0D0D0"><span class="on-l">#D0D0D0</span><span class="on-l">softFg</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>Markdown <i>· 10</i></b></td></tr>
-        <tr>
-          <td class="rk">标题<span>mdHeading</span></td>
-          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
-          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
-          <td class="cell"><div style="background:#FF8942" data-hex="#FF8942"><span class="on-l">#FF8942</span><span class="on-l">constantLanguage</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">链接<span>mdLink</span></td>
-          <td class="cell"><div style="background:#89B4FA" data-hex="#89B4FA"><span class="on-l">#89B4FA</span><span class="on-l">blue</span></div></td>
-          <td class="cell"><div style="background:#59C2FF" data-hex="#59C2FF"><span class="on-l">#59C2FF</span><span class="on-l">entityBlue</span></div></td>
-          <td class="cell"><div style="background:#6699CC" data-hex="#6699CC"><span class="on-l">#6699CC</span><span class="on-l">libFunc</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">链接 URL<span>mdLinkUrl</span></td>
-          <td class="cell"><div style="background:#BAC2DE" data-hex="#BAC2DE"><span class="on-l">#BAC2DE</span><span class="on-l">subtext1</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#6D6D6D" data-hex="#6D6D6D"><span class="on-d">#6D6D6D</span><span class="on-d">comment</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">行内代码<span>mdCode</span></td>
-          <td class="cell"><div style="background:#94E2D5" data-hex="#94E2D5"><span class="on-l">#94E2D5</span><span class="on-l">teal</span></div></td>
-          <td class="cell"><div style="background:#95E6CB" data-hex="#95E6CB"><span class="on-l">#95E6CB</span><span class="on-l">cyan</span></div></td>
-          <td class="cell"><div style="background:#0D92C1" data-hex="#0D92C1"><span class="on-l">#0D92C1</span><span class="on-l">mdCodeCyan</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">代码块正文<span>mdCodeBlock</span></td>
-          <td class="cell"><div style="background:#CDD6F4" data-hex="#CDD6F4"><span class="on-l">#CDD6F4</span><span class="on-l">text</span></div></td>
-          <td class="cell"><div style="background:#BFBDB6" data-hex="#BFBDB6"><span class="on-l">#BFBDB6</span><span class="on-l">fg</span></div></td>
-          <td class="cell"><div style="background:#F8F8F2" data-hex="#F8F8F2"><span class="on-l">#F8F8F2</span><span class="on-l">fg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">代码块围栏<span>mdCodeBlockBorder</span></td>
-          <td class="cell"><div style="background:#45475A" data-hex="#45475A"><span class="on-d">#45475A</span><span class="on-d">surface1</span></div></td>
-          <td class="cell"><div style="background:#515868" data-hex="#515868"><span class="on-d">#515868</span><span class="on-d">dimmed</span></div></td>
-          <td class="cell"><div style="background:#515151" data-hex="#515151"><span class="on-d">#515151</span><span class="on-d">selection</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">引用正文<span>mdQuote</span></td>
-          <td class="cell"><div style="background:#BAC2DE" data-hex="#BAC2DE"><span class="on-l">#BAC2DE</span><span class="on-l">subtext1</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#D0D0D0" data-hex="#D0D0D0"><span class="on-l">#D0D0D0</span><span class="on-l">softFg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">引用竖线<span>mdQuoteBorder</span></td>
-          <td class="cell"><div style="background:#45475A" data-hex="#45475A"><span class="on-d">#45475A</span><span class="on-d">surface1</span></div></td>
-          <td class="cell"><div style="background:#515868" data-hex="#515868"><span class="on-d">#515868</span><span class="on-d">dimmed</span></div></td>
-          <td class="cell"><div style="background:#515151" data-hex="#515151"><span class="on-d">#515151</span><span class="on-d">selection</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">分隔线<span>mdHr</span></td>
-          <td class="cell"><div style="background:#6C7086" data-hex="#6C7086"><span class="on-d">#6C7086</span><span class="on-d">overlay0</span></div></td>
-          <td class="cell"><div style="background:#515868" data-hex="#515868"><span class="on-d">#515868</span><span class="on-d">dimmed</span></div></td>
-          <td class="cell"><div style="background:#6D6D6D" data-hex="#6D6D6D"><span class="on-d">#6D6D6D</span><span class="on-d">comment</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">列表符号<span>mdListBullet</span></td>
-          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
-          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
-          <td class="cell"><div style="background:#FBDFB5" data-hex="#FBDFB5"><span class="on-l">#FBDFB5</span><span class="on-l">storageType</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>Diff <i>· 5</i></b></td></tr>
-        <tr>
-          <td class="rk">差异新增<span>toolDiffAdded</span></td>
-          <td class="cell"><div style="background:#A6E3A1" data-hex="#A6E3A1"><span class="on-l">#A6E3A1</span><span class="on-l">green</span></div></td>
-          <td class="cell"><div style="background:#AAD94C" data-hex="#AAD94C"><span class="on-l">#AAD94C</span><span class="on-l">green</span></div></td>
-          <td class="cell"><div style="background:#8BC391" data-hex="#8BC391"><span class="on-l">#8BC391</span><span class="on-l">addedGreen</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">差异删除<span>toolDiffRemoved</span></td>
-          <td class="cell"><div style="background:#F38BA8" data-hex="#F38BA8"><span class="on-l">#F38BA8</span><span class="on-l">red</span></div></td>
-          <td class="cell"><div style="background:#D95757" data-hex="#D95757"><span class="on-l">#D95757</span><span class="on-l">red</span></div></td>
-          <td class="cell"><div style="background:#E27878" data-hex="#E27878"><span class="on-l">#E27878</span><span class="on-l">removedRed</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">差异上下文<span>toolDiffContext</span></td>
-          <td class="cell"><div style="background:#BAC2DE" data-hex="#BAC2DE"><span class="on-l">#BAC2DE</span><span class="on-l">subtext1</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#D0D0D0" data-hex="#D0D0D0"><span class="on-l">#D0D0D0</span><span class="on-l">softFg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">差异新增底<span>toolDiffAddedBg</span></td>
-          <td class="cell"><div style="background:#1C241B" data-hex="#1C241B"><span class="on-d">#1C241B</span><span class="on-d">diffAddedBg</span></div></td>
-          <td class="cell"><div style="background:#1D241C" data-hex="#1D241C"><span class="on-d">#1D241C</span><span class="on-d">diffAddedBg</span></div></td>
-          <td class="cell"><div style="background:#1C241B" data-hex="#1C241B"><span class="on-d">#1C241B</span><span class="on-d">addedLine</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">差异删除底<span>toolDiffRemovedBg</span></td>
-          <td class="cell"><div style="background:#2E1C21" data-hex="#2E1C21"><span class="on-d">#2E1C21</span><span class="on-d">diffRemovedBg</span></div></td>
-          <td class="cell"><div style="background:#321D23" data-hex="#321D23"><span class="on-d">#321D23</span><span class="on-d">diffRemovedBg</span></div></td>
-          <td class="cell"><div style="background:#2E1C21" data-hex="#2E1C21"><span class="on-d">#2E1C21</span><span class="on-d">removedLine</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>语法高亮 <i>· 9</i></b></td></tr>
-        <tr>
-          <td class="rk">注释<span>syntaxComment</span></td>
-          <td class="cell"><div style="background:#A6ADC8" data-hex="#A6ADC8"><span class="on-l">#A6ADC8</span><span class="on-l">subtext0</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#6D6D6D" data-hex="#6D6D6D"><span class="on-d">#6D6D6D</span><span class="on-d">comment</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">关键字<span>syntaxKeyword</span></td>
-          <td class="cell"><div style="background:#CBA6F7" data-hex="#CBA6F7"><span class="on-l">#CBA6F7</span><span class="on-l">mauve</span></div></td>
-          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
-          <td class="cell"><div style="background:#FF5E5E" data-hex="#FF5E5E"><span class="on-l">#FF5E5E</span><span class="on-l">keyword</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">函数名<span>syntaxFunction</span></td>
-          <td class="cell"><div style="background:#89DCEB" data-hex="#89DCEB"><span class="on-l">#89DCEB</span><span class="on-l">sky</span></div></td>
-          <td class="cell"><div style="background:#FFB454" data-hex="#FFB454"><span class="on-l">#FFB454</span><span class="on-l">function</span></div></td>
-          <td class="cell"><div style="background:#8CDAFF" data-hex="#8CDAFF"><span class="on-l">#8CDAFF</span><span class="on-l">funcBlue</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">变量名<span>syntaxVariable</span></td>
-          <td class="cell"><div class="na">空串 · 终端默认</div></td>
-          <td class="cell"><div style="background:#BFBDB6" data-hex="#BFBDB6"><span class="on-l">#BFBDB6</span><span class="on-l">fg</span></div></td>
-          <td class="cell"><div style="background:#E9FDAC" data-hex="#E9FDAC"><span class="on-l">#E9FDAC</span><span class="on-l">variable</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">字符串<span>syntaxString</span></td>
-          <td class="cell"><div style="background:#A6E3A1" data-hex="#A6E3A1"><span class="on-l">#A6E3A1</span><span class="on-l">green</span></div></td>
-          <td class="cell"><div style="background:#67A567" data-hex="#67A567"><span class="on-l">#67A567</span><span class="on-l">stringGreen</span></div></td>
-          <td class="cell"><div style="background:#FBE3BF" data-hex="#FBE3BF"><span class="on-l">#FBE3BF</span><span class="on-l">string</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">数字<span>syntaxNumber</span></td>
-          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
-          <td class="cell"><div style="background:#D2A6FF" data-hex="#D2A6FF"><span class="on-l">#D2A6FF</span><span class="on-l">purple</span></div></td>
-          <td class="cell"><div style="background:#FDB082" data-hex="#FDB082"><span class="on-l">#FDB082</span><span class="on-l">number</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">类型名<span>syntaxType</span></td>
-          <td class="cell"><div style="background:#F9E2AF" data-hex="#F9E2AF"><span class="on-l">#F9E2AF</span><span class="on-l">yellow</span></div></td>
-          <td class="cell"><div style="background:#59C2FF" data-hex="#59C2FF"><span class="on-l">#59C2FF</span><span class="on-l">entityBlue</span></div></td>
-          <td class="cell"><div style="background:#8CDAFF" data-hex="#8CDAFF"><span class="on-l">#8CDAFF</span><span class="on-l">funcBlue</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">运算符<span>syntaxOperator</span></td>
-          <td class="cell"><div style="background:#74C7EC" data-hex="#74C7EC"><span class="on-l">#74C7EC</span><span class="on-l">sapphire</span></div></td>
-          <td class="cell"><div style="background:#F29668" data-hex="#F29668"><span class="on-l">#F29668</span><span class="on-l">operator</span></div></td>
-          <td class="cell"><div style="background:#F8F8F2" data-hex="#F8F8F2"><span class="on-l">#F8F8F2</span><span class="on-l">fg</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">标点<span>syntaxPunctuation</span></td>
-          <td class="cell"><div style="background:#7F849C" data-hex="#7F849C"><span class="on-l">#7F849C</span><span class="on-l">overlay1</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#FFFFFF" data-hex="#FFFFFF"><span class="on-l">#FFFFFF</span><span class="on-l">white</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>思考档边框 <i>· 7</i></b></td></tr>
-        <tr>
-          <td class="rk">思考档 off<span>thinkingOff</span></td>
-          <td class="cell"><div style="background:#7F849C" data-hex="#7F849C"><span class="on-l">#7F849C</span><span class="on-l">overlay1</span></div></td>
-          <td class="cell"><div style="background:#515868" data-hex="#515868"><span class="on-d">#515868</span><span class="on-d">dimmed</span></div></td>
-          <td class="cell"><div style="background:#3B3A32" data-hex="#3B3A32"><span class="on-d">#3B3A32</span><span class="on-d">invisibles</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考档 minimal<span>thinkingMinimal</span></td>
-          <td class="cell"><div style="background:#9399B2" data-hex="#9399B2"><span class="on-l">#9399B2</span><span class="on-l">overlay2</span></div></td>
-          <td class="cell"><div style="background:#6B7385" data-hex="#6B7385"><span class="on-d">#6B7385</span><span class="on-d">muted</span></div></td>
-          <td class="cell"><div style="background:#515151" data-hex="#515151"><span class="on-d">#515151</span><span class="on-d">selection</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考档 low<span>thinkingLow</span></td>
-          <td class="cell"><div style="background:#89B4FA" data-hex="#89B4FA"><span class="on-l">#89B4FA</span><span class="on-l">blue</span></div></td>
-          <td class="cell"><div style="background:#39BAE6" data-hex="#39BAE6"><span class="on-l">#39BAE6</span><span class="on-l">blue</span></div></td>
-          <td class="cell"><div style="background:#6699CC" data-hex="#6699CC"><span class="on-l">#6699CC</span><span class="on-l">libFunc</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考档 medium<span>thinkingMedium</span></td>
-          <td class="cell"><div style="background:#CBA6F7" data-hex="#CBA6F7"><span class="on-l">#CBA6F7</span><span class="on-l">mauve</span></div></td>
-          <td class="cell"><div style="background:#E6B450" data-hex="#E6B450"><span class="on-l">#E6B450</span><span class="on-l">accent</span></div></td>
-          <td class="cell"><div style="background:#97D8EA" data-hex="#97D8EA"><span class="on-l">#97D8EA</span><span class="on-l">tagAttr</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考档 high<span>thinkingHigh</span></td>
-          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
-          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
-          <td class="cell"><div style="background:#D699FF" data-hex="#D699FF"><span class="on-l">#D699FF</span><span class="on-l">languageLiteral</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考档 xhigh<span>thinkingXhigh</span></td>
-          <td class="cell"><div style="background:#626262" data-hex="#626262"><span class="on-d">#626262</span><span class="on-d">thinkingGrey</span></div></td>
-          <td class="cell"><div style="background:#626262" data-hex="#626262"><span class="on-d">#626262</span><span class="on-d">thinkingGrey</span></div></td>
-          <td class="cell"><div style="background:#696969" data-hex="#696969"><span class="on-d">#696969</span><span class="on-d">thinkingGrey</span></div></td>
-        </tr>
-        <tr>
-          <td class="rk">思考档 max<span>thinkingMax</span></td>
-          <td class="cell"><div style="background:#626262" data-hex="#626262"><span class="on-d">#626262</span><span class="on-d">thinkingGrey</span></div></td>
-          <td class="cell"><div style="background:#626262" data-hex="#626262"><span class="on-d">#626262</span><span class="on-d">thinkingGrey</span></div></td>
-          <td class="cell"><div style="background:#696969" data-hex="#696969"><span class="on-d">#696969</span><span class="on-d">thinkingGrey</span></div></td>
-        </tr>
-        <tr class="grp"><td colspan="4"><b>编辑器 <i>· 1</i></b></td></tr>
-        <tr>
-          <td class="rk">Bash 模式边框<span>bashMode</span></td>
-          <td class="cell"><div style="background:#FAB387" data-hex="#FAB387"><span class="on-l">#FAB387</span><span class="on-l">peach</span></div></td>
-          <td class="cell"><div style="background:#FF8F40" data-hex="#FF8F40"><span class="on-l">#FF8F40</span><span class="on-l">orange</span></div></td>
-          <td class="cell"><div style="background:#FC9354" data-hex="#FC9354"><span class="on-l">#FC9354</span><span class="on-l">param</span></div></td>
-        </tr>
-      </tbody>
-    </table>
+<section class="plate" id="coffee" role="tabpanel" aria-labelledby="tab-coffee" hidden style="
+  --p-bg:#191919; --p-fg:#F8F8F2; --p-soft:#999999; --p-line:#3B3A32; --p-accent:#FAD07A; --c-cm:#888888; --c-kw:#9D90DF; --c-fn:#FAD07A; --c-va:#C6B6EE; --c-st:#99AD6A; --c-nm:#CEFECE; --c-ty:#C6FEEB; --c-op:#FFFA96; --c-pu:#CF6A4C;">
+
+  <div class="phead">
+    <div class="idx">04</div>
+    <div class="ptitle">
+      <h2>咖啡 <em>coffee</em></h2>
+      <div class="sub">45 vars（45 个被引用） · 59 槽位 · 底色 #191919</div>
+      <p class="mood">1337 的灰底上换了一整套**暖调**主色（<code>cf*</code> 前缀变量）：强调色是 <b>cfGold #FAD07A</b> 的奶金，字符串用 <b>cfOlive #99AD6A</b> 的橄榄绿，标点用 <b>cfSalmon #CF6A4C</b> 的鲑红，运算符是 <b>cfOperator #FFFA96</b> 的柠檬黄。边框也换了 —— <b>cfPanelTeal #395956</b> 的墨绿，不再是中性灰。</p>
+    </div>
   </div>
+
+  <div class="dna">
+      <i style="background:#FAD07A;color:#000">cfGold <span>#FAD07A</span></i>
+      <i style="background:#99AD6A;color:#000">cfOlive <span>#99AD6A</span></i>
+      <i style="background:#CF6A4C;color:#000">cfSalmon <span>#CF6A4C</span></i>
+      <i style="background:#73ACFF;color:#000">cfBlue <span>#73ACFF</span></i>
+      <i style="background:#88C0C7;color:#000">cfTeal <span>#88C0C7</span></i>
+      <i style="background:#9D90DF;color:#000">cfPurple <span>#9D90DF</span></i>
+      <i style="background:#C6B6EE;color:#000">cfLavender <span>#C6B6EE</span></i>
+      <i style="background:#FFFA96;color:#000">cfOperator <span>#FFFA96</span></i>
+  </div>
+
+  <div class="cols">
+    <div class="col-main">
+      <div class="h3"><b>主色 22 槽</b><span>primary slots · 点色块复制 hex</span></div>
+      <div class="chips">
+      <div class="chip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>accent</b><i>强调色</i><span>#FAD07A · cfGold</span></div>
+      <div class="chip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>borderAccent</b><i>高亮边框</i><span>#FAD07A · cfGoldBorder</span></div>
+      <div class="chip on-d" style="background:#395956" data-hex="#395956" title="点击复制 #395956"><b>border</b><i>边框</i><span>#395956 · cfPanelTeal</span></div>
+      <div class="chip on-d" style="background:#444444" data-hex="#444444" title="点击复制 #444444"><b>selectedBg</b><i>选中行底</i><span>#444444 · cfSelection</span></div>
+      <div class="chip on-l" style="background:#99AD6A" data-hex="#99AD6A" title="点击复制 #99AD6A"><b>success</b><i>成功</i><span>#99AD6A · cfOlive</span></div>
+      <div class="chip on-l" style="background:#FF4C4A" data-hex="#FF4C4A" title="点击复制 #FF4C4A"><b>error</b><i>错误</i><span>#FF4C4A · cfRed</span></div>
+      <div class="chip on-l" style="background:#FFFF00" data-hex="#FFFF00" title="点击复制 #FFFF00"><b>warning</b><i>警告</i><span>#FFFF00 · cfYellow</span></div>
+      <div class="chip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>toolTitle</b><i>工具标题</i><span>#FAD07A · cfGoldTitle</span></div>
+      <div class="chip on-l" style="background:#EFFEC5" data-hex="#EFFEC5" title="点击复制 #EFFEC5"><b>mdHeading</b><i>MD 标题</i><span>#EFFEC5 · cfLime</span></div>
+      <div class="chip on-l" style="background:#73ACFF" data-hex="#73ACFF" title="点击复制 #73ACFF"><b>mdLink</b><i>MD 链接</i><span>#73ACFF · cfBlue</span></div>
+      <div class="chip on-l" style="background:#88C0C7" data-hex="#88C0C7" title="点击复制 #88C0C7"><b>mdCode</b><i>MD 行内代码</i><span>#88C0C7 · cfTeal</span></div>
+      <div class="chip on-l" style="background:#EEFFEE" data-hex="#EEFFEE" title="点击复制 #EEFFEE"><b>mdListBullet</b><i>MD 列表符</i><span>#EEFFEE · cfMintWhite</span></div>
+      <div class="chip on-l" style="background:#CF6A4C" data-hex="#CF6A4C" title="点击复制 #CF6A4C"><b>bashMode</b><i>Bash 模式边框</i><span>#CF6A4C · cfSalmon</span></div>
+      <div class="chip on-l" style="background:#888888" data-hex="#888888" title="点击复制 #888888"><b>syntaxComment</b><i>注释</i><span>#888888 · cfGrey</span></div>
+      <div class="chip on-l" style="background:#9D90DF" data-hex="#9D90DF" title="点击复制 #9D90DF"><b>syntaxKeyword</b><i>关键字</i><span>#9D90DF · cfPurple</span></div>
+      <div class="chip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>syntaxFunction</b><i>函数名</i><span>#FAD07A · cfGoldFunc</span></div>
+      <div class="chip on-l" style="background:#C6B6EE" data-hex="#C6B6EE" title="点击复制 #C6B6EE"><b>syntaxVariable</b><i>变量名</i><span>#C6B6EE · cfLavender</span></div>
+      <div class="chip on-l" style="background:#99AD6A" data-hex="#99AD6A" title="点击复制 #99AD6A"><b>syntaxString</b><i>字符串</i><span>#99AD6A · cfOliveStr</span></div>
+      <div class="chip on-l" style="background:#CEFECE" data-hex="#CEFECE" title="点击复制 #CEFECE"><b>syntaxNumber</b><i>数字</i><span>#CEFECE · cfMintNum</span></div>
+      <div class="chip on-l" style="background:#C6FEEB" data-hex="#C6FEEB" title="点击复制 #C6FEEB"><b>syntaxType</b><i>类型名</i><span>#C6FEEB · cfMintType</span></div>
+      <div class="chip on-l" style="background:#FFFA96" data-hex="#FFFA96" title="点击复制 #FFFA96"><b>syntaxOperator</b><i>运算符</i><span>#FFFA96 · cfOperator</span></div>
+      <div class="chip on-l" style="background:#CF6A4C" data-hex="#CF6A4C" title="点击复制 #CF6A4C"><b>syntaxPunctuation</b><i>标点</i><span>#CF6A4C · cfDelimiter</span></div>
+      </div>
+    </div>
+
+    <div class="col-side">
+      <div class="h3"><b>语法取样</b><span>sampler</span></div>
+      <pre class="code"><span class="c-cm">// pi-coder-coffee · syntax sampler</span>
+<span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
+
+<span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-coffee"</span><span class="c-pu">);</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Theme</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+  <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
+  <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
+<span class="c-pu">}</span></pre>
+      <div class="h3"><b>全部变量</b><span>vars · 45</span></div>
+      <div class="vstrip"><span class="vchip on-d" style="background:#191919" data-hex="#191919" title="点击复制 #191919"><b>bg</b>#191919</span><span class="vchip on-d" style="background:#3B3A32" data-hex="#3B3A32" title="点击复制 #3B3A32"><b>invisibles</b>#3B3A32</span><span class="vchip on-d" style="background:#3D3D3D" data-hex="#3D3D3D" title="点击复制 #3D3D3D"><b>lineHighlight</b>#3D3D3D</span><span class="vchip on-d" style="background:#515151" data-hex="#515151" title="点击复制 #515151"><b>selection</b>#515151</span><span class="vchip on-d" style="background:#6D6D6D" data-hex="#6D6D6D" title="点击复制 #6D6D6D"><b>comment</b>#6D6D6D</span><span class="vchip on-l" style="background:#999999" data-hex="#999999" title="点击复制 #999999"><b>gutterIgnored</b>#999999</span><span class="vchip on-l" style="background:#F8F8F2" data-hex="#F8F8F2" title="点击复制 #F8F8F2"><b>fg</b>#F8F8F2</span><span class="vchip on-l" style="background:#D0D0D0" data-hex="#D0D0D0" title="点击复制 #D0D0D0"><b>softFg</b>#D0D0D0</span><span class="vchip on-l" style="background:#97D8EA" data-hex="#97D8EA" title="点击复制 #97D8EA"><b>tagAttr</b>#97D8EA</span><span class="vchip on-l" style="background:#6699CC" data-hex="#6699CC" title="点击复制 #6699CC"><b>libFunc</b>#6699CC</span><span class="vchip on-l" style="background:#D699FF" data-hex="#D699FF" title="点击复制 #D699FF"><b>languageLiteral</b>#D699FF</span><span class="vchip on-l" style="background:#FFB2F9" data-hex="#FFB2F9" title="点击复制 #FFB2F9"><b>namespacePink</b>#FFB2F9</span><span class="vchip on-d" style="background:#242424" data-hex="#242424" title="点击复制 #242424"><b>userBg</b>#242424</span><span class="vchip on-d" style="background:#202020" data-hex="#202020" title="点击复制 #202020"><b>successCard</b>#202020</span><span class="vchip on-d" style="background:#171010" data-hex="#171010" title="点击复制 #171010"><b>errorCard</b>#171010</span><span class="vchip on-d" style="background:#696969" data-hex="#696969" title="点击复制 #696969"><b>thinkingGrey</b>#696969</span><span class="vchip on-l" style="background:#999999" data-hex="#999999" title="点击复制 #999999"><b>bashOutput</b>#999999</span><span class="vchip on-l" style="background:#8BC391" data-hex="#8BC391" title="点击复制 #8BC391"><b>addedGreen</b>#8BC391</span><span class="vchip on-d" style="background:#1C241B" data-hex="#1C241B" title="点击复制 #1C241B"><b>addedLine</b>#1C241B</span><span class="vchip on-d" style="background:#2E1C21" data-hex="#2E1C21" title="点击复制 #2E1C21"><b>removedLine</b>#2E1C21</span><span class="vchip on-l" style="background:#E27878" data-hex="#E27878" title="点击复制 #E27878"><b>removedRed</b>#E27878</span><span class="vchip on-d" style="background:#181825" data-hex="#181825" title="点击复制 #181825"><b>cardBg</b>#181825</span><span class="vchip on-d" style="background:#111111" data-hex="#111111" title="点击复制 #111111"><b>pageBg</b>#111111</span><span class="vchip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>cfGold</b>#FAD07A</span><span class="vchip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>cfGoldBorder</b>#FAD07A</span><span class="vchip on-d" style="background:#395956" data-hex="#395956" title="点击复制 #395956"><b>cfPanelTeal</b>#395956</span><span class="vchip on-d" style="background:#444444" data-hex="#444444" title="点击复制 #444444"><b>cfSelection</b>#444444</span><span class="vchip on-l" style="background:#99AD6A" data-hex="#99AD6A" title="点击复制 #99AD6A"><b>cfOlive</b>#99AD6A</span><span class="vchip on-l" style="background:#FF4C4A" data-hex="#FF4C4A" title="点击复制 #FF4C4A"><b>cfRed</b>#FF4C4A</span><span class="vchip on-l" style="background:#FFFF00" data-hex="#FFFF00" title="点击复制 #FFFF00"><b>cfYellow</b>#FFFF00</span><span class="vchip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>cfGoldTitle</b>#FAD07A</span><span class="vchip on-l" style="background:#EFFEC5" data-hex="#EFFEC5" title="点击复制 #EFFEC5"><b>cfLime</b>#EFFEC5</span><span class="vchip on-l" style="background:#73ACFF" data-hex="#73ACFF" title="点击复制 #73ACFF"><b>cfBlue</b>#73ACFF</span><span class="vchip on-l" style="background:#88C0C7" data-hex="#88C0C7" title="点击复制 #88C0C7"><b>cfTeal</b>#88C0C7</span><span class="vchip on-l" style="background:#EEFFEE" data-hex="#EEFFEE" title="点击复制 #EEFFEE"><b>cfMintWhite</b>#EEFFEE</span><span class="vchip on-l" style="background:#CF6A4C" data-hex="#CF6A4C" title="点击复制 #CF6A4C"><b>cfSalmon</b>#CF6A4C</span><span class="vchip on-l" style="background:#888888" data-hex="#888888" title="点击复制 #888888"><b>cfGrey</b>#888888</span><span class="vchip on-l" style="background:#9D90DF" data-hex="#9D90DF" title="点击复制 #9D90DF"><b>cfPurple</b>#9D90DF</span><span class="vchip on-l" style="background:#FAD07A" data-hex="#FAD07A" title="点击复制 #FAD07A"><b>cfGoldFunc</b>#FAD07A</span><span class="vchip on-l" style="background:#C6B6EE" data-hex="#C6B6EE" title="点击复制 #C6B6EE"><b>cfLavender</b>#C6B6EE</span><span class="vchip on-l" style="background:#99AD6A" data-hex="#99AD6A" title="点击复制 #99AD6A"><b>cfOliveStr</b>#99AD6A</span><span class="vchip on-l" style="background:#CEFECE" data-hex="#CEFECE" title="点击复制 #CEFECE"><b>cfMintNum</b>#CEFECE</span><span class="vchip on-l" style="background:#C6FEEB" data-hex="#C6FEEB" title="点击复制 #C6FEEB"><b>cfMintType</b>#C6FEEB</span><span class="vchip on-l" style="background:#FFFA96" data-hex="#FFFA96" title="点击复制 #FFFA96"><b>cfOperator</b>#FFFA96</span><span class="vchip on-l" style="background:#CF6A4C" data-hex="#CF6A4C" title="点击复制 #CF6A4C"><b>cfDelimiter</b>#CF6A4C</span></div>
+    </div>
+  </div>
+
+  <p class="pnote"><b>文件</b> <code>themes/pi-coder-coffee.json</code> · 语法九格全部走 <code>cf*</code> 新变量（一个都没沿用 1337 的），但 diff / 思考档 / 消息块底色仍照搬 1337 —— 符合「主色重定、次要 follow 1337」的规则。</p>
 </section>
 
-<!-- ============================ live demo ============================ -->
-<section class="cross" id="demo">
-  <h2>着色效果</h2>
+<section class="plate" id="nightfox" role="tabpanel" aria-labelledby="tab-nightfox" hidden style="
+  --p-bg:#191919; --p-fg:#F8F8F2; --p-soft:#999999; --p-line:#3B3A32; --p-accent:#86ABDC; --c-cm:#738091; --c-kw:#9D79D6; --c-fn:#86ABDC; --c-va:#DFDFE0; --c-st:#81B29A; --c-nm:#F4A261; --c-ty:#DBC074; --c-op:#AEAFB0; --c-pu:#AEAFB0;">
+
+  <div class="phead">
+    <div class="idx">05</div>
+    <div class="ptitle">
+      <h2>夜狐 <em>nightfox</em></h2>
+      <div class="sub">45 vars（45 个被引用） · 59 槽位 · 底色 #191919</div>
+      <p class="mood">取自 <b>Nightfox</b> 系的 <b>Nordfox</b> 配色（<code>nf*</code> 前缀变量）：强调色 <b>nfAccent #86ABDC</b> 的雾蓝，成功 <b>#81B29A</b>、错误 <b>#C94F6D</b>、警告 <b>#DBC074</b>，关键字是 <b>#9D79D6</b> 的紫。同样挂在 1337 的灰底上，所以三套灰底皮肤可以直接对比主色差异。</p>
+    </div>
+  </div>
+
+  <div class="dna">
+      <i style="background:#86ABDC;color:#000">nfAccent <span>#86ABDC</span></i>
+      <i style="background:#81B29A;color:#000">nfSuccess <span>#81B29A</span></i>
+      <i style="background:#C94F6D;color:#000">nfError <span>#C94F6D</span></i>
+      <i style="background:#DBC074;color:#000">nfWarning <span>#DBC074</span></i>
+      <i style="background:#9D79D6;color:#000">nfSyntaxKeyword <span>#9D79D6</span></i>
+      <i style="background:#63CDCF;color:#000">nfMdCode <span>#63CDCF</span></i>
+      <i style="background:#9D79D6;color:#000">nfMdLink <span>#9D79D6</span></i>
+      <i style="background:#F4A261;color:#000">nfBashMode <span>#F4A261</span></i>
+  </div>
+
+  <div class="cols">
+    <div class="col-main">
+      <div class="h3"><b>主色 22 槽</b><span>primary slots · 点色块复制 hex</span></div>
+      <div class="chips">
+      <div class="chip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>accent</b><i>强调色</i><span>#86ABDC · nfAccent</span></div>
+      <div class="chip on-l" style="background:#719CD6" data-hex="#719CD6" title="点击复制 #719CD6"><b>borderAccent</b><i>高亮边框</i><span>#719CD6 · nfBorderAccent</span></div>
+      <div class="chip on-d" style="background:#39506D" data-hex="#39506D" title="点击复制 #39506D"><b>border</b><i>边框</i><span>#39506D · nfBorder</span></div>
+      <div class="chip on-d" style="background:#3C5372" data-hex="#3C5372" title="点击复制 #3C5372"><b>selectedBg</b><i>选中行底</i><span>#3C5372 · nfSelectedBg</span></div>
+      <div class="chip on-l" style="background:#81B29A" data-hex="#81B29A" title="点击复制 #81B29A"><b>success</b><i>成功</i><span>#81B29A · nfSuccess</span></div>
+      <div class="chip on-l" style="background:#C94F6D" data-hex="#C94F6D" title="点击复制 #C94F6D"><b>error</b><i>错误</i><span>#C94F6D · nfError</span></div>
+      <div class="chip on-l" style="background:#DBC074" data-hex="#DBC074" title="点击复制 #DBC074"><b>warning</b><i>警告</i><span>#DBC074 · nfWarning</span></div>
+      <div class="chip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>toolTitle</b><i>工具标题</i><span>#86ABDC · nfToolTitle</span></div>
+      <div class="chip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>mdHeading</b><i>MD 标题</i><span>#86ABDC · nfMdHeading</span></div>
+      <div class="chip on-l" style="background:#9D79D6" data-hex="#9D79D6" title="点击复制 #9D79D6"><b>mdLink</b><i>MD 链接</i><span>#9D79D6 · nfMdLink</span></div>
+      <div class="chip on-l" style="background:#63CDCF" data-hex="#63CDCF" title="点击复制 #63CDCF"><b>mdCode</b><i>MD 行内代码</i><span>#63CDCF · nfMdCode</span></div>
+      <div class="chip on-l" style="background:#7AD4D6" data-hex="#7AD4D6" title="点击复制 #7AD4D6"><b>mdListBullet</b><i>MD 列表符</i><span>#7AD4D6 · nfMdListBullet</span></div>
+      <div class="chip on-l" style="background:#F4A261" data-hex="#F4A261" title="点击复制 #F4A261"><b>bashMode</b><i>Bash 模式边框</i><span>#F4A261 · nfBashMode</span></div>
+      <div class="chip on-l" style="background:#738091" data-hex="#738091" title="点击复制 #738091"><b>syntaxComment</b><i>注释</i><span>#738091 · nfSyntaxComment</span></div>
+      <div class="chip on-l" style="background:#9D79D6" data-hex="#9D79D6" title="点击复制 #9D79D6"><b>syntaxKeyword</b><i>关键字</i><span>#9D79D6 · nfSyntaxKeyword</span></div>
+      <div class="chip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>syntaxFunction</b><i>函数名</i><span>#86ABDC · nfSyntaxFunction</span></div>
+      <div class="chip on-l" style="background:#DFDFE0" data-hex="#DFDFE0" title="点击复制 #DFDFE0"><b>syntaxVariable</b><i>变量名</i><span>#DFDFE0 · nfSyntaxVariable</span></div>
+      <div class="chip on-l" style="background:#81B29A" data-hex="#81B29A" title="点击复制 #81B29A"><b>syntaxString</b><i>字符串</i><span>#81B29A · nfSyntaxString</span></div>
+      <div class="chip on-l" style="background:#F4A261" data-hex="#F4A261" title="点击复制 #F4A261"><b>syntaxNumber</b><i>数字</i><span>#F4A261 · nfSyntaxNumber</span></div>
+      <div class="chip on-l" style="background:#DBC074" data-hex="#DBC074" title="点击复制 #DBC074"><b>syntaxType</b><i>类型名</i><span>#DBC074 · nfSyntaxType</span></div>
+      <div class="chip on-l" style="background:#AEAFB0" data-hex="#AEAFB0" title="点击复制 #AEAFB0"><b>syntaxOperator</b><i>运算符</i><span>#AEAFB0 · nfSyntaxOperator</span></div>
+      <div class="chip on-l" style="background:#AEAFB0" data-hex="#AEAFB0" title="点击复制 #AEAFB0"><b>syntaxPunctuation</b><i>标点</i><span>#AEAFB0 · nfSyntaxPunctuation</span></div>
+      </div>
+    </div>
+
+    <div class="col-side">
+      <div class="h3"><b>语法取样</b><span>sampler</span></div>
+      <pre class="code"><span class="c-cm">// pi-coder-nightfox · syntax sampler</span>
+<span class="c-kw">import</span> <span class="c-pu">{</span> <span class="c-ty">Skin</span> <span class="c-pu">}</span> <span class="c-kw">from</span> <span class="c-st">"./theme.js"</span><span class="c-pu">;</span>
+
+<span class="c-kw">const</span> <span class="c-va">palette</span> <span class="c-op">=</span> <span class="c-kw">await</span> <span class="c-fn">load</span><span class="c-pu">(</span><span class="c-st">"pi-coder-nightfox"</span><span class="c-pu">);</span>
+<span class="c-kw">export default class</span> <span class="c-ty">Theme</span> <span class="c-kw">extends</span> <span class="c-ty">Skin</span> <span class="c-pu">{</span>
+  <span class="c-va">levels</span> <span class="c-op">=</span> <span class="c-pu">[</span><span class="c-nm">0</span><span class="c-pu">,</span> <span class="c-nm">25</span><span class="c-pu">,</span> <span class="c-nm">50</span><span class="c-pu">,</span> <span class="c-nm">75</span><span class="c-pu">,</span> <span class="c-nm">100</span><span class="c-pu">];</span>   <span class="c-cm">// 思考强度阶梯</span>
+  <span class="c-fn">mix</span><span class="c-pu">(</span><span class="c-va">a</span><span class="c-pu">,</span> <span class="c-va">b</span><span class="c-pu">)</span> <span class="c-pu">{</span> <span class="c-kw">return</span> <span class="c-va">a</span><span class="c-pu">.</span><span class="c-fn">map</span><span class="c-pu">((</span><span class="c-va">v</span><span class="c-pu">,</span> <span class="c-va">i</span><span class="c-pu">)</span> <span class="c-op">=&gt;</span> <span class="c-pu">(</span><span class="c-va">v</span> <span class="c-op">+</span> <span class="c-va">b</span><span class="c-pu">[</span><span class="c-va">i</span><span class="c-pu">])</span> <span class="c-op">/</span> <span class="c-nm">2</span><span class="c-pu">);</span> <span class="c-pu">}</span>
+<span class="c-pu">}</span></pre>
+      <div class="h3"><b>全部变量</b><span>vars · 45</span></div>
+      <div class="vstrip"><span class="vchip on-d" style="background:#191919" data-hex="#191919" title="点击复制 #191919"><b>bg</b>#191919</span><span class="vchip on-d" style="background:#3B3A32" data-hex="#3B3A32" title="点击复制 #3B3A32"><b>invisibles</b>#3B3A32</span><span class="vchip on-d" style="background:#3D3D3D" data-hex="#3D3D3D" title="点击复制 #3D3D3D"><b>lineHighlight</b>#3D3D3D</span><span class="vchip on-d" style="background:#515151" data-hex="#515151" title="点击复制 #515151"><b>selection</b>#515151</span><span class="vchip on-d" style="background:#6D6D6D" data-hex="#6D6D6D" title="点击复制 #6D6D6D"><b>comment</b>#6D6D6D</span><span class="vchip on-l" style="background:#999999" data-hex="#999999" title="点击复制 #999999"><b>gutterIgnored</b>#999999</span><span class="vchip on-l" style="background:#F8F8F2" data-hex="#F8F8F2" title="点击复制 #F8F8F2"><b>fg</b>#F8F8F2</span><span class="vchip on-l" style="background:#D0D0D0" data-hex="#D0D0D0" title="点击复制 #D0D0D0"><b>softFg</b>#D0D0D0</span><span class="vchip on-l" style="background:#97D8EA" data-hex="#97D8EA" title="点击复制 #97D8EA"><b>tagAttr</b>#97D8EA</span><span class="vchip on-l" style="background:#6699CC" data-hex="#6699CC" title="点击复制 #6699CC"><b>libFunc</b>#6699CC</span><span class="vchip on-l" style="background:#D699FF" data-hex="#D699FF" title="点击复制 #D699FF"><b>languageLiteral</b>#D699FF</span><span class="vchip on-l" style="background:#FFB2F9" data-hex="#FFB2F9" title="点击复制 #FFB2F9"><b>namespacePink</b>#FFB2F9</span><span class="vchip on-d" style="background:#242424" data-hex="#242424" title="点击复制 #242424"><b>userBg</b>#242424</span><span class="vchip on-d" style="background:#202020" data-hex="#202020" title="点击复制 #202020"><b>successCard</b>#202020</span><span class="vchip on-d" style="background:#171010" data-hex="#171010" title="点击复制 #171010"><b>errorCard</b>#171010</span><span class="vchip on-d" style="background:#696969" data-hex="#696969" title="点击复制 #696969"><b>thinkingGrey</b>#696969</span><span class="vchip on-l" style="background:#999999" data-hex="#999999" title="点击复制 #999999"><b>bashOutput</b>#999999</span><span class="vchip on-l" style="background:#8BC391" data-hex="#8BC391" title="点击复制 #8BC391"><b>addedGreen</b>#8BC391</span><span class="vchip on-d" style="background:#1C241B" data-hex="#1C241B" title="点击复制 #1C241B"><b>addedLine</b>#1C241B</span><span class="vchip on-d" style="background:#2E1C21" data-hex="#2E1C21" title="点击复制 #2E1C21"><b>removedLine</b>#2E1C21</span><span class="vchip on-l" style="background:#E27878" data-hex="#E27878" title="点击复制 #E27878"><b>removedRed</b>#E27878</span><span class="vchip on-d" style="background:#181825" data-hex="#181825" title="点击复制 #181825"><b>cardBg</b>#181825</span><span class="vchip on-d" style="background:#111111" data-hex="#111111" title="点击复制 #111111"><b>pageBg</b>#111111</span><span class="vchip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>nfAccent</b>#86ABDC</span><span class="vchip on-l" style="background:#719CD6" data-hex="#719CD6" title="点击复制 #719CD6"><b>nfBorderAccent</b>#719CD6</span><span class="vchip on-d" style="background:#39506D" data-hex="#39506D" title="点击复制 #39506D"><b>nfBorder</b>#39506D</span><span class="vchip on-d" style="background:#3C5372" data-hex="#3C5372" title="点击复制 #3C5372"><b>nfSelectedBg</b>#3C5372</span><span class="vchip on-l" style="background:#81B29A" data-hex="#81B29A" title="点击复制 #81B29A"><b>nfSuccess</b>#81B29A</span><span class="vchip on-l" style="background:#C94F6D" data-hex="#C94F6D" title="点击复制 #C94F6D"><b>nfError</b>#C94F6D</span><span class="vchip on-l" style="background:#DBC074" data-hex="#DBC074" title="点击复制 #DBC074"><b>nfWarning</b>#DBC074</span><span class="vchip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>nfToolTitle</b>#86ABDC</span><span class="vchip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>nfMdHeading</b>#86ABDC</span><span class="vchip on-l" style="background:#9D79D6" data-hex="#9D79D6" title="点击复制 #9D79D6"><b>nfMdLink</b>#9D79D6</span><span class="vchip on-l" style="background:#63CDCF" data-hex="#63CDCF" title="点击复制 #63CDCF"><b>nfMdCode</b>#63CDCF</span><span class="vchip on-l" style="background:#7AD4D6" data-hex="#7AD4D6" title="点击复制 #7AD4D6"><b>nfMdListBullet</b>#7AD4D6</span><span class="vchip on-l" style="background:#F4A261" data-hex="#F4A261" title="点击复制 #F4A261"><b>nfBashMode</b>#F4A261</span><span class="vchip on-l" style="background:#738091" data-hex="#738091" title="点击复制 #738091"><b>nfSyntaxComment</b>#738091</span><span class="vchip on-l" style="background:#9D79D6" data-hex="#9D79D6" title="点击复制 #9D79D6"><b>nfSyntaxKeyword</b>#9D79D6</span><span class="vchip on-l" style="background:#86ABDC" data-hex="#86ABDC" title="点击复制 #86ABDC"><b>nfSyntaxFunction</b>#86ABDC</span><span class="vchip on-l" style="background:#DFDFE0" data-hex="#DFDFE0" title="点击复制 #DFDFE0"><b>nfSyntaxVariable</b>#DFDFE0</span><span class="vchip on-l" style="background:#81B29A" data-hex="#81B29A" title="点击复制 #81B29A"><b>nfSyntaxString</b>#81B29A</span><span class="vchip on-l" style="background:#F4A261" data-hex="#F4A261" title="点击复制 #F4A261"><b>nfSyntaxNumber</b>#F4A261</span><span class="vchip on-l" style="background:#DBC074" data-hex="#DBC074" title="点击复制 #DBC074"><b>nfSyntaxType</b>#DBC074</span><span class="vchip on-l" style="background:#AEAFB0" data-hex="#AEAFB0" title="点击复制 #AEAFB0"><b>nfSyntaxOperator</b>#AEAFB0</span><span class="vchip on-l" style="background:#AEAFB0" data-hex="#AEAFB0" title="点击复制 #AEAFB0"><b>nfSyntaxPunctuation</b>#AEAFB0</span></div>
+    </div>
+  </div>
+
+  <p class="pnote"><b>文件</b> <code>themes/pi-coder-nightfox.json</code> · <code>border</code> 单独取 <b>nfBorder #39506D</b>（比 1337 的中性灰偏蓝），<code>selectedBg</code> 取 <b>nfSelectedBg #3C5372</b> —— 选中行是全套里唯一明显偏蓝的底色。</p>
+</section>
+
+<section class="demo" id="demo">
+  <h2>着色演示</h2>
   <p class="sub">
-    取自一次真实会话：上半是聊天区，下半是 pi 的输入框、任务清单和 statusline。点下面的按钮换皮肤。
+    取自一次真实会话：上半是聊天区（用户消息 / 思考 / 工具调用 / diff / Markdown 回复），下半是 pi 的任务清单、输入框与 statusline 两行。
+    点下面的按钮换皮肤 —— 所有颜色都由当前皮肤的槽位驱动（终端底色取该皮肤的 <code>export.pageBg</code> 与主底色）。
+    输入框右上那一格是 <code>working-indicator</code> 的提示词摘要（<code>✦</code> 用 accent、正文用 muted），
+    这里演示的正是「延续短语」形态：上一轮任务是「把 server.js 切到 HTTPS」，这一轮只敲了「继续」，摘要于是融合成一句完整语义。
   </p>
 
   <div class="demobar">
     <div class="demobtns" role="group" aria-label="切换演示皮肤">
-      <button type="button" class="demo-btn" data-demo="catppuccin" aria-pressed="false">
-        <i class="dot" style="background:linear-gradient(90deg,#B7BDF8 0 25%,#CBA6F7 0 50%,#89B4FA 0 75%,#FAB387 0 100%)"></i>
-        <b>卡布</b><span>catppuccin</span>
-      </button>
-      <button type="button" class="demo-btn" data-demo="ayu" aria-pressed="false">
-        <i class="dot" style="background:linear-gradient(90deg,#E6B450 0 25%,#FF8F40 0 50%,#39BAE6 0 75%,#AAD94C 0 100%)"></i>
-        <b>阿玉</b><span>ayu</span>
-      </button>
-      <button type="button" class="demo-btn" data-demo="leet" aria-pressed="true">
-        <i class="dot" style="background:linear-gradient(90deg,#FF5E5E 0 25%,#FDB082 0 50%,#E9FDAC 0 75%,#8CDAFF 0 100%)"></i>
-        <b>黑客</b><span>1337</span>
-      </button>
+      <button type="button" class="demo-btn" data-demo="catppuccin" aria-pressed="false"
+        style="--t-dna:linear-gradient(90deg,#B7BDF8 0 25%,#CBA6F7 0 50%,#89B4FA 0 75%,#89DCEB 0 100%)">
+        <i class="dot"></i><b>卡布</b><span>catppuccin</span></button>
+      <button type="button" class="demo-btn" data-demo="ayu" aria-pressed="false"
+        style="--t-dna:linear-gradient(90deg,#E6B450 0 25%,#FF8F40 0 50%,#39BAE6 0 75%,#95E6CB 0 100%)">
+        <i class="dot"></i><b>阿玉</b><span>ayu</span></button>
+      <button type="button" class="demo-btn" data-demo="leet" aria-pressed="false"
+        style="--t-dna:linear-gradient(90deg,#FF5E5E 0 25%,#FDB082 0 50%,#E9FDAC 0 75%,#8CDAFF 0 100%)">
+        <i class="dot"></i><b>黑客</b><span>leet</span></button>
+      <button type="button" class="demo-btn" data-demo="coffee" aria-pressed="false"
+        style="--t-dna:linear-gradient(90deg,#FAD07A 0 25%,#99AD6A 0 50%,#CF6A4C 0 75%,#73ACFF 0 100%)">
+        <i class="dot"></i><b>咖啡</b><span>coffee</span></button>
+      <button type="button" class="demo-btn" data-demo="nightfox" aria-pressed="true"
+        style="--t-dna:linear-gradient(90deg,#86ABDC 0 25%,#81B29A 0 50%,#C94F6D 0 75%,#DBC074 0 100%)">
+        <i class="dot"></i><b>夜狐</b><span>nightfox</span></button>
     </div>
-    <div class="demofile">当前皮肤 <code id="demo-file">themes/pi-coder-1337.json</code></div>
+    <div class="demofile">当前皮肤 <code id="demo-file">themes/pi-coder-nightfox.json</code></div>
   </div>
 
-  <div class="demo" id="demo-stage" data-theme="leet">
+  <div class="demo" id="demo-stage" data-theme="nightfox">
     <div class="term">
       <div class="term-bar">
         <span class="term-dots"><i></i><i></i><i></i></span>
         <span class="term-title">pi · session 01a0b95e · /Users/bachi/ttt/a</span>
-        <span class="term-badge" id="demo-badge">leet</span>
+        <span class="term-badge" id="demo-badge">nightfox</span>
       </div>
 
       <div class="term-screen">
@@ -1198,8 +804,9 @@ drwxr-xr-x@  4 bachi  staff   128 Jul 22 10:07 .
         <div class="editor">
           <div class="ed-top">
             <span class="ed-rule pre"></span>
-            <span class="ed-work"><span class="spin">⠹</span> Thinking</span>
+            <span class="ed-work"><span class="spin">⠹</span> Thinking <span style="opacity:.6">(↓ 214 tokens · 8s)</span></span>
             <span class="ed-rule"></span>
+            <span class="ed-sum"><span class="mk">✦</span> 继续把 server.js 切回 HTTP</span>
           </div>
           <div class="ed-row"><span class="ed-prompt">❯</span> 顺手把 CLAUDE.md 里 server.js 的协议说明也对齐一下<span class="ed-caret"></span></div>
           <div class="ed-bot"></div>
@@ -1211,59 +818,98 @@ drwxr-xr-x@  4 bachi  staff   128 Jul 22 10:07 .
     </div>
   </div>
 
-  <p class="pnote">
+  <p class="pnote-plain">
     输入框上方那行是 <code>simple-task</code> 的任务清单（已完成的 <code>✔</code> 用 success、正文用 dim 加删除线），下面依次是
-    pi 的输入框（边框与 <code>❯</code> 取当前思考档的颜色，这里是 <code>max</code> → 本主题的 <code>thinkingMax</code>；左上一段是工作指示器嵌在边框里的样子）
-    与 statusline 两行： <code>⚡️ 模型/档位 | Ctx 百分比 | 分支 | (+增,-删) | 状态</code>，第二行是所有扩展 <code>setStatus</code> 的文本（任务计数、cwd）。
-    分支图标用的是 <code>⎇</code>（<code>U+2387</code>，通用符号区，没装 Nerd Font 的机器也能正常显示）。
+    pi 的输入框（边框与 <code>❯</code> 取当前思考档的颜色，这里是 <code>max</code> → 本主题的 <code>thinkingMax</code>；左上一段是工作指示器嵌在边框里的样子，
+    行尾 <code>✦</code> 后是提示词摘要）与 statusline 两行：<code>⚡️ 模型/档位 | Ctx 百分比 | 分支 | (+增,-删) | 状态</code>，
+    第二行是所有扩展 <code>setStatus</code> 的文本（任务计数、cwd）。分支图标用的是 <code>⎇</code>（<code>U+2387</code>，通用符号区，没装 Nerd Font 的机器也能正常显示）。
   </p>
 </section>
 
 <footer class="end">
   <p>
-    <b>数据来源</b> <code>themes/pi-coder-catppuccin.json</code> · <code>pi-coder-ayu.json</code> · <code>pi-coder-1337.json</code>，色值与变量名逐字抄录。<br>
-    <b>三套皮肤合计</b> 92 个变量 · 168 个槽位赋值 · 底色区间 #0B0E14 – #1E1E2E。本页只列被 <code>colors</code> / <code>export</code> 实际引用的变量（<code>pi-coder-catppuccin</code> 里未被引用的 <code>pendingPanel</code> 不展示）。
+    <b>数据来源</b> <code>themes/pi-coder-catppuccin.json</code> · <code>themes/pi-coder-ayu.json</code> · <code>themes/pi-coder-1337.json</code> · <code>themes/pi-coder-coffee.json</code> · <code>themes/pi-coder-nightfox.json</code>，色值与变量名逐字抄录、变量引用已解析成实际 hex。<br>
+    <b>五套皮肤合计</b> 183 个变量 · 286 个槽位赋值 · 槽位并集 59 个 · 底色区间 #0D1017 – #191919。
+    <code>coffee</code> 与 <code>nightfox</code> 共用 <code>1337</code> 的灰底与全部次要槽位，只重定主色（<code>cf*</code> / <code>nf*</code> 前缀变量）。<br>
+    <b>生成方式</b> 本页色值由一次性脚本从上述 JSON 逐字解析生成（相对亮度按 WCAG 中点 L≈0.179 自动决定色块上的黑字 / 白字）；请勿手改本页色值，新增 / 调整主题后需重新生成整页。
   </p>
 </footer>
 
 </div>
 <script>
 (function () {
-  const flash = (el, cls) => {
-    el.classList.add(cls)
-    setTimeout(() => el.classList.remove(cls), 760)
-  }
+  const flash = (el, cls) => { el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 760) }
   document.addEventListener('click', (e) => {
     const el = e.target.closest('[data-hex]')
-    if (!el) return
+    if (!el || el.classList.contains('na')) return
     const hex = el.dataset.hex
     if (navigator.clipboard) navigator.clipboard.writeText(hex).then(() => flash(el, 'flash'), () => flash(el, 'fail'))
     else flash(el, 'fail')
   })
 })()
 ;(function () {
-    const stage = document.getElementById('demo-stage')
-    if (!stage) return
-    const badge = document.getElementById('demo-badge')
-    const file = document.getElementById('demo-file')
-    const buttons = [...document.querySelectorAll('.demo-btn')]
-    // 像真终端一样停在最新一行：开场就把聊天区滚到底（上面的内容可往上滚）
-    const screen = stage.querySelector('.term-screen')
-    screen.scrollTop = screen.scrollHeight
-    const FILES = {
+  // 主题切换器：一次只显示一套色板（5 套全堆出来页面太长太挤）
+  const tabs = [...document.querySelectorAll('.tab')]
+  const panels = [...document.querySelectorAll('.plate')]
+  if (!tabs.length || !panels.length) return
+  const select = (key, opts) => {
+    const panel = panels.find((p) => p.id === key)
+    if (!panel) return
+    tabs.forEach((t) => {
+      const on = t.dataset.tab === key
+      t.setAttribute('aria-selected', String(on))
+      t.tabIndex = on ? 0 : -1
+    })
+    panels.forEach((p) => { p.hidden = p.id !== key })
+    if (!opts || opts.hash !== false) {
+      if (location.hash !== '#' + key) history.replaceState(null, '', '#' + key)
+    }
+    // 面板顶部不在视野里时滚过去（切换器是 sticky 的，留 74px 给它）
+    if (!opts || opts.scroll !== false) {
+      const top = panel.getBoundingClientRect().top
+      if (top < 0 || top > window.innerHeight * 0.45) {
+        window.scrollTo({ top: window.scrollY + top - 74, behavior: 'smooth' })
+      }
+    }
+  }
+  tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.tab)))
+  // 左右方向键在 tab 之间移动（WAI-ARIA tabs 惯例）
+  document.querySelector('.tabs').addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+    const i = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')
+    const next = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length
+    tabs[next].focus()
+    select(tabs[next].dataset.tab)
+    e.preventDefault()
+  })
+  // #hash 直达某套皮肤（旧链接 / 分享链接仍然有效）
+  const initial = location.hash.slice(1)
+  if (initial && panels.some((p) => p.id === initial)) select(initial, { hash: false, scroll: false })
+})()
+;(function () {
+  const stage = document.getElementById('demo-stage')
+  if (!stage) return
+  const badge = document.getElementById('demo-badge')
+  const file = document.getElementById('demo-file')
+  const buttons = [...document.querySelectorAll('.demo-btn')]
+  const screen = stage.querySelector('.term-screen')
+  screen.scrollTop = screen.scrollHeight
+  const FILES = {
       catppuccin: 'themes/pi-coder-catppuccin.json',
       ayu: 'themes/pi-coder-ayu.json',
       leet: 'themes/pi-coder-1337.json',
-    }
-    const apply = (name) => {
-      if (!FILES[name]) return
-      stage.dataset.theme = name
-      badge.textContent = name
-      file.textContent = FILES[name]
-      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.demo === name)))
-    }
-    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.demo)))
-  })()
+      coffee: 'themes/pi-coder-coffee.json',
+      nightfox: 'themes/pi-coder-nightfox.json',
+  }
+  const apply = (name) => {
+    if (!FILES[name]) return
+    stage.dataset.theme = name
+    badge.textContent = name
+    file.textContent = FILES[name]
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.demo === name)))
+  }
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.demo)))
+})()
 </script>
 </body>
 </html>
